@@ -1,0 +1,3716 @@
+<!doctype html>
+<html lang="en" class="light" style="color-scheme: light">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JP Mall - Sistema de Conservação &amp; Manutenção</title>
+
+    <style type="text/css">
+      [data-sonner-toaster][dir="ltr"],
+      html[dir="ltr"] {
+        --toast-icon-margin-start: -3px;
+        --toast-icon-margin-end: 4px;
+        --toast-svg-margin-start: -1px;
+        --toast-svg-margin-end: 0px;
+        --toast-button-margin-start: auto;
+        --toast-button-margin-end: 0;
+        --toast-close-button-start: 0;
+        --toast-close-button-end: unset;
+        --toast-close-button-transform: translate(-35%, -35%);
+      }
+      [data-sonner-toaster][dir="rtl"],
+      html[dir="rtl"] {
+        --toast-icon-margin-start: 4px;
+        --toast-icon-margin-end: -3px;
+        --toast-svg-margin-start: 0px;
+        --toast-svg-margin-end: -1px;
+        --toast-button-margin-start: 0;
+        --toast-button-margin-end: auto;
+        --toast-close-button-start: unset;
+        --toast-close-button-end: 0;
+        --toast-close-button-transform: translate(35%, -35%);
+      }
+      [data-sonner-toaster] {
+        position: fixed;
+        width: var(--width);
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          Segoe UI,
+          Roboto,
+          Helvetica Neue,
+          Arial,
+          Noto Sans,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
+        --gray1: hsl(0, 0%, 99%);
+        --gray2: hsl(0, 0%, 97.3%);
+        --gray3: hsl(0, 0%, 95.1%);
+        --gray4: hsl(0, 0%, 93%);
+        --gray5: hsl(0, 0%, 90.9%);
+        --gray6: hsl(0, 0%, 88.7%);
+        --gray7: hsl(0, 0%, 85.8%);
+        --gray8: hsl(0, 0%, 78%);
+        --gray9: hsl(0, 0%, 56.1%);
+        --gray10: hsl(0, 0%, 52.3%);
+        --gray11: hsl(0, 0%, 43.5%);
+        --gray12: hsl(0, 0%, 9%);
+        --border-radius: 8px;
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        outline: 0;
+        z-index: 999999999;
+        transition: transform 0.4s ease;
+      }
+      [data-sonner-toaster][data-lifted="true"] {
+        transform: translateY(-8px);
+      }
+      @media (hover: none) and (pointer: coarse) {
+        [data-sonner-toaster][data-lifted="true"] {
+          transform: none;
+        }
+      }
+      [data-sonner-toaster][data-x-position="right"] {
+        right: var(--offset-right);
+      }
+      [data-sonner-toaster][data-x-position="left"] {
+        left: var(--offset-left);
+      }
+      [data-sonner-toaster][data-x-position="center"] {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      [data-sonner-toaster][data-y-position="top"] {
+        top: var(--offset-top);
+      }
+      [data-sonner-toaster][data-y-position="bottom"] {
+        bottom: var(--offset-bottom);
+      }
+      [data-sonner-toast] {
+        --y: translateY(100%);
+        --lift-amount: calc(var(--lift) * var(--gap));
+        z-index: var(--z-index);
+        position: absolute;
+        opacity: 0;
+        transform: var(--y);
+        touch-action: none;
+        transition:
+          transform 0.4s,
+          opacity 0.4s,
+          height 0.4s,
+          box-shadow 0.2s;
+        box-sizing: border-box;
+        outline: 0;
+        overflow-wrap: anywhere;
+      }
+      [data-sonner-toast][data-styled="true"] {
+        padding: 16px;
+        background: var(--normal-bg);
+        border: 1px solid var(--normal-border);
+        color: var(--normal-text);
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: var(--width);
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      [data-sonner-toast]:focus-visible {
+        box-shadow:
+          0 4px 12px rgba(0, 0, 0, 0.1),
+          0 0 0 2px rgba(0, 0, 0, 0.2);
+      }
+      [data-sonner-toast][data-y-position="top"] {
+        top: 0;
+        --y: translateY(-100%);
+        --lift: 1;
+        --lift-amount: calc(1 * var(--gap));
+      }
+      [data-sonner-toast][data-y-position="bottom"] {
+        bottom: 0;
+        --y: translateY(100%);
+        --lift: -1;
+        --lift-amount: calc(var(--lift) * var(--gap));
+      }
+      [data-sonner-toast][data-styled="true"] [data-description] {
+        font-weight: 400;
+        line-height: 1.4;
+        color: #3f3f3f;
+      }
+      [data-rich-colors="true"][data-sonner-toast][data-styled="true"]
+        [data-description] {
+        color: inherit;
+      }
+      [data-sonner-toaster][data-sonner-theme="dark"] [data-description] {
+        color: #e8e8e8;
+      }
+      [data-sonner-toast][data-styled="true"] [data-title] {
+        font-weight: 500;
+        line-height: 1.5;
+        color: inherit;
+      }
+      [data-sonner-toast][data-styled="true"] [data-icon] {
+        display: flex;
+        height: 16px;
+        width: 16px;
+        position: relative;
+        justify-content: flex-start;
+        align-items: center;
+        flex-shrink: 0;
+        margin-left: var(--toast-icon-margin-start);
+        margin-right: var(--toast-icon-margin-end);
+      }
+      [data-sonner-toast][data-promise="true"] [data-icon] > svg {
+        opacity: 0;
+        transform: scale(0.8);
+        transform-origin: center;
+        animation: sonner-fade-in 0.3s ease forwards;
+      }
+      [data-sonner-toast][data-styled="true"] [data-icon] > * {
+        flex-shrink: 0;
+      }
+      [data-sonner-toast][data-styled="true"] [data-icon] svg {
+        margin-left: var(--toast-svg-margin-start);
+        margin-right: var(--toast-svg-margin-end);
+      }
+      [data-sonner-toast][data-styled="true"] [data-content] {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      [data-sonner-toast][data-styled="true"] [data-button] {
+        border-radius: 4px;
+        padding-left: 8px;
+        padding-right: 8px;
+        height: 24px;
+        font-size: 12px;
+        color: var(--normal-bg);
+        background: var(--normal-text);
+        margin-left: var(--toast-button-margin-start);
+        margin-right: var(--toast-button-margin-end);
+        border: none;
+        font-weight: 500;
+        cursor: pointer;
+        outline: 0;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        transition:
+          opacity 0.4s,
+          box-shadow 0.2s;
+      }
+      [data-sonner-toast][data-styled="true"] [data-button]:focus-visible {
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.4);
+      }
+      [data-sonner-toast][data-styled="true"] [data-button]:first-of-type {
+        margin-left: var(--toast-button-margin-start);
+        margin-right: var(--toast-button-margin-end);
+      }
+      [data-sonner-toast][data-styled="true"] [data-cancel] {
+        color: var(--normal-text);
+        background: rgba(0, 0, 0, 0.08);
+      }
+      [data-sonner-toaster][data-sonner-theme="dark"]
+        [data-sonner-toast][data-styled="true"]
+        [data-cancel] {
+        background: rgba(255, 255, 255, 0.3);
+      }
+      [data-sonner-toast][data-styled="true"] [data-close-button] {
+        position: absolute;
+        left: var(--toast-close-button-start);
+        right: var(--toast-close-button-end);
+        top: 0;
+        height: 20px;
+        width: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        color: var(--gray12);
+        background: var(--normal-bg);
+        border: 1px solid var(--gray4);
+        transform: var(--toast-close-button-transform);
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 1;
+        transition:
+          opacity 0.1s,
+          background 0.2s,
+          border-color 0.2s;
+      }
+      [data-sonner-toast][data-styled="true"]
+        [data-close-button]:focus-visible {
+        box-shadow:
+          0 4px 12px rgba(0, 0, 0, 0.1),
+          0 0 0 2px rgba(0, 0, 0, 0.2);
+      }
+      [data-sonner-toast][data-styled="true"] [data-disabled="true"] {
+        cursor: not-allowed;
+      }
+      [data-sonner-toast][data-styled="true"]:hover [data-close-button]:hover {
+        background: var(--gray2);
+        border-color: var(--gray5);
+      }
+      [data-sonner-toast][data-swiping="true"]::before {
+        content: "";
+        position: absolute;
+        left: -100%;
+        right: -100%;
+        height: 100%;
+        z-index: -1;
+      }
+      [data-sonner-toast][data-y-position="top"][data-swiping="true"]::before {
+        bottom: 50%;
+        transform: scaleY(3) translateY(50%);
+      }
+      [data-sonner-toast][data-y-position="bottom"][data-swiping="true"]::before {
+        top: 50%;
+        transform: scaleY(3) translateY(-50%);
+      }
+      [data-sonner-toast][data-swiping="false"][data-removed="true"]::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        transform: scaleY(2);
+      }
+      [data-sonner-toast][data-expanded="true"]::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        height: calc(var(--gap) + 1px);
+        bottom: 100%;
+        width: 100%;
+      }
+      [data-sonner-toast][data-mounted="true"] {
+        --y: translateY(0);
+        opacity: 1;
+      }
+      [data-sonner-toast][data-expanded="false"][data-front="false"] {
+        --scale: var(--toasts-before) * 0.05 + 1;
+        --y: translateY(calc(var(--lift-amount) * var(--toasts-before)))
+          scale(calc(-1 * var(--scale)));
+        height: var(--front-toast-height);
+      }
+      [data-sonner-toast] > * {
+        transition: opacity 0.4s;
+      }
+      [data-sonner-toast][data-x-position="right"] {
+        right: 0;
+      }
+      [data-sonner-toast][data-x-position="left"] {
+        left: 0;
+      }
+      [data-sonner-toast][data-expanded="false"][data-front="false"][data-styled="true"]
+        > * {
+        opacity: 0;
+      }
+      [data-sonner-toast][data-visible="false"] {
+        opacity: 0;
+        pointer-events: none;
+      }
+      [data-sonner-toast][data-mounted="true"][data-expanded="true"] {
+        --y: translateY(calc(var(--lift) * var(--offset)));
+        height: var(--initial-height);
+      }
+      [data-sonner-toast][data-removed="true"][data-front="true"][data-swipe-out="false"] {
+        --y: translateY(calc(var(--lift) * -100%));
+        opacity: 0;
+      }
+      [data-sonner-toast][data-removed="true"][data-front="false"][data-swipe-out="false"][data-expanded="true"] {
+        --y: translateY(
+          calc(var(--lift) * var(--offset) + var(--lift) * -100%)
+        );
+        opacity: 0;
+      }
+      [data-sonner-toast][data-removed="true"][data-front="false"][data-swipe-out="false"][data-expanded="false"] {
+        --y: translateY(40%);
+        opacity: 0;
+        transition:
+          transform 0.5s,
+          opacity 0.2s;
+      }
+      [data-sonner-toast][data-removed="true"][data-front="false"]::before {
+        height: calc(var(--initial-height) + 20%);
+      }
+      [data-sonner-toast][data-swiping="true"] {
+        transform: var(--y) translateY(var(--swipe-amount-y, 0))
+          translateX(var(--swipe-amount-x, 0));
+        transition: none;
+      }
+      [data-sonner-toast][data-swiped="true"] {
+        user-select: none;
+      }
+      [data-sonner-toast][data-swipe-out="true"][data-y-position="bottom"],
+      [data-sonner-toast][data-swipe-out="true"][data-y-position="top"] {
+        animation-duration: 0.2s;
+        animation-timing-function: ease-out;
+        animation-fill-mode: forwards;
+      }
+      [data-sonner-toast][data-swipe-out="true"][data-swipe-direction="left"] {
+        animation-name: swipe-out-left;
+      }
+      [data-sonner-toast][data-swipe-out="true"][data-swipe-direction="right"] {
+        animation-name: swipe-out-right;
+      }
+      [data-sonner-toast][data-swipe-out="true"][data-swipe-direction="up"] {
+        animation-name: swipe-out-up;
+      }
+      [data-sonner-toast][data-swipe-out="true"][data-swipe-direction="down"] {
+        animation-name: swipe-out-down;
+      }
+      @keyframes swipe-out-left {
+        from {
+          transform: var(--y) translateX(var(--swipe-amount-x));
+          opacity: 1;
+        }
+        to {
+          transform: var(--y) translateX(calc(var(--swipe-amount-x) - 100%));
+          opacity: 0;
+        }
+      }
+      @keyframes swipe-out-right {
+        from {
+          transform: var(--y) translateX(var(--swipe-amount-x));
+          opacity: 1;
+        }
+        to {
+          transform: var(--y) translateX(calc(var(--swipe-amount-x) + 100%));
+          opacity: 0;
+        }
+      }
+      @keyframes swipe-out-up {
+        from {
+          transform: var(--y) translateY(var(--swipe-amount-y));
+          opacity: 1;
+        }
+        to {
+          transform: var(--y) translateY(calc(var(--swipe-amount-y) - 100%));
+          opacity: 0;
+        }
+      }
+      @keyframes swipe-out-down {
+        from {
+          transform: var(--y) translateY(var(--swipe-amount-y));
+          opacity: 1;
+        }
+        to {
+          transform: var(--y) translateY(calc(var(--swipe-amount-y) + 100%));
+          opacity: 0;
+        }
+      }
+      @media (max-width: 600px) {
+        [data-sonner-toaster] {
+          position: fixed;
+          right: var(--mobile-offset-right);
+          left: var(--mobile-offset-left);
+          width: 100%;
+        }
+        [data-sonner-toaster][dir="rtl"] {
+          left: calc(var(--mobile-offset-left) * -1);
+        }
+        [data-sonner-toaster] [data-sonner-toast] {
+          left: 0;
+          right: 0;
+          width: calc(100% - var(--mobile-offset-left) * 2);
+        }
+        [data-sonner-toaster][data-x-position="left"] {
+          left: var(--mobile-offset-left);
+        }
+        [data-sonner-toaster][data-y-position="bottom"] {
+          bottom: var(--mobile-offset-bottom);
+        }
+        [data-sonner-toaster][data-y-position="top"] {
+          top: var(--mobile-offset-top);
+        }
+        [data-sonner-toaster][data-x-position="center"] {
+          left: var(--mobile-offset-left);
+          right: var(--mobile-offset-right);
+          transform: none;
+        }
+      }
+      [data-sonner-toaster][data-sonner-theme="light"] {
+        --normal-bg: #fff;
+        --normal-border: var(--gray4);
+        --normal-text: var(--gray12);
+        --success-bg: hsl(143, 85%, 96%);
+        --success-border: hsl(145, 92%, 87%);
+        --success-text: hsl(140, 100%, 27%);
+        --info-bg: hsl(208, 100%, 97%);
+        --info-border: hsl(221, 91%, 93%);
+        --info-text: hsl(210, 92%, 45%);
+        --warning-bg: hsl(49, 100%, 97%);
+        --warning-border: hsl(49, 91%, 84%);
+        --warning-text: hsl(31, 92%, 45%);
+        --error-bg: hsl(359, 100%, 97%);
+        --error-border: hsl(359, 100%, 94%);
+        --error-text: hsl(360, 100%, 45%);
+      }
+      [data-sonner-toaster][data-sonner-theme="light"]
+        [data-sonner-toast][data-invert="true"] {
+        --normal-bg: #000;
+        --normal-border: hsl(0, 0%, 20%);
+        --normal-text: var(--gray1);
+      }
+      [data-sonner-toaster][data-sonner-theme="dark"]
+        [data-sonner-toast][data-invert="true"] {
+        --normal-bg: #fff;
+        --normal-border: var(--gray3);
+        --normal-text: var(--gray12);
+      }
+      [data-sonner-toaster][data-sonner-theme="dark"] {
+        --normal-bg: #000;
+        --normal-bg-hover: hsl(0, 0%, 12%);
+        --normal-border: hsl(0, 0%, 20%);
+        --normal-border-hover: hsl(0, 0%, 25%);
+        --normal-text: var(--gray1);
+        --success-bg: hsl(150, 100%, 6%);
+        --success-border: hsl(147, 100%, 12%);
+        --success-text: hsl(150, 86%, 65%);
+        --info-bg: hsl(215, 100%, 6%);
+        --info-border: hsl(223, 43%, 17%);
+        --info-text: hsl(216, 87%, 65%);
+        --warning-bg: hsl(64, 100%, 6%);
+        --warning-border: hsl(60, 100%, 9%);
+        --warning-text: hsl(46, 87%, 65%);
+        --error-bg: hsl(358, 76%, 10%);
+        --error-border: hsl(357, 89%, 16%);
+        --error-text: hsl(358, 100%, 81%);
+      }
+      [data-sonner-toaster][data-sonner-theme="dark"]
+        [data-sonner-toast]
+        [data-close-button] {
+        background: var(--normal-bg);
+        border-color: var(--normal-border);
+        color: var(--normal-text);
+      }
+      [data-sonner-toaster][data-sonner-theme="dark"]
+        [data-sonner-toast]
+        [data-close-button]:hover {
+        background: var(--normal-bg-hover);
+        border-color: var(--normal-border-hover);
+      }
+      [data-rich-colors="true"][data-sonner-toast][data-type="success"] {
+        background: var(--success-bg);
+        border-color: var(--success-border);
+        color: var(--success-text);
+      }
+      [data-rich-colors="true"][data-sonner-toast][data-type="success"]
+        [data-close-button] {
+        background: var(--success-bg);
+        border-color: var(--success-border);
+        color: var(--success-text);
+      }
+      [data-rich-colors="true"][data-sonner-toast][data-type="info"] {
+        background: var(--info-bg);
+        border-color: var(--info-border);
+        color: var(--info-text);
+      }
+      [data-rich-colors="true"][data-sonner-toast][data-type="info"]
+        [data-close-button] {
+        background: var(--info-bg);
+        border-color: var(--info-border);
+        color: var(--info-text);
+      }
+      [data-rich-colors="true"][data-sonner-toast][data-type="warning"] {
+        background: var(--warning-bg);
+        border-color: var(--warning-border);
+        color: var(--warning-text);
+      }
+      [data-rich-colors="true"][data-sonner-toast][data-type="warning"]
+        [data-close-button] {
+        background: var(--warning-bg);
+        border-color: var(--warning-border);
+        color: var(--warning-text);
+      }
+      [data-rich-colors="true"][data-sonner-toast][data-type="error"] {
+        background: var(--error-bg);
+        border-color: var(--error-border);
+        color: var(--error-text);
+      }
+      [data-rich-colors="true"][data-sonner-toast][data-type="error"]
+        [data-close-button] {
+        background: var(--error-bg);
+        border-color: var(--error-border);
+        color: var(--error-text);
+      }
+      .sonner-loading-wrapper {
+        --size: 16px;
+        height: var(--size);
+        width: var(--size);
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+      }
+      .sonner-loading-wrapper[data-visible="false"] {
+        transform-origin: center;
+        animation: sonner-fade-out 0.2s ease forwards;
+      }
+      .sonner-spinner {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        height: var(--size);
+        width: var(--size);
+      }
+      .sonner-loading-bar {
+        animation: sonner-spin 1.2s linear infinite;
+        background: var(--gray11);
+        border-radius: 6px;
+        height: 8%;
+        left: -10%;
+        position: absolute;
+        top: -3.9%;
+        width: 24%;
+      }
+      .sonner-loading-bar:first-child {
+        animation-delay: -1.2s;
+        transform: rotate(0.0001deg) translate(146%);
+      }
+      .sonner-loading-bar:nth-child(2) {
+        animation-delay: -1.1s;
+        transform: rotate(30deg) translate(146%);
+      }
+      .sonner-loading-bar:nth-child(3) {
+        animation-delay: -1s;
+        transform: rotate(60deg) translate(146%);
+      }
+      .sonner-loading-bar:nth-child(4) {
+        animation-delay: -0.9s;
+        transform: rotate(90deg) translate(146%);
+      }
+      .sonner-loading-bar:nth-child(5) {
+        animation-delay: -0.8s;
+        transform: rotate(120deg) translate(146%);
+      }
+      .sonner-loading-bar:nth-child(6) {
+        animation-delay: -0.7s;
+        transform: rotate(150deg) translate(146%);
+      }
+      .sonner-loading-bar:nth-child(7) {
+        animation-delay: -0.6s;
+        transform: rotate(180deg) translate(146%);
+      }
+      .sonner-loading-bar:nth-child(8) {
+        animation-delay: -0.5s;
+        transform: rotate(210deg) translate(146%);
+      }
+      .sonner-loading-bar:nth-child(9) {
+        animation-delay: -0.4s;
+        transform: rotate(240deg) translate(146%);
+      }
+      .sonner-loading-bar:nth-child(10) {
+        animation-delay: -0.3s;
+        transform: rotate(270deg) translate(146%);
+      }
+      .sonner-loading-bar:nth-child(11) {
+        animation-delay: -0.2s;
+        transform: rotate(300deg) translate(146%);
+      }
+      .sonner-loading-bar:nth-child(12) {
+        animation-delay: -0.1s;
+        transform: rotate(330deg) translate(146%);
+      }
+      @keyframes sonner-fade-in {
+        0% {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes sonner-fade-out {
+        0% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+      }
+      @keyframes sonner-spin {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0.15;
+        }
+      }
+      @media (prefers-reduced-motion) {
+        .sonner-loading-bar,
+        [data-sonner-toast],
+        [data-sonner-toast] > * {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+      .sonner-loader {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transform-origin: center;
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+      }
+      .sonner-loader[data-visible="false"] {
+        opacity: 0;
+        transform: scale(0.8) translate(-50%, -50%);
+      }
+    </style>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+  </head>
+  <body>
+    <div id="root">
+      <section
+        aria-label="Notifications alt+T"
+        tabindex="-1"
+        aria-live="polite"
+        aria-relevant="additions text"
+        aria-atomic="false"
+      ></section>
+      <div class="flex h-screen w-full bg-[#F7F4EF] dark:bg-[#1a1a1a]">
+        <aside
+          class="hidden md:flex w-64 bg-[#8B1A1A] dark:bg-[#2a0a0a] flex-col flex-shrink-0 shadow-xl transition-all duration-300 ease-in-out relative"
+        >
+          <div class="flex flex-col h-full overflow-hidden">
+            <div
+              class="h-16 flex items-center px-5 border-b border-[#a43030] dark:border-[#4a1515] flex-shrink-0 justify-between"
+            >
+              <div class="flex items-center">
+                <div
+                  class="w-8 h-8 rounded-lg bg-[#C8A882] flex items-center justify-center flex-shrink-0 mr-3"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-building2 lucide-building-2 w-4 h-4 text-[#8B1A1A]"
+                  >
+                    <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path>
+                    <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
+                    <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path>
+                    <path d="M10 6h4"></path>
+                    <path d="M10 10h4"></path>
+                    <path d="M10 14h4"></path>
+                    <path d="M10 18h4"></path>
+                  </svg>
+                </div>
+                <div class="min-w-0">
+                  <p
+                    class="text-white font-bold text-sm leading-tight tracking-wide truncate"
+                  >
+                    JP Mall
+                  </p>
+                  <p
+                    class="text-[#C8A882] text-[10px] font-bold uppercase tracking-widest opacity-90 truncate"
+                  >
+                    Operações
+                  </p>
+                </div>
+              </div>
+            </div>
+            <nav class="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
+              <p
+                class="px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-white/30"
+              >
+                Módulos de Gestão
+              </p>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-store w-4 h-4"
+                  >
+                    <path
+                      d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"
+                    ></path>
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                    <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path>
+                    <path d="M2 7h20"></path>
+                    <path
+                      d="M22 7v3a2 2 0 0 1-2 2a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"
+                    ></path></svg></span
+                ><span class="truncate">LOJISTAS</span>
+              </div>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-graduation-cap w-4 h-4"
+                  >
+                    <path
+                      d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"
+                    ></path>
+                    <path d="M22 10v6"></path>
+                    <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg></span
+                ><span class="truncate">TREINAMENTOS</span>
+              </div>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-shield-check w-4 h-4"
+                  >
+                    <path
+                      d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+                    ></path>
+                    <path d="m9 12 2 2 4-4"></path></svg></span
+                ><span class="truncate">SEGUROS</span>
+              </div>
+              <div class="space-y-1">
+                <button
+                  class="w-full group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 bg-white/10 text-white"
+                >
+                  <span
+                    class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 transition-colors mr-2.5 bg-[#D93030]"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-leafy-green w-4 h-4"
+                    >
+                      <path
+                        d="M2 22c1.25-1.5 2.13-3.3 2.13-5.32C4.13 12.38 7.31 8 11.5 8s7.37 4.38 7.37 8.68c0 2.02.88 3.82 2.13 5.32"
+                      ></path>
+                      <path d="M10 8c1.5-3 3.5-5 6-5s4.5 2 6 5"></path>
+                      <path
+                        d="M4 15c-1.5-2-2-4.5-2-7s2-5 5-5 5 2 5 5-2 5-8 7Z"
+                      ></path>
+                      <path
+                        d="M14 15c1.5-2 2-4.5 2-7s-2-5-5-5-5 2-5 5 2 5 8 7Z"
+                      ></path></svg></span
+                  ><span class="truncate">CONSERVAÇÃO &amp; RESÍDUOS</span
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-chevron-down ml-auto w-3.5 h-3.5 transition-transform duration-200 rotate-180"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+                <div class="ml-4 pl-4 border-l border-white/10 space-y-1 mt-1">
+                  <a
+                    aria-current="page"
+                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 bg-[#D93030]/20 text-white"
+                    href="dashboard.html"
+                    data-discover="true"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-layout-dashboard w-3.5 h-3.5 mr-2.5 text-[#D93030]"
+                    >
+                      <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+                      <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+                      <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+                      <rect
+                        width="7"
+                        height="5"
+                        x="3"
+                        y="16"
+                        rx="1"
+                      ></rect></svg
+                    ><span class="truncate">Dashboard</span
+                    ><span
+                      class="ml-auto w-1 h-1 rounded-full bg-[#D93030]"
+                    ></span></a
+                  ><a
+                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
+                    href="relatorio-seguranca-alimentar.html"
+                    data-discover="true"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-clipboard-check w-3.5 h-3.5 mr-2.5 text-white/40"
+                    >
+                      <rect
+                        width="8"
+                        height="4"
+                        x="8"
+                        y="2"
+                        rx="1"
+                        ry="1"
+                      ></rect>
+                      <path
+                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                      ></path>
+                      <path d="m9 14 2 2 4-4"></path></svg
+                    ><span class="truncate"
+                      >Relatório de Segurança Alimentar</span
+                    ></a
+                  ><a
+                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
+                    href="eco-flamboyant.html"
+                    data-discover="true"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-wrench w-3.5 h-3.5 mr-2.5 text-white/40"
+                    >
+                      <path
+                        d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
+                      ></path></svg
+                    ><span class="truncate">Eco Flamboyant</span></a
+                  ><a
+                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
+                    href="orientacao-educativa.html"
+                    data-discover="true"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-bell-ring w-3.5 h-3.5 mr-2.5 text-white/40"
+                    >
+                      <path d="M10.268 21a2 2 0 0 0 3.464 0"></path>
+                      <path d="M22 8c0-2.3-.8-4.3-2-6"></path>
+                      <path
+                        d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"
+                      ></path>
+                      <path d="M4 2C2.8 3.7 2 5.7 2 8"></path></svg
+                    ><span class="truncate">Orientação Educativa</span></a
+                  ><a
+                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
+                    href="relatorios.html"
+                    data-discover="true"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-chart-column w-3.5 h-3.5 mr-2.5 text-white/40"
+                    >
+                      <path d="M3 3v16a2 2 0 0 0 2 2h16"></path>
+                      <path d="M18 17V9"></path>
+                      <path d="M13 17V5"></path>
+                      <path d="M8 17v-3"></path></svg
+                    ><span class="truncate">Relatórios</span></a
+                  >
+                </div>
+              </div>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-circle-alert w-4 h-4"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" x2="12" y1="8" y2="12"></line>
+                    <line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span
+                ><span class="truncate">SINISTROS</span>
+              </div>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-megaphone w-4 h-4"
+                  >
+                    <path d="m3 11 18-5v12L3 14v-3z"></path>
+                    <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg></span
+                ><span class="truncate">MARKETING</span>
+              </div>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-dollar-sign w-4 h-4"
+                  >
+                    <line x1="12" x2="12" y1="2" y2="22"></line>
+                    <path
+                      d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                    ></path></svg></span
+                ><span class="truncate">COMERCIAL</span>
+              </div>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-info w-4 h-4"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 16v-4"></path>
+                    <path d="M12 8h.01"></path></svg></span
+                ><span class="truncate">INSTITUCIONAL</span>
+              </div>
+            </nav>
+            <div
+              class="p-3 border-t border-[#a43030] dark:border-[#4a1515] space-y-1 flex-shrink-0"
+            >
+              <div
+                class="flex items-center px-3 py-2 rounded-lg bg-white/5 mb-2"
+              >
+                <div
+                  class="w-8 h-8 rounded-full bg-[#C8A882] text-[#8B1A1A] font-bold flex items-center justify-center text-xs flex-shrink-0"
+                >
+                  GR
+                </div>
+                <div class="ml-2.5 min-w-0">
+                  <p
+                    class="text-white text-xs font-medium leading-tight truncate"
+                  >
+                    Gerência de Relacionamento
+                  </p>
+                  <p class="text-white/50 text-[10px] truncate">
+                    JP Mall Operações
+                  </p>
+                </div>
+              </div>
+              <button
+                class="flex items-center w-full px-3 py-2.5 text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-log-out w-4 h-4 flex-shrink-0 mr-2.5"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" x2="9" y1="12" y2="12"></line></svg
+                >Sair
+              </button>
+            </div>
+          </div>
+          <button
+            class="absolute -right-3 top-6 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-full p-1 shadow-md text-gray-500 hover:text-gray-900 dark:hover:text-white z-50 transition-transform"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-chevron-left w-4 h-4"
+            >
+              <path d="m15 18-6-6 6-6"></path>
+            </svg>
+          </button>
+        </aside>
+        <aside
+          class="fixed top-0 left-0 h-full w-72 bg-[#8B1A1A] dark:bg-[#2a0a0a] z-50 md:hidden flex flex-col transform transition-transform duration-300 ease-in-out shadow-2xl -translate-x-full"
+        >
+          <button
+            class="absolute top-4 right-4 p-1.5 text-white/60 hover:text-white rounded-lg hover:bg-white/10"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-x w-5 h-5"
+            >
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+          <div class="flex flex-col h-full overflow-hidden">
+            <div
+              class="h-16 flex items-center px-5 border-b border-[#a43030] dark:border-[#4a1515] flex-shrink-0 justify-between"
+            >
+              <div class="flex items-center">
+                <div
+                  class="w-8 h-8 rounded-lg bg-[#C8A882] flex items-center justify-center flex-shrink-0 mr-3"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-building2 lucide-building-2 w-4 h-4 text-[#8B1A1A]"
+                  >
+                    <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path>
+                    <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
+                    <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path>
+                    <path d="M10 6h4"></path>
+                    <path d="M10 10h4"></path>
+                    <path d="M10 14h4"></path>
+                    <path d="M10 18h4"></path>
+                  </svg>
+                </div>
+                <div class="min-w-0">
+                  <p
+                    class="text-white font-bold text-sm leading-tight tracking-wide truncate"
+                  >
+                    JP Mall
+                  </p>
+                  <p
+                    class="text-[#C8A882] text-[10px] font-bold uppercase tracking-widest opacity-90 truncate"
+                  >
+                    Operações
+                  </p>
+                </div>
+              </div>
+            </div>
+            <nav class="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
+              <p
+                class="px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-white/30"
+              >
+                Módulos de Gestão
+              </p>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-store w-4 h-4"
+                  >
+                    <path
+                      d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"
+                    ></path>
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                    <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path>
+                    <path d="M2 7h20"></path>
+                    <path
+                      d="M22 7v3a2 2 0 0 1-2 2a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"
+                    ></path></svg></span
+                ><span class="truncate">LOJISTAS</span>
+              </div>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-graduation-cap w-4 h-4"
+                  >
+                    <path
+                      d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"
+                    ></path>
+                    <path d="M22 10v6"></path>
+                    <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg></span
+                ><span class="truncate">TREINAMENTOS</span>
+              </div>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-shield-check w-4 h-4"
+                  >
+                    <path
+                      d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+                    ></path>
+                    <path d="m9 12 2 2 4-4"></path></svg></span
+                ><span class="truncate">SEGUROS</span>
+              </div>
+              <div class="space-y-1">
+                <button
+                  class="w-full group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 bg-white/10 text-white"
+                >
+                  <span
+                    class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 transition-colors mr-2.5 bg-[#D93030]"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-leafy-green w-4 h-4"
+                    >
+                      <path
+                        d="M2 22c1.25-1.5 2.13-3.3 2.13-5.32C4.13 12.38 7.31 8 11.5 8s7.37 4.38 7.37 8.68c0 2.02.88 3.82 2.13 5.32"
+                      ></path>
+                      <path d="M10 8c1.5-3 3.5-5 6-5s4.5 2 6 5"></path>
+                      <path
+                        d="M4 15c-1.5-2-2-4.5-2-7s2-5 5-5 5 2 5 5-2 5-8 7Z"
+                      ></path>
+                      <path
+                        d="M14 15c1.5-2 2-4.5 2-7s-2-5-5-5-5 2-5 5 2 5 8 7Z"
+                      ></path></svg></span
+                  ><span class="truncate">CONSERVAÇÃO &amp; RESÍDUOS</span
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-chevron-down ml-auto w-3.5 h-3.5 transition-transform duration-200 rotate-180"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+                <div class="ml-4 pl-4 border-l border-white/10 space-y-1 mt-1">
+                  <a
+                    aria-current="page"
+                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 bg-[#D93030]/20 text-white"
+                    href="dashboard.html"
+                    data-discover="true"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-layout-dashboard w-3.5 h-3.5 mr-2.5 text-[#D93030]"
+                    >
+                      <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+                      <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+                      <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+                      <rect
+                        width="7"
+                        height="5"
+                        x="3"
+                        y="16"
+                        rx="1"
+                      ></rect></svg
+                    ><span class="truncate">Dashboard</span
+                    ><span
+                      class="ml-auto w-1 h-1 rounded-full bg-[#D93030]"
+                    ></span></a
+                  ><a
+                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
+                    href="relatorio-seguranca-alimentar.html"
+                    data-discover="true"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-clipboard-check w-3.5 h-3.5 mr-2.5 text-white/40"
+                    >
+                      <rect
+                        width="8"
+                        height="4"
+                        x="8"
+                        y="2"
+                        rx="1"
+                        ry="1"
+                      ></rect>
+                      <path
+                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                      ></path>
+                      <path d="m9 14 2 2 4-4"></path></svg
+                    ><span class="truncate"
+                      >Relatório de Segurança Alimentar</span
+                    ></a
+                  ><a
+                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
+                    href="eco-flamboyant.html"
+                    data-discover="true"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-wrench w-3.5 h-3.5 mr-2.5 text-white/40"
+                    >
+                      <path
+                        d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
+                      ></path></svg
+                    ><span class="truncate">Eco Flamboyant</span></a
+                  ><a
+                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
+                    href="orientacao-educativa.html"
+                    data-discover="true"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-bell-ring w-3.5 h-3.5 mr-2.5 text-white/40"
+                    >
+                      <path d="M10.268 21a2 2 0 0 0 3.464 0"></path>
+                      <path d="M22 8c0-2.3-.8-4.3-2-6"></path>
+                      <path
+                        d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"
+                      ></path>
+                      <path d="M4 2C2.8 3.7 2 5.7 2 8"></path></svg
+                    ><span class="truncate">Orientação Educativa</span></a
+                  ><a
+                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
+                    href="relatorios.html"
+                    data-discover="true"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-chart-column w-3.5 h-3.5 mr-2.5 text-white/40"
+                    >
+                      <path d="M3 3v16a2 2 0 0 0 2 2h16"></path>
+                      <path d="M18 17V9"></path>
+                      <path d="M13 17V5"></path>
+                      <path d="M8 17v-3"></path></svg
+                    ><span class="truncate">Relatórios</span></a
+                  >
+                </div>
+              </div>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-circle-alert w-4 h-4"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" x2="12" y1="8" y2="12"></line>
+                    <line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span
+                ><span class="truncate">SINISTROS</span>
+              </div>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-megaphone w-4 h-4"
+                  >
+                    <path d="m3 11 18-5v12L3 14v-3z"></path>
+                    <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg></span
+                ><span class="truncate">MARKETING</span>
+              </div>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-dollar-sign w-4 h-4"
+                  >
+                    <line x1="12" x2="12" y1="2" y2="22"></line>
+                    <path
+                      d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                    ></path></svg></span
+                ><span class="truncate">COMERCIAL</span>
+              </div>
+              <div
+                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
+              >
+                <span
+                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-info w-4 h-4"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 16v-4"></path>
+                    <path d="M12 8h.01"></path></svg></span
+                ><span class="truncate">INSTITUCIONAL</span>
+              </div>
+            </nav>
+            <div
+              class="p-3 border-t border-[#a43030] dark:border-[#4a1515] space-y-1 flex-shrink-0"
+            >
+              <div
+                class="flex items-center px-3 py-2 rounded-lg bg-white/5 mb-2"
+              >
+                <div
+                  class="w-8 h-8 rounded-full bg-[#C8A882] text-[#8B1A1A] font-bold flex items-center justify-center text-xs flex-shrink-0"
+                >
+                  GR
+                </div>
+                <div class="ml-2.5 min-w-0">
+                  <p
+                    class="text-white text-xs font-medium leading-tight truncate"
+                  >
+                    Gerência de Relacionamento
+                  </p>
+                  <p class="text-white/50 text-[10px] truncate">
+                    JP Mall Operações
+                  </p>
+                </div>
+              </div>
+              <button
+                class="flex items-center w-full px-3 py-2.5 text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-log-out w-4 h-4 flex-shrink-0 mr-2.5"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" x2="9" y1="12" y2="12"></line></svg
+                >Sair
+              </button>
+            </div>
+          </div>
+        </aside>
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+          <header
+            class="h-16 bg-white dark:bg-[#252525] border-b border-gray-200 dark:border-gray-700/60 flex items-center justify-between px-4 md:px-6 z-[60] flex-shrink-0"
+          >
+            <div class="flex items-center gap-3">
+              <button
+                class="md:hidden p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-menu w-5 h-5"
+                >
+                  <line x1="4" x2="20" y1="12" y2="12"></line>
+                  <line x1="4" x2="20" y1="6" y2="6"></line>
+                  <line x1="4" x2="20" y1="18" y2="18"></line>
+                </svg>
+              </button>
+              <div class="hidden sm:flex items-center gap-1.5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-building2 lucide-building-2 w-4 h-4 text-[#8B1A1A] dark:text-[#D93030]"
+                >
+                  <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path>
+                  <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
+                  <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path>
+                  <path d="M10 6h4"></path>
+                  <path d="M10 10h4"></path>
+                  <path d="M10 14h4"></path>
+                  <path d="M10 18h4"></path></svg
+                ><span
+                  class="text-sm font-bold text-[#8B1A1A] dark:text-gray-200 tracking-tight"
+                  >JP Mall</span
+                >
+              </div>
+            </div>
+            <div class="flex-1 max-w-lg mx-auto px-4 hidden md:block">
+              <div class="relative group cursor-pointer">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-search w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 group-hover:text-[#8B1A1A] dark:group-hover:text-[#D93030] transition-colors"
+                >
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.3-4.3"></path>
+                </svg>
+                <div
+                  class="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 rounded-xl transition-all group-hover:border-[#8B1A1A]/30 dark:group-hover:border-[#D93030]/30 group-hover:bg-white dark:group-hover:bg-[#2a2a2a] flex items-center justify-between"
+                >
+                  <span>Consultar lojista (LUC ou nome)...</span>
+                  <div class="flex items-center gap-1 opacity-40">
+                    <span
+                      class="text-[9px] font-bold border border-gray-300 dark:border-gray-600 rounded px-1 py-0.5"
+                      >ALT</span
+                    ><span
+                      class="text-[9px] font-bold border border-gray-300 dark:border-gray-600 rounded px-1 py-0.5"
+                      >S</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="relative">
+                <button
+                  class="relative p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700/60 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-bell w-5 h-5"
+                  >
+                    <path d="M10.268 21a2 2 0 0 0 3.464 0"></path>
+                    <path
+                      d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"
+                    ></path></svg
+                  ><span
+                    class="absolute top-2.5 right-2.5 w-2 h-2 bg-[#D93030] rounded-full ring-2 ring-white dark:ring-[#252525]"
+                  ></span>
+                </button>
+              </div>
+              <div
+                class="hidden sm:flex items-center border-l border-gray-200 dark:border-gray-700 pl-3 ml-1"
+              >
+                <button
+                  class="flex items-center gap-2.5 py-1.5 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/60 transition-colors min-h-[44px]"
+                >
+                  <div
+                    class="w-8 h-8 rounded-full bg-[#C8A882] dark:bg-[#a08560] text-[#8B1A1A] dark:text-white font-bold flex items-center justify-center text-xs"
+                  >
+                    GR
+                  </div>
+                  <div class="text-left hidden lg:block">
+                    <p
+                      class="text-xs font-medium text-gray-900 dark:text-gray-100 leading-tight"
+                    >
+                      Ger. de Relacionamento
+                    </p>
+                    <p class="text-[10px] text-gray-500 dark:text-gray-400">
+                      JP Mall Operações
+                    </p>
+                  </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-chevron-down w-3.5 h-3.5 text-gray-400 hidden lg:block"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+              </div>
+              <button
+                class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+                title="Ativar tema escuro"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-moon w-5 h-5 transition-transform duration-200 rotate-0 hover:-rotate-12"
+                >
+                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                </svg>
+              </button>
+            </div>
+          </header>
+          <main class="flex-1 overflow-y-auto">
+            <div class="max-w-7xl mx-auto p-6">
+              <div class="space-y-6">
+                <div
+                  class="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                >
+                  <div>
+                    <h1
+                      class="text-2xl font-bold text-[#1F2937] dark:text-gray-100"
+                    >
+                      Visão Geral de Conservação
+                    </h1>
+                    <p class="text-[#4B5563] dark:text-gray-400 mt-1 text-sm">
+                      Monitoramento em tempo real · Atualizado em 08 de maio de
+                      2026 às 21:56
+                    </p>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button
+                      class="min-h-[44px] flex items-center gap-2 px-3 py-2 text-sm font-medium text-[#4B5563] dark:text-gray-400 bg-white dark:bg-[#252525] border border-[#E5E7EB] dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-[#2a2a2a] transition-colors"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-refresh-ccw w-4 h-4"
+                      >
+                        <path
+                          d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+                        ></path>
+                        <path d="M3 3v5h5"></path>
+                        <path
+                          d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"
+                        ></path>
+                        <path d="M16 16h5v5"></path></svg
+                      ><span class="hidden sm:inline">Atualizar</span></button
+                    ><button
+                      class="min-h-[44px] flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#8B1A1A] dark:bg-[#D93030] hover:bg-[#a43030] dark:hover:bg-[#b52020] rounded-lg transition-colors shadow-sm"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-clipboard-check w-4 h-4"
+                      >
+                        <rect
+                          width="8"
+                          height="4"
+                          x="8"
+                          y="2"
+                          rx="1"
+                          ry="1"
+                        ></rect>
+                        <path
+                          d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                        ></path>
+                        <path d="m9 14 2 2 4-4"></path></svg
+                      ><span>Nova Vistoria</span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+                >
+                  <div
+                    class="bg-white dark:bg-[#252525] rounded-lg border border-[#E5E7EB] dark:border-gray-700/60 p-5 shadow-sm relative overflow-hidden group cursor-help"
+                    title="Nota baseada na média de conformidade das últimas vistorias e agilidade na resolução de pendências"
+                  >
+                    <div class="flex items-start justify-between mb-4">
+                      <div
+                        class="w-11 h-11 rounded-lg bg-red-50 dark:bg-opacity-10 flex items-center justify-center"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-trending-down w-5 h-5 text-red-600"
+                        >
+                          <polyline
+                            points="22 17 13.5 8.5 8.5 13.5 2 7"
+                          ></polyline>
+                          <polyline points="16 17 22 17 22 11"></polyline>
+                        </svg>
+                      </div>
+                      <div class="text-right">
+                        <span
+                          class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-700"
+                          >-1.5</span
+                        >
+                        <p
+                          class="text-[9px] text-gray-400 mt-1 uppercase font-black"
+                        >
+                          vs mês ant.
+                        </p>
+                      </div>
+                    </div>
+                    <p
+                      class="text-sm font-medium text-[#4B5563] dark:text-gray-400"
+                    >
+                      Índice de Conservação
+                    </p>
+                    <div class="flex items-baseline gap-2">
+                      <p class="text-3xl font-black text-red-600 mt-1">2.8</p>
+                      <span class="text-xs text-gray-400 font-normal">/10</span>
+                    </div>
+                    <p
+                      class="text-xs text-gray-500 mt-2 flex items-center gap-1"
+                    >
+                      Status:
+                      <span class="font-bold text-red-600">Crítico</span>
+                    </p>
+                  </div>
+                  <div
+                    class="bg-white dark:bg-[#252525] rounded-lg border p-5 hover:shadow-md transition-all cursor-pointer group border-[#E5E7EB] dark:border-gray-700/60"
+                    title="Clique para filtrar apenas vistorias pendentes na tabela abaixo"
+                  >
+                    <div class="flex items-start justify-between mb-4">
+                      <div
+                        class="w-11 h-11 rounded-lg bg-gray-100 dark:bg-gray-700/60 flex items-center justify-center group-hover:bg-[#8B1A1A]/10 transition-colors"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-calendar-clock w-5 h-5 text-[#4B5563] dark:text-gray-400 group-hover:text-[#8B1A1A]"
+                        >
+                          <path
+                            d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"
+                          ></path>
+                          <path d="M16 2v4"></path>
+                          <path d="M8 2v4"></path>
+                          <path d="M3 10h5"></path>
+                          <path d="M17.5 17.5 16 16.3V14"></path>
+                          <circle cx="16" cy="16" r="6"></circle>
+                        </svg>
+                      </div>
+                      <span
+                        class="inline-flex items-center gap-1 text-xs font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full"
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-trending-down w-3 h-3"
+                        >
+                          <polyline
+                            points="22 17 13.5 8.5 8.5 13.5 2 7"
+                          ></polyline>
+                          <polyline points="16 17 22 17 22 11"></polyline></svg
+                        >−8%</span
+                      >
+                    </div>
+                    <p
+                      class="text-sm font-medium text-[#4B5563] dark:text-gray-400"
+                    >
+                      Vistorias Pendentes
+                    </p>
+                    <div class="flex items-baseline gap-2">
+                      <p
+                        class="text-3xl font-bold text-[#1F2937] dark:text-gray-100 mt-1"
+                      >
+                        3
+                      </p>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-arrow-up-right w-4 h-4 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <path d="M7 7h10v10"></path>
+                        <path d="M7 17 17 7"></path>
+                      </svg>
+                    </div>
+                    <p class="text-xs text-[#4B5563] dark:text-gray-500 mt-2">
+                      Agendadas para os próximos 7 dias
+                    </p>
+                  </div>
+                  <button
+                    class="bg-white dark:bg-[#252525] rounded-lg border p-5 hover:shadow-md transition-all cursor-pointer group text-left w-full border-[#E5E7EB] dark:border-gray-700/60"
+                    title="Clique para filtrar as irregularidades críticas"
+                  >
+                    <div class="flex items-start justify-between mb-4">
+                      <div
+                        class="w-11 h-11 rounded-lg bg-red-50 dark:bg-red-900/20 flex items-center justify-center group-hover:bg-[#D93030]/10 transition-colors"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-triangle-alert w-5 h-5 text-[#D93030] dark:text-red-400 group-hover:text-[#D93030]"
+                        >
+                          <path
+                            d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
+                          ></path>
+                          <path d="M12 9v4"></path>
+                          <path d="M12 17h.01"></path>
+                        </svg>
+                      </div>
+                      <span
+                        class="inline-flex items-center gap-1 text-xs font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded-full"
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-trending-up w-3 h-3"
+                        >
+                          <polyline
+                            points="22 7 13.5 15.5 8.5 10.5 2 17"
+                          ></polyline>
+                          <polyline points="16 7 22 7 22 13"></polyline></svg
+                        >+3</span
+                      >
+                    </div>
+                    <p
+                      class="text-sm font-medium text-[#4B5563] dark:text-gray-400"
+                    >
+                      Não Conformidades Críticas
+                    </p>
+                    <div class="flex items-baseline gap-2">
+                      <p
+                        class="text-3xl font-bold text-[#D93030] dark:text-red-400 mt-1"
+                      >
+                        2
+                      </p>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-arrow-up-right w-4 h-4 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <path d="M7 7h10v10"></path>
+                        <path d="M7 17 17 7"></path>
+                      </svg>
+                    </div>
+                    <p
+                      class="text-xs text-[#D93030]/70 dark:text-red-400/70 mt-2"
+                    >
+                      Requerem ação imediata
+                    </p>
+                  </button>
+                  <div
+                    class="bg-white dark:bg-[#252525] rounded-lg border border-[#E5E7EB] dark:border-gray-700/60 p-5 relative group"
+                  >
+                    <div class="flex items-start justify-between mb-4">
+                      <div
+                        class="w-11 h-11 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-calendar w-5 h-5 text-[#3B82F6] dark:text-blue-400"
+                        >
+                          <path d="M8 2v4"></path>
+                          <path d="M16 2v4"></path>
+                          <rect
+                            width="18"
+                            height="18"
+                            x="3"
+                            y="4"
+                            rx="2"
+                          ></rect>
+                          <path d="M3 10h18"></path>
+                        </svg>
+                      </div>
+                      <span
+                        class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest"
+                        >Agenda</span
+                      >
+                    </div>
+                    <p
+                      class="text-sm font-medium text-[#4B5563] dark:text-gray-400"
+                    >
+                      Tarefas para Hoje
+                    </p>
+                    <p
+                      class="text-3xl font-bold text-[#3B82F6] dark:text-blue-400 mt-1"
+                    >
+                      0
+                    </p>
+                    <p class="text-xs text-[#4B5563] dark:text-gray-500 mt-2">
+                      Manutenções programadas
+                    </p>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                  <div class="lg:col-span-4 h-full">
+                    <div
+                      class="bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-700/60 p-4 shadow-sm"
+                    >
+                      <div class="flex items-center justify-between mb-4">
+                        <h3
+                          class="text-sm font-bold text-gray-900 dark:text-gray-100 capitalize"
+                        >
+                          maio de 2026
+                        </h3>
+                        <div class="flex gap-1">
+                          <button
+                            class="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              class="lucide lucide-chevron-left w-4 h-4"
+                            >
+                              <path d="m15 18-6-6 6-6"></path>
+                            </svg></button
+                          ><button
+                            class="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              class="lucide lucide-chevron-right w-4 h-4"
+                            >
+                              <path d="m9 18 6-6-6-6"></path>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-7 gap-1 text-center mb-2">
+                        <span class="text-[10px] font-bold text-gray-400"
+                          >D</span
+                        ><span class="text-[10px] font-bold text-gray-400"
+                          >S</span
+                        ><span class="text-[10px] font-bold text-gray-400"
+                          >T</span
+                        ><span class="text-[10px] font-bold text-gray-400"
+                          >Q</span
+                        ><span class="text-[10px] font-bold text-gray-400"
+                          >Q</span
+                        ><span class="text-[10px] font-bold text-gray-400"
+                          >S</span
+                        ><span class="text-[10px] font-bold text-gray-400"
+                          >S</span
+                        >
+                      </div>
+                      <div class="grid grid-cols-7 gap-1">
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <div class="w-8 h-8"></div>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <div class="w-8 h-8"></div>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <div class="w-8 h-8"></div>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <div class="w-8 h-8"></div>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <div class="w-8 h-8"></div>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            1
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            2
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            3
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            4
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            5<span
+                              class="absolute bottom-1 w-1 h-1 rounded-full bg-[#D93030]"
+                            ></span>
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            6
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            7
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center bg-[#D93030] text-white shadow-md shadow-red-900/20"
+                          >
+                            8
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            9
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            10
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            11
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            12
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            13
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            14
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            15
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            16
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            17
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            18
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            19
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            20
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            21
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            22
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            23
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            24
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            25
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            26
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            27
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            28
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            29
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            30
+                          </button>
+                        </div>
+                        <div
+                          class="aspect-square flex items-center justify-center relative"
+                        >
+                          <button
+                            class="w-8 h-8 rounded-lg text-xs font-medium transition-all relative flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                          >
+                            31
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="lg:col-span-8 bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-700/60 p-5 shadow-sm min-h-[300px] flex flex-col"
+                  >
+                    <div class="flex items-center justify-between mb-4">
+                      <div class="flex items-center gap-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-clock w-4 h-4 text-[#D93030]"
+                        >
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <h2
+                          class="text-sm font-bold text-gray-900 dark:text-gray-100"
+                        >
+                          Agenda do Dia: 08/05
+                        </h2>
+                      </div>
+                      <span
+                        class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"
+                        >0 Tarefa(s)</span
+                      >
+                    </div>
+                    <div
+                      class="flex-1 space-y-3 overflow-y-auto max-h-[280px] pr-2 custom-scrollbar"
+                    >
+                      <div
+                        class="h-full flex flex-col items-center justify-center text-center py-10 opacity-40"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-calendar w-10 h-10 mb-2"
+                        >
+                          <path d="M8 2v4"></path>
+                          <path d="M16 2v4"></path>
+                          <rect
+                            width="18"
+                            height="18"
+                            x="3"
+                            y="4"
+                            rx="2"
+                          ></rect>
+                          <path d="M3 10h18"></path>
+                        </svg>
+                        <p class="text-sm">Nenhuma tarefa para esta data.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                  <div
+                    class="lg:col-span-2 bg-white dark:bg-[#252525] rounded-lg border border-[#E5E7EB] dark:border-gray-700/60 p-5"
+                  >
+                    <div class="flex items-center justify-between mb-5">
+                      <div>
+                        <h2
+                          class="text-sm font-semibold text-[#1F2937] dark:text-gray-100"
+                        >
+                          Tendência de Ocorrências
+                        </h2>
+                        <p
+                          class="text-xs text-[#4B5563] dark:text-gray-400 mt-0.5"
+                        >
+                          Últimos 6 meses
+                        </p>
+                      </div>
+                      <button
+                        class="text-xs text-[#8B1A1A] dark:text-[#D93030] font-medium flex items-center gap-1 hover:opacity-80 transition-opacity min-h-[44px] px-2"
+                      >
+                        Ver relatório<svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-arrow-up-right w-3.5 h-3.5"
+                        >
+                          <path d="M7 7h10v10"></path>
+                          <path d="M7 17 17 7"></path>
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="h-52">
+                      <div
+                        class="recharts-responsive-container"
+                        style="width: 100%; height: 100%; min-width: 0px"
+                      >
+                        <div
+                          class="recharts-wrapper"
+                          style="
+                            position: relative;
+                            cursor: default;
+                            width: 100%;
+                            height: 100%;
+                            max-height: 208px;
+                            max-width: 602px;
+                          "
+                        >
+                          <svg
+                            class="recharts-surface"
+                            width="602"
+                            height="208"
+                            viewBox="0 0 602 208"
+                            style="width: 100%; height: 100%"
+                          >
+                            <title></title>
+                            <desc></desc>
+                            <defs>
+                              <clipPath id="recharts1-clip">
+                                <rect
+                                  x="36"
+                                  y="4"
+                                  height="174"
+                                  width="562"
+                                ></rect>
+                              </clipPath>
+                            </defs>
+                            <defs>
+                              <linearGradient
+                                id="gradInsp"
+                                x1="0"
+                                y1="0"
+                                x2="0"
+                                y2="1"
+                              >
+                                <stop
+                                  offset="5%"
+                                  stop-color="#C8A882"
+                                  stop-opacity="0.3"
+                                ></stop>
+                                <stop
+                                  offset="95%"
+                                  stop-color="#C8A882"
+                                  stop-opacity="0"
+                                ></stop>
+                              </linearGradient>
+                              <linearGradient
+                                id="gradNC"
+                                x1="0"
+                                y1="0"
+                                x2="0"
+                                y2="1"
+                              >
+                                <stop
+                                  offset="5%"
+                                  stop-color="#D93030"
+                                  stop-opacity="0.25"
+                                ></stop>
+                                <stop
+                                  offset="95%"
+                                  stop-color="#D93030"
+                                  stop-opacity="0"
+                                ></stop>
+                              </linearGradient>
+                              <linearGradient
+                                id="gradMan"
+                                x1="0"
+                                y1="0"
+                                x2="0"
+                                y2="1"
+                              >
+                                <stop
+                                  offset="5%"
+                                  stop-color="#3B82F6"
+                                  stop-opacity="0.25"
+                                ></stop>
+                                <stop
+                                  offset="95%"
+                                  stop-color="#3B82F6"
+                                  stop-opacity="0"
+                                ></stop>
+                              </linearGradient>
+                            </defs>
+                            <g class="recharts-cartesian-grid">
+                              <g class="recharts-cartesian-grid-horizontal">
+                                <line
+                                  stroke-dasharray="3 3"
+                                  stroke="#f0f0f0"
+                                  class="dark:stroke-gray-700/50"
+                                  fill="none"
+                                  x="36"
+                                  y="4"
+                                  width="562"
+                                  height="174"
+                                  x1="36"
+                                  y1="178"
+                                  x2="598"
+                                  y2="178"
+                                ></line>
+                                <line
+                                  stroke-dasharray="3 3"
+                                  stroke="#f0f0f0"
+                                  class="dark:stroke-gray-700/50"
+                                  fill="none"
+                                  x="36"
+                                  y="4"
+                                  width="562"
+                                  height="174"
+                                  x1="36"
+                                  y1="134.5"
+                                  x2="598"
+                                  y2="134.5"
+                                ></line>
+                                <line
+                                  stroke-dasharray="3 3"
+                                  stroke="#f0f0f0"
+                                  class="dark:stroke-gray-700/50"
+                                  fill="none"
+                                  x="36"
+                                  y="4"
+                                  width="562"
+                                  height="174"
+                                  x1="36"
+                                  y1="91"
+                                  x2="598"
+                                  y2="91"
+                                ></line>
+                                <line
+                                  stroke-dasharray="3 3"
+                                  stroke="#f0f0f0"
+                                  class="dark:stroke-gray-700/50"
+                                  fill="none"
+                                  x="36"
+                                  y="4"
+                                  width="562"
+                                  height="174"
+                                  x1="36"
+                                  y1="47.5"
+                                  x2="598"
+                                  y2="47.5"
+                                ></line>
+                                <line
+                                  stroke-dasharray="3 3"
+                                  stroke="#f0f0f0"
+                                  class="dark:stroke-gray-700/50"
+                                  fill="none"
+                                  x="36"
+                                  y="4"
+                                  width="562"
+                                  height="174"
+                                  x1="36"
+                                  y1="4"
+                                  x2="598"
+                                  y2="4"
+                                ></line>
+                              </g>
+                            </g>
+                            <g
+                              class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
+                            >
+                              <g class="recharts-cartesian-axis-ticks">
+                                <g
+                                  class="recharts-layer recharts-cartesian-axis-tick"
+                                >
+                                  <text
+                                    orientation="bottom"
+                                    width="562"
+                                    height="30"
+                                    stroke="none"
+                                    font-size="11"
+                                    x="36"
+                                    y="194"
+                                    class="recharts-text recharts-cartesian-axis-tick-value"
+                                    text-anchor="middle"
+                                    fill="#6b7280"
+                                  >
+                                    <tspan x="36" dy="0.71em">Nov</tspan>
+                                  </text>
+                                </g>
+                                <g
+                                  class="recharts-layer recharts-cartesian-axis-tick"
+                                >
+                                  <text
+                                    orientation="bottom"
+                                    width="562"
+                                    height="30"
+                                    stroke="none"
+                                    font-size="11"
+                                    x="148.4"
+                                    y="194"
+                                    class="recharts-text recharts-cartesian-axis-tick-value"
+                                    text-anchor="middle"
+                                    fill="#6b7280"
+                                  >
+                                    <tspan x="148.4" dy="0.71em">Dez</tspan>
+                                  </text>
+                                </g>
+                                <g
+                                  class="recharts-layer recharts-cartesian-axis-tick"
+                                >
+                                  <text
+                                    orientation="bottom"
+                                    width="562"
+                                    height="30"
+                                    stroke="none"
+                                    font-size="11"
+                                    x="260.8"
+                                    y="194"
+                                    class="recharts-text recharts-cartesian-axis-tick-value"
+                                    text-anchor="middle"
+                                    fill="#6b7280"
+                                  >
+                                    <tspan x="260.8" dy="0.71em">Jan</tspan>
+                                  </text>
+                                </g>
+                                <g
+                                  class="recharts-layer recharts-cartesian-axis-tick"
+                                >
+                                  <text
+                                    orientation="bottom"
+                                    width="562"
+                                    height="30"
+                                    stroke="none"
+                                    font-size="11"
+                                    x="373.20000000000005"
+                                    y="194"
+                                    class="recharts-text recharts-cartesian-axis-tick-value"
+                                    text-anchor="middle"
+                                    fill="#6b7280"
+                                  >
+                                    <tspan x="373.20000000000005" dy="0.71em">
+                                      Fev
+                                    </tspan>
+                                  </text>
+                                </g>
+                                <g
+                                  class="recharts-layer recharts-cartesian-axis-tick"
+                                >
+                                  <text
+                                    orientation="bottom"
+                                    width="562"
+                                    height="30"
+                                    stroke="none"
+                                    font-size="11"
+                                    x="485.6"
+                                    y="194"
+                                    class="recharts-text recharts-cartesian-axis-tick-value"
+                                    text-anchor="middle"
+                                    fill="#6b7280"
+                                  >
+                                    <tspan x="485.6" dy="0.71em">Mar</tspan>
+                                  </text>
+                                </g>
+                                <g
+                                  class="recharts-layer recharts-cartesian-axis-tick"
+                                >
+                                  <text
+                                    orientation="bottom"
+                                    width="562"
+                                    height="30"
+                                    stroke="none"
+                                    font-size="11"
+                                    x="592.765625"
+                                    y="194"
+                                    class="recharts-text recharts-cartesian-axis-tick-value"
+                                    text-anchor="middle"
+                                    fill="#6b7280"
+                                  >
+                                    <tspan x="592.765625" dy="0.71em">
+                                      Abr
+                                    </tspan>
+                                  </text>
+                                </g>
+                              </g>
+                            </g>
+                            <g
+                              class="recharts-layer recharts-cartesian-axis recharts-yAxis yAxis"
+                            >
+                              <g class="recharts-cartesian-axis-ticks">
+                                <g
+                                  class="recharts-layer recharts-cartesian-axis-tick"
+                                >
+                                  <text
+                                    orientation="left"
+                                    width="60"
+                                    height="174"
+                                    stroke="none"
+                                    font-size="11"
+                                    x="28"
+                                    y="178"
+                                    class="recharts-text recharts-cartesian-axis-tick-value"
+                                    text-anchor="end"
+                                    fill="#6b7280"
+                                  >
+                                    <tspan x="28" dy="0.355em">0</tspan>
+                                  </text>
+                                </g>
+                                <g
+                                  class="recharts-layer recharts-cartesian-axis-tick"
+                                >
+                                  <text
+                                    orientation="left"
+                                    width="60"
+                                    height="174"
+                                    stroke="none"
+                                    font-size="11"
+                                    x="28"
+                                    y="134.5"
+                                    class="recharts-text recharts-cartesian-axis-tick-value"
+                                    text-anchor="end"
+                                    fill="#6b7280"
+                                  >
+                                    <tspan x="28" dy="0.355em">15</tspan>
+                                  </text>
+                                </g>
+                                <g
+                                  class="recharts-layer recharts-cartesian-axis-tick"
+                                >
+                                  <text
+                                    orientation="left"
+                                    width="60"
+                                    height="174"
+                                    stroke="none"
+                                    font-size="11"
+                                    x="28"
+                                    y="91"
+                                    class="recharts-text recharts-cartesian-axis-tick-value"
+                                    text-anchor="end"
+                                    fill="#6b7280"
+                                  >
+                                    <tspan x="28" dy="0.355em">30</tspan>
+                                  </text>
+                                </g>
+                                <g
+                                  class="recharts-layer recharts-cartesian-axis-tick"
+                                >
+                                  <text
+                                    orientation="left"
+                                    width="60"
+                                    height="174"
+                                    stroke="none"
+                                    font-size="11"
+                                    x="28"
+                                    y="47.5"
+                                    class="recharts-text recharts-cartesian-axis-tick-value"
+                                    text-anchor="end"
+                                    fill="#6b7280"
+                                  >
+                                    <tspan x="28" dy="0.355em">45</tspan>
+                                  </text>
+                                </g>
+                                <g
+                                  class="recharts-layer recharts-cartesian-axis-tick"
+                                >
+                                  <text
+                                    orientation="left"
+                                    width="60"
+                                    height="174"
+                                    stroke="none"
+                                    font-size="11"
+                                    x="28"
+                                    y="8.25"
+                                    class="recharts-text recharts-cartesian-axis-tick-value"
+                                    text-anchor="end"
+                                    fill="#6b7280"
+                                  >
+                                    <tspan x="28" dy="0.355em">60</tspan>
+                                  </text>
+                                </g>
+                              </g>
+                            </g>
+                            <g class="recharts-layer recharts-area">
+                              <g class="recharts-layer">
+                                <defs>
+                                  <clipPath
+                                    id="animationClipPath-recharts-area-5"
+                                  >
+                                    <rect
+                                      x="36"
+                                      y="0"
+                                      width="553.9677071278475"
+                                      height="180"
+                                    ></rect>
+                                  </clipPath>
+                                </defs>
+                                <g
+                                  class="recharts-layer"
+                                  clip-path="url(#animationClipPath-recharts-area-5)"
+                                >
+                                  <g class="recharts-layer">
+                                    <path
+                                      name="Inspeções"
+                                      stroke-width="2"
+                                      fill="url(#gradInsp)"
+                                      fill-opacity="0.6"
+                                      width="562"
+                                      height="174"
+                                      stroke="none"
+                                      class="recharts-curve recharts-area-area"
+                                      d="M36,96.8C73.467,89.55,110.933,82.3,148.4,82.3C185.867,82.3,223.333,93.9,260.8,93.9C298.267,93.9,335.733,62,373.2,62C410.667,62,448.133,73.6,485.6,73.6C523.067,73.6,560.533,62,598,50.4L598,178C560.533,178,523.067,178,485.6,178C448.133,178,410.667,178,373.2,178C335.733,178,298.267,178,260.8,178C223.333,178,185.867,178,148.4,178C110.933,178,73.467,178,36,178Z"
+                                    ></path>
+                                    <path
+                                      name="Inspeções"
+                                      stroke="#C8A882"
+                                      stroke-width="2"
+                                      fill="none"
+                                      fill-opacity="0.6"
+                                      width="562"
+                                      height="174"
+                                      class="recharts-curve recharts-area-curve"
+                                      d="M36,96.8C73.467,89.55,110.933,82.3,148.4,82.3C185.867,82.3,223.333,93.9,260.8,93.9C298.267,93.9,335.733,62,373.2,62C410.667,62,448.133,73.6,485.6,73.6C523.067,73.6,560.533,62,598,50.4"
+                                    ></path>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                            <g class="recharts-layer recharts-area">
+                              <g class="recharts-layer">
+                                <defs>
+                                  <clipPath
+                                    id="animationClipPath-recharts-area-6"
+                                  >
+                                    <rect
+                                      x="36"
+                                      y="0"
+                                      width="553.9677071278475"
+                                      height="180"
+                                    ></rect>
+                                  </clipPath>
+                                </defs>
+                                <g
+                                  class="recharts-layer"
+                                  clip-path="url(#animationClipPath-recharts-area-6)"
+                                >
+                                  <g class="recharts-layer">
+                                    <path
+                                      name="Não Conformidades"
+                                      stroke-width="2"
+                                      fill="url(#gradNC)"
+                                      fill-opacity="0.6"
+                                      width="562"
+                                      height="174"
+                                      stroke="none"
+                                      class="recharts-curve recharts-area-area"
+                                      d="M36,143.2C73.467,138.85,110.933,134.5,148.4,134.5C185.867,134.5,223.333,151.9,260.8,151.9C298.267,151.9,335.733,137.4,373.2,137.4C410.667,137.4,448.133,142.717,485.6,146.1C523.067,149.483,560.533,153.592,598,157.7L598,178C560.533,178,523.067,178,485.6,178C448.133,178,410.667,178,373.2,178C335.733,178,298.267,178,260.8,178C223.333,178,185.867,178,148.4,178C110.933,178,73.467,178,36,178Z"
+                                    ></path>
+                                    <path
+                                      name="Não Conformidades"
+                                      stroke="#D93030"
+                                      stroke-width="2"
+                                      fill="none"
+                                      fill-opacity="0.6"
+                                      width="562"
+                                      height="174"
+                                      class="recharts-curve recharts-area-curve"
+                                      d="M36,143.2C73.467,138.85,110.933,134.5,148.4,134.5C185.867,134.5,223.333,151.9,260.8,151.9C298.267,151.9,335.733,137.4,373.2,137.4C410.667,137.4,448.133,142.717,485.6,146.1C523.067,149.483,560.533,153.592,598,157.7"
+                                    ></path>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                            <g class="recharts-layer recharts-area">
+                              <g class="recharts-layer">
+                                <defs>
+                                  <clipPath
+                                    id="animationClipPath-recharts-area-7"
+                                  >
+                                    <rect
+                                      x="36"
+                                      y="0"
+                                      width="553.9677071278475"
+                                      height="180"
+                                    ></rect>
+                                  </clipPath>
+                                </defs>
+                                <g
+                                  class="recharts-layer"
+                                  clip-path="url(#animationClipPath-recharts-area-7)"
+                                >
+                                  <g class="recharts-layer">
+                                    <path
+                                      name="Manutenções"
+                                      stroke-width="2"
+                                      fill="url(#gradMan)"
+                                      fill-opacity="0.6"
+                                      width="562"
+                                      height="174"
+                                      stroke="none"
+                                      class="recharts-curve recharts-area-area"
+                                      d="M36,122.9C73.467,118.55,110.933,114.2,148.4,114.2C185.867,114.2,223.333,125.8,260.8,125.8C298.267,125.8,335.733,99.7,373.2,99.7C410.667,99.7,448.133,106.467,485.6,108.4C523.067,110.333,560.533,110.817,598,111.3L598,178C560.533,178,523.067,178,485.6,178C448.133,178,410.667,178,373.2,178C335.733,178,298.267,178,260.8,178C223.333,178,185.867,178,148.4,178C110.933,178,73.467,178,36,178Z"
+                                    ></path>
+                                    <path
+                                      name="Manutenções"
+                                      stroke="#3B82F6"
+                                      stroke-width="2"
+                                      fill="none"
+                                      fill-opacity="0.6"
+                                      width="562"
+                                      height="174"
+                                      class="recharts-curve recharts-area-curve"
+                                      d="M36,122.9C73.467,118.55,110.933,114.2,148.4,114.2C185.867,114.2,223.333,125.8,260.8,125.8C298.267,125.8,335.733,99.7,373.2,99.7C410.667,99.7,448.133,106.467,485.6,108.4C523.067,110.333,560.533,110.817,598,111.3"
+                                    ></path>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                          </svg>
+                          <div
+                            tabindex="-1"
+                            class="recharts-tooltip-wrapper"
+                            style="
+                              visibility: hidden;
+                              pointer-events: none;
+                              position: absolute;
+                              top: 0px;
+                              left: 0px;
+                            "
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-5 mt-3 pl-1">
+                      <div class="flex items-center gap-1.5">
+                        <span
+                          class="w-2.5 h-2.5 rounded-full"
+                          style="background: rgb(200, 168, 130)"
+                        ></span
+                        ><span class="text-xs text-[#4B5563] dark:text-gray-400"
+                          >Inspeções</span
+                        >
+                      </div>
+                      <div class="flex items-center gap-1.5">
+                        <span
+                          class="w-2.5 h-2.5 rounded-full"
+                          style="background: rgb(217, 48, 48)"
+                        ></span
+                        ><span class="text-xs text-[#4B5563] dark:text-gray-400"
+                          >Não Conformidades</span
+                        >
+                      </div>
+                      <div class="flex items-center gap-1.5">
+                        <span
+                          class="w-2.5 h-2.5 rounded-full"
+                          style="background: rgb(59, 130, 246)"
+                        ></span
+                        ><span class="text-xs text-[#4B5563] dark:text-gray-400"
+                          >Manutenções</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white dark:bg-[#252525] rounded-lg border border-[#E5E7EB] dark:border-gray-700/60 overflow-hidden"
+                >
+                  <div
+                    class="px-5 py-4 border-b border-[#E5E7EB] dark:border-gray-700/60 flex flex-row items-center justify-between gap-4 bg-white dark:bg-[#252525]"
+                  >
+                    <div class="shrink-0">
+                      <h2
+                        class="text-sm font-semibold text-[#1F2937] dark:text-gray-100"
+                      >
+                        Vistorias Recentes
+                      </h2>
+                      <p
+                        class="text-[10px] text-[#4B5563] dark:text-gray-400 uppercase font-bold"
+                      >
+                        5 de 5 registros
+                      </p>
+                    </div>
+                    <div
+                      class="flex flex-row items-center gap-4 w-full sm:w-auto"
+                    >
+                      <div class="relative flex-grow group sm:min-w-[280px]">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-search w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
+                        >
+                          <circle cx="11" cy="11" r="8"></circle>
+                          <path d="m21 21-4.3-4.3"></path></svg
+                        ><input
+                          type="text"
+                          placeholder="Filtrar nesta tabela..."
+                          class="w-full pl-10 pr-4 py-2 text-sm bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8B1A1A] transition-all"
+                          value=""
+                        />
+                      </div>
+                      <select
+                        class="h-[38px] bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 text-sm text-gray-700 dark:text-gray-300 rounded-lg px-3 focus:outline-none focus:ring-2 focus:ring-[#8B1A1A] transition-all cursor-pointer font-medium"
+                      >
+                        <option value="Todos">Todos os Status</option>
+                        <option value="Pendentes">Pendentes</option>
+                        <option value="Resolvidos">Resolvidos</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                      <thead>
+                        <tr class="bg-gray-50 dark:bg-[#1e1e1e]">
+                          <th
+                            class="px-5 py-3 text-left text-xs font-semibold text-[#4B5563] dark:text-gray-400 uppercase tracking-wider"
+                          >
+                            Loja / Local
+                          </th>
+                          <th
+                            class="px-5 py-3 text-left text-xs font-semibold text-[#4B5563] dark:text-gray-400 uppercase tracking-wider"
+                          >
+                            Risco
+                          </th>
+                          <th
+                            class="px-5 py-3 text-left text-xs font-semibold text-[#4B5563] dark:text-gray-400 uppercase tracking-wider"
+                          >
+                            Prazo
+                          </th>
+                          <th
+                            class="px-5 py-3 text-left text-xs font-semibold text-[#4B5563] dark:text-gray-400 uppercase tracking-wider"
+                          >
+                            Status
+                          </th>
+                          <th
+                            class="px-5 py-3 text-left text-xs font-semibold text-[#4B5563] dark:text-gray-400 uppercase tracking-wider hidden md:table-cell"
+                          >
+                            Responsável
+                          </th>
+                          <th class="relative px-5 py-3">
+                            <span class="sr-only">Ações</span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        class="divide-y divide-[#E5E7EB] dark:divide-gray-700/50"
+                      >
+                        <tr
+                          class="transition-colors cursor-pointer group bg-white dark:bg-[#252525] hover:bg-[#F7F4EF] dark:hover:bg-[#2a2020]"
+                        >
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <div class="flex flex-col">
+                              <span
+                                class="text-sm font-medium text-[#1F2937] dark:text-gray-100"
+                                >LUC 3001 - Louis Vuitton</span
+                              ><span
+                                class="text-xs text-[#4B5563] dark:text-gray-500 mt-0.5"
+                                >ID: #INS-0091 · Elétrica</span
+                              >
+                            </div>
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <span
+                              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 dark:bg-red-900/20 text-[#D93030] dark:text-red-400 border border-red-200 dark:border-red-800/40"
+                              ><span
+                                class="w-1.5 h-1.5 rounded-full bg-current"
+                              ></span
+                              >Crítico</span
+                            >
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-1.5">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-calendar-clock w-3.5 h-3.5 flex-shrink-0 text-[#D93030] dark:text-red-400"
+                              >
+                                <path
+                                  d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"
+                                ></path>
+                                <path d="M16 2v4"></path>
+                                <path d="M8 2v4"></path>
+                                <path d="M3 10h5"></path>
+                                <path d="M17.5 17.5 16 16.3V14"></path>
+                                <circle cx="16" cy="16" r="6"></circle></svg
+                              ><span
+                                class="text-sm text-[#D93030] dark:text-red-400 font-semibold"
+                                >24/04/2026</span
+                              >
+                            </div>
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <span
+                              class="inline-flex items-center justify-center px-2 py-1 rounded border text-[10px] font-bold shadow-sm min-w-[80px] bg-red-100 text-red-800 border-red-200"
+                              >PENDENTE</span
+                            >
+                          </td>
+                          <td
+                            class="px-5 py-4 whitespace-nowrap hidden md:table-cell"
+                          >
+                            <span
+                              class="text-sm text-[#4B5563] dark:text-gray-400"
+                              >Carlos Mendes</span
+                            >
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap text-right">
+                            <button
+                              title="Acessar dossiê detalhado com fotos, logs e todas as ocorrências desta unidade (LUC)"
+                              class="inline-flex items-center text-xs font-medium text-[#8B1A1A] dark:text-[#D93030] hover:text-[#D93030] dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all min-h-[44px] px-2"
+                            >
+                              Ver detalhes<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-chevron-right w-3.5 h-3.5 ml-0.5"
+                              >
+                                <path d="m9 18 6-6-6-6"></path>
+                              </svg>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr
+                          class="transition-colors cursor-pointer group bg-[#F3F4F6] dark:bg-[#222222] hover:bg-[#F7F4EF] dark:hover:bg-[#2a2020]"
+                        >
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <div class="flex flex-col">
+                              <span
+                                class="text-sm font-medium text-[#1F2937] dark:text-gray-100"
+                                >LUC 1003 - Riachuelo</span
+                              ><span
+                                class="text-xs text-[#4B5563] dark:text-gray-500 mt-0.5"
+                                >ID: #INS-0092 · Hidráulica</span
+                              >
+                            </div>
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <span
+                              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 dark:bg-red-900/20 text-[#D93030] dark:text-red-400 border border-red-200 dark:border-red-800/40"
+                              ><span
+                                class="w-1.5 h-1.5 rounded-full bg-current"
+                              ></span
+                              >Alto</span
+                            >
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-1.5">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-calendar-clock w-3.5 h-3.5 flex-shrink-0 text-[#D93030] dark:text-red-400"
+                              >
+                                <path
+                                  d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"
+                                ></path>
+                                <path d="M16 2v4"></path>
+                                <path d="M8 2v4"></path>
+                                <path d="M3 10h5"></path>
+                                <path d="M17.5 17.5 16 16.3V14"></path>
+                                <circle cx="16" cy="16" r="6"></circle></svg
+                              ><span
+                                class="text-sm text-[#D93030] dark:text-red-400 font-semibold"
+                                >28/04/2026</span
+                              >
+                            </div>
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <span
+                              class="inline-flex items-center justify-center px-2 py-1 rounded border text-[10px] font-bold shadow-sm min-w-[80px] bg-red-100 text-red-800 border-red-200"
+                              >PENDENTE</span
+                            >
+                          </td>
+                          <td
+                            class="px-5 py-4 whitespace-nowrap hidden md:table-cell"
+                          >
+                            <span
+                              class="text-sm text-[#4B5563] dark:text-gray-400"
+                              >Ana Lima</span
+                            >
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap text-right">
+                            <button
+                              title="Acessar dossiê detalhado com fotos, logs e todas as ocorrências desta unidade (LUC)"
+                              class="inline-flex items-center text-xs font-medium text-[#8B1A1A] dark:text-[#D93030] hover:text-[#D93030] dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all min-h-[44px] px-2"
+                            >
+                              Ver detalhes<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-chevron-right w-3.5 h-3.5 ml-0.5"
+                              >
+                                <path d="m9 18 6-6-6-6"></path>
+                              </svg>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr
+                          class="transition-colors cursor-pointer group bg-white dark:bg-[#252525] hover:bg-[#F7F4EF] dark:hover:bg-[#2a2020]"
+                        >
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <div class="flex flex-col">
+                              <span
+                                class="text-sm font-medium text-[#1F2937] dark:text-gray-100"
+                                >LUC 3002 - Gucci</span
+                              ><span
+                                class="text-xs text-[#4B5563] dark:text-gray-500 mt-0.5"
+                                >ID: #INS-0093 · Geral</span
+                              >
+                            </div>
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <span
+                              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-orange-50 dark:bg-orange-900/20 text-[#F59E0B] dark:text-orange-400 border border-orange-200 dark:border-orange-800/40"
+                              >Médio</span
+                            >
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-1.5">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-calendar-clock w-3.5 h-3.5 flex-shrink-0 text-[#D93030] dark:text-red-400"
+                              >
+                                <path
+                                  d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"
+                                ></path>
+                                <path d="M16 2v4"></path>
+                                <path d="M8 2v4"></path>
+                                <path d="M3 10h5"></path>
+                                <path d="M17.5 17.5 16 16.3V14"></path>
+                                <circle cx="16" cy="16" r="6"></circle></svg
+                              ><span
+                                class="text-sm text-[#D93030] dark:text-red-400 font-semibold"
+                                >05/05/2026</span
+                              >
+                            </div>
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <span
+                              class="inline-flex items-center justify-center px-2 py-1 rounded border text-[10px] font-bold shadow-sm min-w-[80px] bg-red-100 text-red-800 border-red-200"
+                              >PENDENTE</span
+                            >
+                          </td>
+                          <td
+                            class="px-5 py-4 whitespace-nowrap hidden md:table-cell"
+                          >
+                            <span
+                              class="text-sm text-[#4B5563] dark:text-gray-400"
+                              >Carlos Mendes</span
+                            >
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap text-right">
+                            <button
+                              title="Acessar dossiê detalhado com fotos, logs e todas as ocorrências desta unidade (LUC)"
+                              class="inline-flex items-center text-xs font-medium text-[#8B1A1A] dark:text-[#D93030] hover:text-[#D93030] dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all min-h-[44px] px-2"
+                            >
+                              Ver detalhes<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-chevron-right w-3.5 h-3.5 ml-0.5"
+                              >
+                                <path d="m9 18 6-6-6-6"></path>
+                              </svg>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr
+                          class="transition-colors cursor-pointer group bg-[#F3F4F6] dark:bg-[#222222] hover:bg-[#F7F4EF] dark:hover:bg-[#2a2020]"
+                        >
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <div class="flex flex-col">
+                              <span
+                                class="text-sm font-medium text-[#1F2937] dark:text-gray-100"
+                                >Área Comum</span
+                              ><span
+                                class="text-xs text-[#4B5563] dark:text-gray-500 mt-0.5"
+                                >ID: #INS-0088 · Higiene</span
+                              >
+                            </div>
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <span
+                              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-50 dark:bg-green-900/20 text-[#10B981] dark:text-green-400 border border-green-200 dark:border-green-800/40"
+                              >Baixo</span
+                            >
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-1.5">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-calendar-clock w-3.5 h-3.5 flex-shrink-0 text-[#4B5563] dark:text-gray-500"
+                              >
+                                <path
+                                  d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"
+                                ></path>
+                                <path d="M16 2v4"></path>
+                                <path d="M8 2v4"></path>
+                                <path d="M3 10h5"></path>
+                                <path d="M17.5 17.5 16 16.3V14"></path>
+                                <circle cx="16" cy="16" r="6"></circle></svg
+                              ><span
+                                class="text-sm text-[#4B5563] dark:text-gray-400"
+                                >20/04/2026</span
+                              >
+                            </div>
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <span
+                              class="inline-flex items-center justify-center px-2 py-1 rounded border text-[10px] font-bold shadow-sm min-w-[80px] bg-green-100 text-green-800 border-green-200"
+                              >RESOLVIDO</span
+                            >
+                          </td>
+                          <td
+                            class="px-5 py-4 whitespace-nowrap hidden md:table-cell"
+                          >
+                            <span
+                              class="text-sm text-[#4B5563] dark:text-gray-400"
+                              >Paulo Neto</span
+                            >
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap text-right">
+                            <button
+                              title="Acessar dossiê detalhado com fotos, logs e todas as ocorrências desta unidade (LUC)"
+                              class="inline-flex items-center text-xs font-medium text-[#8B1A1A] dark:text-[#D93030] hover:text-[#D93030] dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all min-h-[44px] px-2"
+                            >
+                              Ver detalhes<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-chevron-right w-3.5 h-3.5 ml-0.5"
+                              >
+                                <path d="m9 18 6-6-6-6"></path>
+                              </svg>
+                            </button>
+                          </td>
+                        </tr>
+                        <tr
+                          class="transition-colors cursor-pointer group bg-white dark:bg-[#252525] hover:bg-[#F7F4EF] dark:hover:bg-[#2a2020]"
+                        >
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <div class="flex flex-col">
+                              <span
+                                class="text-sm font-medium text-[#1F2937] dark:text-gray-100"
+                                >LUC 2002 - Fast Shop</span
+                              ><span
+                                class="text-xs text-[#4B5563] dark:text-gray-500 mt-0.5"
+                                >ID: #INS-0087 · AVAC</span
+                              >
+                            </div>
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <span
+                              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-50 dark:bg-green-900/20 text-[#10B981] dark:text-green-400 border border-green-200 dark:border-green-800/40"
+                              >Baixo</span
+                            >
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-1.5">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-calendar-clock w-3.5 h-3.5 flex-shrink-0 text-[#4B5563] dark:text-gray-500"
+                              >
+                                <path
+                                  d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"
+                                ></path>
+                                <path d="M16 2v4"></path>
+                                <path d="M8 2v4"></path>
+                                <path d="M3 10h5"></path>
+                                <path d="M17.5 17.5 16 16.3V14"></path>
+                                <circle cx="16" cy="16" r="6"></circle></svg
+                              ><span
+                                class="text-sm text-[#4B5563] dark:text-gray-400"
+                                >18/04/2026</span
+                              >
+                            </div>
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap">
+                            <span
+                              class="inline-flex items-center justify-center px-2 py-1 rounded border text-[10px] font-bold shadow-sm min-w-[80px] bg-green-100 text-green-800 border-green-200"
+                              >RESOLVIDO</span
+                            >
+                          </td>
+                          <td
+                            class="px-5 py-4 whitespace-nowrap hidden md:table-cell"
+                          >
+                            <span
+                              class="text-sm text-[#4B5563] dark:text-gray-400"
+                              >Carlos Mendes</span
+                            >
+                          </td>
+                          <td class="px-5 py-4 whitespace-nowrap text-right">
+                            <button
+                              title="Acessar dossiê detalhado com fotos, logs e todas as ocorrências desta unidade (LUC)"
+                              class="inline-flex items-center text-xs font-medium text-[#8B1A1A] dark:text-[#D93030] hover:text-[#D93030] dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all min-h-[44px] px-2"
+                            >
+                              Ver detalhes<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-chevron-right w-3.5 h-3.5 ml-0.5"
+                              >
+                                <path d="m9 18 6-6-6-6"></path>
+                              </svg>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div
+                    class="px-5 py-3 border-t border-[#E5E7EB] dark:border-gray-700/60 bg-gray-50/50 dark:bg-[#1e1e1e]/50 flex items-center justify-between"
+                  >
+                    <p class="text-xs text-[#4B5563] dark:text-gray-400">
+                      Exibindo 5 de 5 ocorrências
+                    </p>
+                    <button
+                      class="text-xs font-medium text-[#8B1A1A] dark:text-[#D93030] hover:opacity-80 transition-opacity flex items-center gap-1 min-h-[44px] px-2"
+                    >
+                      Ver todas<svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-arrow-up-right w-3.5 h-3.5"
+                      >
+                        <path d="M7 7h10v10"></path>
+                        <path d="M7 17 17 7"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <span
+      id="recharts_measurement_span"
+      aria-hidden="true"
+      style="
+        position: absolute;
+        top: -20000px;
+        left: 0px;
+        padding: 0px;
+        margin: 0px;
+        border-width: medium;
+        border-style: none;
+        border-color: currentcolor;
+        border-image: initial;
+        white-space: pre;
+        font-size: 11px;
+        letter-spacing: normal;
+      "
+      >0</span
+    >
+  </body>
+</html>
