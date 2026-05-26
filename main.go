@@ -2,12 +2,10 @@ package main
 
 import (
 	"bufio"
-	"codigo/app/utils"
+	utils "codigo/app/repositories"
 	"fmt"
 	"log"
-
-	//	"log"
-	//	"net/http"
+	"net/http"
 	"os"
 
 	_ "github.com/lib/pq" // Driver do Postgres
@@ -28,21 +26,20 @@ func main() {
 		log.Fatalln("Erro na crição de tabelas SQL")
 	}
 
-	/*
-		// Cria um servidor de arquivos que serve os arquivos da pasta "./static".
-		fileserver := http.FileServer(http.Dir("./static"))
+	// Cria um servidor de arquivos que serve os arquivos da pasta "./static".
+	fileserver := http.FileServer(http.Dir("./static"))
 
-		// Associa o servidor de arquivos à rota raiz ("/").
-		http.Handle("/", fileserver)
+	// Associa o servidor de arquivos à rota raiz ("/").
+	http.Handle("/", fileserver)
 
-		// Imprime no console a mensagem indicando que o servidor está rodando na porta 8081.
-		fmt.Printf("port running on http://localhost:8081/\n")
+	// Imprime no console a mensagem indicando que o servidor está rodando na porta 8081.
+	fmt.Printf("port running on http://localhost:8081/\n")
 
-		// Inicia o servidor HTTP na porta 8081. Se ocorrer um erro, ele será registrado e o programa será encerrado.
-		if err := http.ListenAndServe(":8081", nil); err != nil {
-			log.Fatal(err) // Registra o erro e encerra o programa.
-		}
-	*/
+	// Inicia o servidor HTTP na porta 8081. Se ocorrer um erro, ele será registrado e o programa será encerrado.
+	if err := http.ListenAndServe(":8081", nil); err != nil {
+		log.Fatal(err) // Registra o erro e encerra o programa.
+	}
+
 	var (
 		opcao int
 		LUC   string
