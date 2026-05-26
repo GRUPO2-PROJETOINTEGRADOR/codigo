@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	utils "codigo/app/repositories"
+	"codigo/app/routes"
 	"fmt"
 	"log"
 	"net/http"
@@ -29,8 +30,11 @@ func main() {
 	// Cria um servidor de arquivos que serve os arquivos da pasta "./static".
 	fileserver := http.FileServer(http.Dir("./static"))
 
-	// Associa o servidor de arquivos à rota raiz ("/").
-	http.Handle("/", fileserver)
+	// Associa o servidor de arquivos à rota "/static/".
+	http.Handle("/static/", http.StripPrefix("/static/", fileserver))
+
+	// Associa as rotas do sistema
+	routes.Rotas()
 
 	// Imprime no console a mensagem indicando que o servidor está rodando na porta 8081.
 	fmt.Printf("port running on http://localhost:8081/\n")

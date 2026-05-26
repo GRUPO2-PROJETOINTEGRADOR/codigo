@@ -19,17 +19,25 @@ func Connect() error {
 		return err
 	}
 
-	server := f.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", os.Getenv("DB_HOST"), os.Getenv("PORT"), os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DATABASE_NAME"))
+	server := f.Sprintf(
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_NAME"),
+	)
 
 	DB, err = sql.Open("postgres", server)
 
 	err = DB.Ping()
 	if err != nil {
-		log.Fatalf("Erro na conexão com o BANCO!")
+		log.Println("Erro real da conexão:", err)
 		return err
 	}
-	log.Println(("Conexão com o banco realizada com sucesso!"))
-	f.Println("Conexão com o banco realizada com sucesso!")
-	return nil
 
+	log.Println("Conexão com o banco realizada com sucesso!")
+	f.Println("Conexão com o banco realizada com sucesso!")
+
+	return nil
 }
