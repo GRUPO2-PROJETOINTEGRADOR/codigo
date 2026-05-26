@@ -1,6 +1,6 @@
 -- 1. Tabela Central
 CREATE TABLE IF NOT EXISTS lojas (
-    id SERIAL PRIMARY KEY, --Código da LUC da loja
+    id VARCHAR(100) PRIMARY KEY, --Código da LUC da loja
     nome VARCHAR(100) NOT NULL, -- Nome Fantasia da loja
     categoria VARCHAR(50) NOT NULL -- Ex: 'ALIMENTACAO', 'VESTUARIO'
 );
@@ -11,7 +11,9 @@ CREATE TABLE IF NOT EXISTS auditorias_seguranca (
     loja_id INT REFERENCES lojas(id), --É atrelado ao Id da loja cadastrada na tabela lojas
     data_auditoria DATE NOT NULL, --O usuário vai cadastrar o dia da auditoria realizada
     responsavel_loja VARCHAR(100), --Cadastro do nome do responsável pela loja que recebeu a inspeção
+	cargo_responsavel VARCHAR(100),
     nota INTEGER, -- Nota da loja recebida pelo relatório Tiller
+	anexo_tiller VARCHAR(255), -- Anexo do caminho do arquivo
     classificacao VARCHAR(20) -- INACEITAVEL, RUIM, REGULAR, BOM -- Classificação a ser exibida a depender do intervalo de nota
 );
 
@@ -24,12 +26,20 @@ CREATE TABLE IF NOT EXISTS eco_participantes (
 	anexo_eco VARCHAR(255)
 );
 
+CREATE TABLE IF NOT EXISTS kit (
+    id SERIAL PRIMARY KEY, --Gera um id único de registro para o resíduo
+    loja_id INTEGER NOT NULL REFERENCES eco_participantes(loja_id) ON DELETE CASCADE, --é atrlado único e exclusivamente às lojas participantes do eco_flamboyant
+	data_entrega_kit DATE,
+	qnt_kit INTEGER
+);
+
 -- 3.1. Resíduos Eco aponta DIRETO para o loja_id
 CREATE TABLE IF NOT EXISTS residuos_eco (
     id SERIAL PRIMARY KEY, --Gera um id único de registro para o resíduo
     loja_id INTEGER NOT NULL REFERENCES eco_participantes(loja_id) ON DELETE CASCADE, --é atrlado único e exclusivamente às lojas participantes do eco_flamboyant
     peso_kg DECIMAL(10,2) NOT NULL, --Guarda a quantidade de Kg, descartados por cada loja
-    data_entrega DATE NOT NULL --Armazena a data da geração dos resíduos
+    data_coleta DATE NOT NULL, --Armazena a data da geração dos resíduos
+	aproveitado BOOLEAN DEFAULT TRUE
 );
 
 -- 4. Módulo Orientação Educativa
@@ -39,8 +49,8 @@ CREATE TABLE IF NOT EXISTS orientacoes_educativas (
     responsavel_presente VARCHAR(255) NOT NULL, --Armazena o responsável da loja que recebeu a orientação
     funcao_responsavel VARCHAR(255), -- Armazena o "cargo" do responsável na loja
     data_orientacao DATE NOT NULL, -- Armazena a data de
-    observacoes TEXT, --registro das anotações sobre a orientação
-    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP --Registra automaticamente a data da criação da orientação educativa
+    observacoes TEXT --registro das anotações sobre a orientação
+    --data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP --Registra automaticamente a data da criação da orientação educativa
 );
 
 -- 5. Log Consolidado do Painel Lateral
