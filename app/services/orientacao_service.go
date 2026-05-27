@@ -28,3 +28,5 @@ func (s *OrientacaoService) CriarNovaOrientacao(o models.OrientacaoEducativa) er
 func (s *OrientacaoService) ListarTodas() ([]models.OrientacaoEducativa, error) {
     return s.Repo.ListarTodas()
 }
+
+

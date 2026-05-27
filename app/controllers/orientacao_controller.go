@@ -1,30 +1,28 @@
 package controllers
 
 import (
-    "encoding/json"
-    "codigo/app/models"
-    utils "codigo/app/repository"
-    s "codigo/app/services"
-    "html/template"
-    "net/http"
-    "time"
+	"codigo/app/models"
+	utils "codigo/app/repository"
+	s "codigo/app/services"
+	"encoding/json"
+	"html/template"
+	"net/http"
+	"time"
 )
 
 // existing code ... (keep unchanged)
 
 func (c *OrientacaoController) ListarJSONHandler(w http.ResponseWriter, r *http.Request) {
-    orientacoes, err := c.Service.ListarTodas()
-    if err != nil {
-        http.Error(w, "Erro ao buscar orientações", http.StatusInternalServerError)
-        return
-    }
-    json.NewEncoder(w).Encode(orientacoes)
+	orientacoes, err := c.Service.ListarTodas()
+	if err != nil {
+		http.Error(w, "Erro ao buscar orientações", http.StatusInternalServerError)
+		return
+	}
+	json.NewEncoder(w).Encode(orientacoes)
 }
 
-
-
 type OrientacaoController struct {
-    Service s.OrientacaoService
+	Service s.OrientacaoService
 }
 
 func (c *OrientacaoController) ListarPaginaHandler(w http.ResponseWriter, r *http.Request) {
@@ -83,5 +81,5 @@ func (c *OrientacaoController) SalvarHandler(w http.ResponseWriter, r *http.Requ
 	}
 
 	// Atualiza a página limpando o formulário
-	http.Redirect(w, r, "/conservacao/orientacao-educativa", http.StatusSeeOther)
+	w.WriteHeader(http.StatusOK)
 }

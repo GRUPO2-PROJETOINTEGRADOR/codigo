@@ -9,13 +9,14 @@ import (
 
 	"codigo/app/controllers"
 	utils "codigo/app/repository"
-	"codigo/app/routes"
+
+	//	"codigo/app/routes"
 	"codigo/app/services"
 )
 
 func main() {
 	// Initialize static routes (if any)
-	routes.Rotas()
+	//routes.Rotas()
 
 	// Connect to PostgreSQL
 	if err := utils.Connect(); err != nil {
@@ -32,39 +33,6 @@ func main() {
 	orientacaoService := services.OrientacaoService{Repo: utils.OrientacaoRepository{}}
 	orientacaoController := controllers.OrientacaoController{Service: orientacaoService}
 
-	// API routes (only orientacoes needed for now)
-	// http.Handle("/api/inspecoes", &inspecoesHandler{})
-	// http.HandleFunc("/api/inspecoes/criar", func(w http.ResponseWriter, r *http.Request) {
-	//     if r.Method == http.MethodPost {
-	//         h := &inspecoesHandler{}
-	//         h.ServeHTTP(w, r)
-	//     }
-	// })
-	// http.HandleFunc("/api/inspecoes/deletar", inspecaoDeletarHandler)
-	// http.HandleFunc("/api/eco/participantes", participantesHandler)
-	// http.HandleFunc("/api/eco/participantes/criar", func(w http.ResponseWriter, r *http.Request) {
-	//     if r.Method == http.MethodPost {
-	//         participantesHandler(w, r)
-	//     }
-	// })
-	// http.HandleFunc("/api/eco/participantes/toggle-status", func(w http.ResponseWriter, r *http.Request) {
-	//     if r.Method == http.MethodPatch {
-	//         participantesHandler(w, r)
-	//     }
-	// })
-	// http.HandleFunc("/api/eco/residuos", residuosHandler)
-	// http.HandleFunc("/api/eco/residuos/lancar", func(w http.ResponseWriter, r *http.Request) {
-	//     if r.Method == http.MethodPost {
-	//         residuosHandler(w, r)
-	//     }
-	// })
-	// http.HandleFunc("/api/eco/kits", kitsHandler)
-	// http.HandleFunc("/api/eco/kits/registrar", func(w http.ResponseWriter, r *http.Request) {
-	//     if r.Method == http.MethodPost {
-	//         kitsHandler(w, r)
-	//     }
-	// })
-
 	// New handler to serve lojas list
 	http.HandleFunc("/api/lojas", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
@@ -79,14 +47,7 @@ func main() {
 		jsonResponse(w, lojas)
 	})
 
-	http.HandleFunc("/api/orientacoes", orientacaoController.ListarJSONHandler)
-	http.HandleFunc("/api/orientacoes/criar", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodPost {
-			orientacaoController.SalvarHandler(w, r)
-		}
-	})
-
-	// http.HandleFunc("/api/relatorios/seguranca", relatoriosSegurancaHandler)
+	http.HandleFunc("/conservacao/orientacao-educativa/salvar", orientacaoController.SalvarHandler)
 
 	// Static file server
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
