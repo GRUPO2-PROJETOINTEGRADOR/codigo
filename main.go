@@ -369,7 +369,6 @@ func main() {
 	}
 	defer utils.DB.Close()
 
-
 	err = utils.Criar_banco()
 	if err != nil {
 		log.Fatalln("Erro na crição de tabelas SQL")
