@@ -1,33 +1,62 @@
 package controllers
 
 import (
-	"codigo/app/models"
-	s "codigo/app/services"
-	"html/template"
-	"net/http"
-	"time"
+    "encoding/json"
+    "codigo/app/models"
+    utils "codigo/app/repository"
+    s "codigo/app/services"
+    "html/template"
+    "net/http"
+    "time"
 )
 
+// existing code ... (keep unchanged)
+
+func (c *OrientacaoController) ListarJSONHandler(w http.ResponseWriter, r *http.Request) {
+    orientacoes, err := c.Service.ListarTodas()
+    if err != nil {
+        http.Error(w, "Erro ao buscar orientações", http.StatusInternalServerError)
+        return
+    }
+    json.NewEncoder(w).Encode(orientacoes)
+}
+
+
+
 type OrientacaoController struct {
-	service s.OrientacaoService
+    Service s.OrientacaoService
 }
 
 func (c *OrientacaoController) ListarPaginaHandler(w http.ResponseWriter, r *http.Request) {
-	orientacoes, err := c.service.ListarTodas()
+	// 1. Busca as orientações do banco
+	orientacoes, err := c.Service.ListarTodas()
 	if err != nil {
-		http.Error(w, "Erro ao bucar orientações", http.StatusInternalServerError)
+		http.Error(w, "Erro ao buscar orientações", http.StatusInternalServerError)
 		return
 	}
 
-	contexto := models.ContextoOrientacao{
-		Orientacoes: orientacoes,
+	// 2. Busca as lojas do banco
+	lojas, err := utils.Read_lojas()
+	if err != nil {
+		http.Error(w, "Erro ao buscar lojas", http.StatusInternalServerError)
+		return
 	}
 
+	// 3. Monta o contexto com os dois dados
+	contexto := models.ContextoOrientacao{
+		Orientacoes: orientacoes,
+		Lojas:       lojas,
+	}
+
+	// 4. RENDERIZA APENAS A TELA DE ORIENTAÇÃO
+	// Como a tela já está completa, passamos apenas o caminho dela no ParseFiles
 	tmpl := template.Must(template.ParseFiles(
-		"templates/layout.html",
 		"templates/conservacao/orientacao-educativa.html",
 	))
-	tmpl.ExecuteTemplate(w, "layout", contexto)
+
+	// Mudamos para tmpl.Execute (sem a palavra Template), pois não precisamos
+	// chamar um bloco específico como "layout", ele vai rodar o arquivo inteiro direto.
+	tmpl.Execute(w, contexto)
 }
 
 func (c *OrientacaoController) SalvarHandler(w http.ResponseWriter, r *http.Request) {
@@ -46,8 +75,8 @@ func (c *OrientacaoController) SalvarHandler(w http.ResponseWriter, r *http.Requ
 		DataOrientacao:      dataformat,
 		Observacoes:         r.FormValue("observacoes"),
 	}
-	
-	err := c.service.CriarNovaOrientacao(novaOrientacao)
+
+	err := c.Service.CriarNovaOrientacao(novaOrientacao)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return

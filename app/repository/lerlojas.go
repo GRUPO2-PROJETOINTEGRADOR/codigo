@@ -1,14 +1,11 @@
 package utils
 
-import "log"
+import (
+	"codigo/app/models"
+	"log"
+)
 
-type Lojas struct {
-	Id        string
-	Nome      string
-	Categoria string
-}
-
-func Read_lojas() ([]Lojas, error) {
+func Read_lojas() ([]models.Loja, error) {
 
 	dados, err := DB.Query("SELECT id, nome, categoria FROM lojas")
 	if err != nil {
@@ -16,12 +13,12 @@ func Read_lojas() ([]Lojas, error) {
 	}
 	defer dados.Close()
 
-	var lojas []Lojas
+	var lojas []models.Loja
 
 	for dados.Next() {
-		var tb Lojas
+		var tb models.Loja
 		dados.Scan(
-			&tb.Id,
+			&tb.ID,
 			&tb.Nome,
 			&tb.Categoria,
 		)

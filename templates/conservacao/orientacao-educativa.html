@@ -473,7 +473,8 @@
 
             <!-- INTEGRATION(codigo/app/controllers/orientacao_controller.go): 
            Rota POST para salvar orientação educativa. -->
-            <form id="orientacao-form" action="/api/orientacoes/criar" method="POST" class="space-y-6">
+            <form id="orientacao-form" action="/conservacao/orientacao-educativa/salvar" method="POST"
+              class="space-y-6">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-1.5">
                   <label class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Loja
@@ -489,7 +490,13 @@
                     </svg>
                     <select name="loja_id" required id="loja_id"
                       class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none outline-none">
+
                       <option value="">Selecione a loja...</option>
+
+                      {{range .Lojas}}
+                      <option value="{{.ID}}">{{.ID}} - {{.Nome}}</option>
+                      {{end}}
+
                     </select>
                   </div>
                 </div>
