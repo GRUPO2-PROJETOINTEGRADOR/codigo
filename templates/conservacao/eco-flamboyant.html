@@ -1,2545 +1,682 @@
-<!doctype html>
-<html lang="en" class="light" style="color-scheme: light">
-  <head>
-    <meta charset="UTF-8" />
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eco-Flamboyant — JP Mall</title>
+  <meta name="description" content="Dashboard de Gestão Sustentável" />
+  <link rel="stylesheet" href="/static/css/global.css" />
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/static/css/theme.css" />
+  <style type="text/tailwindcss">
+    @custom-variant dark (&:is(.dark *));
+    @theme {
+      --color-primary: #8B1A1A;
+      --color-primary-foreground: #ffffff;
+      --color-secondary: #C8A882;
+      --color-destructive: #D93030;
+    }
+  </style>
+  <script>
+    (function() {
+      const t = localStorage.getItem('theme');
+      const dark = t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle('dark', dark);
+      document.documentElement.classList.toggle('light', !dark);
+      document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+    })();
+  </script>
+</head>
+<body class="flex h-screen w-full bg-[#F7F4EF] dark:bg-[#1a1a1a] overflow-hidden">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JP Mall - Sistema de Conservação &amp; Manutenção</title>
-
-    <style type="text/css">
-      [data-sonner-toaster][dir="ltr"],
-      html[dir="ltr"] {
-        --toast-icon-margin-start: -3px;
-        --toast-icon-margin-end: 4px;
-        --toast-svg-margin-start: -1px;
-        --toast-svg-margin-end: 0px;
-        --toast-button-margin-start: auto;
-        --toast-button-margin-end: 0;
-        --toast-close-button-start: 0;
-        --toast-close-button-end: unset;
-        --toast-close-button-transform: translate(-35%, -35%);
-      }
-      [data-sonner-toaster][dir="rtl"],
-      html[dir="rtl"] {
-        --toast-icon-margin-start: 4px;
-        --toast-icon-margin-end: -3px;
-        --toast-svg-margin-start: 0px;
-        --toast-svg-margin-end: -1px;
-        --toast-button-margin-start: 0;
-        --toast-button-margin-end: auto;
-        --toast-close-button-start: unset;
-        --toast-close-button-end: 0;
-        --toast-close-button-transform: translate(35%, -35%);
-      }
-      [data-sonner-toaster] {
-        position: fixed;
-        width: var(--width);
-        font-family:
-          ui-sans-serif,
-          system-ui,
-          -apple-system,
-          BlinkMacSystemFont,
-          Segoe UI,
-          Roboto,
-          Helvetica Neue,
-          Arial,
-          Noto Sans,
-          sans-serif,
-          Apple Color Emoji,
-          Segoe UI Emoji,
-          Segoe UI Symbol,
-          Noto Color Emoji;
-        --gray1: hsl(0, 0%, 99%);
-        --gray2: hsl(0, 0%, 97.3%);
-        --gray3: hsl(0, 0%, 95.1%);
-        --gray4: hsl(0, 0%, 93%);
-        --gray5: hsl(0, 0%, 90.9%);
-        --gray6: hsl(0, 0%, 88.7%);
-        --gray7: hsl(0, 0%, 85.8%);
-        --gray8: hsl(0, 0%, 78%);
-        --gray9: hsl(0, 0%, 56.1%);
-        --gray10: hsl(0, 0%, 52.3%);
-        --gray11: hsl(0, 0%, 43.5%);
-        --gray12: hsl(0, 0%, 9%);
-        --border-radius: 8px;
-        box-sizing: border-box;
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        outline: 0;
-        z-index: 999999999;
-        transition: transform 0.4s ease;
-      }
-      [data-sonner-toaster][data-lifted="true"] {
-        transform: translateY(-8px);
-      }
-      @media (hover: none) and (pointer: coarse) {
-        [data-sonner-toaster][data-lifted="true"] {
-          transform: none;
-        }
-      }
-      [data-sonner-toaster][data-x-position="right"] {
-        right: var(--offset-right);
-      }
-      [data-sonner-toaster][data-x-position="left"] {
-        left: var(--offset-left);
-      }
-      [data-sonner-toaster][data-x-position="center"] {
-        left: 50%;
-        transform: translateX(-50%);
-      }
-      [data-sonner-toaster][data-y-position="top"] {
-        top: var(--offset-top);
-      }
-      [data-sonner-toaster][data-y-position="bottom"] {
-        bottom: var(--offset-bottom);
-      }
-      [data-sonner-toast] {
-        --y: translateY(100%);
-        --lift-amount: calc(var(--lift) * var(--gap));
-        z-index: var(--z-index);
-        position: absolute;
-        opacity: 0;
-        transform: var(--y);
-        touch-action: none;
-        transition:
-          transform 0.4s,
-          opacity 0.4s,
-          height 0.4s,
-          box-shadow 0.2s;
-        box-sizing: border-box;
-        outline: 0;
-        overflow-wrap: anywhere;
-      }
-      [data-sonner-toast][data-styled="true"] {
-        padding: 16px;
-        background: var(--normal-bg);
-        border: 1px solid var(--normal-border);
-        color: var(--normal-text);
-        border-radius: var(--border-radius);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        width: var(--width);
-        font-size: 13px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      [data-sonner-toast]:focus-visible {
-        box-shadow:
-          0 4px 12px rgba(0, 0, 0, 0.1),
-          0 0 0 2px rgba(0, 0, 0, 0.2);
-      }
-      [data-sonner-toast][data-y-position="top"] {
-        top: 0;
-        --y: translateY(-100%);
-        --lift: 1;
-        --lift-amount: calc(1 * var(--gap));
-      }
-      [data-sonner-toast][data-y-position="bottom"] {
-        bottom: 0;
-        --y: translateY(100%);
-        --lift: -1;
-        --lift-amount: calc(var(--lift) * var(--gap));
-      }
-      [data-sonner-toast][data-styled="true"] [data-description] {
-        font-weight: 400;
-        line-height: 1.4;
-        color: #3f3f3f;
-      }
-      [data-rich-colors="true"][data-sonner-toast][data-styled="true"]
-        [data-description] {
-        color: inherit;
-      }
-      [data-sonner-toaster][data-sonner-theme="dark"] [data-description] {
-        color: #e8e8e8;
-      }
-      [data-sonner-toast][data-styled="true"] [data-title] {
-        font-weight: 500;
-        line-height: 1.5;
-        color: inherit;
-      }
-      [data-sonner-toast][data-styled="true"] [data-icon] {
-        display: flex;
-        height: 16px;
-        width: 16px;
-        position: relative;
-        justify-content: flex-start;
-        align-items: center;
-        flex-shrink: 0;
-        margin-left: var(--toast-icon-margin-start);
-        margin-right: var(--toast-icon-margin-end);
-      }
-      [data-sonner-toast][data-promise="true"] [data-icon] > svg {
-        opacity: 0;
-        transform: scale(0.8);
-        transform-origin: center;
-        animation: sonner-fade-in 0.3s ease forwards;
-      }
-      [data-sonner-toast][data-styled="true"] [data-icon] > * {
-        flex-shrink: 0;
-      }
-      [data-sonner-toast][data-styled="true"] [data-icon] svg {
-        margin-left: var(--toast-svg-margin-start);
-        margin-right: var(--toast-svg-margin-end);
-      }
-      [data-sonner-toast][data-styled="true"] [data-content] {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-      }
-      [data-sonner-toast][data-styled="true"] [data-button] {
-        border-radius: 4px;
-        padding-left: 8px;
-        padding-right: 8px;
-        height: 24px;
-        font-size: 12px;
-        color: var(--normal-bg);
-        background: var(--normal-text);
-        margin-left: var(--toast-button-margin-start);
-        margin-right: var(--toast-button-margin-end);
-        border: none;
-        font-weight: 500;
-        cursor: pointer;
-        outline: 0;
-        display: flex;
-        align-items: center;
-        flex-shrink: 0;
-        transition:
-          opacity 0.4s,
-          box-shadow 0.2s;
-      }
-      [data-sonner-toast][data-styled="true"] [data-button]:focus-visible {
-        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.4);
-      }
-      [data-sonner-toast][data-styled="true"] [data-button]:first-of-type {
-        margin-left: var(--toast-button-margin-start);
-        margin-right: var(--toast-button-margin-end);
-      }
-      [data-sonner-toast][data-styled="true"] [data-cancel] {
-        color: var(--normal-text);
-        background: rgba(0, 0, 0, 0.08);
-      }
-      [data-sonner-toaster][data-sonner-theme="dark"]
-        [data-sonner-toast][data-styled="true"]
-        [data-cancel] {
-        background: rgba(255, 255, 255, 0.3);
-      }
-      [data-sonner-toast][data-styled="true"] [data-close-button] {
-        position: absolute;
-        left: var(--toast-close-button-start);
-        right: var(--toast-close-button-end);
-        top: 0;
-        height: 20px;
-        width: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0;
-        color: var(--gray12);
-        background: var(--normal-bg);
-        border: 1px solid var(--gray4);
-        transform: var(--toast-close-button-transform);
-        border-radius: 50%;
-        cursor: pointer;
-        z-index: 1;
-        transition:
-          opacity 0.1s,
-          background 0.2s,
-          border-color 0.2s;
-      }
-      [data-sonner-toast][data-styled="true"]
-        [data-close-button]:focus-visible {
-        box-shadow:
-          0 4px 12px rgba(0, 0, 0, 0.1),
-          0 0 0 2px rgba(0, 0, 0, 0.2);
-      }
-      [data-sonner-toast][data-styled="true"] [data-disabled="true"] {
-        cursor: not-allowed;
-      }
-      [data-sonner-toast][data-styled="true"]:hover [data-close-button]:hover {
-        background: var(--gray2);
-        border-color: var(--gray5);
-      }
-      [data-sonner-toast][data-swiping="true"]::before {
-        content: "";
-        position: absolute;
-        left: -100%;
-        right: -100%;
-        height: 100%;
-        z-index: -1;
-      }
-      [data-sonner-toast][data-y-position="top"][data-swiping="true"]::before {
-        bottom: 50%;
-        transform: scaleY(3) translateY(50%);
-      }
-      [data-sonner-toast][data-y-position="bottom"][data-swiping="true"]::before {
-        top: 50%;
-        transform: scaleY(3) translateY(-50%);
-      }
-      [data-sonner-toast][data-swiping="false"][data-removed="true"]::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        transform: scaleY(2);
-      }
-      [data-sonner-toast][data-expanded="true"]::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        height: calc(var(--gap) + 1px);
-        bottom: 100%;
-        width: 100%;
-      }
-      [data-sonner-toast][data-mounted="true"] {
-        --y: translateY(0);
-        opacity: 1;
-      }
-      [data-sonner-toast][data-expanded="false"][data-front="false"] {
-        --scale: var(--toasts-before) * 0.05 + 1;
-        --y: translateY(calc(var(--lift-amount) * var(--toasts-before)))
-          scale(calc(-1 * var(--scale)));
-        height: var(--front-toast-height);
-      }
-      [data-sonner-toast] > * {
-        transition: opacity 0.4s;
-      }
-      [data-sonner-toast][data-x-position="right"] {
-        right: 0;
-      }
-      [data-sonner-toast][data-x-position="left"] {
-        left: 0;
-      }
-      [data-sonner-toast][data-expanded="false"][data-front="false"][data-styled="true"]
-        > * {
-        opacity: 0;
-      }
-      [data-sonner-toast][data-visible="false"] {
-        opacity: 0;
-        pointer-events: none;
-      }
-      [data-sonner-toast][data-mounted="true"][data-expanded="true"] {
-        --y: translateY(calc(var(--lift) * var(--offset)));
-        height: var(--initial-height);
-      }
-      [data-sonner-toast][data-removed="true"][data-front="true"][data-swipe-out="false"] {
-        --y: translateY(calc(var(--lift) * -100%));
-        opacity: 0;
-      }
-      [data-sonner-toast][data-removed="true"][data-front="false"][data-swipe-out="false"][data-expanded="true"] {
-        --y: translateY(
-          calc(var(--lift) * var(--offset) + var(--lift) * -100%)
-        );
-        opacity: 0;
-      }
-      [data-sonner-toast][data-removed="true"][data-front="false"][data-swipe-out="false"][data-expanded="false"] {
-        --y: translateY(40%);
-        opacity: 0;
-        transition:
-          transform 0.5s,
-          opacity 0.2s;
-      }
-      [data-sonner-toast][data-removed="true"][data-front="false"]::before {
-        height: calc(var(--initial-height) + 20%);
-      }
-      [data-sonner-toast][data-swiping="true"] {
-        transform: var(--y) translateY(var(--swipe-amount-y, 0))
-          translateX(var(--swipe-amount-x, 0));
-        transition: none;
-      }
-      [data-sonner-toast][data-swiped="true"] {
-        user-select: none;
-      }
-      [data-sonner-toast][data-swipe-out="true"][data-y-position="bottom"],
-      [data-sonner-toast][data-swipe-out="true"][data-y-position="top"] {
-        animation-duration: 0.2s;
-        animation-timing-function: ease-out;
-        animation-fill-mode: forwards;
-      }
-      [data-sonner-toast][data-swipe-out="true"][data-swipe-direction="left"] {
-        animation-name: swipe-out-left;
-      }
-      [data-sonner-toast][data-swipe-out="true"][data-swipe-direction="right"] {
-        animation-name: swipe-out-right;
-      }
-      [data-sonner-toast][data-swipe-out="true"][data-swipe-direction="up"] {
-        animation-name: swipe-out-up;
-      }
-      [data-sonner-toast][data-swipe-out="true"][data-swipe-direction="down"] {
-        animation-name: swipe-out-down;
-      }
-      @keyframes swipe-out-left {
-        from {
-          transform: var(--y) translateX(var(--swipe-amount-x));
-          opacity: 1;
-        }
-        to {
-          transform: var(--y) translateX(calc(var(--swipe-amount-x) - 100%));
-          opacity: 0;
-        }
-      }
-      @keyframes swipe-out-right {
-        from {
-          transform: var(--y) translateX(var(--swipe-amount-x));
-          opacity: 1;
-        }
-        to {
-          transform: var(--y) translateX(calc(var(--swipe-amount-x) + 100%));
-          opacity: 0;
-        }
-      }
-      @keyframes swipe-out-up {
-        from {
-          transform: var(--y) translateY(var(--swipe-amount-y));
-          opacity: 1;
-        }
-        to {
-          transform: var(--y) translateY(calc(var(--swipe-amount-y) - 100%));
-          opacity: 0;
-        }
-      }
-      @keyframes swipe-out-down {
-        from {
-          transform: var(--y) translateY(var(--swipe-amount-y));
-          opacity: 1;
-        }
-        to {
-          transform: var(--y) translateY(calc(var(--swipe-amount-y) + 100%));
-          opacity: 0;
-        }
-      }
-      @media (max-width: 600px) {
-        [data-sonner-toaster] {
-          position: fixed;
-          right: var(--mobile-offset-right);
-          left: var(--mobile-offset-left);
-          width: 100%;
-        }
-        [data-sonner-toaster][dir="rtl"] {
-          left: calc(var(--mobile-offset-left) * -1);
-        }
-        [data-sonner-toaster] [data-sonner-toast] {
-          left: 0;
-          right: 0;
-          width: calc(100% - var(--mobile-offset-left) * 2);
-        }
-        [data-sonner-toaster][data-x-position="left"] {
-          left: var(--mobile-offset-left);
-        }
-        [data-sonner-toaster][data-y-position="bottom"] {
-          bottom: var(--mobile-offset-bottom);
-        }
-        [data-sonner-toaster][data-y-position="top"] {
-          top: var(--mobile-offset-top);
-        }
-        [data-sonner-toaster][data-x-position="center"] {
-          left: var(--mobile-offset-left);
-          right: var(--mobile-offset-right);
-          transform: none;
-        }
-      }
-      [data-sonner-toaster][data-sonner-theme="light"] {
-        --normal-bg: #fff;
-        --normal-border: var(--gray4);
-        --normal-text: var(--gray12);
-        --success-bg: hsl(143, 85%, 96%);
-        --success-border: hsl(145, 92%, 87%);
-        --success-text: hsl(140, 100%, 27%);
-        --info-bg: hsl(208, 100%, 97%);
-        --info-border: hsl(221, 91%, 93%);
-        --info-text: hsl(210, 92%, 45%);
-        --warning-bg: hsl(49, 100%, 97%);
-        --warning-border: hsl(49, 91%, 84%);
-        --warning-text: hsl(31, 92%, 45%);
-        --error-bg: hsl(359, 100%, 97%);
-        --error-border: hsl(359, 100%, 94%);
-        --error-text: hsl(360, 100%, 45%);
-      }
-      [data-sonner-toaster][data-sonner-theme="light"]
-        [data-sonner-toast][data-invert="true"] {
-        --normal-bg: #000;
-        --normal-border: hsl(0, 0%, 20%);
-        --normal-text: var(--gray1);
-      }
-      [data-sonner-toaster][data-sonner-theme="dark"]
-        [data-sonner-toast][data-invert="true"] {
-        --normal-bg: #fff;
-        --normal-border: var(--gray3);
-        --normal-text: var(--gray12);
-      }
-      [data-sonner-toaster][data-sonner-theme="dark"] {
-        --normal-bg: #000;
-        --normal-bg-hover: hsl(0, 0%, 12%);
-        --normal-border: hsl(0, 0%, 20%);
-        --normal-border-hover: hsl(0, 0%, 25%);
-        --normal-text: var(--gray1);
-        --success-bg: hsl(150, 100%, 6%);
-        --success-border: hsl(147, 100%, 12%);
-        --success-text: hsl(150, 86%, 65%);
-        --info-bg: hsl(215, 100%, 6%);
-        --info-border: hsl(223, 43%, 17%);
-        --info-text: hsl(216, 87%, 65%);
-        --warning-bg: hsl(64, 100%, 6%);
-        --warning-border: hsl(60, 100%, 9%);
-        --warning-text: hsl(46, 87%, 65%);
-        --error-bg: hsl(358, 76%, 10%);
-        --error-border: hsl(357, 89%, 16%);
-        --error-text: hsl(358, 100%, 81%);
-      }
-      [data-sonner-toaster][data-sonner-theme="dark"]
-        [data-sonner-toast]
-        [data-close-button] {
-        background: var(--normal-bg);
-        border-color: var(--normal-border);
-        color: var(--normal-text);
-      }
-      [data-sonner-toaster][data-sonner-theme="dark"]
-        [data-sonner-toast]
-        [data-close-button]:hover {
-        background: var(--normal-bg-hover);
-        border-color: var(--normal-border-hover);
-      }
-      [data-rich-colors="true"][data-sonner-toast][data-type="success"] {
-        background: var(--success-bg);
-        border-color: var(--success-border);
-        color: var(--success-text);
-      }
-      [data-rich-colors="true"][data-sonner-toast][data-type="success"]
-        [data-close-button] {
-        background: var(--success-bg);
-        border-color: var(--success-border);
-        color: var(--success-text);
-      }
-      [data-rich-colors="true"][data-sonner-toast][data-type="info"] {
-        background: var(--info-bg);
-        border-color: var(--info-border);
-        color: var(--info-text);
-      }
-      [data-rich-colors="true"][data-sonner-toast][data-type="info"]
-        [data-close-button] {
-        background: var(--info-bg);
-        border-color: var(--info-border);
-        color: var(--info-text);
-      }
-      [data-rich-colors="true"][data-sonner-toast][data-type="warning"] {
-        background: var(--warning-bg);
-        border-color: var(--warning-border);
-        color: var(--warning-text);
-      }
-      [data-rich-colors="true"][data-sonner-toast][data-type="warning"]
-        [data-close-button] {
-        background: var(--warning-bg);
-        border-color: var(--warning-border);
-        color: var(--warning-text);
-      }
-      [data-rich-colors="true"][data-sonner-toast][data-type="error"] {
-        background: var(--error-bg);
-        border-color: var(--error-border);
-        color: var(--error-text);
-      }
-      [data-rich-colors="true"][data-sonner-toast][data-type="error"]
-        [data-close-button] {
-        background: var(--error-bg);
-        border-color: var(--error-border);
-        color: var(--error-text);
-      }
-      .sonner-loading-wrapper {
-        --size: 16px;
-        height: var(--size);
-        width: var(--size);
-        position: absolute;
-        inset: 0;
-        z-index: 10;
-      }
-      .sonner-loading-wrapper[data-visible="false"] {
-        transform-origin: center;
-        animation: sonner-fade-out 0.2s ease forwards;
-      }
-      .sonner-spinner {
-        position: relative;
-        top: 50%;
-        left: 50%;
-        height: var(--size);
-        width: var(--size);
-      }
-      .sonner-loading-bar {
-        animation: sonner-spin 1.2s linear infinite;
-        background: var(--gray11);
-        border-radius: 6px;
-        height: 8%;
-        left: -10%;
-        position: absolute;
-        top: -3.9%;
-        width: 24%;
-      }
-      .sonner-loading-bar:first-child {
-        animation-delay: -1.2s;
-        transform: rotate(0.0001deg) translate(146%);
-      }
-      .sonner-loading-bar:nth-child(2) {
-        animation-delay: -1.1s;
-        transform: rotate(30deg) translate(146%);
-      }
-      .sonner-loading-bar:nth-child(3) {
-        animation-delay: -1s;
-        transform: rotate(60deg) translate(146%);
-      }
-      .sonner-loading-bar:nth-child(4) {
-        animation-delay: -0.9s;
-        transform: rotate(90deg) translate(146%);
-      }
-      .sonner-loading-bar:nth-child(5) {
-        animation-delay: -0.8s;
-        transform: rotate(120deg) translate(146%);
-      }
-      .sonner-loading-bar:nth-child(6) {
-        animation-delay: -0.7s;
-        transform: rotate(150deg) translate(146%);
-      }
-      .sonner-loading-bar:nth-child(7) {
-        animation-delay: -0.6s;
-        transform: rotate(180deg) translate(146%);
-      }
-      .sonner-loading-bar:nth-child(8) {
-        animation-delay: -0.5s;
-        transform: rotate(210deg) translate(146%);
-      }
-      .sonner-loading-bar:nth-child(9) {
-        animation-delay: -0.4s;
-        transform: rotate(240deg) translate(146%);
-      }
-      .sonner-loading-bar:nth-child(10) {
-        animation-delay: -0.3s;
-        transform: rotate(270deg) translate(146%);
-      }
-      .sonner-loading-bar:nth-child(11) {
-        animation-delay: -0.2s;
-        transform: rotate(300deg) translate(146%);
-      }
-      .sonner-loading-bar:nth-child(12) {
-        animation-delay: -0.1s;
-        transform: rotate(330deg) translate(146%);
-      }
-      @keyframes sonner-fade-in {
-        0% {
-          opacity: 0;
-          transform: scale(0.8);
-        }
-        100% {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-      @keyframes sonner-fade-out {
-        0% {
-          opacity: 1;
-          transform: scale(1);
-        }
-        100% {
-          opacity: 0;
-          transform: scale(0.8);
-        }
-      }
-      @keyframes sonner-spin {
-        0% {
-          opacity: 1;
-        }
-        100% {
-          opacity: 0.15;
-        }
-      }
-      @media (prefers-reduced-motion) {
-        .sonner-loading-bar,
-        [data-sonner-toast],
-        [data-sonner-toast] > * {
-          transition: none !important;
-          animation: none !important;
-        }
-      }
-      .sonner-loader {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        transform-origin: center;
-        transition:
-          opacity 0.2s,
-          transform 0.2s;
-      }
-      .sonner-loader[data-visible="false"] {
-        opacity: 0;
-        transform: scale(0.8) translate(-50%, -50%);
-      }
-    </style>
-    <link rel="stylesheet" href="../css/global.css" />
-    <link rel="stylesheet" href="../css/layout.css" />
-    <link rel="stylesheet" href="../css/components.css" />
-  </head>
-  <body>
-    <div id="root">
-      <section
-        aria-label="Notifications alt+T"
-        tabindex="-1"
-        aria-live="polite"
-        aria-relevant="additions text"
-        aria-atomic="false"
-      ></section>
-      <div class="flex h-screen w-full bg-[#F7F4EF] dark:bg-[#1a1a1a]">
-        <aside
-          class="hidden md:flex w-64 bg-[#8B1A1A] dark:bg-[#2a0a0a] flex-col flex-shrink-0 shadow-xl transition-all duration-300 ease-in-out relative"
-        >
-          <div class="flex flex-col h-full overflow-hidden">
-            <div
-              class="h-16 flex items-center px-5 border-b border-[#a43030] dark:border-[#4a1515] flex-shrink-0 justify-between"
-            >
-              <div class="flex items-center">
-                <div
-                  class="w-8 h-8 rounded-lg bg-[#C8A882] flex items-center justify-center flex-shrink-0 mr-3"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-building2 lucide-building-2 w-4 h-4 text-[#8B1A1A]"
-                  >
-                    <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path>
-                    <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
-                    <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path>
-                    <path d="M10 6h4"></path>
-                    <path d="M10 10h4"></path>
-                    <path d="M10 14h4"></path>
-                    <path d="M10 18h4"></path>
-                  </svg>
-                </div>
-                <div class="min-w-0">
-                  <p
-                    class="text-white font-bold text-sm leading-tight tracking-wide truncate"
-                  >
-                    JP Mall
-                  </p>
-                  <p
-                    class="text-[#C8A882] text-[10px] font-bold uppercase tracking-widest opacity-90 truncate"
-                  >
-                    Operações
-                  </p>
-                </div>
-              </div>
-            </div>
-            <nav class="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
-              <p
-                class="px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-white/30"
-              >
-                Módulos de Gestão
-              </p>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-store w-4 h-4"
-                  >
-                    <path
-                      d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"
-                    ></path>
-                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                    <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path>
-                    <path d="M2 7h20"></path>
-                    <path
-                      d="M22 7v3a2 2 0 0 1-2 2a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"
-                    ></path></svg></span
-                ><span class="truncate">LOJISTAS</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-graduation-cap w-4 h-4"
-                  >
-                    <path
-                      d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"
-                    ></path>
-                    <path d="M22 10v6"></path>
-                    <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg></span
-                ><span class="truncate">TREINAMENTOS</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-shield-check w-4 h-4"
-                  >
-                    <path
-                      d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
-                    ></path>
-                    <path d="m9 12 2 2 4-4"></path></svg></span
-                ><span class="truncate">SEGUROS</span>
-              </div>
-              <div class="space-y-1">
-                <button
-                  class="w-full group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 bg-white/10 text-white"
-                >
-                  <span
-                    class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 transition-colors mr-2.5 bg-[#D93030]"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-leafy-green w-4 h-4"
-                    >
-                      <path
-                        d="M2 22c1.25-1.5 2.13-3.3 2.13-5.32C4.13 12.38 7.31 8 11.5 8s7.37 4.38 7.37 8.68c0 2.02.88 3.82 2.13 5.32"
-                      ></path>
-                      <path d="M10 8c1.5-3 3.5-5 6-5s4.5 2 6 5"></path>
-                      <path
-                        d="M4 15c-1.5-2-2-4.5-2-7s2-5 5-5 5 2 5 5-2 5-8 7Z"
-                      ></path>
-                      <path
-                        d="M14 15c1.5-2 2-4.5 2-7s-2-5-5-5-5 2-5 5 2 5 8 7Z"
-                      ></path></svg></span
-                  ><span class="truncate">CONSERVAÇÃO &amp; RESÍDUOS</span
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-chevron-down ml-auto w-3.5 h-3.5 transition-transform duration-200 rotate-180"
-                  >
-                    <path d="m6 9 6 6 6-6"></path>
-                  </svg>
-                </button>
-                <div class="ml-4 pl-4 border-l border-white/10 space-y-1 mt-1">
-                  <a
-                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
-                    href="dashboard.html"
-                    data-discover="true"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-layout-dashboard w-3.5 h-3.5 mr-2.5 text-white/40"
-                    >
-                      <rect width="7" height="9" x="3" y="3" rx="1"></rect>
-                      <rect width="7" height="5" x="14" y="3" rx="1"></rect>
-                      <rect width="7" height="9" x="14" y="12" rx="1"></rect>
-                      <rect
-                        width="7"
-                        height="5"
-                        x="3"
-                        y="16"
-                        rx="1"
-                      ></rect></svg
-                    ><span class="truncate">Dashboard</span></a
-                  ><a
-                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
-                    href="relatorio-seguranca-alimentar.html"
-                    data-discover="true"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-clipboard-check w-3.5 h-3.5 mr-2.5 text-white/40"
-                    >
-                      <rect
-                        width="8"
-                        height="4"
-                        x="8"
-                        y="2"
-                        rx="1"
-                        ry="1"
-                      ></rect>
-                      <path
-                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
-                      ></path>
-                      <path d="m9 14 2 2 4-4"></path></svg
-                    ><span class="truncate"
-                      >Relatório de Segurança Alimentar</span
-                    ></a
-                  ><a
-                    aria-current="page"
-                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 bg-[#D93030]/20 text-white"
-                    href="eco-flamboyant.html"
-                    data-discover="true"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-wrench w-3.5 h-3.5 mr-2.5 text-[#D93030]"
-                    >
-                      <path
-                        d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
-                      ></path></svg
-                    ><span class="truncate">Eco Flamboyant</span
-                    ><span
-                      class="ml-auto w-1 h-1 rounded-full bg-[#D93030]"
-                    ></span></a
-                  ><a
-                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
-                    href="orientacao-educativa.html"
-                    data-discover="true"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-bell-ring w-3.5 h-3.5 mr-2.5 text-white/40"
-                    >
-                      <path d="M10.268 21a2 2 0 0 0 3.464 0"></path>
-                      <path d="M22 8c0-2.3-.8-4.3-2-6"></path>
-                      <path
-                        d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"
-                      ></path>
-                      <path d="M4 2C2.8 3.7 2 5.7 2 8"></path></svg
-                    ><span class="truncate">Orientação Educativa</span></a
-                  ><a
-                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
-                    href="relatorios.html"
-                    data-discover="true"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-chart-column w-3.5 h-3.5 mr-2.5 text-white/40"
-                    >
-                      <path d="M3 3v16a2 2 0 0 0 2 2h16"></path>
-                      <path d="M18 17V9"></path>
-                      <path d="M13 17V5"></path>
-                      <path d="M8 17v-3"></path></svg
-                    ><span class="truncate">Relatórios</span></a
-                  >
-                </div>
-              </div>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-circle-alert w-4 h-4"
-                  >
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" x2="12" y1="8" y2="12"></line>
-                    <line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span
-                ><span class="truncate">SINISTROS</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-megaphone w-4 h-4"
-                  >
-                    <path d="m3 11 18-5v12L3 14v-3z"></path>
-                    <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg></span
-                ><span class="truncate">MARKETING</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-dollar-sign w-4 h-4"
-                  >
-                    <line x1="12" x2="12" y1="2" y2="22"></line>
-                    <path
-                      d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
-                    ></path></svg></span
-                ><span class="truncate">COMERCIAL</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-info w-4 h-4"
-                  >
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 16v-4"></path>
-                    <path d="M12 8h.01"></path></svg></span
-                ><span class="truncate">INSTITUCIONAL</span>
-              </div>
-            </nav>
-            <div
-              class="p-3 border-t border-[#a43030] dark:border-[#4a1515] space-y-1 flex-shrink-0"
-            >
-              <div
-                class="flex items-center px-3 py-2 rounded-lg bg-white/5 mb-2"
-              >
-                <div
-                  class="w-8 h-8 rounded-full bg-[#C8A882] text-[#8B1A1A] font-bold flex items-center justify-center text-xs flex-shrink-0"
-                >
-                  GR
-                </div>
-                <div class="ml-2.5 min-w-0">
-                  <p
-                    class="text-white text-xs font-medium leading-tight truncate"
-                  >
-                    Gerência de Relacionamento
-                  </p>
-                  <p class="text-white/50 text-[10px] truncate">
-                    JP Mall Operações
-                  </p>
-                </div>
-              </div>
-              <button
-                class="flex items-center w-full px-3 py-2.5 text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-log-out w-4 h-4 flex-shrink-0 mr-2.5"
-                >
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                  <polyline points="16 17 21 12 16 7"></polyline>
-                  <line x1="21" x2="9" y1="12" y2="12"></line></svg
-                >Sair
-              </button>
-            </div>
-          </div>
-          <button
-            class="absolute -right-3 top-6 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-full p-1 shadow-md text-gray-500 hover:text-gray-900 dark:hover:text-white z-50 transition-transform"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-chevron-left w-4 h-4"
-            >
-              <path d="m15 18-6-6 6-6"></path>
-            </svg>
-          </button>
-        </aside>
-        <aside
-          class="fixed top-0 left-0 h-full w-72 bg-[#8B1A1A] dark:bg-[#2a0a0a] z-50 md:hidden flex flex-col transform transition-transform duration-300 ease-in-out shadow-2xl -translate-x-full"
-        >
-          <button
-            class="absolute top-4 right-4 p-1.5 text-white/60 hover:text-white rounded-lg hover:bg-white/10"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-x w-5 h-5"
-            >
-              <path d="M18 6 6 18"></path>
-              <path d="m6 6 12 12"></path>
-            </svg>
-          </button>
-          <div class="flex flex-col h-full overflow-hidden">
-            <div
-              class="h-16 flex items-center px-5 border-b border-[#a43030] dark:border-[#4a1515] flex-shrink-0 justify-between"
-            >
-              <div class="flex items-center">
-                <div
-                  class="w-8 h-8 rounded-lg bg-[#C8A882] flex items-center justify-center flex-shrink-0 mr-3"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-building2 lucide-building-2 w-4 h-4 text-[#8B1A1A]"
-                  >
-                    <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path>
-                    <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
-                    <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path>
-                    <path d="M10 6h4"></path>
-                    <path d="M10 10h4"></path>
-                    <path d="M10 14h4"></path>
-                    <path d="M10 18h4"></path>
-                  </svg>
-                </div>
-                <div class="min-w-0">
-                  <p
-                    class="text-white font-bold text-sm leading-tight tracking-wide truncate"
-                  >
-                    JP Mall
-                  </p>
-                  <p
-                    class="text-[#C8A882] text-[10px] font-bold uppercase tracking-widest opacity-90 truncate"
-                  >
-                    Operações
-                  </p>
-                </div>
-              </div>
-            </div>
-            <nav class="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
-              <p
-                class="px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-white/30"
-              >
-                Módulos de Gestão
-              </p>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-store w-4 h-4"
-                  >
-                    <path
-                      d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"
-                    ></path>
-                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                    <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path>
-                    <path d="M2 7h20"></path>
-                    <path
-                      d="M22 7v3a2 2 0 0 1-2 2a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"
-                    ></path></svg></span
-                ><span class="truncate">LOJISTAS</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-graduation-cap w-4 h-4"
-                  >
-                    <path
-                      d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"
-                    ></path>
-                    <path d="M22 10v6"></path>
-                    <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg></span
-                ><span class="truncate">TREINAMENTOS</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-shield-check w-4 h-4"
-                  >
-                    <path
-                      d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
-                    ></path>
-                    <path d="m9 12 2 2 4-4"></path></svg></span
-                ><span class="truncate">SEGUROS</span>
-              </div>
-              <div class="space-y-1">
-                <button
-                  class="w-full group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 bg-white/10 text-white"
-                >
-                  <span
-                    class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 transition-colors mr-2.5 bg-[#D93030]"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-leafy-green w-4 h-4"
-                    >
-                      <path
-                        d="M2 22c1.25-1.5 2.13-3.3 2.13-5.32C4.13 12.38 7.31 8 11.5 8s7.37 4.38 7.37 8.68c0 2.02.88 3.82 2.13 5.32"
-                      ></path>
-                      <path d="M10 8c1.5-3 3.5-5 6-5s4.5 2 6 5"></path>
-                      <path
-                        d="M4 15c-1.5-2-2-4.5-2-7s2-5 5-5 5 2 5 5-2 5-8 7Z"
-                      ></path>
-                      <path
-                        d="M14 15c1.5-2 2-4.5 2-7s-2-5-5-5-5 2-5 5 2 5 8 7Z"
-                      ></path></svg></span
-                  ><span class="truncate">CONSERVAÇÃO &amp; RESÍDUOS</span
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-chevron-down ml-auto w-3.5 h-3.5 transition-transform duration-200 rotate-180"
-                  >
-                    <path d="m6 9 6 6 6-6"></path>
-                  </svg>
-                </button>
-                <div class="ml-4 pl-4 border-l border-white/10 space-y-1 mt-1">
-                  <a
-                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
-                    href="dashboard.html"
-                    data-discover="true"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-layout-dashboard w-3.5 h-3.5 mr-2.5 text-white/40"
-                    >
-                      <rect width="7" height="9" x="3" y="3" rx="1"></rect>
-                      <rect width="7" height="5" x="14" y="3" rx="1"></rect>
-                      <rect width="7" height="9" x="14" y="12" rx="1"></rect>
-                      <rect
-                        width="7"
-                        height="5"
-                        x="3"
-                        y="16"
-                        rx="1"
-                      ></rect></svg
-                    ><span class="truncate">Dashboard</span></a
-                  ><a
-                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
-                    href="relatorio-seguranca-alimentar.html"
-                    data-discover="true"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-clipboard-check w-3.5 h-3.5 mr-2.5 text-white/40"
-                    >
-                      <rect
-                        width="8"
-                        height="4"
-                        x="8"
-                        y="2"
-                        rx="1"
-                        ry="1"
-                      ></rect>
-                      <path
-                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
-                      ></path>
-                      <path d="m9 14 2 2 4-4"></path></svg
-                    ><span class="truncate"
-                      >Relatório de Segurança Alimentar</span
-                    ></a
-                  ><a
-                    aria-current="page"
-                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 bg-[#D93030]/20 text-white"
-                    href="eco-flamboyant.html"
-                    data-discover="true"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-wrench w-3.5 h-3.5 mr-2.5 text-[#D93030]"
-                    >
-                      <path
-                        d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
-                      ></path></svg
-                    ><span class="truncate">Eco Flamboyant</span
-                    ><span
-                      class="ml-auto w-1 h-1 rounded-full bg-[#D93030]"
-                    ></span></a
-                  ><a
-                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
-                    href="orientacao-educativa.html"
-                    data-discover="true"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-bell-ring w-3.5 h-3.5 mr-2.5 text-white/40"
-                    >
-                      <path d="M10.268 21a2 2 0 0 0 3.464 0"></path>
-                      <path d="M22 8c0-2.3-.8-4.3-2-6"></path>
-                      <path
-                        d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"
-                      ></path>
-                      <path d="M4 2C2.8 3.7 2 5.7 2 8"></path></svg
-                    ><span class="truncate">Orientação Educativa</span></a
-                  ><a
-                    class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white"
-                    href="relatorios.html"
-                    data-discover="true"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-chart-column w-3.5 h-3.5 mr-2.5 text-white/40"
-                    >
-                      <path d="M3 3v16a2 2 0 0 0 2 2h16"></path>
-                      <path d="M18 17V9"></path>
-                      <path d="M13 17V5"></path>
-                      <path d="M8 17v-3"></path></svg
-                    ><span class="truncate">Relatórios</span></a
-                  >
-                </div>
-              </div>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-circle-alert w-4 h-4"
-                  >
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" x2="12" y1="8" y2="12"></line>
-                    <line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span
-                ><span class="truncate">SINISTROS</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-megaphone w-4 h-4"
-                  >
-                    <path d="m3 11 18-5v12L3 14v-3z"></path>
-                    <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg></span
-                ><span class="truncate">MARKETING</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-dollar-sign w-4 h-4"
-                  >
-                    <line x1="12" x2="12" y1="2" y2="22"></line>
-                    <path
-                      d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
-                    ></path></svg></span
-                ><span class="truncate">COMERCIAL</span>
-              </div>
-              <div
-                class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed transition-all duration-150"
-              >
-                <span
-                  class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-info w-4 h-4"
-                  >
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 16v-4"></path>
-                    <path d="M12 8h.01"></path></svg></span
-                ><span class="truncate">INSTITUCIONAL</span>
-              </div>
-            </nav>
-            <div
-              class="p-3 border-t border-[#a43030] dark:border-[#4a1515] space-y-1 flex-shrink-0"
-            >
-              <div
-                class="flex items-center px-3 py-2 rounded-lg bg-white/5 mb-2"
-              >
-                <div
-                  class="w-8 h-8 rounded-full bg-[#C8A882] text-[#8B1A1A] font-bold flex items-center justify-center text-xs flex-shrink-0"
-                >
-                  GR
-                </div>
-                <div class="ml-2.5 min-w-0">
-                  <p
-                    class="text-white text-xs font-medium leading-tight truncate"
-                  >
-                    Gerência de Relacionamento
-                  </p>
-                  <p class="text-white/50 text-[10px] truncate">
-                    JP Mall Operações
-                  </p>
-                </div>
-              </div>
-              <button
-                class="flex items-center w-full px-3 py-2.5 text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-log-out w-4 h-4 flex-shrink-0 mr-2.5"
-                >
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                  <polyline points="16 17 21 12 16 7"></polyline>
-                  <line x1="21" x2="9" y1="12" y2="12"></line></svg
-                >Sair
-              </button>
-            </div>
-          </div>
-        </aside>
-        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
-          <header
-            class="h-16 bg-white dark:bg-[#252525] border-b border-gray-200 dark:border-gray-700/60 flex items-center justify-between px-4 md:px-6 z-[60] flex-shrink-0"
-          >
-            <div class="flex items-center gap-3">
-              <button
-                class="md:hidden p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-menu w-5 h-5"
-                >
-                  <line x1="4" x2="20" y1="12" y2="12"></line>
-                  <line x1="4" x2="20" y1="6" y2="6"></line>
-                  <line x1="4" x2="20" y1="18" y2="18"></line>
-                </svg>
-              </button>
-              <div class="hidden sm:flex items-center gap-1.5">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-building2 lucide-building-2 w-4 h-4 text-[#8B1A1A] dark:text-[#D93030]"
-                >
-                  <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path>
-                  <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
-                  <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path>
-                  <path d="M10 6h4"></path>
-                  <path d="M10 10h4"></path>
-                  <path d="M10 14h4"></path>
-                  <path d="M10 18h4"></path></svg
-                ><span
-                  class="text-sm font-bold text-[#8B1A1A] dark:text-gray-200 tracking-tight"
-                  >JP Mall</span
-                >
-              </div>
-            </div>
-            <div class="flex-1 max-w-lg mx-auto px-4 hidden md:block">
-              <div class="relative group cursor-pointer">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-search w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 group-hover:text-[#8B1A1A] dark:group-hover:text-[#D93030] transition-colors"
-                >
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <path d="m21 21-4.3-4.3"></path>
-                </svg>
-                <div
-                  class="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 rounded-xl transition-all group-hover:border-[#8B1A1A]/30 dark:group-hover:border-[#D93030]/30 group-hover:bg-white dark:group-hover:bg-[#2a2a2a] flex items-center justify-between"
-                >
-                  <span>Consultar lojista (LUC ou nome)...</span>
-                  <div class="flex items-center gap-1 opacity-40">
-                    <span
-                      class="text-[9px] font-bold border border-gray-300 dark:border-gray-600 rounded px-1 py-0.5"
-                      >ALT</span
-                    ><span
-                      class="text-[9px] font-bold border border-gray-300 dark:border-gray-600 rounded px-1 py-0.5"
-                      >S</span
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="relative">
-                <button
-                  class="relative p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700/60 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-bell w-5 h-5"
-                  >
-                    <path d="M10.268 21a2 2 0 0 0 3.464 0"></path>
-                    <path
-                      d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"
-                    ></path></svg
-                  ><span
-                    class="absolute top-2.5 right-2.5 w-2 h-2 bg-[#D93030] rounded-full ring-2 ring-white dark:ring-[#252525]"
-                  ></span>
-                </button>
-              </div>
-              <div
-                class="hidden sm:flex items-center border-l border-gray-200 dark:border-gray-700 pl-3 ml-1"
-              >
-                <button
-                  class="flex items-center gap-2.5 py-1.5 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/60 transition-colors min-h-[44px]"
-                >
-                  <div
-                    class="w-8 h-8 rounded-full bg-[#C8A882] dark:bg-[#a08560] text-[#8B1A1A] dark:text-white font-bold flex items-center justify-center text-xs"
-                  >
-                    GR
-                  </div>
-                  <div class="text-left hidden lg:block">
-                    <p
-                      class="text-xs font-medium text-gray-900 dark:text-gray-100 leading-tight"
-                    >
-                      Ger. de Relacionamento
-                    </p>
-                    <p class="text-[10px] text-gray-500 dark:text-gray-400">
-                      JP Mall Operações
-                    </p>
-                  </div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-chevron-down w-3.5 h-3.5 text-gray-400 hidden lg:block"
-                  >
-                    <path d="m6 9 6 6 6-6"></path>
-                  </svg>
-                </button>
-              </div>
-              <button
-                class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
-                title="Ativar tema escuro"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-moon w-5 h-5 transition-transform duration-200 rotate-0 hover:-rotate-12"
-                >
-                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-                </svg>
-              </button>
-            </div>
-          </header>
-          <main class="flex-1 overflow-y-auto">
-            <div class="max-w-7xl mx-auto p-6">
-              <div class="space-y-6">
-                <div
-                  class="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-                >
-                  <div>
-                    <h1
-                      class="text-2xl font-bold text-[#1F2937] dark:text-gray-100"
-                    >
-                      Manutenções &amp; Obras
-                    </h1>
-                    <p class="text-[#4B5563] dark:text-gray-400 mt-1 text-sm">
-                      Quadro de gerenciamento de ordens de manutenção com
-                      cálculo em tempo real.
-                    </p>
-                  </div>
-                  <button
-                    class="min-h-[44px] flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#8B1A1A] dark:bg-[#D93030] hover:bg-[#a43030] rounded-lg transition-colors shadow-sm self-start"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-plus w-4 h-4"
-                    >
-                      <path d="M5 12h14"></path>
-                      <path d="M12 5v14"></path></svg
-                    >Nova Ordem
-                  </button>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <button
-                    class="group text-left rounded-xl p-6 border transition-all bg-white dark:bg-[#252525] border-[#E5E7EB] dark:border-gray-800 hover:border-red-200 dark:hover:border-red-900/40 shadow-sm"
-                  >
-                    <div class="flex items-center justify-between">
-                      <div>
-                        <p
-                          class="text-xs font-bold text-[#4B5563] dark:text-gray-400 uppercase tracking-wider"
-                        >
-                          Ordens Pendentes
-                        </p>
-                        <p class="text-3xl font-black text-[#D93030] mt-1">4</p>
-                      </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-circle-alert w-8 h-8 text-gray-300 dark:text-gray-700"
-                      >
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" x2="12" y1="8" y2="12"></line>
-                        <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                      </svg>
-                    </div>
-                    <p
-                      class="text-[10px] text-gray-400 mt-4 font-medium uppercase tracking-tighter group-hover:text-[#D93030] transition-colors"
-                    >
-                      Clique para filtrar pendências →
-                    </p></button
-                  ><button
-                    class="group text-left rounded-xl p-6 border transition-all bg-white dark:bg-[#252525] border-[#E5E7EB] dark:border-gray-800 hover:border-green-200 dark:hover:border-green-900/40 shadow-sm"
-                  >
-                    <div class="flex items-center justify-between">
-                      <div>
-                        <p
-                          class="text-xs font-bold text-[#4B5563] dark:text-gray-400 uppercase tracking-wider"
-                        >
-                          Serviços Resolvidos
-                        </p>
-                        <p class="text-3xl font-black text-[#10B981] mt-1">1</p>
-                      </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-circle-check w-8 h-8 text-gray-300 dark:text-gray-700"
-                      >
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="m9 12 2 2 4-4"></path>
-                      </svg>
-                    </div>
-                    <p
-                      class="text-[10px] text-gray-400 mt-4 font-medium uppercase tracking-tighter group-hover:text-[#10B981] transition-colors"
-                    >
-                      Clique para filtrar concluídos →
-                    </p>
-                  </button>
-                </div>
-                <div
-                  class="flex flex-row flex-wrap items-center gap-4 bg-white dark:bg-[#252525] p-4 rounded-lg border border-slate-300 dark:border-slate-700/60 shadow-sm"
-                >
-                  <div class="relative flex-grow md:flex-1 group">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-search w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 group-focus-within:text-[#D93030] transition-colors"
-                    >
-                      <circle cx="11" cy="11" r="8"></circle>
-                      <path d="m21 21-4.3-4.3"></path></svg
-                    ><input
-                      type="text"
-                      placeholder="Buscar ordem..."
-                      class="w-full h-10 pl-10 pr-4 text-sm bg-transparent border border-slate-300 dark:border-slate-700 text-gray-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D93030] transition-all"
-                      value=""
-                    />
-                  </div>
-                  <select
-                    class="h-10 bg-transparent border border-slate-300 dark:border-slate-700 text-sm text-gray-700 dark:text-gray-300 rounded-lg px-3 focus:outline-none focus:ring-2 focus:ring-[#D93030] transition-all cursor-pointer font-medium"
-                  >
-                    <option value="Todos">Todos os Status</option>
-                    <option value="Pendentes">Pendentes</option>
-                    <option value="Resolvidos">Resolvidos</option></select
-                  ><select
-                    class="h-10 bg-transparent border border-slate-300 dark:border-slate-700 text-sm text-gray-700 dark:text-gray-300 rounded-lg px-3 focus:outline-none focus:ring-2 focus:ring-[#D93030] transition-all cursor-pointer font-medium"
-                  >
-                    <option value="Todos">Todos os Riscos</option>
-                    <option value="Baixo">Baixo</option>
-                    <option value="Médio">Médio</option>
-                    <option value="Alto">Alto</option>
-                    <option value="Crítico">Crítico</option>
-                  </select>
-                </div>
-                <div
-                  class="bg-white dark:bg-[#252525] rounded-lg border border-[#E5E7EB] dark:border-gray-700/60 overflow-hidden"
-                >
-                  <div
-                    class="divide-y divide-[#E5E7EB] dark:divide-gray-700/50"
-                  >
-                    <div
-                      id="maintenance-card-MNT-2891"
-                      class="px-5 py-4 group cursor-pointer transition-all duration-500 bg-white dark:bg-[#252525] hover:bg-[#F7F4EF] dark:hover:bg-[#2a2020]"
-                    >
-                      <div class="flex items-start gap-4">
-                        <div
-                          class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 bg-gray-100 dark:bg-gray-800 text-gray-500"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="lucide lucide-wrench w-5 h-5"
-                          >
-                            <path
-                              d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
-                            ></path>
-                          </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                          <div
-                            class="flex flex-wrap items-start justify-between gap-2"
-                          >
-                            <div>
-                              <div
-                                class="flex flex-wrap items-center gap-2 mb-0.5"
-                              >
-                                <span
-                                  class="text-sm font-bold text-[#1F2937] dark:text-gray-100"
-                                  >MNT-2891</span
-                                ><span
-                                  class="text-sm font-medium text-[#4B5563] dark:text-gray-300"
-                                  >- [Elétrica] Fiação exposta no quadro
-                                  secundário</span
-                                ><span
-                                  class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-red-50 dark:bg-red-900/20 text-[#D93030] dark:text-red-400 border border-red-200 dark:border-red-800/40"
-                                  >Crítico</span
-                                ><span
-                                  class="text-xs px-2 py-0.5 rounded bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 font-medium"
-                                  >Corretiva</span
-                                >
-                              </div>
-                              <div
-                                class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2"
-                              >
-                                <span
-                                  class="flex items-center gap-1 text-xs text-[#4B5563] dark:text-gray-400"
-                                  ><svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-map-pin w-3 h-3"
-                                  >
-                                    <path
-                                      d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"
-                                    ></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                  </svg>
-                                  LUC 3001 - Louis Vuitton</span
-                                ><span
-                                  class="flex items-center gap-1 text-xs font-medium text-[#4B5563] dark:text-gray-400"
-                                  ><svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-calendar-days w-3 h-3"
-                                  >
-                                    <path d="M8 2v4"></path>
-                                    <path d="M16 2v4"></path>
-                                    <rect
-                                      width="18"
-                                      height="18"
-                                      x="3"
-                                      y="4"
-                                      rx="2"
-                                    ></rect>
-                                    <path d="M3 10h18"></path>
-                                    <path d="M8 14h.01"></path>
-                                    <path d="M12 14h.01"></path>
-                                    <path d="M16 14h.01"></path>
-                                    <path d="M8 18h.01"></path>
-                                    <path d="M12 18h.01"></path>
-                                    <path d="M16 18h.01"></path>
-                                  </svg>
-                                  Prazo: 24/04/2026</span
-                                >
-                              </div>
-                            </div>
-                            <div class="flex items-center gap-4 flex-shrink-0">
-                              <div
-                                class="flex flex-col items-end gap-1 cursor-pointer"
-                                title="Clique para avançar o status"
-                              >
-                                <span
-                                  class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-orange-50 dark:bg-orange-900/20 text-[#F59E0B] dark:text-orange-400 border border-orange-200 dark:border-orange-800/40"
-                                  >PENDENTE</span
-                                ><span
-                                  class="text-[10px] text-gray-400 hover:text-gray-600 underline mt-1"
-                                  >Alterar</span
-                                >
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      id="maintenance-card-MNT-2892"
-                      class="px-5 py-4 group cursor-pointer transition-all duration-500 bg-[#F3F4F6] dark:bg-[#222222] hover:bg-[#F7F4EF] dark:hover:bg-[#2a2020]"
-                    >
-                      <div class="flex items-start gap-4">
-                        <div
-                          class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 bg-gray-100 dark:bg-gray-800 text-gray-500"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="lucide lucide-wrench w-5 h-5"
-                          >
-                            <path
-                              d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
-                            ></path>
-                          </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                          <div
-                            class="flex flex-wrap items-start justify-between gap-2"
-                          >
-                            <div>
-                              <div
-                                class="flex flex-wrap items-center gap-2 mb-0.5"
-                              >
-                                <span
-                                  class="text-sm font-bold text-[#1F2937] dark:text-gray-100"
-                                  >MNT-2892</span
-                                ><span
-                                  class="text-sm font-medium text-[#4B5563] dark:text-gray-300"
-                                  >- [Hidráulica] Vazamento em tubulação de 50mm
-                                  no estoque</span
-                                ><span
-                                  class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-800/40"
-                                  >Alto</span
-                                ><span
-                                  class="text-xs px-2 py-0.5 rounded bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 font-medium"
-                                  >Corretiva</span
-                                >
-                              </div>
-                              <div
-                                class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2"
-                              >
-                                <span
-                                  class="flex items-center gap-1 text-xs text-[#4B5563] dark:text-gray-400"
-                                  ><svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-map-pin w-3 h-3"
-                                  >
-                                    <path
-                                      d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"
-                                    ></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                  </svg>
-                                  LUC 1003 - Riachuelo</span
-                                ><span
-                                  class="flex items-center gap-1 text-xs font-medium text-[#4B5563] dark:text-gray-400"
-                                  ><svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-calendar-days w-3 h-3"
-                                  >
-                                    <path d="M8 2v4"></path>
-                                    <path d="M16 2v4"></path>
-                                    <rect
-                                      width="18"
-                                      height="18"
-                                      x="3"
-                                      y="4"
-                                      rx="2"
-                                    ></rect>
-                                    <path d="M3 10h18"></path>
-                                    <path d="M8 14h.01"></path>
-                                    <path d="M12 14h.01"></path>
-                                    <path d="M16 14h.01"></path>
-                                    <path d="M8 18h.01"></path>
-                                    <path d="M12 18h.01"></path>
-                                    <path d="M16 18h.01"></path>
-                                  </svg>
-                                  Prazo: 25/04/2026</span
-                                >
-                              </div>
-                            </div>
-                            <div class="flex items-center gap-4 flex-shrink-0">
-                              <div
-                                class="flex flex-col items-end gap-1 cursor-pointer"
-                                title="Clique para avançar o status"
-                              >
-                                <span
-                                  class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-orange-50 dark:bg-orange-900/20 text-[#F59E0B] dark:text-orange-400 border border-orange-200 dark:border-orange-800/40"
-                                  >PENDENTE</span
-                                ><span
-                                  class="text-[10px] text-gray-400 hover:text-gray-600 underline mt-1"
-                                  >Alterar</span
-                                >
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      id="maintenance-card-MNT-2893"
-                      class="px-5 py-4 group cursor-pointer transition-all duration-500 bg-white dark:bg-[#252525] hover:bg-[#F7F4EF] dark:hover:bg-[#2a2020]"
-                    >
-                      <div class="flex items-start gap-4">
-                        <div
-                          class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 bg-gray-100 dark:bg-gray-800 text-gray-500"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="lucide lucide-wrench w-5 h-5"
-                          >
-                            <path
-                              d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
-                            ></path>
-                          </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                          <div
-                            class="flex flex-wrap items-start justify-between gap-2"
-                          >
-                            <div>
-                              <div
-                                class="flex flex-wrap items-center gap-2 mb-0.5"
-                              >
-                                <span
-                                  class="text-sm font-bold text-[#1F2937] dark:text-gray-100"
-                                  >MNT-2893</span
-                                ><span
-                                  class="text-sm font-medium text-[#4B5563] dark:text-gray-300"
-                                  >- [Hidráulica] Infiltração na parede lateral
-                                  do provador</span
-                                ><span
-                                  class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-yellow-50 dark:bg-yellow-900/20 text-[#F59E0B] dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800/40"
-                                  >Médio</span
-                                ><span
-                                  class="text-xs px-2 py-0.5 rounded bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 font-medium"
-                                  >Corretiva</span
-                                >
-                              </div>
-                              <div
-                                class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2"
-                              >
-                                <span
-                                  class="flex items-center gap-1 text-xs text-[#4B5563] dark:text-gray-400"
-                                  ><svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-map-pin w-3 h-3"
-                                  >
-                                    <path
-                                      d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"
-                                    ></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                  </svg>
-                                  LUC 1003 - Riachuelo</span
-                                ><span
-                                  class="flex items-center gap-1 text-xs font-medium text-[#4B5563] dark:text-gray-400"
-                                  ><svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-calendar-days w-3 h-3"
-                                  >
-                                    <path d="M8 2v4"></path>
-                                    <path d="M16 2v4"></path>
-                                    <rect
-                                      width="18"
-                                      height="18"
-                                      x="3"
-                                      y="4"
-                                      rx="2"
-                                    ></rect>
-                                    <path d="M3 10h18"></path>
-                                    <path d="M8 14h.01"></path>
-                                    <path d="M12 14h.01"></path>
-                                    <path d="M16 14h.01"></path>
-                                    <path d="M8 18h.01"></path>
-                                    <path d="M12 18h.01"></path>
-                                    <path d="M16 18h.01"></path>
-                                  </svg>
-                                  Prazo: 28/04/2026</span
-                                >
-                              </div>
-                            </div>
-                            <div class="flex items-center gap-4 flex-shrink-0">
-                              <div
-                                class="flex flex-col items-end gap-1 cursor-pointer"
-                                title="Clique para avançar o status"
-                              >
-                                <span
-                                  class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-orange-50 dark:bg-orange-900/20 text-[#F59E0B] dark:text-orange-400 border border-orange-200 dark:border-orange-800/40"
-                                  >PENDENTE</span
-                                ><span
-                                  class="text-[10px] text-gray-400 hover:text-gray-600 underline mt-1"
-                                  >Alterar</span
-                                >
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      id="maintenance-card-MNT-2894"
-                      class="px-5 py-4 group cursor-pointer transition-all duration-500 bg-[#F3F4F6] dark:bg-[#222222] hover:bg-[#F7F4EF] dark:hover:bg-[#2a2020]"
-                    >
-                      <div class="flex items-start gap-4">
-                        <div
-                          class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 bg-gray-100 dark:bg-gray-800 text-gray-500"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="lucide lucide-wrench w-5 h-5"
-                          >
-                            <path
-                              d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
-                            ></path>
-                          </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                          <div
-                            class="flex flex-wrap items-start justify-between gap-2"
-                          >
-                            <div>
-                              <div
-                                class="flex flex-wrap items-center gap-2 mb-0.5"
-                              >
-                                <span
-                                  class="text-sm font-bold text-[#1F2937] dark:text-gray-100"
-                                  >MNT-2894</span
-                                ><span
-                                  class="text-sm font-medium text-[#4B5563] dark:text-gray-300"
-                                  >- [Estrutura] Fissura vertical em pilar
-                                  externo</span
-                                ><span
-                                  class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-yellow-50 dark:bg-yellow-900/20 text-[#F59E0B] dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800/40"
-                                  >Médio</span
-                                ><span
-                                  class="text-xs px-2 py-0.5 rounded bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 font-medium"
-                                  >Corretiva</span
-                                >
-                              </div>
-                              <div
-                                class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2"
-                              >
-                                <span
-                                  class="flex items-center gap-1 text-xs text-[#4B5563] dark:text-gray-400"
-                                  ><svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-map-pin w-3 h-3"
-                                  >
-                                    <path
-                                      d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"
-                                    ></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                  </svg>
-                                  LUC 3002 - Gucci</span
-                                ><span
-                                  class="flex items-center gap-1 text-xs font-medium text-red-500"
-                                  ><svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-calendar-days w-3 h-3"
-                                  >
-                                    <path d="M8 2v4"></path>
-                                    <path d="M16 2v4"></path>
-                                    <rect
-                                      width="18"
-                                      height="18"
-                                      x="3"
-                                      y="4"
-                                      rx="2"
-                                    ></rect>
-                                    <path d="M3 10h18"></path>
-                                    <path d="M8 14h.01"></path>
-                                    <path d="M12 14h.01"></path>
-                                    <path d="M16 14h.01"></path>
-                                    <path d="M8 18h.01"></path>
-                                    <path d="M12 18h.01"></path>
-                                    <path d="M16 18h.01"></path>
-                                  </svg>
-                                  Prazo: 05/05/2026</span
-                                >
-                              </div>
-                            </div>
-                            <div class="flex items-center gap-4 flex-shrink-0">
-                              <div
-                                class="flex flex-col items-end gap-1 cursor-pointer"
-                                title="Clique para avançar o status"
-                              >
-                                <span
-                                  class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-orange-50 dark:bg-orange-900/20 text-[#F59E0B] dark:text-orange-400 border border-orange-200 dark:border-orange-800/40"
-                                  >PENDENTE</span
-                                ><span
-                                  class="text-[10px] text-gray-400 hover:text-gray-600 underline mt-1"
-                                  >Alterar</span
-                                >
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      id="maintenance-card-MNT-2895"
-                      class="px-5 py-4 group cursor-pointer transition-all duration-500 bg-white dark:bg-[#252525] hover:bg-[#F7F4EF] dark:hover:bg-[#2a2020]"
-                    >
-                      <div class="flex items-start gap-4">
-                        <div
-                          class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 bg-gray-100 dark:bg-gray-800 text-gray-500"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="lucide lucide-wrench w-5 h-5"
-                          >
-                            <path
-                              d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
-                            ></path>
-                          </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                          <div
-                            class="flex flex-wrap items-start justify-between gap-2"
-                          >
-                            <div>
-                              <div
-                                class="flex flex-wrap items-center gap-2 mb-0.5"
-                              >
-                                <span
-                                  class="text-sm font-bold text-[#1F2937] dark:text-gray-100"
-                                  >MNT-2895</span
-                                ><span
-                                  class="text-sm font-medium text-[#4B5563] dark:text-gray-300"
-                                  >- [Fachada] Placa de identificação com
-                                  iluminação falhando</span
-                                ><span
-                                  class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-green-50 dark:bg-green-900/20 text-[#10B981] dark:text-green-400 border border-green-200 dark:border-green-800/40"
-                                  >Baixo</span
-                                ><span
-                                  class="text-xs px-2 py-0.5 rounded bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 font-medium"
-                                  >Corretiva</span
-                                >
-                              </div>
-                              <div
-                                class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2"
-                              >
-                                <span
-                                  class="flex items-center gap-1 text-xs text-[#4B5563] dark:text-gray-400"
-                                  ><svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-map-pin w-3 h-3"
-                                  >
-                                    <path
-                                      d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"
-                                    ></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                  </svg>
-                                  LUC 3002 - Gucci</span
-                                ><span
-                                  class="flex items-center gap-1 text-xs font-medium text-[#4B5563] dark:text-gray-400"
-                                  ><svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-calendar-days w-3 h-3"
-                                  >
-                                    <path d="M8 2v4"></path>
-                                    <path d="M16 2v4"></path>
-                                    <rect
-                                      width="18"
-                                      height="18"
-                                      x="3"
-                                      y="4"
-                                      rx="2"
-                                    ></rect>
-                                    <path d="M3 10h18"></path>
-                                    <path d="M8 14h.01"></path>
-                                    <path d="M12 14h.01"></path>
-                                    <path d="M16 14h.01"></path>
-                                    <path d="M8 18h.01"></path>
-                                    <path d="M12 18h.01"></path>
-                                    <path d="M16 18h.01"></path>
-                                  </svg>
-                                  Prazo: 27/04/2026</span
-                                >
-                              </div>
-                            </div>
-                            <div class="flex items-center gap-4 flex-shrink-0">
-                              <div
-                                class="flex flex-col items-end gap-1 cursor-pointer"
-                                title="Clique para avançar o status"
-                              >
-                                <span
-                                  class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 dark:bg-green-900/20 text-[#10B981] dark:text-green-400 border border-green-200 dark:border-green-800/40"
-                                  >RESOLVIDO</span
-                                ><span
-                                  class="text-[10px] text-gray-400 hover:text-gray-600 underline mt-1"
-                                  >Alterar</span
-                                >
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </main>
+  <!-- DESKTOP SIDEBAR -->
+  <aside id="desktop-sidebar" class="hidden md:flex w-64 bg-[#8B1A1A] dark:bg-[#2a0a0a] flex-col flex-shrink-0 shadow-xl transition-all duration-300 ease-in-out relative">
+    <button id="collapse-btn" class="absolute -right-3 top-6 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-full p-1 shadow-md text-gray-500 hover:text-gray-900 dark:hover:text-white z-50">
+      <svg viewBox="0 0 24 24" id="collapse-icon-left" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      <svg viewBox="0 0 24 24" id="collapse-icon-right" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+    <div id="sidebar-inner" class="flex flex-col h-full overflow-hidden">
+      <div class="h-16 flex items-center px-5 border-b border-[#a43030] dark:border-[#4a1515] flex-shrink-0 justify-between">
+        <div class="flex items-center">
+          <div class="w-8 h-8 rounded-lg bg-[#C8A882] flex items-center justify-center flex-shrink-0 mr-3"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="#8B1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg></div>
+          <div id="logo-text" class="min-w-0"><p class="text-white font-bold text-sm leading-tight tracking-wide truncate">JP Mall</p><p class="text-[#C8A882] text-[10px] font-bold uppercase tracking-widest opacity-90 truncate">Operações</p></div>
         </div>
       </div>
+      <nav class="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
+        <p id="nav-label" class="px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-white/30">Módulos de Gestão</p>
+        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg></span><span class="nav-item-label truncate">LOJISTAS</span></div>
+        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></span><span class="nav-item-label truncate">TREINAMENTOS</span></div>
+        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><span class="nav-item-label truncate">SEGUROS</span></div>
+        <div class="space-y-1">
+          <button class="nav-item w-full group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium bg-white/10 text-white">
+            <span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 mr-2.5 bg-[#D93030]"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-9.373 9.373a1 1 0 0 1-3.001-3L12 9"/><path d="m18 15 4-4"/><path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172v-.344a2 2 0 0 0-.586-1.414l-1.657-1.657A6 6 0 0 0 12.516 3H9l1.243 1.243A6 6 0 0 1 12 8.485V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5"/></svg></span>
+            <span class="nav-item-label truncate">CONSERVAÇÃO</span>
+            <svg viewBox="0 0 24 24" class="ml-auto w-3.5 h-3.5 rotate-180 nav-item-label" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div id="conservacao-submenu" class="ml-4 pl-4 border-l border-white/10 space-y-1 mt-1">
+            <a href="dashboard.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>Dashboard</a>
+            <a href="relatorio-seguranca-alimentar.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>Segurança Alimentar</a>
+            <a href="eco-flamboyant.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium bg-[#D93030]/20 text-white"><svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-[#D93030]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>Eco-Flamboyant<span class="ml-auto w-1 h-1 rounded-full bg-[#D93030]"></span></a>
+            <a href="orientacao-educativa.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>Orientação Educativa</a>
+            <a href="relatorios.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>Relatórios</a>
+          </div>
+        </div>
+        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg></span><span class="nav-item-label truncate">SINISTROS</span></div>
+        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/><path d="M8 6v8"/></svg></span><span class="nav-item-label truncate">MARKETING</span></div>
+        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="nav-item-label truncate">COMERCIAL</span></div>
+        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span><span class="nav-item-label truncate">INSTITUCIONAL</span></div>
+      </nav>
+      <div class="p-3 border-t border-[#a43030] dark:border-[#4a1515] space-y-1 flex-shrink-0">
+        <div class="flex items-center px-3 py-2 rounded-lg bg-white/5 mb-2">
+          <div class="w-8 h-8 rounded-full bg-[#C8A882] text-[#8B1A1A] font-bold flex items-center justify-center text-xs flex-shrink-0">GR</div>
+          <div id="user-info" class="ml-2.5 min-w-0"><p class="text-white text-xs font-medium leading-tight truncate">Gerência de Relacionamento</p><p class="text-white/50 text-[10px] truncate">JP Mall Operações</p></div>
+        </div>
+        <a href="/templates/index.html" class="nav-item flex items-center w-full px-3 py-2.5 text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"><svg viewBox="0 0 24 24" class="w-4 h-4 flex-shrink-0 mr-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg><span class="nav-item-label">Sair</span></a>
+      </div>
     </div>
-  </body>
+  </aside>
+
+  <div id="mobile-overlay" class="hidden fixed inset-0 z-40 md:hidden"><div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div></div>
+  <aside id="mobile-sidebar" class="fixed top-0 left-0 h-full w-64 bg-[#8B1A1A] dark:bg-[#2a0a0a] z-50 md:hidden flex flex-col transform transition-transform duration-300 ease-in-out shadow-2xl -translate-x-full">
+    <button id="close-mobile-sidebar" class="absolute top-4 right-4 p-1.5 text-white/60 hover:text-white rounded-lg hover:bg-white/10"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    <div class="h-16 flex items-center px-5 border-b border-[#a43030] dark:border-[#4a1515]"><p class="text-white font-bold text-sm">JP Mall</p></div>
+    <nav class="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
+      <a href="dashboard.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Dashboard</a>
+      <a href="relatorio-seguranca-alimentar.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Segurança Alimentar</a>
+      <a href="eco-flamboyant.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium bg-[#D93030]/20 text-white">Eco-Flamboyant</a>
+      <a href="orientacao-educativa.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Orientação Educativa</a>
+      <a href="relatorios.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Relatórios</a>
+    </nav>
+    <div class="p-3 border-t border-[#a43030] dark:border-[#4a1515]"><a href="/templates/index.html" class="flex items-center px-3 py-2.5 text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-lg">Sair</a></div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    <header class="h-16 bg-white dark:bg-[#252525] border-b border-gray-200 dark:border-gray-700/60 flex items-center justify-between px-4 md:px-6 z-[60] flex-shrink-0">
+      <!-- Left -->
+      <div class="flex items-center gap-3">
+        <button id="open-mobile-sidebar" class="md:hidden p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+        <div class="hidden sm:flex items-center gap-1.5">
+          <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A] dark:text-[#D93030]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
+          <span class="text-sm font-bold text-[#8B1A1A] dark:text-gray-200 tracking-tight">JP Mall</span>
+        </div>
+      </div>
+      <!-- Center -->
+      <div class="flex-1 max-w-lg mx-auto px-4 hidden md:block">
+        <div class="relative group cursor-pointer">
+          <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 group-hover:text-[#8B1A1A] dark:group-hover:text-[#D93030] transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <div class="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 rounded-xl transition-all group-hover:border-[#8B1A1A]/30 dark:group-hover:border-[#D93030]/30 group-hover:bg-white dark:group-hover:bg-[#2a2a2a] flex items-center justify-between">
+            <span>Consultar lojista (LUC ou nome)...</span>
+            <div class="flex items-center gap-1 opacity-40">
+              <span class="text-[9px] font-bold border border-gray-300 dark:border-gray-600 rounded px-1 py-0.5">ALT</span>
+              <span class="text-[9px] font-bold border border-gray-300 dark:border-gray-600 rounded px-1 py-0.5">S</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right -->
+      <div class="flex items-center gap-2">
+        <!-- Bell -->
+        <button id="notif-btn" class="relative p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700/60 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        </button>
+        <!-- User -->
+        <div class="hidden sm:flex items-center border-l border-gray-200 dark:border-gray-700 pl-3 ml-1">
+          <button class="flex items-center gap-2.5 py-1.5 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/60 transition-colors min-h-[44px]">
+            <div class="w-8 h-8 rounded-full bg-[#C8A882] dark:bg-[#a08560] text-[#8B1A1A] dark:text-white font-bold flex items-center justify-center text-xs">GR</div>
+            <div class="text-left hidden lg:block">
+              <p class="text-xs font-medium text-gray-900 dark:text-gray-100 leading-tight">Ger. de Relacionamento</p>
+              <p class="text-[10px] text-gray-500 dark:text-gray-400">JP Mall Operações</p>
+            </div>
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gray-400 hidden lg:block" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" class="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer">
+          <svg viewBox="0 0 24 24" id="theme-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden dark:block"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          <svg viewBox="0 0 24 24" id="theme-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block dark:hidden"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto">
+      <div class="p-4 md:p-8 pb-24 max-w-[1600px] mx-auto space-y-8 md:space-y-12">
+
+        <!-- Page Header -->
+        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 class="text-2xl font-bold text-[#1F2937] dark:text-gray-100">Eco-Flamboyant</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Dashboard de Gestão Sustentável</p>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <button onclick="openModal('waste-modal')" class="min-h-[44px] flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#8B1A1A] bg-white border border-[#8B1A1A] dark:bg-transparent dark:text-white dark:border-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors shadow-sm cursor-pointer">
+              <svg viewBox="0 0 24 24" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              Lançar Resíduos
+            </button>
+            <button onclick="openModal('store-modal')" class="min-h-[44px] flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#8B1A1A] dark:bg-[#D93030] hover:bg-[#a43030] rounded-lg transition-colors shadow-sm cursor-pointer">
+              <svg viewBox="0 0 24 24" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg>
+              Cadastro de Participante
+            </button>
+            <button onclick="openModal('kit-modal')" class="min-h-[44px] flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-emerald-600 dark:bg-emerald-500 hover:bg-emerald-700 rounded-lg transition-colors shadow-sm cursor-pointer">
+              <svg viewBox="0 0 24 24" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              Registrar Kits (Cestas)
+            </button>
+          </div>
+        </header>
+
+        <!-- KPIs -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-gradient-to-br from-[#8B1A1A] to-[#631212] p-6 rounded-2xl border border-[#8B1A1A] shadow-xl flex items-center gap-5 text-white transform hover:scale-[1.02] transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20"><svg viewBox="0 0 24 24" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></div>
+            <div>
+              <p class="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] mb-1">Volume Total Geral</p>
+              <h4 id="kpi-total" class="text-3xl font-black">0.0 <span class="text-sm font-medium text-white/60 ml-1">kg</span></h4>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-[#252525] p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center gap-5 transform hover:scale-[1.02] transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400"><svg viewBox="0 0 24 24" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div>
+            <div>
+              <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Total Adubo</p>
+              <h4 id="kpi-adubo" class="text-3xl font-black text-gray-900 dark:text-gray-100">0.0 <span class="text-sm font-medium text-gray-400 ml-1">kg</span></h4>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-[#252525] p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center gap-5 transform hover:scale-[1.02] transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center text-amber-600 dark:text-amber-400"><svg viewBox="0 0 24 24" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg></div>
+            <div>
+              <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Total Descartado</p>
+              <h4 id="kpi-descarte" class="text-3xl font-black text-gray-900 dark:text-gray-100">0.0 <span class="text-sm font-medium text-gray-400 ml-1">kg</span></h4>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-[#252525] p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center gap-5 transform hover:scale-[1.02] transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-[#8B1A1A] dark:text-red-400"><svg viewBox="0 0 24 24" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div>
+              <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Lojas Participantes</p>
+              <h4 id="kpi-lojas" class="text-3xl font-black text-gray-900 dark:text-gray-100">0</h4>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-[#252525] p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center gap-5 transform hover:scale-[1.02] transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 dark:text-blue-400"><svg viewBox="0 0 24 24" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+            <div>
+              <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Taxa de Aproveitamento</p>
+              <h4 id="kpi-taxa" class="text-3xl font-black text-gray-900 dark:text-gray-100">0%</h4>
+            </div>
+          </div>
+          <div class="bg-gradient-to-br from-emerald-500 to-emerald-700 p-6 rounded-2xl border border-emerald-600 shadow-xl flex items-center gap-5 text-white transform hover:scale-[1.02] transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20"><svg viewBox="0 0 24 24" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/></svg></div>
+            <div>
+              <p class="text-[10px] font-black text-white/70 uppercase tracking-[0.2em] mb-1">Total de Kits (Cestas)</p>
+              <h4 id="kpi-kits" class="text-3xl font-black">0 <span class="text-sm font-medium text-white/60 ml-1">unid</span></h4>
+            </div>
+          </div>
+        </section>
+
+        <!-- Static Charts Mockups -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Chart 1 -->
+          <div class="bg-white dark:bg-[#252525] p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+            <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6 flex items-center gap-2">
+              <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              Volume de Resíduos (kg)
+            </h3>
+            <div class="h-[200px] w-full flex items-end justify-between gap-2 opacity-80 pt-4 border-l border-b border-gray-200 dark:border-gray-700 pb-2">
+              <div class="w-full bg-emerald-500/80 rounded-t-sm" style="height: 40%"></div>
+              <div class="w-full bg-amber-500/80 rounded-t-sm" style="height: 20%"></div>
+              <div class="w-full bg-emerald-500/80 rounded-t-sm" style="height: 60%"></div>
+              <div class="w-full bg-emerald-500/80 rounded-t-sm" style="height: 80%"></div>
+              <div class="w-full bg-amber-500/80 rounded-t-sm" style="height: 30%"></div>
+              <div class="w-full bg-emerald-500/80 rounded-t-sm" style="height: 90%"></div>
+            </div>
+            <div class="flex justify-between mt-2 text-[10px] text-gray-400 font-bold px-2"><span>10/05</span><span>15/05</span><span>20/05</span></div>
+          </div>
+          <!-- Chart 2 -->
+          <div class="bg-white dark:bg-[#252525] p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+            <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6 flex items-center gap-2">
+              <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Crescimento do Projeto (Lojas)
+            </h3>
+            <div class="h-[200px] w-full relative pt-4 border-l border-b border-gray-200 dark:border-gray-700 pb-2">
+              <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+                <polygon points="0,100 0,90 20,70 40,50 60,30 80,20 100,10 100,100" fill="url(#grad1)" opacity="0.3"></polygon>
+                <polyline points="0,90 20,70 40,50 60,30 80,20 100,10" fill="none" stroke="#8B1A1A" stroke-width="2"></polyline>
+                <defs><linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#8B1A1A;stop-opacity:1" /><stop offset="100%" style="stop-color:#8B1A1A;stop-opacity:0" /></linearGradient></defs>
+              </svg>
+            </div>
+            <div class="flex justify-between mt-2 text-[10px] text-gray-400 font-bold px-2"><span>Jan</span><span>Mar</span><span>Mai</span></div>
+          </div>
+          <!-- Chart 3 -->
+          <div class="bg-white dark:bg-[#252525] p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+            <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6 flex items-center gap-2">
+              <svg viewBox="0 0 24 24" class="w-4 h-4 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              Fluxo de Entrega de Kits
+            </h3>
+            <div class="h-[200px] w-full flex items-end justify-between gap-2 opacity-80 pt-4 border-l border-b border-gray-200 dark:border-gray-700 pb-2">
+              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 10%"></div>
+              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 30%"></div>
+              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 50%"></div>
+              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 40%"></div>
+              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 70%"></div>
+              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 90%"></div>
+            </div>
+            <div class="flex justify-between mt-2 text-[10px] text-gray-400 font-bold px-2"><span>10/05</span><span>15/05</span><span>20/05</span></div>
+          </div>
+        </section>
+
+        <!-- Navigation Tabs -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-2">
+          <button onclick="setTab('lojas')" id="tab-lojas" class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-[#8B1A1A]/5 border-[#8B1A1A] text-[#8B1A1A] dark:bg-[#8B1A1A]/10 dark:border-[#D93030] dark:text-[#D93030] shadow-sm ring-2 ring-[#8B1A1A]/10">
+            <div class="flex items-center gap-3">
+              <div class="tab-icon p-2.5 rounded-lg bg-[#8B1A1A]/10 text-[#8B1A1A] dark:text-[#D93030]"><svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg></div>
+              <div><p class="text-xs font-bold uppercase tracking-wider text-[inherit]">Lojas</p><p class="text-[10px] font-medium opacity-70">Participantes</p></div>
+            </div>
+            <span id="badge-lojas" class="px-2 py-0.5 text-xs font-bold rounded-full bg-[#8B1A1A] dark:bg-[#D93030] text-white">0</span>
+          </button>
+          <button onclick="setTab('residuos')" id="tab-residuos" class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700">
+            <div class="flex items-center gap-3">
+              <div class="tab-icon p-2.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-400"><svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></div>
+              <div><p class="text-xs font-bold uppercase tracking-wider text-[inherit]">Resíduos</p><p class="text-[10px] font-medium opacity-70">Histórico de Coleta</p></div>
+            </div>
+            <span id="badge-residuos" class="px-2 py-0.5 text-xs font-bold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">0</span>
+          </button>
+          <button onclick="setTab('kits')" id="tab-kits" class="p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left relative overflow-hidden cursor-pointer hover:shadow-md bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/30 text-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600 shadow-sm">
+            <div class="absolute top-0 right-0 w-12 h-12 bg-emerald-500/10 rounded-full blur-lg animate-pulse pointer-events-none"></div>
+            <div class="flex items-center gap-3">
+              <div class="p-2.5 rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400 animate-pulse"><svg viewBox="0 0 24 24" class="w-5 h-5 text-emerald-600 dark:text-emerald-400" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/></svg></div>
+              <div>
+                <p class="text-xs font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-300 flex items-center gap-1">Kits (Cestas)<span class="flex h-1.5 w-1.5 relative"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span></span></p>
+                <p class="text-[10px] text-emerald-600/70 dark:text-emerald-400/70 font-medium">Entrega de Cestas</p>
+              </div>
+            </div>
+            <span id="badge-kits" class="px-2.5 py-0.5 text-xs font-black rounded-full bg-emerald-600 text-white">0</span>
+          </button>
+        </div>
+
+        <!-- Content Area -->
+        <div class="bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
+          <div id="tab-content">
+            <!-- Dynamically populated by JS based on tab -->
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Cadastro -->
+  <div id="store-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+    <div class="bg-white dark:bg-[#252525] rounded-xl shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95">
+      <div class="flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-800">
+        <h2 class="text-xl font-bold text-[#1F2937] dark:text-gray-100 flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-5 h-5 text-[#8B1A1A] dark:text-[#D93030]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg>Novo Participante</h2>
+        <button onclick="closeModal('store-modal')" class="text-gray-400 hover:text-gray-600"><svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      </div>
+      <!-- INTEGRATION(codigo/app/controllers/lojas_controller.go): 
+           Correspondente à função utils.Insert_loja() do main.go -->
+      <form action="/api/lojas/criar" method="POST" onsubmit="handleStoreSubmit(event)" class="p-6 space-y-4">
+        <div class="space-y-1">
+          <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Selecionar Loja</label>
+          <select id="store-select" name="loja_id" required class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white">
+            <option value="">Selecione uma loja...</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data de Início</label>
+            <input type="date" id="store-start-date" name="data_inicio" required class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white">
+          </div>
+          <div class="space-y-1">
+            <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data de Saída (Opcional)</label>
+            <input type="date" id="store-end-date" name="data_saida" class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white">
+          </div>
+        </div>
+        <div class="flex justify-end gap-3 mt-6">
+          <button type="button" onclick="closeModal('store-modal')" class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Cancelar</button>
+          <button type="submit" class="px-6 py-2 text-sm font-bold text-white bg-[#8B1A1A] hover:bg-[#a43030] rounded-lg">Confirmar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Resíduos -->
+  <div id="waste-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+    <div class="bg-white dark:bg-[#252525] rounded-xl shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95">
+      <div class="flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-800">
+        <h2 class="text-xl font-bold text-[#1F2937] dark:text-gray-100 flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-5 h-5 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Recebimento de Resíduos</h2>
+        <button onclick="closeModal('waste-modal')" class="text-gray-400 hover:text-gray-600"><svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      </div>
+      <!-- INTEGRATION(codigo/app/controllers/residuos_controller.go): 
+           Rota para inserir novos resíduos gerados. -->
+      <form action="/api/residuos/lancar" method="POST" onsubmit="handleWasteSubmit(event)" class="p-6 space-y-4">
+        <div class="space-y-1">
+          <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Loja Participante</label>
+          <select id="waste-store" name="loja_id" required class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white"></select>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data Coleta</label>
+            <input type="date" id="waste-date" name="data" required class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+          </div>
+          <div class="space-y-1">
+            <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Peso Total (kg)</label>
+            <input type="number" id="waste-weight" name="peso" required step="0.1" min="0.1" class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+          </div>
+        </div>
+        <div class="space-y-1">
+          <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Destino</label>
+          <select id="waste-dest" name="destino" required class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+            <option value="Sim">Adubo (Horta)</option>
+            <option value="Nao">Descarte Comum</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-3 mt-6">
+          <button type="button" onclick="closeModal('waste-modal')" class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Cancelar</button>
+          <button type="submit" class="px-6 py-2 text-sm font-bold text-white bg-[#8B1A1A] hover:bg-[#a43030] rounded-lg">Confirmar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Kits -->
+  <div id="kit-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+    <div class="bg-white dark:bg-[#252525] rounded-xl shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95">
+      <div class="flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-800">
+        <h2 class="text-xl font-bold text-[#1F2937] dark:text-gray-100 flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-5 h-5 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Registrar Entrega de Kit</h2>
+        <button onclick="closeModal('kit-modal')" class="text-gray-400 hover:text-gray-600"><svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      </div>
+      <!-- INTEGRATION(codigo/app/controllers/kits_controller.go): 
+           Rota para registrar entrega de cesta. -->
+      <form action="/api/kits/registrar" method="POST" onsubmit="handleKitSubmit(event)" class="p-6 space-y-4">
+        <div class="space-y-1">
+          <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Loja Destinatária</label>
+          <select id="kit-store" name="loja_id" required class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white"></select>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data Entrega</label>
+            <input type="date" id="kit-date" name="data" required class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+          </div>
+          <div class="space-y-1">
+            <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Quantidade</label>
+            <input type="number" id="kit-qty" name="quantidade" required min="1" step="1" class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+          </div>
+        </div>
+        <div class="flex justify-end gap-3 mt-6">
+          <button type="button" onclick="closeModal('kit-modal')" class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Cancelar</button>
+          <button type="submit" class="px-6 py-2 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg">Confirmar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-4 right-4 z-[99999] flex flex-col gap-2 pointer-events-none"></div>
+
+  <script>
+    // Theme toggle
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      const next = isDark ? 'light' : 'dark';
+      document.documentElement.classList.toggle('dark', next === 'dark');
+      document.documentElement.classList.toggle('light', next !== 'dark');
+      document.documentElement.style.colorScheme = next;
+      localStorage.setItem('theme', next);
+    });
+
+    // Sidebar logic
+    document.getElementById('open-mobile-sidebar').addEventListener('click', () => { document.getElementById('mobile-sidebar').classList.remove('-translate-x-full'); document.getElementById('mobile-overlay').classList.remove('hidden'); });
+    document.getElementById('close-mobile-sidebar').addEventListener('click', () => { document.getElementById('mobile-sidebar').classList.add('-translate-x-full'); document.getElementById('mobile-overlay').classList.add('hidden'); });
+    document.getElementById('mobile-overlay').addEventListener('click', () => { document.getElementById('mobile-sidebar').classList.add('-translate-x-full'); document.getElementById('mobile-overlay').classList.add('hidden'); });
+
+    let collapsed = false;
+    const desktopSidebar = document.getElementById('desktop-sidebar');
+    const collapseBtn = document.getElementById('collapse-btn');
+    const iconLeft = document.getElementById('collapse-icon-left');
+    const iconRight = document.getElementById('collapse-icon-right');
+    const navItemLabels = document.querySelectorAll('.nav-item-label');
+    const logoText = document.getElementById('logo-text');
+    const userInfo = document.getElementById('user-info');
+    const navLabel = document.getElementById('nav-label');
+    const submenu = document.getElementById('conservacao-submenu');
+    
+    collapseBtn.addEventListener('click', () => {
+      collapsed = !collapsed;
+      if (collapsed) {
+        navItemLabels.forEach(el => el.classList.add('hidden'));
+        if (navLabel) navLabel.classList.add('hidden');
+        if (submenu) submenu.classList.add('hidden');
+        if (logoText) logoText.classList.add('hidden');
+        if (userInfo) userInfo.classList.add('hidden');
+        desktopSidebar.classList.remove('w-64');
+        desktopSidebar.classList.add('w-20');
+        iconLeft.classList.add('hidden');
+        iconRight.classList.remove('hidden');
+        document.querySelectorAll('.nav-item').forEach(el => {
+          el.classList.remove('px-3');
+          el.classList.add('justify-center', 'px-0');
+        });
+      } else {
+        desktopSidebar.classList.add('w-64');
+        desktopSidebar.classList.remove('w-20');
+        iconLeft.classList.remove('hidden');
+        iconRight.classList.add('hidden');
+        document.querySelectorAll('.nav-item').forEach(el => {
+          el.classList.add('px-3');
+          el.classList.remove('justify-center', 'px-0');
+        });
+        setTimeout(() => {
+          navItemLabels.forEach(el => el.classList.remove('hidden'));
+          if (navLabel) navLabel.classList.remove('hidden');
+          if (submenu) submenu.classList.remove('hidden');
+          if (logoText) logoText.classList.remove('hidden');
+          if (userInfo) userInfo.classList.remove('hidden');
+        }, 300);
+      }
+    });
+
+    // INTEGRATION: Dados virão do backend Go via fetch()
+    // GET  /api/eco/participantes       → lista de participantes
+    // POST /api/eco/participantes/criar  → criar participante
+    // GET  /api/eco/residuos             → lista de resíduos
+    // POST /api/eco/residuos/lancar       → lançar resíduo
+    // GET  /api/eco/kits                 → lista de kits
+    // POST /api/eco/kits/registrar        → registrar kit
+    // PATCH /api/eco/participantes/toggle-status → alterar status
+
+    let participantes = [];
+    let residuos = [];
+    let kits = [];
+    let UNIDADES = [];
+
+    async function loadLojas() {
+      try { const r = await fetch('/api/lojas'); if (r.ok) UNIDADES = await r.json(); else UNIDADES = []; } catch { UNIDADES = []; }
+      renderData();
+    }
+    async function loadParticipantes() {
+      try { const r = await fetch('/api/eco/participantes'); if (r.ok) participantes = await r.json(); else participantes = []; } catch { participantes = []; }
+      renderData();
+    }
+    async function loadResiduos() {
+      try { const r = await fetch('/api/eco/residuos'); if (r.ok) residuos = await r.json(); else residuos = []; } catch { residuos = []; }
+      renderData();
+    }
+    async function loadKits() {
+      try { const r = await fetch('/api/eco/kits'); if (r.ok) kits = await r.json(); else kits = []; } catch { kits = []; }
+      renderData();
+    }
+    async function loadAll() { await Promise.all([loadLojas(), loadParticipantes(), loadResiduos(), loadKits()]); }
+
+    // Modal helpers
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    // Forms
+    async function handleStoreSubmit(e) {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const body = Object.fromEntries(fd.entries());
+      try {
+        const r = await fetch('/api/eco/participantes/criar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        if (r.ok) { closeModal('store-modal'); e.target.reset(); await loadAll(); }
+      } catch { showToast('Erro ao cadastrar participante.', 'error'); }
+    }
+
+    async function handleWasteSubmit(e) {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const body = Object.fromEntries(fd.entries());
+      body.peso = parseFloat(body.peso);
+      body.destino = document.getElementById('waste-dest').value === 'Sim';
+      try {
+        const r = await fetch('/api/eco/residuos/lancar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        if (r.ok) { closeModal('waste-modal'); e.target.reset(); await loadAll(); setTab('residuos'); }
+      } catch { showToast('Erro ao lançar resíduo.', 'error'); }
+    }
+
+    async function handleKitSubmit(e) {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const body = Object.fromEntries(fd.entries());
+      body.quantidade = parseInt(body.quantidade);
+      try {
+        const r = await fetch('/api/eco/kits/registrar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        if (r.ok) { closeModal('kit-modal'); e.target.reset(); await loadAll(); setTab('kits'); }
+      } catch { showToast('Erro ao registrar kit.', 'error'); }
+    }
+
+    async function toggleStatus(id) {
+      try {
+        const r = await fetch(`/api/eco/participantes/toggle-status?id=${id}`, { method: 'PATCH' });
+        if (r.ok) await loadAll();
+      } catch { showToast('Erro ao alterar status.', 'error'); }
+    }
+
+    let activeTab = 'lojas';
+
+    function setTab(tab) {
+      activeTab = tab;
+      const tLojas = document.getElementById('tab-lojas');
+      const tResiduos = document.getElementById('tab-residuos');
+      const tKits = document.getElementById('tab-kits');
+      
+      const unselectedClasses = "p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700".split(" ");
+      const selectedLojas = "p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-[#8B1A1A]/5 border-[#8B1A1A] text-[#8B1A1A] dark:bg-[#8B1A1A]/10 dark:border-[#D93030] dark:text-[#D93030] shadow-sm ring-2 ring-[#8B1A1A]/10".split(" ");
+      
+      tLojas.className = ''; tLojas.classList.add(...(tab === 'lojas' ? selectedLojas : unselectedClasses));
+      tResiduos.className = ''; tResiduos.classList.add(...(tab === 'residuos' ? selectedLojas : unselectedClasses));
+      
+      const kitsUnselected = "p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left relative overflow-hidden cursor-pointer hover:shadow-md bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/30 text-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600 shadow-sm".split(" ");
+      const kitsSelected = "p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left relative overflow-hidden cursor-pointer hover:shadow-md bg-emerald-100/90 border-emerald-600 text-emerald-900 dark:bg-emerald-900/30 dark:border-emerald-400 dark:text-emerald-200 shadow-md ring-2 ring-emerald-500/30 scale-[1.02]".split(" ");
+      tKits.className = ''; tKits.classList.add(...(tab === 'kits' ? kitsSelected : kitsUnselected));
+
+      renderTabContent();
+    }
+
+    function renderTabContent() {
+      const c = document.getElementById('tab-content');
+      if (activeTab === 'lojas') {
+        c.innerHTML = `
+          <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
+            <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>Lojas Participantes</h3>
+          </div>
+          <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+            <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja / LUC</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Início</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Status</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Ações</th></tr></thead>
+            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+              ${participantes.map(p => `
+                <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
+                  <td class="px-6 py-4"><div class="text-sm font-bold text-gray-900 dark:text-gray-100">${p.lojaNome}</div><div class="text-xs text-gray-500">LUC ${p.lojaId}</div></td>
+                  <td class="px-6 py-4 text-xs text-gray-600 dark:text-gray-400">${new Date(p.dataInicio).toLocaleDateString('pt-BR')}</td>
+                  <td class="px-6 py-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.status === 'Ativo' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-gray-100 text-gray-600'}">${p.status}</span></td>
+                  <td class="px-6 py-4"><button onclick="toggleStatus(${p.id})" class="px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${p.status === 'Ativo' ? 'bg-red-50 text-red-600 border-red-100 hover:bg-red-600 hover:text-white' : 'bg-green-50 text-green-600 border-green-100 hover:bg-green-600 hover:text-white'}">${p.status === 'Ativo' ? 'Inativar' : 'Ativar'}</button></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table></div>`;
+      } else if (activeTab === 'residuos') {
+        const atvRes = residuos.filter(r => participantes.find(p => p.lojaId === r.loja_id && p.status === 'Ativo'));
+        c.innerHTML = `
+          <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
+            <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>Histórico de Recebimento de Resíduos</h3>
+          </div>
+          <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+            <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja Originária</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data Coleta</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Peso (kg)</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Destino</th></tr></thead>
+            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+              ${atvRes.map(r => `
+                <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
+                  <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">${r.lojaNome}</td>
+                  <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${new Date(r.data).toLocaleDateString('pt-BR')}</td>
+                  <td class="px-6 py-4 text-sm font-bold text-[#8B1A1A]">${r.kg_total.toFixed(1)} kg</td>
+                  <td class="px-6 py-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${r.aproveitou ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-amber-50 text-amber-700 border-amber-100'}">${r.aproveitou ? 'Adubo (Horta)' : 'Descarte Comum'}</span></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table></div>`;
+      } else if (activeTab === 'kits') {
+        const atvKit = kits.filter(k => participantes.find(p => p.lojaId === k.loja_id && p.status === 'Ativo'));
+        c.innerHTML = `
+          <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
+            <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/></svg>Histórico Detalhado de Cestas</h3>
+          </div>
+          <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+            <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja Destinatária</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data Entrega</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Quantidade</th></tr></thead>
+            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+              ${atvKit.map(k => `
+                <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
+                  <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">${k.lojaNome}</td>
+                  <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${new Date(k.data).toLocaleDateString('pt-BR')}</td>
+                  <td class="px-6 py-4"><span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">${k.quantidade_kit} Cestas</span></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table></div>`;
+      }
+    }
+
+    function renderData() {
+      // populate select options
+      const storesHTML = UNIDADES.map(u => `<option value="${u.id}">LUC ${u.id} - ${u.nome}</option>`).join('');
+      document.getElementById('store-select').innerHTML = '<option value="">Selecione uma loja...</option>' + storesHTML;
+      
+      const activeStores = participantes.filter(p => p.status === 'Ativo');
+      const activeStoresHTML = activeStores.map(u => `<option value="${u.lojaId}">${u.lojaNome}</option>`).join('');
+      document.getElementById('waste-store').innerHTML = '<option value="">Selecione uma loja...</option>' + activeStoresHTML;
+      document.getElementById('kit-store').innerHTML = '<option value="">Selecione uma loja...</option>' + activeStoresHTML;
+
+      // Update Badges
+      const atvRes = residuos.filter(r => participantes.find(p => p.lojaId === r.loja_id && p.status === 'Ativo'));
+      const atvKit = kits.filter(k => participantes.find(p => p.lojaId === k.loja_id && p.status === 'Ativo'));
+      document.getElementById('badge-lojas').textContent = participantes.length;
+      document.getElementById('badge-residuos').textContent = atvRes.length;
+      document.getElementById('badge-kits').textContent = atvKit.length;
+
+      // Update KPIs
+      const tPeso = atvRes.reduce((acc, c) => acc + c.kg_total, 0);
+      const tAdubo = atvRes.filter(r => r.aproveitou).reduce((acc, c) => acc + c.kg_total, 0);
+      const tDescarte = atvRes.filter(r => !r.aproveitou).reduce((acc, c) => acc + c.kg_total, 0);
+      const taxa = tPeso > 0 ? (tAdubo / tPeso) * 100 : 0;
+      const tKits = atvKit.reduce((acc, c) => acc + c.quantidade_kit, 0);
+
+      document.getElementById('kpi-total').innerHTML = tPeso.toFixed(1) + ' <span class="text-sm font-medium text-white/60 ml-1">kg</span>';
+      document.getElementById('kpi-adubo').innerHTML = tAdubo.toFixed(1) + ' <span class="text-sm font-medium text-gray-400 ml-1">kg</span>';
+      document.getElementById('kpi-descarte').innerHTML = tDescarte.toFixed(1) + ' <span class="text-sm font-medium text-gray-400 ml-1">kg</span>';
+      document.getElementById('kpi-lojas').textContent = activeStores.length;
+      document.getElementById('kpi-taxa').textContent = taxa.toFixed(0) + '%';
+      document.getElementById('kpi-kits').innerHTML = tKits + ' <span class="text-sm font-medium text-white/60 ml-1">unid</span>';
+
+      renderTabContent();
+    }
+
+    function showToast(message, type = 'success') {
+      const c = document.getElementById('toast-container');
+      const t = document.createElement('div');
+      t.className = (type === 'success' ? 'bg-emerald-600' : 'bg-red-600') + ' text-white text-sm font-medium px-4 py-3 rounded-lg shadow-lg max-w-sm pointer-events-auto transform translate-y-2 opacity-0 transition-all duration-300 flex items-center gap-2';
+      t.innerHTML = `<span>${message}</span>`;
+      c.appendChild(t);
+      setTimeout(() => t.classList.remove('translate-y-2', 'opacity-0'), 50);
+      setTimeout(() => { t.classList.add('translate-y-2', 'opacity-0'); setTimeout(() => t.remove(), 300); }, 4000);
+    }
+
+    loadAll();
+    setTab('lojas');
+
+  </script>
+</body>
 </html>
