@@ -398,7 +398,6 @@ func main() {
 	// que consultam o banco PostgreSQL via repositories.
 
 	http.HandleFunc("/api/lojas", lojasHandler)
-	http.HandleFunc("/api/inspecoes/deletar", inspecaoDeletarHandler)
 
 	http.HandleFunc("/api/eco/participantes", participantesHandler)
 	http.HandleFunc("/api/eco/participantes/criar", func(w http.ResponseWriter, r *http.Request) {

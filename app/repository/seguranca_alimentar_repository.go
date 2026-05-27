@@ -63,3 +63,14 @@ func ListarAuditorias() ([]models.SegurancaAlimentar, error) {
 
 	return auditorias, nil
 }
+func DeletarAuditoria(id int) error {
+
+	query := `
+	DELETE FROM auditorias_seguranca
+	WHERE id = $1
+	`
+
+	_, err := DB.Exec(query, id)
+
+	return err
+}

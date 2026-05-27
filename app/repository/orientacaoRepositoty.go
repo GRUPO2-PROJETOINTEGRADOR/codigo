@@ -8,7 +8,7 @@ import (
 type OrientacaoRepository struct{}
 
 func (repo *OrientacaoRepository) Salvar(o models.OrientacaoEducativa) error {
-	query := `INSERT INTO orientacoes_educativas (loja_id, responsavel_presente, funcao_responsavel, data_orientacao, observacoes)`
+	query := `INSERT INTO orientacoes_educativas (loja_id, responsavel_presente, funcao_responsavel, data_orientacao, observacoes) VALUES ($1, $2, $3, $4, $5)`
 	_, err := DB.Exec(query, o.LojaID, o.ResponsavelPresente, o.FuncaoResponsavel, o.DataOrientacao, o.Observacoes)
 	if err != nil {
 		log.Printf("ERRO INSERT orientacoes_educativas, err: %e\n", err)
