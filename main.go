@@ -2,7 +2,8 @@ package main
 
 import (
 	"bufio"
-	utils "codigo/app/repositories"
+	utils "codigo/app/repository"
+	"codigo/app/routes"
 	"fmt"
 	"log"
 	"net/http"
@@ -13,6 +14,8 @@ import (
 
 func main() {
 
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
+	routes.Rotas()
 	//1º passo, conectar ao servidor
 	err := utils.Connect()
 	if err != nil {
@@ -26,8 +29,8 @@ func main() {
 		log.Fatalln("Erro na crição de tabelas SQL")
 	}
 
-	// Cria um servidor de arquivos que serve os arquivos da pasta "./static".
-	fileserver := http.FileServer(http.Dir("./static"))
+	// Cria um servidor de arquivos que serve os arquivos da pasta "./templates".
+	fileserver := http.FileServer(http.Dir("./templates"))
 
 	// Associa o servidor de arquivos à rota raiz ("/").
 	http.Handle("/", fileserver)
