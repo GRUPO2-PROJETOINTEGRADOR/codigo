@@ -12,12 +12,7 @@
   <link rel="stylesheet" href="/static/css/theme.css" />
   <style type="text/tailwindcss">
     @custom-variant dark (&:is(.dark *));
-    @theme {
-      --color-primary: #8B1A1A;
-      --color-primary-foreground: #ffffff;
-      --color-secondary: #C8A882;
-      --color-destructive: #D93030;
-    }
+
   </style>
   <script>
     (function () {
@@ -125,7 +120,7 @@
             </svg>
           </button>
           <div id="conservacao-submenu" class="ml-4 pl-4 border-l border-white/10 space-y-1 mt-1">
-            <a href="dashboard.html"
+            <a href="/templates/conservacao/dashboard.html"
               class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg
                 viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -134,7 +129,7 @@
                 <rect width="7" height="9" x="14" y="12" rx="1" />
                 <rect width="7" height="5" x="3" y="16" rx="1" />
               </svg><span class="truncate">Dashboard</span></a>
-            <a href="relatorio-seguranca-alimentar.html"
+            <a href="/templates/conservacao/relatorio-seguranca-alimentar.html"
               class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg
                 viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -142,14 +137,14 @@
                   d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
                 <path d="m9 12 2 2 4-4" />
               </svg><span class="truncate">Segurança Alimentar</span></a>
-            <a href="eco-flamboyant.html"
+            <a href="/templates/conservacao/eco-flamboyant.html"
               class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg
                 viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" />
                 <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
               </svg><span class="truncate">Eco-Flamboyant</span></a>
-            <a href="orientacao-educativa.html"
+            <a href="/conservacao/orientacao-educativa"
               class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium bg-[#D93030]/20 text-white"><svg
                 viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-[#D93030]" xmlns="http://www.w3.org/2000/svg"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -159,7 +154,7 @@
                 <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
               </svg><span class="truncate">Orientação Educativa</span><span
                 class="ml-auto w-1 h-1 rounded-full bg-[#D93030]"></span></a>
-            <a href="relatorios.html"
+            <a href="/templates/conservacao/relatorios.html"
               class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg
                 viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -591,7 +586,7 @@
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 6 12 12 16 14" />
               </svg>
-              <h2 class="text-xl font-bold text-gray-900 dark:text-white">Linha do Tempo</h2>
+              <h2 class="text-xl font-bold text-gray-900 dark:text-white">Linha do Tempo (Orientações)</h2>
             </div>
             <div class="relative w-full sm:w-72">
               <svg viewBox="0 0 24 24" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
@@ -604,8 +599,82 @@
                 class="w-full pl-10 pr-4 py-2 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
             </div>
           </div>
-          <div id="historico-list" class="space-y-4">
-            <!-- Rendered by JS -->
+
+          <div id="historico-list"
+            class="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+            <table class="w-full text-left" style="text-indent: 0; border-color: inherit; border-collapse: collapse;">
+
+              <thead class="bg-gray-50 dark:bg-[#252525] border-b border-gray-200 dark:border-gray-700">
+                <tr>
+                  <th scope="col"
+                    class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">ID
+                  </th>
+                  <th scope="col"
+                    class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Loja
+                  </th>
+                  <th scope="col"
+                    class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Responsável</th>
+                  <th scope="col"
+                    class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Data
+                  </th>
+                  <th scope="col"
+                    class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Observações</th>
+                </tr>
+              </thead>
+
+              <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-[#1a1a1a]">
+
+                {{range .Orientacoes}}
+                <tr class="hover:bg-gray-50 dark:hover:bg-[#252525] transition-colors">
+
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    #{{.ID}}
+                  </td>
+
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-blue-600 dark:text-blue-400">
+                    {{.LojaID}}
+                  </td>
+
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    <div class="font-semibold text-gray-900 dark:text-gray-200">{{.ResponsavelPresente}}</div>
+                    <div class="text-xs text-gray-400 uppercase tracking-wide">{{.FuncaoResponsavel}}</div>
+                  </td>
+
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    <span
+                      class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-medium">
+                      {{.DataOrientacao.Format "02/01/2006"}}
+                    </span>
+                  </td>
+
+                  <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 max-w-xs truncate"
+                    title="{{.Observacoes}}">
+                    {{.Observacoes}}
+                  </td>
+
+                  <td></td>
+
+                </tr>
+
+                {{else}}
+                <tr>
+                  <td colspan="5" class="px-6 py-12 text-center text-sm text-gray-500 dark:text-gray-400">
+                    <div class="flex flex-col items-center justify-center gap-2">
+                      <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
+                        </path>
+                      </svg>
+                      <p>Nenhuma orientação registrada ainda.</p>
+                    </div>
+                  </td>
+                </tr>
+                {{end}}
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -688,7 +757,7 @@
     let orientacoes = [];
     let lojas = [];
 
-    async function loadLojas() {
+    /*async function loadLojas() {
       try { const r = await fetch('/api/lojas'); if (r.ok) lojas = await r.json(); else lojas = []; } catch { lojas = []; }
       const sel = document.getElementById('loja_id');
       sel.innerHTML = '<option value="">Selecione a loja...</option>';
@@ -699,7 +768,7 @@
       try { const r = await fetch('/api/orientacoes'); if (r.ok) orientacoes = await r.json(); else orientacoes = []; } catch { orientacoes = []; }
       updateStats();
       renderHistorico();
-    }
+    }*/
 
     function getLojaNome(id) {
       const l = lojas.find(l => l.id === id);
@@ -722,7 +791,7 @@
 
     let searchTerm = '';
 
-    function renderHistorico() {
+    /*function renderHistorico() {
       const filtered = orientacoes.filter(o => {
         if (!searchTerm) return true;
         const nome = getLojaNome(o.loja_id).toLowerCase();
@@ -759,7 +828,7 @@
           </div>
         </div>
       `).join('');
-    }
+    }*/
 
     document.getElementById('search-historico').addEventListener('input', e => { searchTerm = e.target.value; renderHistorico(); });
 

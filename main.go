@@ -7,16 +7,14 @@ import (
 	"net/http"
 	"os"
 
-	"codigo/app/controllers"
 	utils "codigo/app/repository"
 
-	//	"codigo/app/routes"
-	"codigo/app/services"
+	"codigo/app/routes"
 )
 
 func main() {
 	// Initialize static routes (if any)
-	//routes.Rotas()
+	routes.Rotas()
 
 	// Connect to PostgreSQL
 	if err := utils.Connect(); err != nil {
@@ -28,10 +26,6 @@ func main() {
 	if err := utils.Criar_banco(); err != nil {
 		log.Fatalln("Erro na criação de tabelas SQL")
 	}
-
-	// Instantiate service and controller for orientação educativa
-	orientacaoService := services.OrientacaoService{Repo: utils.OrientacaoRepository{}}
-	orientacaoController := controllers.OrientacaoController{Service: orientacaoService}
 
 	// New handler to serve lojas list
 	http.HandleFunc("/api/lojas", func(w http.ResponseWriter, r *http.Request) {
@@ -46,8 +40,6 @@ func main() {
 		}
 		jsonResponse(w, lojas)
 	})
-
-	http.HandleFunc("/conservacao/orientacao-educativa/salvar", orientacaoController.SalvarHandler)
 
 	// Static file server
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))

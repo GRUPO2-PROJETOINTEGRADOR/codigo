@@ -33,6 +33,9 @@ func (c *OrientacaoController) ListarPaginaHandler(w http.ResponseWriter, r *htt
 		return
 	}
 
+	//log.Printf("===> QUANTIDADE LIDA DO BANCO: %d", len(orientacoes)) LOG PARA TESTE
+	//log.Printf("===> DADOS: %+v", orientacoes)
+
 	// 2. Busca as lojas do banco
 	lojas, err := utils.Read_lojas()
 	if err != nil {
