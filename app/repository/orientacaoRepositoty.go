@@ -38,3 +38,50 @@ func (repo *OrientacaoRepository) ListarTodas() ([]models.OrientacaoEducativa, e
 	}
 	return lista, nil //Retorna a lista com os dados para leitura e renderização no front
 }
+
+func (repo *OrientacaoRepository) BuscaPorID(id int) (models.OrientacaoEducativa, error) {
+	var o models.OrientacaoEducativa
+	query := `SELECT id, loja_id, responsavel_presente, funcao_resposnavel, data_orientacao, observacoes, FROM
+	orientacoes_educativas WHERE id = $1`
+	err := DB.QueryRow(query, id).Scan(&o.ID, &o.LojaID, &o.ResponsavelPresente, &o.FuncaoResponsavel, &o.DataOrientacao, &o.Observacoes)
+	if err != nil {
+		return o, err
+	}
+	return o, nil
+}
+
+func (repo *OrientacaoRepository) Atualizar(o models.OrientacaoEducativa) error {
+
+	query := `
+		UPDATE orientacoes_educativas 
+		SET responsavel_presente = $1, 
+		    funcao_responsavel = $2, 
+		    data_orientacao = $3, 
+		    observacoes = $4 
+		WHERE id = $5
+	`
+
+	// Executa a query passando os valores na ordem dos $1, $2, etc.
+	_, err := DB.Exec(query,
+		o.ResponsavelPresente,
+		o.FuncaoResponsavel,
+		o.DataOrientacao,
+		o.Observacoes,
+		o.ID,
+	)
+
+	if err != nil {
+		return err // Se o banco der erro (ex: tipo de dado inválido), joga para cima
+	}
+
+	return nil
+}
+
+func (repo *OrientacaoRepository) Delete(o models.OrientacaoEducativa) error {
+	query := `DELETE FROM orientacoes_educativas WHERE id =$1`
+	_, err := DB.Exec(query, o.ID)
+	if err != nil {
+		return err // Se o banco der erro (ex: tipo de dado inválido), joga para cima
+	}
+	return nil
+}

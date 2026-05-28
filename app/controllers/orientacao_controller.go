@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"html/template"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -85,4 +86,62 @@ func (c *OrientacaoController) SalvarHandler(w http.ResponseWriter, r *http.Requ
 
 	// Atualiza a página limpando o formulário
 	w.WriteHeader(http.StatusOK)
+}
+
+func (c *OrientacaoController) Editar(w http.ResponseWriter, r *http.Request) {
+	// 1. Segurança: Só aceita se o HTML enviar como POST (envio de formulário)
+	if r.Method != http.MethodPost {
+		http.Error(w, "Método não permitido. Use POST.", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// 2. Manda o Go ler o pacote de dados vindo do HTML
+	err := r.ParseForm()
+	if err != nil {
+		http.Error(w, "Erro ao processar os dados do formulário", http.StatusBadRequest)
+		return
+	}
+
+	idStr := r.FormValue("id")                         // Pega do <input type="hidden" name="id">
+	responsavel := r.FormValue("responsavel_presente") // Pega do <input name="responsavel_presente">
+	funcao := r.FormValue("funcao_responsavel")        // Pega do <input name="funcao_responsavel">
+	dataStr := r.FormValue("data_orientacao")          // Pega do <input type="date" name="data_orientacao">
+	observacoes := r.FormValue("observacoes")          // Pega do <textarea name="observacoes">
+
+	// 4. Conversão de Tipos: O HTML envia tudo como texto (string). O Go precisa converter.
+
+	// Convertendo o ID de String para Inteiro (int)
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "O ID enviado não é um número válido", http.StatusBadRequest)
+		return
+	}
+
+	// Convertendo a Data do formato HTML (2026-05-28) para o formato de tempo do Go (time.Time)
+	dataOrientacao, err := time.Parse("2006-01-02", dataStr)
+	if err != nil {
+		http.Error(w, "Formato de data inválido. Use o padrão do calendário.", http.StatusBadRequest)
+		return
+	}
+
+	// 5. Montando a nossa Struct com os dados limpos e convertidos
+	orientacaoAtualizada := models.OrientacaoEducativa{
+		ID:                  id,
+		ResponsavelPresente: responsavel,
+		FuncaoResponsavel:   funcao,
+		DataOrientacao:      dataOrientacao,
+		Observacoes:         observacoes,
+		// LojaID não entra aqui porque decidimos travar a edição da loja!
+	}
+
+	// 6. Chuta para o Service aplicar as regras e salvar no banco
+	err = c.Service.Atualizar(orientacaoAtualizada)
+	if err != nil {
+		// Se der erro em alguma validação ou no SQL, avisa a tela
+		http.Error(w, "Erro ao salvar alterações: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// 7. SUCESSO COMPLETO!
+	http.Redirect(w, r, "/conservacao/orientacao-educativa", http.StatusSeeOther)
 }

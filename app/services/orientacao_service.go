@@ -28,3 +28,23 @@ func (s *OrientacaoService) CriarNovaOrientacao(o models.OrientacaoEducativa) er
 func (s *OrientacaoService) ListarTodas() ([]models.OrientacaoEducativa, error) {
 	return s.Repo.ListarTodas()
 }
+
+func (s *OrientacaoService) BuscaPorID(id int) (models.OrientacaoEducativa, error) {
+	return s.Repo.BuscaPorID(id)
+}
+
+func (s *OrientacaoService) Atualizar(o models.OrientacaoEducativa) error {
+	// Exemplo de validação simples antes de salvar
+	if o.ResponsavelPresente == "" {
+		return errors.New("o nome do responsável presente é obrigatório")
+	}
+	if o.ID <= 0 {
+		return errors.New("id de orientação inválido para atualização")
+	}
+	if o.DataOrientacao.After(time.Now()) {
+		return errors.New("Data de orientação não pode ser futura")
+	}
+
+	// Se passou nas regras, manda o repositório fazer o trabalho sujo
+	return s.Repo.Atualizar(o)
+}
