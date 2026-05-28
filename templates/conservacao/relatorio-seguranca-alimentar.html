@@ -677,6 +677,9 @@
     let deleteTarget = null;
     let isDeleting = false;
 
+    // Edit state
+    let editingInspecaoId = null;
+
     async function loadLojas() {
       try {
         const res = await fetch('/api/lojas');
@@ -956,6 +959,9 @@
               <button onclick="openDetail(${i.id})" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-[#8B1A1A] dark:hover:text-[#D93030] rounded-lg transition-colors cursor-pointer" title="Visualizar laudo">
                 <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
               </button>
+              <button onclick="openEdit(${i.id})" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors cursor-pointer" title="Editar">
+                <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              </button>
               <button onclick="openDelete(${i.id})" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg transition-colors cursor-pointer" title="Remover">
                 <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
               </button>
@@ -1176,6 +1182,7 @@
     let selectedLojaId = '';
 
     function resetModal() {
+      editingInspecaoId = null;
       document.getElementById('inspecao-form').reset();
       storeSearchInput.value = '';
       storeIdInput.value = '';
@@ -1189,6 +1196,64 @@
       label.className = 'w-full flex flex-col sm:flex-row items-center justify-center gap-4 px-4 py-8 border-2 border-dashed rounded-xl cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-800/10 transition-all border-gray-300 bg-gray-50 text-gray-400 dark:border-gray-700 dark:bg-[#1a1a1a]';
       label.innerHTML = '<svg viewBox="0 0 24 24" class="w-10 h-10 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg><div class="text-center sm:text-left"><span class="text-sm font-bold text-gray-600 dark:text-gray-400 block">Clique para selecionar ou arraste o relat\u00f3rio PDF</span><span class="text-[11px] text-gray-400 dark:text-gray-500 block mt-1">Arquivos aceitos apenas em formato PDF com at\u00e9 5 MB</span></div>';
       document.getElementById('form-error').classList.add('hidden');
+
+      // Restaurar títulos e botão do modal
+      document.querySelector('#inspecao-modal h2').textContent = 'Nova Inspeção Sanitária';
+      document.querySelector('#inspecao-modal p.text-xs').textContent = 'Preencha as informações regulatórias para registrar a auditoria';
+      const submitBtn = document.getElementById('submit-inspecao-btn');
+      if (submitBtn && submitBtn.querySelector('span')) {
+        submitBtn.querySelector('span').textContent = 'Salvar Inspeção';
+      }
+    }
+
+    function openEdit(id) {
+      const i = inspecoes.find(x => x.id === id);
+      if (!i) return;
+
+      resetModal();
+      editingInspecaoId = id;
+
+      // Atualizar títulos e botão do modal
+      document.querySelector('#inspecao-modal h2').textContent = 'Editar Inspeção Sanitária';
+      document.querySelector('#inspecao-modal p.text-xs').textContent = 'Atualize as informações regulatórias da auditoria';
+      const submitBtn = document.getElementById('submit-inspecao-btn');
+      if (submitBtn && submitBtn.querySelector('span')) {
+        submitBtn.querySelector('span').textContent = 'Salvar Alterações';
+      }
+
+      // Preencher campos
+      const loja = lojas.find(l => l.id.toString() === i.loja_id.toString());
+      if (loja) {
+        storeSearchInput.value = `LUC ${loja.id} - ${loja.nome}`;
+        storeIdInput.value = loja.id;
+        selectedLojaId = loja.id;
+      } else {
+        storeSearchInput.value = `LUC ${i.loja_id}`;
+        storeIdInput.value = i.loja_id;
+        selectedLojaId = i.loja_id;
+      }
+
+      document.getElementById('tipo-inspecao').value = i.tipo || '';
+
+      if (i.data_auditoria) {
+        document.getElementById('audit-date').value = i.data_auditoria.split('T')[0];
+      }
+
+      document.getElementById('input-responsavel').value = i.responsavel_loja || '';
+      document.getElementById('input-funcao').value = i.cargo_responsavel || '';
+      document.getElementById('input-nota').value = i.nota;
+
+      // Disparar input para atualizar preview de classificação
+      document.getElementById('input-nota').dispatchEvent(new Event('input'));
+
+      // Preencher anexo existente se houver
+      if (i.anexo_tiller) {
+        pdfFileName.value = i.anexo_tiller;
+        pdfLabel.className = 'w-full flex flex-col sm:flex-row items-center justify-center gap-4 px-4 py-8 border-2 border-dashed rounded-xl cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-800/10 transition-all border-green-300 bg-green-50/20 text-green-700 dark:border-green-800/40 dark:bg-green-950/10 dark:text-green-400';
+        pdfLabel.innerHTML = `<svg viewBox="0 0 24 24" class="w-10 h-10 flex-shrink-0 text-[#8B1A1A] dark:text-[#D93030]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg><div class="text-center sm:text-left min-w-0 flex-1"><span class="text-sm font-bold text-gray-800 dark:text-gray-200 block truncate max-w-[360px]">${i.anexo_tiller}</span><span class="text-[11px] text-gray-400 dark:text-gray-500 block mt-1">Laudo carregado com sucesso</span></div>`;
+      }
+
+      modal.classList.remove('hidden');
     }
 
     // Loja search (combobox)
@@ -1288,8 +1353,10 @@
       if (!loja_id) { showFormError('Selecione a loja correspondente.'); return; }
       if (!tipo) { showFormError('Selecione o tipo de inspeção.'); return; }
       if (!data_auditoria) { showFormError('A data da auditoria é obrigatória.'); return; }
-      const todayStr = new Date().toISOString().split('T')[0];
-      if (data_auditoria < todayStr) { showFormError('A data da auditoria não pode ser retroativa (anterior a hoje).'); return; }
+      if (!editingInspecaoId) {
+        const todayStr = new Date().toISOString().split('T')[0];
+        if (data_auditoria < todayStr) { showFormError('A data da auditoria não pode ser retroativa (anterior a hoje).'); return; }
+      }
       if (!responsavel_loja) { showFormError('Insira o nome do responsável presente.'); return; }
       if (!cargo_responsavel) { showFormError('Insira o cargo ou função do responsável.'); return; }
       if (isNaN(nota) || nota < 0 || nota > 100) { showFormError('Nota inválida. Insira um número de 0 a 100.'); return; }
@@ -1300,23 +1367,34 @@
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin flex-shrink-0"></div><span>Salvando...</span>';
 
-      const body = { loja_id, tipo, data_auditoria, responsavel_loja, cargo_responsavel, nota, anexo_tiller: pdfFileName.value };
+      const classificacao = nota >= 80 ? 'Bom' : nota >= 60 ? 'Regular' : nota >= 30 ? 'Ruim' : 'Inaceitável';
+      const body = { 
+        id: editingInspecaoId || 0,
+        loja_id, 
+        tipo, 
+        data_auditoria, 
+        responsavel_loja, 
+        cargo_responsavel, 
+        nota, 
+        anexo_tiller: pdfFileName.value,
+        classificacao 
+      };
 
       try {
-        const res = await fetch('/api/inspecoes/criar', {
-          method: 'POST',
+        const url = editingInspecaoId ? `/api/inspecoes/editar?id=${editingInspecaoId}` : '/api/inspecoes/criar';
+        const method = editingInspecaoId ? 'PUT' : 'POST';
+        const res = await fetch(url, {
+          method: method,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body)
         });
         if (res.ok) {
           modal.classList.add('hidden');
-          e.target.reset();
-          storeSearchInput.value = '';
-          storeIdInput.value = '';
+          resetModal();
           await loadInspecoes();
-          showToast('Inspeção registrada com sucesso!', 'success');
+          showToast(editingInspecaoId ? 'Inspeção atualizada com sucesso!' : 'Inspeção registrada com sucesso!', 'success');
         } else {
-          showToast('Erro ao registrar inspeção.', 'error');
+          showToast(editingInspecaoId ? 'Erro ao atualizar inspeção.' : 'Erro ao registrar inspeção.', 'error');
         }
       } catch {
         showToast('Erro ao conectar com o servidor.', 'error');

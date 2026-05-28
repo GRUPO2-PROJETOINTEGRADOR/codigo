@@ -74,3 +74,32 @@ func DeletarAuditoria(id int) error {
 
 	return err
 }
+func AtualizarAuditoria(a models.SegurancaAlimentar) error {
+
+	query := `
+	UPDATE auditorias_seguranca
+	SET
+		loja_id = $1,
+		data_auditoria = $2,
+		responsavel_loja = $3,
+		cargo_responsavel = $4,
+		nota = $5,
+		anexo_tiller = $6,
+		classificacao = $7
+	WHERE id = $8
+	`
+
+	_, err := DB.Exec(
+		query,
+		a.LojaID,
+		a.DataAuditoria,
+		a.ResponsavelLoja,
+		a.CargoResponsavel,
+		a.Nota,
+		a.AnexoTiller,
+		a.Classificacao,
+		a.ID,
+	)
+
+	return err
+}

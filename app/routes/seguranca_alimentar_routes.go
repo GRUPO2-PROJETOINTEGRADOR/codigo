@@ -13,6 +13,6 @@ func RotasSegurancaAlimentar() {
 	http.HandleFunc("/api/inspecoes", segurancaController.ListarHandler)
 	http.HandleFunc("/api/inspecoes/criar", segurancaController.SalvarHandler)
 
-	http.HandleFunc("/conservacao/seguranca-alimentar/editar", segurancaController.EditarHandler)
+	http.HandleFunc("/api/inspecoes/editar", segurancaController.EditarHandler)
 	http.HandleFunc("/api/inspecoes/deletar", segurancaController.ExcluirHandler)
 }

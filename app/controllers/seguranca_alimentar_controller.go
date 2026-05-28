@@ -90,5 +90,42 @@ func (c SegurancaAlimentarController) ExcluirHandler(w http.ResponseWriter, r *h
 }
 
 func (c SegurancaAlimentarController) EditarHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Editando inspeção de Segurança Alimentar"))
+
+	if r.Method != http.MethodPut && r.Method != http.MethodPatch {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		return
+	}
+
+	idStr := r.URL.Query().Get("id")
+
+	var auditoria models.SegurancaAlimentar
+
+	err := json.NewDecoder(r.Body).Decode(&auditoria)
+
+	if err != nil {
+		http.Error(w, "JSON inválido", http.StatusBadRequest)
+		return
+	}
+
+	if idStr != "" {
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			http.Error(w, "ID inválido", http.StatusBadRequest)
+			return
+		}
+		auditoria.ID = id
+	}
+
+	err = utils.AtualizarAuditoria(auditoria)
+
+	if err != nil {
+		http.Error(w, "Erro ao atualizar auditoria", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(map[string]string{
+		"status": "ok",
+	})
 }
