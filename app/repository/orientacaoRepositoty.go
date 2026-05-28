@@ -18,8 +18,10 @@ func (repo *OrientacaoRepository) Salvar(o models.OrientacaoEducativa) error {
 }
 
 func (repo *OrientacaoRepository) ListarTodas() ([]models.OrientacaoEducativa, error) {
-	query := `SELECT id, loja_id, responsavel_presente, funcao_responsavel, data_orientacao, observacoes 
-	FROM orientacoes_educativas ORDER BY data_orientacao DESC`
+	query := `SELECT o.id, o.loja_id, l.nome, o.responsavel_presente, o.funcao_responsavel, o.data_orientacao, o.observacoes
+        FROM orientacoes_educativas o
+        INNER JOIN lojas l ON o.loja_id = l.id
+        ORDER BY o.data_orientacao DESC`
 
 	rows, err := DB.Query(query) //Ler todos os dados da tabela, e armazena bagunçado em rows
 
@@ -31,7 +33,7 @@ func (repo *OrientacaoRepository) ListarTodas() ([]models.OrientacaoEducativa, e
 	var lista []models.OrientacaoEducativa //cria uma lista com todas as structs lidas dentro
 	for rows.Next() {                      //Itera no banco de dados e armazena em variáveis correspondentes
 		var o models.OrientacaoEducativa
-		if err := rows.Scan(&o.ID, &o.LojaID, &o.ResponsavelPresente, &o.FuncaoResponsavel, &o.DataOrientacao, &o.Observacoes); err != nil {
+		if err := rows.Scan(&o.ID, &o.LojaID, &o.NomeLoja, &o.ResponsavelPresente, &o.FuncaoResponsavel, &o.DataOrientacao, &o.Observacoes); err != nil {
 			return nil, err
 		}
 		lista = append(lista, o) //ao final da leitura de cada linha, adiciona um "pacote" inteiro na lista

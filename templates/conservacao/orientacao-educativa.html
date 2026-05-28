@@ -577,133 +577,113 @@
 
         <!-- History Timeline -->
         <div class="space-y-6">
-          <div
-            class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-800 pb-4">
-            <div class="flex items-center gap-3">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="text-gray-400">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-              <h2 class="text-xl font-bold text-gray-900 dark:text-white">Linha do Tempo (Orientações)</h2>
-            </div>
-            <div class="relative w-full sm:w-72">
-              <svg viewBox="0 0 24 24" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
-                xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.3-4.3" />
-              </svg>
-              <input type="text" id="search-historico" placeholder="Buscar histórico..."
-                class="w-full pl-10 pr-4 py-2 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
-            </div>
-          </div>
+  
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-800 pb-4">
+    <div class="flex items-center gap-3">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400">
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="12 6 12 12 16 14" />
+      </svg>
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white">Linha do Tempo (Orientações)</h2>
+    </div>
+    <div class="relative w-full sm:w-72">
+      <svg viewBox="0 0 24 24" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.3-4.3" />
+      </svg>
+      <input type="text" id="search-historico" placeholder="Buscar histórico..." class="w-full pl-10 pr-4 py-2 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
+    </div>
+  </div>
 
-          <div id="historico-list"
-            class="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
-            <table class="w-full text-left" style="text-indent: 0; border-color: inherit; border-collapse: collapse;">
+  <div id="historico-list" class="space-y-4">
+    
+    {{range .Orientacoes}}
+    <div class="group bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500/30 transition-all flex flex-col md:flex-row gap-4 md:gap-6 relative overflow-hidden">
+      
+      <div class="absolute left-0 top-0 bottom-0 w-1 bg-gray-200 dark:bg-gray-700 group-hover:bg-blue-500 transition-colors"></div>
+      
+      <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-white/90 dark:bg-[#252525]/90 backdrop-blur-sm rounded-lg z-10 p-1">
+        
+        <button onclick="openEdit(this)" 
+                data-id="{{.ID}}" 
+                data-loja="{{.LojaID}}"
+                data-responsavel="{{.ResponsavelPresente}}" 
+                data-funcao="{{.FuncaoResponsavel}}"
+                data-data="{{.DataOrientacao.Format "2006-01-02"}}" 
+                data-obs="{{.Observacoes}}"
+                class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors cursor-pointer"
+                title="Editar">
+          <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+          </svg>
+        </button>
 
-              <thead class="bg-gray-50 dark:bg-[#252525] border-b border-gray-200 dark:border-gray-700">
-                <tr>
-                  <th scope="col"
-                    class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">ID
-                  </th>
-                  <th scope="col"
-                    class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Loja
-                  </th>
-                  <th scope="col"
-                    class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Responsável</th>
-                  <th scope="col"
-                    class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Data
-                  </th>
-                  <th scope="col"
-                    class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Observações</th>
-                </tr>
-              </thead>
+        <button onclick="confirmarExclusao('{{.ID}}', '{{.NomeLoja}}')"
+                class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg transition-colors cursor-pointer"
+                title="Remover">
+          <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18" />
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+          </svg>
+        </button>
+      </div>
 
-              <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-[#1a1a1a]">
-
-                {{range .Orientacoes}}
-                <tr class="hover:bg-gray-50 dark:hover:bg-[#252525] transition-colors">
-
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                    #{{.ID}}
-                  </td>
-
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-blue-600 dark:text-blue-400">
-                    {{.LojaID}}
-                  </td>
-
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                    <div class="font-semibold text-gray-900 dark:text-gray-200">{{.ResponsavelPresente}}</div>
-                    <div class="text-xs text-gray-400 uppercase tracking-wide">{{.FuncaoResponsavel}}</div>
-                  </td>
-
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                    <span
-                      class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-medium">
-                      {{.DataOrientacao.Format "02/01/2006"}}
-                    </span>
-                  </td>
-
-                  <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 max-w-xs truncate"
-                    title="{{.Observacoes}}">
-                    {{.Observacoes}}
-                  </td>
-
-                  <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                    <div class="flex items-center justify-center gap-1">
-
-                      <button onclick="openEdit(this)" data-id="{{.ID}}" data-loja="{{.LojaID}}"
-                        data-responsavel="{{.ResponsavelPresente}}" data-funcao="{{.FuncaoResponsavel}}"
-                        data-data="{{.DataOrientacao.Format "2006-01-02"}}" data-obs="{{.Observacoes}}"
-                        class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors cursor-pointer"
-                        title="Editar">
-                        <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M12 20h9" />
-                          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
-                        </svg>
-                      </button>
-
-                      <button
-                        class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg transition-colors cursor-pointer"
-                        title="Remover">
-                        <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M3 6h18" />
-                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                        </svg>
-                      </button>
-
-                    </div>
-                  </td>
-
-                </tr>
-
-                {{else}}
-                <tr>
-                  <td colspan="5" class="px-6 py-12 text-center text-sm text-gray-500 dark:text-gray-400">
-                    <div class="flex flex-col items-center justify-center gap-2">
-                      <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
-                        </path>
-                      </svg>
-                      <p>Nenhuma orientação registrada ainda.</p>
-                    </div>
-                  </td>
-                </tr>
-                {{end}}
-              </tbody>
-            </table>
-          </div>
+      <div class="flex-shrink-0 md:w-48 space-y-2 pl-3">
+        <div class="flex items-start gap-2 text-blue-600 dark:text-blue-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/>
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+            <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/>
+            <path d="M2 7h20"/>
+            <path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/>
+          </svg>
+          <span class="font-bold text-sm">{{.NomeLoja}}<br><span class="text-xs font-medium opacity-80">(LUC {{.LojaID}})</span></span>
         </div>
+        <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs font-medium">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          {{.DataOrientacao.Format "02/01/2006"}}
+        </div>
+      </div>
+
+      <div class="flex-1 space-y-3">
+        <div class="flex flex-wrap items-center gap-2 pr-20">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-100 dark:border-blue-800/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            {{.ResponsavelPresente}}
+          </span>
+          <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+            {{.FuncaoResponsavel}}
+          </span>
+        </div>
+        
+        <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed bg-gray-50 dark:bg-[#1a1a1a] p-3 rounded-lg border border-gray-100 dark:border-gray-800/50">
+          {{.Observacoes}}
+        </p>
+      </div>
+
+    </div>
+    
+    {{else}}
+    <div class="bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-12 text-center shadow-sm">
+      <svg class="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+      </svg>
+      <p class="text-gray-500 dark:text-gray-400 font-medium">Nenhuma orientação registrada ainda.</p>
+    </div>
+    {{end}}
+
+  </div>
+</div>
 
       </div>
     </main>
