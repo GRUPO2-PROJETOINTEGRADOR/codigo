@@ -34,15 +34,59 @@ func (c SegurancaAlimentarController) ListarHandler(w http.ResponseWriter, r *ht
 
 func (c SegurancaAlimentarController) SalvarHandler(w http.ResponseWriter, r *http.Request) {
 
-	var auditoria models.SegurancaAlimentar
-
-	err := json.NewDecoder(r.Body).Decode(&auditoria)
-
-	if err != nil {
-		http.Error(w, "JSON inválido", http.StatusBadRequest)
+	if r.Method != http.MethodPost {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
 		return
 	}
 
+	// aceita multipart/form-data
+	err := r.ParseMultipartForm(10 << 20)
+	if err != nil {
+		http.Error(w, "Erro ao processar formulário", http.StatusBadRequest)
+		return
+	}
+
+	// =========================
+	// PDF
+	// =========================
+	file, header, err := r.FormFile("pdf")
+
+	var pdfURL string
+
+	if err == nil {
+
+		defer file.Close()
+
+		pdfURL, err = utils.UploadPDF(
+			file,
+			header.Filename,
+			header.Size,
+		)
+
+		if err != nil {
+			http.Error(w, "Erro ao enviar PDF para MinIO", http.StatusInternalServerError)
+			return
+		}
+	}
+
+	// =========================
+	// CAMPOS FORM
+	// =========================
+	nota, _ := strconv.Atoi(r.FormValue("nota"))
+
+	auditoria := models.SegurancaAlimentar{
+		LojaID:           r.FormValue("loja_id"),
+		DataAuditoria:    r.FormValue("data_auditoria"),
+		ResponsavelLoja:  r.FormValue("responsavel_loja"),
+		CargoResponsavel: r.FormValue("cargo_responsavel"),
+		Nota:             nota,
+		Classificacao:    r.FormValue("classificacao"),
+		AnexoTiller:      pdfURL,
+	}
+
+	// =========================
+	// SALVA NO POSTGRES
+	// =========================
 	err = utils.CriarAuditoria(auditoria)
 
 	if err != nil {
@@ -51,7 +95,11 @@ func (c SegurancaAlimentarController) SalvarHandler(w http.ResponseWriter, r *ht
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(auditoria)
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"pdf_url": pdfURL,
+	})
 }
 
 func (c SegurancaAlimentarController) ExcluirHandler(w http.ResponseWriter, r *http.Request) {

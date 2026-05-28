@@ -1891,25 +1891,27 @@
       submitBtn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin flex-shrink-0"></div><span>Salvando...</span>';
 
       const classificacao = nota >= 80 ? 'Bom' : nota >= 60 ? 'Regular' : nota >= 30 ? 'Ruim' : 'Inaceitável';
-      const body = {
-        id: editingInspecaoId || 0,
-        loja_id,
-        tipo,
-        data_auditoria,
-        responsavel_loja,
-        cargo_responsavel,
-        nota,
-        anexo_tiller: pdfFileName.value,
-        classificacao
-      };
+      const formData = new FormData();
+
+      formData.append('loja_id', loja_id);
+      formData.append('tipo', tipo);
+      formData.append('data_auditoria', data_auditoria);
+      formData.append('responsavel_loja', responsavel_loja);
+      formData.append('cargo_responsavel', cargo_responsavel);
+      formData.append('nota', nota);
+      formData.append('classificacao', classificacao);
+      formData.append('anexo_tiller', pdfFileName.value);
+
+if (selectedPdfFile) {
+  formData.append('pdf', selectedPdfFile);
+}
 
       try {
         const url = editingInspecaoId ? `/api/inspecoes/editar?id=${editingInspecaoId}` : '/api/inspecoes/criar';
         const method = editingInspecaoId ? 'PUT' : 'POST';
         const res = await fetch(url, {
           method: method,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
+          body: formData
         });
         if (res.ok) {
           modal.classList.add('hidden');
