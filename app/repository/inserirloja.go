@@ -1,4 +1,4 @@
-package utils
+package repo
 
 func Insert_loja(id, nome, categoria string) (string, error) {
 

@@ -1,0 +1,105 @@
+package repo
+
+import (
+	"codigo/app/models"
+)
+
+func CriarAuditoria(a models.SegurancaAlimentar) error {
+	query := `
+		INSERT INTO auditorias_seguranca 
+		(loja_id, data_auditoria, responsavel_loja, cargo_responsavel, nota, anexo_tiller, classificacao)
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
+	`
+
+	_, err := DB.Exec(
+		query,
+		a.LojaID,
+		a.DataAuditoria,
+		a.ResponsavelLoja,
+		a.CargoResponsavel,
+		a.Nota,
+		a.AnexoTiller,
+		a.Classificacao,
+	)
+
+	return err
+}
+
+func ListarAuditorias() ([]models.SegurancaAlimentar, error) {
+	query := `
+		SELECT id, loja_id, data_auditoria, responsavel_loja, cargo_responsavel, nota, anexo_tiller, classificacao
+		FROM auditorias_seguranca
+		ORDER BY data_auditoria DESC
+	`
+
+	rows, err := DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var auditorias []models.SegurancaAlimentar
+
+	for rows.Next() {
+		var a models.SegurancaAlimentar
+
+		err := rows.Scan(
+			&a.ID,
+			&a.LojaID,
+			&a.DataAuditoria,
+			&a.ResponsavelLoja,
+			&a.CargoResponsavel,
+			&a.Nota,
+			&a.AnexoTiller,
+			&a.Classificacao,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		auditorias = append(auditorias, a)
+	}
+
+	return auditorias, nil
+}
+func DeletarAuditoria(id int) error {
+
+	query := `
+	DELETE FROM auditorias_seguranca
+	WHERE id = $1
+	`
+
+	_, err := DB.Exec(query, id)
+
+	return err
+}
+func AtualizarAuditoria(a models.SegurancaAlimentar) error {
+
+	query := `
+	UPDATE auditorias_seguranca
+	SET
+		loja_id = $1,
+		data_auditoria = $2,
+		responsavel_loja = $3,
+		cargo_responsavel = $4,
+		nota = $5,
+		anexo_tiller = $6,
+		classificacao = $7
+	WHERE id = $8
+	`
+
+	_, err := DB.Exec(
+		query,
+		a.LojaID,
+		a.DataAuditoria,
+		a.ResponsavelLoja,
+		a.CargoResponsavel,
+		a.Nota,
+		a.AnexoTiller,
+		a.Classificacao,
+		a.ID,
+	)
+
+	return err
+}

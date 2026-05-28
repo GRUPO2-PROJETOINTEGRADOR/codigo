@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="light">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Relatórios — JP Mall</title>
-  <meta name="description" content="Relatórios históricos de auditoria de Segurança Alimentar do JP Mall. Escala de 0 a 100 (Padrão Tyler)." />
+  <meta name="description"
+    content="Relatórios históricos de auditoria de Segurança Alimentar do JP Mall. Escala de 0 a 100 (Padrão Tyler)." />
   <link rel="stylesheet" href="/static/css/global.css" />
   <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="/static/css/theme.css" />
   <style type="text/tailwindcss">
     @custom-variant dark (&:is(.dark *));
-    @theme {
+   /* @theme {
       --color-primary: #8B1A1A;
       --color-primary-foreground: #ffffff;
       --color-secondary: #C8A882;
       --color-destructive: #D93030;
-    }
+    }*/
   </style>
   <script>
-    (function() {
+    (function () {
       const t = localStorage.getItem('theme');
       const dark = t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.documentElement.classList.toggle('dark', dark);
@@ -27,91 +29,294 @@
     })();
   </script>
 </head>
+
 <body class="flex h-screen w-full bg-[#F7F4EF] dark:bg-[#1a1a1a] overflow-hidden">
 
   <!-- DESKTOP SIDEBAR -->
-  <aside id="desktop-sidebar" class="hidden md:flex w-64 bg-[#8B1A1A] dark:bg-[#2a0a0a] flex-col flex-shrink-0 shadow-xl transition-all duration-300 ease-in-out relative">
-    <button id="collapse-btn" class="absolute -right-3 top-6 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-full p-1 shadow-md text-gray-500 hover:text-gray-900 dark:hover:text-white z-50">
-      <svg viewBox="0 0 24 24" id="collapse-icon-left" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-      <svg viewBox="0 0 24 24" id="collapse-icon-right" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="m9 18 6-6-6-6"/></svg>
+  <aside id="desktop-sidebar"
+    class="hidden md:flex w-64 bg-[#8B1A1A] dark:bg-[#2a0a0a] flex-col flex-shrink-0 shadow-xl transition-all duration-300 ease-in-out relative">
+    <button id="collapse-btn"
+      class="absolute -right-3 top-6 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-full p-1 shadow-md text-gray-500 hover:text-gray-900 dark:hover:text-white z-50">
+      <svg viewBox="0 0 24 24" id="collapse-icon-left" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+      <svg viewBox="0 0 24 24" id="collapse-icon-right" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="hidden">
+        <path d="m9 18 6-6-6-6" />
+      </svg>
     </button>
     <div id="sidebar-inner" class="flex flex-col h-full overflow-hidden">
-      <div class="h-16 flex items-center px-5 border-b border-[#a43030] dark:border-[#4a1515] flex-shrink-0 justify-between">
+      <div
+        class="h-16 flex items-center px-5 border-b border-[#a43030] dark:border-[#4a1515] flex-shrink-0 justify-between">
         <div class="flex items-center">
-          <div class="w-8 h-8 rounded-lg bg-[#C8A882] flex items-center justify-center flex-shrink-0 mr-3"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="#8B1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg></div>
-          <div id="logo-text" class="min-w-0"><p class="text-white font-bold text-sm leading-tight tracking-wide truncate">JP Mall</p><p class="text-[#C8A882] text-[10px] font-bold uppercase tracking-widest opacity-90 truncate">Operações</p></div>
+          <div class="w-8 h-8 rounded-lg bg-[#C8A882] flex items-center justify-center flex-shrink-0 mr-3"><svg
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="#8B1A1A"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
+              <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" />
+              <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" />
+              <path d="M10 6h4" />
+              <path d="M10 10h4" />
+              <path d="M10 14h4" />
+              <path d="M10 18h4" />
+            </svg></div>
+          <div id="logo-text" class="min-w-0">
+            <p class="text-white font-bold text-sm leading-tight tracking-wide truncate">JP Mall</p>
+            <p class="text-[#C8A882] text-[10px] font-bold uppercase tracking-widest opacity-90 truncate">Operações</p>
+          </div>
         </div>
       </div>
       <nav class="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
-        <p id="nav-label" class="px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-white/30">Módulos de Gestão</p>
-        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg></span><span class="nav-item-label truncate">LOJISTAS</span></div>
-        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></span><span class="nav-item-label truncate">TREINAMENTOS</span></div>
-        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><span class="nav-item-label truncate">SEGUROS</span></div>
+        <p id="nav-label" class="px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-white/30">Módulos de
+          Gestão</p>
+        <div
+          class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed">
+          <span
+            class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5" />
+              <path
+                d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244" />
+              <path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05" />
+            </svg></span><span class="nav-item-label truncate">LOJISTAS</span>
+        </div>
+        <div
+          class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed">
+          <span
+            class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
+              <path d="M22 10v6" />
+              <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
+            </svg></span><span class="nav-item-label truncate">TREINAMENTOS</span>
+        </div>
+        <div
+          class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed">
+          <span
+            class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+              <path d="m9 12 2 2 4-4" />
+            </svg></span><span class="nav-item-label truncate">SEGUROS</span>
+        </div>
         <div class="space-y-1">
-          <button class="nav-item w-full group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium bg-white/10 text-white">
-            <span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 mr-2.5 bg-[#D93030]"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-9.373 9.373a1 1 0 0 1-3.001-3L12 9"/><path d="m18 15 4-4"/><path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172v-.344a2 2 0 0 0-.586-1.414l-1.657-1.657A6 6 0 0 0 12.516 3H9l1.243 1.243A6 6 0 0 1 12 8.485V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5"/></svg></span>
+          <button
+            class="nav-item w-full group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium bg-white/10 text-white">
+            <span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 mr-2.5 bg-[#D93030]"><svg
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15 12-9.373 9.373a1 1 0 0 1-3.001-3L12 9" />
+                <path d="m18 15 4-4" />
+                <path
+                  d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172v-.344a2 2 0 0 0-.586-1.414l-1.657-1.657A6 6 0 0 0 12.516 3H9l1.243 1.243A6 6 0 0 1 12 8.485V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5" />
+              </svg></span>
             <span class="nav-item-label truncate">CONSERVAÇÃO</span>
-            <svg viewBox="0 0 24 24" class="ml-auto w-3.5 h-3.5 rotate-180 nav-item-label" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <svg viewBox="0 0 24 24" class="ml-auto w-3.5 h-3.5 rotate-180 nav-item-label"
+              xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
           </button>
           <div id="conservacao-submenu" class="ml-4 pl-4 border-l border-white/10 space-y-1 mt-1">
-            <a href="dashboard.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>Dashboard</a>
-            <a href="relatorio-seguranca-alimentar.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>Segurança Alimentar</a>
-            <a href="eco-flamboyant.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>Eco-Flamboyant</a>
-            <a href="orientacao-educativa.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>Orientação Educativa</a>
-            <a href="relatorios.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium bg-[#D93030]/20 text-white"><svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-[#D93030]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>Relatórios<span class="ml-auto w-1 h-1 rounded-full bg-[#D93030]"></span></a>
+            <a href="dashboard.html"
+              class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg
+                viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="7" height="9" x="3" y="3" rx="1" />
+                <rect width="7" height="5" x="14" y="3" rx="1" />
+                <rect width="7" height="9" x="14" y="12" rx="1" />
+                <rect width="7" height="5" x="3" y="16" rx="1" />
+              </svg>Dashboard</a>
+            <a href="relatorio-seguranca-alimentar.html"
+              class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg
+                viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>Segurança Alimentar</a>
+            <a href="eco-flamboyant.html"
+              class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg
+                viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" />
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+              </svg>Eco-Flamboyant</a>
+            <a href="/conservacao/orientacao-educativa"
+              class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all text-white/60 hover:bg-white/5 hover:text-white">
+              <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
+                <path d="M22 10v6" />
+                <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
+              </svg>
+              <span class="truncate">Orientação Educativa</span>
+            </a>
+            <a href="relatorios.html"
+              class="flex items-center px-3 py-2 rounded-lg text-xs font-medium bg-[#D93030]/20 text-white"><svg
+                viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-[#D93030]" xmlns="http://www.w3.org/2000/svg"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v18h18" />
+                <path d="m19 9-5 5-4-4-3 3" />
+              </svg>Relatórios<span class="ml-auto w-1 h-1 rounded-full bg-[#D93030]"></span></a>
           </div>
         </div>
-        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg></span><span class="nav-item-label truncate">SINISTROS</span></div>
-        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/><path d="M8 6v8"/></svg></span><span class="nav-item-label truncate">MARKETING</span></div>
-        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="nav-item-label truncate">COMERCIAL</span></div>
-        <div class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed"><span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span><span class="nav-item-label truncate">INSTITUCIONAL</span></div>
+        <div
+          class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed">
+          <span
+            class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" x2="12" y1="8" y2="12" />
+              <line x1="12" x2="12.01" y1="16" y2="16" />
+            </svg></span><span class="nav-item-label truncate">SINISTROS</span>
+        </div>
+        <div
+          class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed">
+          <span
+            class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
+              <path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14" />
+              <path d="M8 6v8" />
+            </svg></span><span class="nav-item-label truncate">MARKETING</span>
+        </div>
+        <div
+          class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed">
+          <span
+            class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <line x1="12" x2="12" y1="1" y2="23" />
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg></span><span class="nav-item-label truncate">COMERCIAL</span>
+        </div>
+        <div
+          class="nav-item flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-white/30 cursor-not-allowed">
+          <span
+            class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 bg-white/5 opacity-50 mr-2.5"><svg
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4" />
+              <path d="M12 8h.01" />
+            </svg></span><span class="nav-item-label truncate">INSTITUCIONAL</span>
+        </div>
       </nav>
       <div class="p-3 border-t border-[#a43030] dark:border-[#4a1515] space-y-1 flex-shrink-0">
         <div class="flex items-center px-3 py-2 rounded-lg bg-white/5 mb-2">
-          <div class="w-8 h-8 rounded-full bg-[#C8A882] text-[#8B1A1A] font-bold flex items-center justify-center text-xs flex-shrink-0">GR</div>
-          <div id="user-info" class="ml-2.5 min-w-0"><p class="text-white text-xs font-medium leading-tight truncate">Gerência de Relacionamento</p><p class="text-white/50 text-[10px] truncate">JP Mall Operações</p></div>
+          <div
+            class="w-8 h-8 rounded-full bg-[#C8A882] text-[#8B1A1A] font-bold flex items-center justify-center text-xs flex-shrink-0">
+            GR</div>
+          <div id="user-info" class="ml-2.5 min-w-0">
+            <p class="text-white text-xs font-medium leading-tight truncate">Gerência de Relacionamento</p>
+            <p class="text-white/50 text-[10px] truncate">JP Mall Operações</p>
+          </div>
         </div>
-        <a href="/templates/index.html" class="nav-item flex items-center w-full px-3 py-2.5 text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"><svg viewBox="0 0 24 24" class="w-4 h-4 flex-shrink-0 mr-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg><span class="nav-item-label">Sair</span></a>
+        <a href="/templates/index.html"
+          class="nav-item flex items-center w-full px-3 py-2.5 text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"><svg
+            viewBox="0 0 24 24" class="w-4 h-4 flex-shrink-0 mr-2.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" x2="9" y1="12" y2="12" />
+          </svg><span class="nav-item-label">Sair</span></a>
       </div>
     </div>
   </aside>
 
-  <div id="mobile-overlay" class="hidden fixed inset-0 z-40 md:hidden"><div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div></div>
-  <aside id="mobile-sidebar" class="fixed top-0 left-0 h-full w-64 bg-[#8B1A1A] dark:bg-[#2a0a0a] z-50 md:hidden flex flex-col transform transition-transform duration-300 ease-in-out shadow-2xl -translate-x-full">
-    <button id="close-mobile-sidebar" class="absolute top-4 right-4 p-1.5 text-white/60 hover:text-white rounded-lg hover:bg-white/10"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
-    <div class="h-16 flex items-center px-5 border-b border-[#a43030] dark:border-[#4a1515]"><p class="text-white font-bold text-sm">JP Mall</p></div>
+  <div id="mobile-overlay" class="hidden fixed inset-0 z-40 md:hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+  </div>
+  <aside id="mobile-sidebar"
+    class="fixed top-0 left-0 h-full w-64 bg-[#8B1A1A] dark:bg-[#2a0a0a] z-50 md:hidden flex flex-col transform transition-transform duration-300 ease-in-out shadow-2xl -translate-x-full">
+    <button id="close-mobile-sidebar"
+      class="absolute top-4 right-4 p-1.5 text-white/60 hover:text-white rounded-lg hover:bg-white/10"><svg
+        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg></button>
+    <div class="h-16 flex items-center px-5 border-b border-[#a43030] dark:border-[#4a1515]">
+      <p class="text-white font-bold text-sm">JP Mall</p>
+    </div>
     <nav class="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
-      <a href="dashboard.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Dashboard</a>
-      <a href="relatorio-seguranca-alimentar.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Segurança Alimentar</a>
-      <a href="eco-flamboyant.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Eco-Flamboyant</a>
-      <a href="orientacao-educativa.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Orientação Educativa</a>
-      <a href="relatorios.html" class="flex items-center px-3 py-2 rounded-lg text-xs font-medium bg-[#D93030]/20 text-white">Relatórios</a>
+      <a href="dashboard.html"
+        class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Dashboard</a>
+      <a href="relatorio-seguranca-alimentar.html"
+        class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Segurança
+        Alimentar</a>
+      <a href="eco-flamboyant.html"
+        class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Eco-Flamboyant</a>
+      <a href="orientacao-educativa.html"
+        class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Orientação
+        Educativa</a>
+      <a href="relatorios.html"
+        class="flex items-center px-3 py-2 rounded-lg text-xs font-medium bg-[#D93030]/20 text-white">Relatórios</a>
     </nav>
-    <div class="p-3 border-t border-[#a43030] dark:border-[#4a1515]"><a href="/templates/index.html" class="flex items-center px-3 py-2.5 text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-lg">Sair</a></div>
+    <div class="p-3 border-t border-[#a43030] dark:border-[#4a1515]"><a href="/templates/index.html"
+        class="flex items-center px-3 py-2.5 text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-lg">Sair</a>
+    </div>
   </aside>
 
   <!-- MAIN CONTENT -->
   <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
-    <header class="h-16 bg-white dark:bg-[#252525] border-b border-gray-200 dark:border-gray-700/60 flex items-center justify-between px-4 md:px-6 z-[60] flex-shrink-0">
+    <header
+      class="h-16 bg-white dark:bg-[#252525] border-b border-gray-200 dark:border-gray-700/60 flex items-center justify-between px-4 md:px-6 z-[60] flex-shrink-0">
       <!-- Left -->
       <div class="flex items-center gap-3">
-        <button id="open-mobile-sidebar" class="md:hidden p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        <button id="open-mobile-sidebar"
+          class="md:hidden p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" x2="20" y1="12" y2="12" />
+            <line x1="4" x2="20" y1="6" y2="6" />
+            <line x1="4" x2="20" y1="18" y2="18" />
+          </svg>
         </button>
         <div class="hidden sm:flex items-center gap-1.5">
-          <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A] dark:text-[#D93030]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
+          <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A] dark:text-[#D93030]" xmlns="http://www.w3.org/2000/svg"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
+            <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" />
+            <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" />
+            <path d="M10 6h4" />
+            <path d="M10 10h4" />
+            <path d="M10 14h4" />
+            <path d="M10 18h4" />
+          </svg>
           <span class="text-sm font-bold text-[#8B1A1A] dark:text-gray-200 tracking-tight">JP Mall</span>
         </div>
       </div>
       <!-- Center -->
       <div class="flex-1 max-w-lg mx-auto px-4 hidden md:block">
         <div class="relative group cursor-pointer">
-          <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 group-hover:text-[#8B1A1A] dark:group-hover:text-[#D93030] transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          <div class="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 rounded-xl transition-all group-hover:border-[#8B1A1A]/30 dark:group-hover:border-[#D93030]/30 group-hover:bg-white dark:group-hover:bg-[#2a2a2a] flex items-center justify-between">
+          <svg viewBox="0 0 24 24"
+            class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 group-hover:text-[#8B1A1A] dark:group-hover:text-[#D93030] transition-colors"
+            xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <div
+            class="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 rounded-xl transition-all group-hover:border-[#8B1A1A]/30 dark:group-hover:border-[#D93030]/30 group-hover:bg-white dark:group-hover:bg-[#2a2a2a] flex items-center justify-between">
             <span>Consultar lojista (LUC ou nome)...</span>
             <div class="flex items-center gap-1 opacity-40">
-              <span class="text-[9px] font-bold border border-gray-300 dark:border-gray-600 rounded px-1 py-0.5">ALT</span>
-              <span class="text-[9px] font-bold border border-gray-300 dark:border-gray-600 rounded px-1 py-0.5">S</span>
+              <span
+                class="text-[9px] font-bold border border-gray-300 dark:border-gray-600 rounded px-1 py-0.5">ALT</span>
+              <span
+                class="text-[9px] font-bold border border-gray-300 dark:border-gray-600 rounded px-1 py-0.5">S</span>
             </div>
           </div>
         </div>
@@ -119,24 +324,53 @@
       <!-- Right -->
       <div class="flex items-center gap-2">
         <!-- Bell -->
-        <button id="notif-btn" class="relative p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700/60 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <button id="notif-btn"
+          class="relative p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700/60 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+          </svg>
         </button>
         <!-- User -->
         <div class="hidden sm:flex items-center border-l border-gray-200 dark:border-gray-700 pl-3 ml-1">
-          <button class="flex items-center gap-2.5 py-1.5 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/60 transition-colors min-h-[44px]">
-            <div class="w-8 h-8 rounded-full bg-[#C8A882] dark:bg-[#a08560] text-[#8B1A1A] dark:text-white font-bold flex items-center justify-center text-xs">GR</div>
+          <button
+            class="flex items-center gap-2.5 py-1.5 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/60 transition-colors min-h-[44px]">
+            <div
+              class="w-8 h-8 rounded-full bg-[#C8A882] dark:bg-[#a08560] text-[#8B1A1A] dark:text-white font-bold flex items-center justify-center text-xs">
+              GR</div>
             <div class="text-left hidden lg:block">
               <p class="text-xs font-medium text-gray-900 dark:text-gray-100 leading-tight">Ger. de Relacionamento</p>
               <p class="text-[10px] text-gray-500 dark:text-gray-400">JP Mall Operações</p>
             </div>
-            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gray-400 hidden lg:block" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gray-400 hidden lg:block"
+              xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
           </button>
         </div>
         <!-- Theme Toggle -->
-        <button id="theme-toggle" class="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer">
-          <svg viewBox="0 0 24 24" id="theme-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden dark:block"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-          <svg viewBox="0 0 24 24" id="theme-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block dark:hidden"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <button id="theme-toggle"
+          class="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer">
+          <svg viewBox="0 0 24 24" id="theme-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="hidden dark:block">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2" />
+            <path d="M12 20v2" />
+            <path d="m4.93 4.93 1.41 1.41" />
+            <path d="m17.66 17.66 1.41 1.41" />
+            <path d="M2 12h2" />
+            <path d="M20 12h2" />
+            <path d="m6.34 17.66-1.41 1.41" />
+            <path d="m19.07 4.93-1.41 1.41" />
+          </svg>
+          <svg viewBox="0 0 24 24" id="theme-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="block dark:hidden">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+          </svg>
         </button>
       </div>
     </header>
@@ -147,46 +381,62 @@
         <!-- Page Header -->
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
           <div>
-            <h1 class="text-3xl md:text-4xl font-black tracking-tighter text-gray-900 dark:text-gray-100">Relatórios</h1>
-            <p class="text-gray-500 dark:text-gray-400 font-medium text-sm md:text-base">Escala de 0 a 100 | Gastronomia JP Mall</p>
+            <h1 class="text-3xl md:text-4xl font-black tracking-tighter text-gray-900 dark:text-gray-100">Relatórios
+            </h1>
+            <p class="text-gray-500 dark:text-gray-400 font-medium text-sm md:text-base">Escala de 0 a 100 | Gastronomia
+              JP Mall</p>
           </div>
-          <div class="flex items-center gap-3 bg-gray-50 dark:bg-gray-800 px-4 py-2 rounded-xl text-xs font-bold shadow-sm border border-gray-100 dark:border-gray-700">
-            <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          <div
+            class="flex items-center gap-3 bg-gray-50 dark:bg-gray-800 px-4 py-2 rounded-xl text-xs font-bold shadow-sm border border-gray-100 dark:border-gray-700">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+              <line x1="16" x2="16" y1="2" y2="6" />
+              <line x1="8" x2="8" y1="2" y2="6" />
+              <line x1="3" x2="21" y1="10" y2="10" />
+            </svg>
             <span id="current-date"></span>
           </div>
         </header>
 
         <!-- Filters Section -->
-        <section class="bg-white dark:bg-[#1e1e1e] p-6 rounded-[32px] border border-gray-100 dark:border-gray-800 shadow-sm space-y-6">
+        <section
+          class="bg-white dark:bg-[#1e1e1e] p-6 rounded-[32px] border border-gray-100 dark:border-gray-800 shadow-sm space-y-6">
           <div class="flex flex-col xl:flex-row xl:items-end gap-8">
             <div class="flex-1 space-y-4">
               <span class="text-[10px] font-black uppercase text-gray-400 tracking-widest">Intervalo de Apuração</span>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="space-y-1">
                   <label class="text-[9px] font-bold text-gray-400 uppercase">Mês Início</label>
-                  <select id="start-month" class="w-full p-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none text-gray-900 dark:text-white"></select>
+                  <select id="start-month"
+                    class="w-full p-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none text-gray-900 dark:text-white"></select>
                 </div>
                 <div class="space-y-1">
                   <label class="text-[9px] font-bold text-gray-400 uppercase">Ano Início</label>
-                  <select id="start-year" class="w-full p-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none text-gray-900 dark:text-white"></select>
+                  <select id="start-year"
+                    class="w-full p-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none text-gray-900 dark:text-white"></select>
                 </div>
                 <div class="space-y-1">
                   <label class="text-[9px] font-bold text-gray-400 uppercase">Mês Fim</label>
-                  <select id="end-month" class="w-full p-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none text-gray-900 dark:text-white"></select>
+                  <select id="end-month"
+                    class="w-full p-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none text-gray-900 dark:text-white"></select>
                 </div>
                 <div class="space-y-1">
                   <label class="text-[9px] font-bold text-gray-400 uppercase">Ano Fim</label>
-                  <select id="end-year" class="w-full p-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none text-gray-900 dark:text-white"></select>
+                  <select id="end-year"
+                    class="w-full p-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none text-gray-900 dark:text-white"></select>
                 </div>
               </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:flex xl:flex-row gap-3 w-full xl:w-auto">
-              <select id="category-filter" class="w-full xl:w-auto p-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none text-gray-900 dark:text-white">
+              <select id="category-filter"
+                class="w-full xl:w-auto p-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none text-gray-900 dark:text-white">
                 <option value="Todas">Todas Categorias</option>
                 <option value="Gastronomia">Gastronomia</option>
                 <option value="Moda">Moda</option>
               </select>
-              <select id="grade-filter" class="w-full xl:w-auto p-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none text-gray-900 dark:text-white">
+              <select id="grade-filter"
+                class="w-full xl:w-auto p-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none text-gray-900 dark:text-white">
                 <option value="Todas">Todas Notas</option>
                 <option value="Bom">Bom (80-100)</option>
                 <option value="Regular">Regular (60-79)</option>
@@ -194,25 +444,41 @@
                 <option value="Inaceitavel">Inaceitável (0-29)</option>
               </select>
               <div class="relative flex-1 min-w-full sm:min-w-[200px]">
-                <svg viewBox="0 0 24 24" class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input type="text" id="store-search" placeholder="Buscar por Loja ou LUC..." class="w-full pl-9 pr-4 py-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none focus:border-[#8B1A1A] transition-colors text-gray-900 dark:text-white">
+                <svg viewBox="0 0 24 24" class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400"
+                  xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+                <input type="text" id="store-search" placeholder="Buscar por Loja ou LUC..."
+                  class="w-full pl-9 pr-4 py-2.5 bg-gray-50 dark:bg-[#252525] rounded-xl text-xs font-bold border border-gray-100 dark:border-gray-700 outline-none focus:border-[#8B1A1A] transition-colors text-gray-900 dark:text-white">
               </div>
-              <button onclick="alert('Funcionalidade de PDF disponível após integração com backend Go.')" class="w-full xl:w-auto px-6 py-2.5 bg-[#8B1A1A] text-white rounded-xl font-black text-[10px] uppercase shadow-lg shadow-red-900/20 active:scale-95 transition-transform whitespace-nowrap">Emitir PDF</button>
+              <button onclick="alert('Funcionalidade de PDF disponível após integração com backend Go.')"
+                class="w-full xl:w-auto px-6 py-2.5 bg-[#8B1A1A] text-white rounded-xl font-black text-[10px] uppercase shadow-lg shadow-red-900/20 active:scale-95 transition-transform whitespace-nowrap">Emitir
+                PDF</button>
             </div>
           </div>
 
           <!-- Tabs -->
           <div class="flex gap-1 bg-gray-100 dark:bg-gray-800/50 p-1 rounded-2xl w-full sm:w-fit overflow-x-auto">
-            <button id="tab-panorama" onclick="setTab('panorama')" class="flex-1 sm:flex-none px-6 py-2 rounded-xl text-[10px] font-black uppercase transition-all bg-white text-[#8B1A1A] shadow-sm">Panorama</button>
-            <button id="tab-atividades" onclick="setTab('atividades')" class="flex-1 sm:flex-none px-6 py-2 rounded-xl text-[10px] font-black uppercase transition-all text-gray-400 hover:text-gray-600">Atividades</button>
+            <button id="tab-panorama" onclick="setTab('panorama')"
+              class="flex-1 sm:flex-none px-6 py-2 rounded-xl text-[10px] font-black uppercase transition-all bg-white text-[#8B1A1A] shadow-sm">Panorama</button>
+            <button id="tab-atividades" onclick="setTab('atividades')"
+              class="flex-1 sm:flex-none px-6 py-2 rounded-xl text-[10px] font-black uppercase transition-all text-gray-400 hover:text-gray-600">Atividades</button>
           </div>
         </section>
 
         <!-- KPI Cards -->
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="bg-white dark:bg-[#1e1e1e] p-6 rounded-[24px] border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-300 hover:shadow-md">
+          <div
+            class="bg-white dark:bg-[#1e1e1e] p-6 rounded-[24px] border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-300 hover:shadow-md">
             <div class="flex items-center gap-3 mb-4">
-              <div class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg"><svg viewBox="0 0 24 24" class="w-4 h-4 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+              <div class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg"><svg viewBox="0 0 24 24"
+                  class="w-4 h-4 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                  <polyline points="16 7 22 7 22 13" />
+                </svg></div>
               <span class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Média Geral</span>
             </div>
             <div class="flex items-end gap-2">
@@ -220,12 +486,19 @@
               <span class="text-xs font-bold text-gray-400 mb-1.5">pontos</span>
             </div>
             <div class="mt-4 h-1.5 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-              <div id="kpi-media-bar" class="h-full transition-all duration-1000 bg-gray-300 dark:bg-gray-700" style="width:0%"></div>
+              <div id="kpi-media-bar" class="h-full transition-all duration-1000 bg-gray-300 dark:bg-gray-700"
+                style="width:0%"></div>
             </div>
           </div>
-          <div class="bg-white dark:bg-[#1e1e1e] p-6 rounded-[24px] border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-300 hover:shadow-md">
+          <div
+            class="bg-white dark:bg-[#1e1e1e] p-6 rounded-[24px] border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-300 hover:shadow-md">
             <div class="flex items-center gap-3 mb-4">
-              <div class="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg"><svg viewBox="0 0 24 24" class="w-4 h-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+              <div class="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg"><svg viewBox="0 0 24 24"
+                  class="w-4 h-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                  <polyline points="14 2 14 8 20 8" />
+                </svg></div>
               <span class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Auditorias</span>
             </div>
             <div class="flex items-end gap-2">
@@ -234,20 +507,35 @@
             </div>
             <p class="mt-4 text-[10px] text-gray-500 font-bold uppercase tracking-tighter">Volume de dados apurados</p>
           </div>
-          <div class="bg-white dark:bg-[#1e1e1e] p-6 rounded-[24px] border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-300 hover:shadow-md">
+          <div
+            class="bg-white dark:bg-[#1e1e1e] p-6 rounded-[24px] border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-300 hover:shadow-md">
             <div class="flex items-center gap-3 mb-4">
-              <div class="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg"><svg viewBox="0 0 24 24" class="w-4 h-4 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
+              <div class="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg"><svg viewBox="0 0 24 24"
+                  class="w-4 h-4 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg></div>
               <span class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Bom</span>
             </div>
             <div class="flex items-end gap-2">
               <span id="kpi-bom" class="text-3xl font-black text-green-600">0</span>
               <span class="text-xs font-bold text-gray-400 mb-1.5">lojas nota 80+</span>
             </div>
-            <p class="mt-4 text-[10px] text-gray-500 font-bold uppercase tracking-tighter">Padrão de qualidade atingido</p>
+            <p class="mt-4 text-[10px] text-gray-500 font-bold uppercase tracking-tighter">Padrão de qualidade atingido
+            </p>
           </div>
-          <div class="bg-white dark:bg-[#1e1e1e] p-6 rounded-[24px] border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-300 hover:shadow-md">
+          <div
+            class="bg-white dark:bg-[#1e1e1e] p-6 rounded-[24px] border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-300 hover:shadow-md">
             <div class="flex items-center gap-3 mb-4">
-              <div class="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg"><svg viewBox="0 0 24 24" class="w-4 h-4 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg></div>
+              <div class="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg"><svg viewBox="0 0 24 24"
+                  class="w-4 h-4 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" x2="12" y1="8" y2="12" />
+                  <line x1="12" x2="12.01" y1="16" y2="16" />
+                </svg></div>
               <span class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Inaceitáveis</span>
             </div>
             <div class="flex items-end gap-2">
@@ -294,7 +582,7 @@
     const userInfo = document.getElementById('user-info');
     const navLabel = document.getElementById('nav-label');
     const submenu = document.getElementById('conservacao-submenu');
-    
+
     collapseBtn.addEventListener('click', () => {
       collapsed = !collapsed;
       if (collapsed) {
@@ -334,15 +622,15 @@
     document.getElementById('current-date').textContent = new Date().toLocaleDateString('pt-BR');
 
     // Months / Years
-    const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-    const YEARS = ["2024","2025","2026","2027","2028","2029","2030"];
+    const MONTHS = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+    const YEARS = ["2024", "2025", "2026", "2027", "2028", "2029", "2030"];
     const now = new Date();
 
-    ['start-month','end-month'].forEach(id => {
+    ['start-month', 'end-month'].forEach(id => {
       const sel = document.getElementById(id);
       MONTHS.forEach((m, i) => { const o = document.createElement('option'); o.value = m; o.textContent = m; if (i === now.getMonth()) o.selected = true; sel.appendChild(o); });
     });
-    ['start-year','end-year'].forEach(id => {
+    ['start-year', 'end-year'].forEach(id => {
       const sel = document.getElementById(id);
       YEARS.forEach(y => { const o = document.createElement('option'); o.value = y; o.textContent = y; if (y === String(now.getFullYear())) o.selected = true; sel.appendChild(o); });
     });
@@ -459,7 +747,7 @@
 
         content.innerHTML = `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">${units.map(unit => {
           const acts = inspecoesSanitarias.filter(a => a.loja_id === unit.id && isWithinPeriod(a.data_auditoria));
-          const latestNota = acts.sort((a,b) => new Date(b.data_auditoria) - new Date(a.data_auditoria))[0]?.nota;
+          const latestNota = acts.sort((a, b) => new Date(b.data_auditoria) - new Date(a.data_auditoria))[0]?.nota;
           return `<div class="bg-white dark:bg-[#1e1e1e] rounded-[32px] border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden flex flex-col hover:shadow-xl transition-all cursor-pointer">
             <div class="p-5 bg-gray-50/50 dark:bg-gray-900/20 flex items-center gap-3">
               <div class="p-2 bg-white dark:bg-[#252525] rounded-xl shadow-sm">
@@ -474,7 +762,7 @@
               <table class="w-full text-[10px]">
                 <thead><tr class="border-b border-gray-100 dark:border-gray-800 text-gray-400 uppercase"><th class="text-left py-2 font-black">Referência</th><th class="text-right py-2 font-black">Nota</th></tr></thead>
                 <tbody class="divide-y divide-gray-50 dark:divide-gray-800/50">
-                  ${acts.slice(0,3).map(a => `<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors"><td class="py-2.5 font-bold text-gray-500">${formatDate(a.data_auditoria)}</td><td class="py-2.5 text-right font-black ${getNoteColor(a.nota)}">${a.nota}</td></tr>`).join('')}
+                  ${acts.slice(0, 3).map(a => `<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors"><td class="py-2.5 font-bold text-gray-500">${formatDate(a.data_auditoria)}</td><td class="py-2.5 text-right font-black ${getNoteColor(a.nota)}">${a.nota}</td></tr>`).join('')}
                   ${acts.length === 0 ? `<tr><td colspan="2" class="py-4 text-center text-gray-300 dark:text-gray-600">Sem nota</td></tr>` : ''}
                 </tbody>
               </table>
@@ -488,7 +776,7 @@
           if (!unit) return false;
           if (!matchesUnit(unit)) return false;
           return isWithinPeriod(a.data_auditoria) && matchesGrade(a.nota);
-        }).sort((a,b) => new Date(b.data_auditoria) - new Date(a.data_auditoria));
+        }).sort((a, b) => new Date(b.data_auditoria) - new Date(a.data_auditoria));
 
         if (acts.length === 0) {
           content.innerHTML = `<div class="text-center py-20 bg-white dark:bg-[#1e1e1e] rounded-3xl border border-dashed border-gray-200 dark:border-gray-800"><p class="text-sm font-bold text-gray-400">Nenhuma atividade registrada neste período.</p></div>`;
@@ -525,7 +813,7 @@
     }
 
     // Event listeners for filters
-    ['start-month','start-year','end-month','end-year'].forEach(id => document.getElementById(id).addEventListener('change', loadDados));
+    ['start-month', 'start-year', 'end-month', 'end-year'].forEach(id => document.getElementById(id).addEventListener('change', loadDados));
     document.getElementById('category-filter').addEventListener('change', e => { categoryFilter = e.target.value; render(); });
     document.getElementById('grade-filter').addEventListener('change', e => { gradeFilter = e.target.value; render(); });
     document.getElementById('store-search').addEventListener('input', e => { storeSearch = e.target.value; render(); });
@@ -533,4 +821,5 @@
     loadDados();
   </script>
 </body>
+
 </html>
