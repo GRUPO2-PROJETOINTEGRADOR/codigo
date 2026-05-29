@@ -6,6 +6,7 @@ import (
 	s "codigo/app/services"
 	"encoding/json"
 	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -109,7 +110,6 @@ func (c *OrientacaoController) Editar(w http.ResponseWriter, r *http.Request) {
 	observacoes := r.FormValue("observacoes")          // Pega do <textarea name="observacoes">
 
 	// 4. Conversão de Tipos: O HTML envia tudo como texto (string). O Go precisa converter.
-
 	// Convertendo o ID de String para Inteiro (int)
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -134,7 +134,7 @@ func (c *OrientacaoController) Editar(w http.ResponseWriter, r *http.Request) {
 		// LojaID não entra aqui porque decidimos travar a edição da loja!
 	}
 
-	// 6. Chuta para o Service aplicar as regras e salvar no banco
+	// 6. Envia para o Service aplicar as regras e salvar no banco
 	err = c.Service.Atualizar(orientacaoAtualizada)
 	if err != nil {
 		// Se der erro em alguma validação ou no SQL, avisa a tela
@@ -144,4 +144,31 @@ func (c *OrientacaoController) Editar(w http.ResponseWriter, r *http.Request) {
 
 	// 7. SUCESSO COMPLETO!
 	http.Redirect(w, r, "/conservacao/orientacao-educativa", http.StatusSeeOther)
+}
+
+func (c *OrientacaoController) Delete(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodDelete {
+		http.Error(w, "Método não permitido. Use DELETE.", http.StatusMethodNotAllowed)
+		return
+	}
+
+	IDStr := r.FormValue("id")
+	id, err := strconv.Atoi(IDStr)
+	if err != nil {
+		log.Printf("Erro ao converter ID '%s' para inteiro: %v", IDStr, err)
+		http.Error(w, "ID de registro inválido", http.StatusBadRequest)
+		return
+	}
+	IdOrientacao := models.OrientacaoEducativa{
+		ID: id,
+	}
+
+	err = c.Service.Delete(IdOrientacao)
+	if err != nil {
+		log.Printf("Erro ao deletar registro: %v", err)
+		http.Error(w, "Erro ao deletar registro: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }

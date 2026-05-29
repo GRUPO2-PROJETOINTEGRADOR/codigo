@@ -4,6 +4,7 @@ import (
 	"codigo/app/models"
 	utils "codigo/app/repository"
 	"errors"
+	"log"
 	"time"
 )
 
@@ -47,4 +48,12 @@ func (s *OrientacaoService) Atualizar(o models.OrientacaoEducativa) error {
 
 	// Se passou nas regras, manda o repositório fazer o trabalho sujo
 	return s.Repo.Atualizar(o)
+}
+
+func (s *OrientacaoService) Delete(o models.OrientacaoEducativa) error {
+	if o.ID == 0 {
+		log.Printf("Campo ID vazio!")
+		return errors.New("Campo ID vazio!")
+	}
+	return s.Repo.Delete(o)
 }

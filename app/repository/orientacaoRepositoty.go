@@ -83,7 +83,7 @@ func (repo *OrientacaoRepository) Delete(o models.OrientacaoEducativa) error {
 	query := `DELETE FROM orientacoes_educativas WHERE id =$1`
 	_, err := DB.Exec(query, o.ID)
 	if err != nil {
-		return err // Se o banco der erro (ex: tipo de dado inválido), joga para cima
+		return err // Se o banco der erro (ex: tipo de dado inválido)
 	}
 	return nil
 }
