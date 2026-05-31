@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"codigo/app/models"
-	utils "codigo/app/repository"
+	repo "codigo/app/repository"
 	s "codigo/app/services"
 	"encoding/json"
 	"html/template"
@@ -12,22 +12,11 @@ import (
 	"time"
 )
 
-// existing code ... (keep unchanged)
-
-func (c *OrientacaoController) ListarJSONHandler(w http.ResponseWriter, r *http.Request) {
-	orientacoes, err := c.Service.ListarTodas()
-	if err != nil {
-		http.Error(w, "Erro ao buscar orientações", http.StatusInternalServerError)
-		return
-	}
-	json.NewEncoder(w).Encode(orientacoes)
-}
-
 type OrientacaoController struct {
 	Service s.OrientacaoService
 }
 
-func (c *OrientacaoController) ListarPaginaHandler(w http.ResponseWriter, r *http.Request) {
+func (c *OrientacaoController) ListarPaginaHandler(w http.ResponseWriter, r *http.Request) { //Lê os dados da tabela e exibe
 	// 1. Busca as orientações do banco
 	orientacoes, err := c.Service.ListarTodas()
 	if err != nil {
@@ -39,7 +28,7 @@ func (c *OrientacaoController) ListarPaginaHandler(w http.ResponseWriter, r *htt
 	//log.Printf("===> DADOS: %+v", orientacoes)
 
 	// 2. Busca as lojas do banco
-	lojas, err := utils.Read_lojas()
+	lojas, err := repo.Read_lojas()
 	if err != nil {
 		http.Error(w, "Erro ao buscar lojas", http.StatusInternalServerError)
 		return
@@ -62,14 +51,53 @@ func (c *OrientacaoController) ListarPaginaHandler(w http.ResponseWriter, r *htt
 	tmpl.Execute(w, contexto)
 }
 
-func (c *OrientacaoController) SalvarHandler(w http.ResponseWriter, r *http.Request) {
+func (c *OrientacaoController) ExibirStats(w http.ResponseWriter, r *http.Request) { //
+	Total, err := c.Service.TotalTreinos()
+	if err != nil {
+		http.Error(w, "Erro ao Exibir Total Treinos", http.StatusInternalServerError)
+		log.Printf("Erro na exibição TotalTreinos: %s", err)
+		return
+	}
+
+	TotalLojas, err := c.Service.LojasTreinos()
+	if err != nil {
+		http.Error(w, "Erro ao Exibir Total Lojas", http.StatusInternalServerError)
+		log.Printf("Erro na exibição TotalLojas: %s", err)
+		return
+	}
+
+	ultimaData, err := c.Service.BuscarUltimaData()
+	if err != nil {
+		http.Error(w, "Erro ao ler ultima data", http.StatusInternalServerError)
+		log.Printf("Erro leitura última data: %v", err)
+		return
+	}
+	var Ultimo *string
+	if ultimaData != nil {
+		formatted := ultimaData.Format("02/01/2006")
+		Ultimo = &formatted
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"total":           Total,
+		"lojas_treinadas": TotalLojas,
+		"ultimo_registro": Ultimo,
+	})
+
+}
+
+func (c *OrientacaoController) SalvarHandler(w http.ResponseWriter, r *http.Request) { //Chama a função para salvar no banco
 	if r.Method != http.MethodPost {
 		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
 		return
 	}
 
 	dataStr := r.FormValue("data_orientacao")
-	dataformat, _ := time.Parse("2006-01-02", dataStr)
+	dataformat, err := time.Parse("2006-01-02", dataStr)
+	if err != nil {
+		http.Error(w, "Data de orientação inválida ou ausente", http.StatusBadRequest)
+		return
+	}
 
 	novaOrientacao := models.OrientacaoEducativa{
 		LojaID:              r.FormValue("loja_id"), //lê do html a var name="loja_id"
@@ -79,7 +107,7 @@ func (c *OrientacaoController) SalvarHandler(w http.ResponseWriter, r *http.Requ
 		Observacoes:         r.FormValue("observacoes"),
 	}
 
-	err := c.Service.CriarNovaOrientacao(novaOrientacao)
+	err = c.Service.CriarNovaOrientacao(novaOrientacao)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -89,7 +117,7 @@ func (c *OrientacaoController) SalvarHandler(w http.ResponseWriter, r *http.Requ
 	w.WriteHeader(http.StatusOK)
 }
 
-func (c *OrientacaoController) Editar(w http.ResponseWriter, r *http.Request) {
+func (c *OrientacaoController) EditarHandler(w http.ResponseWriter, r *http.Request) { //Envia solicitação para alterar banco
 	// 1. Segurança: Só aceita se o HTML enviar como POST (envio de formulário)
 	if r.Method != http.MethodPost {
 		http.Error(w, "Método não permitido. Use POST.", http.StatusMethodNotAllowed)
@@ -146,7 +174,8 @@ func (c *OrientacaoController) Editar(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/conservacao/orientacao-educativa", http.StatusSeeOther)
 }
 
-func (c *OrientacaoController) Delete(w http.ResponseWriter, r *http.Request) {
+func (c *OrientacaoController) DeleteHandler(w http.ResponseWriter, r *http.Request) { //Solicita o Delete de dados do Banco
+
 	if r.Method != http.MethodDelete {
 		http.Error(w, "Método não permitido. Use DELETE.", http.StatusMethodNotAllowed)
 		return

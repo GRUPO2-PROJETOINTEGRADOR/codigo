@@ -2,7 +2,7 @@ package services
 
 import (
 	"codigo/app/models"
-	utils "codigo/app/repository"
+	repo "codigo/app/repository"
 	"errors"
 	"log"
 	"time"
@@ -11,7 +11,7 @@ import (
 // OrientacaoService provides business logic for Orientacao Educativa.
 // It depends on an OrientacaoRepository for data persistence.
 type OrientacaoService struct {
-	Repo utils.OrientacaoRepository
+	Repo repo.OrientacaoRepository
 }
 
 // CriarNovaOrientacao validates and saves a new OrientacaoEducativa.
@@ -56,4 +56,16 @@ func (s *OrientacaoService) Delete(o models.OrientacaoEducativa) error {
 		return errors.New("Campo ID vazio!")
 	}
 	return s.Repo.Delete(o)
+}
+
+func (s *OrientacaoService) TotalTreinos() (int, error) {
+	return s.Repo.TotalTreinos()
+}
+
+func (s *OrientacaoService) LojasTreinos() (int, error) {
+	return s.Repo.LojasTreinos()
+}
+
+func (s *OrientacaoService) BuscarUltimaData() (*time.Time, error) {
+	return s.Repo.BuscarUltimaData()
 }

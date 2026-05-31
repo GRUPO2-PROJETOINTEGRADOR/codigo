@@ -3,6 +3,7 @@ package repo
 import (
 	"codigo/app/models"
 	"log"
+	"time"
 )
 
 type OrientacaoRepository struct{}
@@ -43,7 +44,7 @@ func (repo *OrientacaoRepository) ListarTodas() ([]models.OrientacaoEducativa, e
 
 func (repo *OrientacaoRepository) BuscaPorID(id int) (models.OrientacaoEducativa, error) {
 	var o models.OrientacaoEducativa
-	query := `SELECT id, loja_id, responsavel_presente, funcao_resposnavel, data_orientacao, observacoes, FROM
+	query := `SELECT id, loja_id, responsavel_presente, funcao_responsavel, data_orientacao, observacoes FROM
 	orientacoes_educativas WHERE id = $1`
 	err := DB.QueryRow(query, id).Scan(&o.ID, &o.LojaID, &o.ResponsavelPresente, &o.FuncaoResponsavel, &o.DataOrientacao, &o.Observacoes)
 	if err != nil {
@@ -86,4 +87,38 @@ func (repo *OrientacaoRepository) Delete(o models.OrientacaoEducativa) error {
 		return err // Se o banco der erro (ex: tipo de dado inválido)
 	}
 	return nil
+}
+
+func (repo *OrientacaoRepository) TotalTreinos() (int, error) { //Essa função executa a query no postgres e retorna a quantidade TOTAL de treinos cadastrados
+	var Total int
+	query := `SELECT COUNT(*) FROM orientacoes_educativas`
+	err := DB.QueryRow(query).Scan(&Total)
+	if err != nil {
+		log.Printf("Erro repo TotalTreinos: %v", err)
+		return 0, err
+	}
+	return Total, err
+}
+
+func (repo *OrientacaoRepository) LojasTreinos() (int, error) { //Quantidade de lojas treinadas
+	query := `SELECT COUNT(DISTINCT loja_id) FROM orientacoes_educativas`
+	var Lojastreinadas int
+	err := DB.QueryRow(query).Scan(&Lojastreinadas)
+	if err != nil {
+		log.Printf("Erro ler Lojas Treinos: %v", err)
+		return 0, err
+	}
+	log.Println("Leitura lojas OK")
+	return Lojastreinadas, err
+}
+
+func (repo *OrientacaoRepository) BuscarUltimaData() (*time.Time, error) { //Última data cadastrada
+	query := `SELECT MAX(data_orientacao) FROM orientacoes_educativas`
+	var DataServer *time.Time
+	err := DB.QueryRow(query).Scan(&DataServer)
+	if err != nil {
+		log.Printf("Erro leitura última orientação: %v", err)
+		return DataServer, err
+	}
+	return DataServer, err
 }

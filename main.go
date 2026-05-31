@@ -84,17 +84,7 @@ func main() {
 		),
 	)
 
-	// SERVIDOR DE ARQUIVOS RAIZ
-
-	// Serve arquivos diretamente da raiz do projeto.
-	//
-	// Exemplo:
-	//   localhost:8080/templates/index.html
-	// OBS:
-	// Em produção isso geralmente NÃO é recomendado,
-	// porque expõe arquivos do projeto.
-
-	http.Handle("/", http.FileServer(http.Dir(".")))
+	http.Handle("/", http.FileServer(http.Dir("templates")))
 
 	// =========================================================
 	// PORTA DO SERVIDOR
@@ -115,14 +105,14 @@ func main() {
 	// LOG VISUAL DE INICIALIZAÇÃO
 	// =========================================================
 	log.Println("╔══════════════════════════════════════════════════╗")
-	log.Println("║   JP Mall — Servidor Go rodando com sucesso!    ║")
+	log.Println("║   JP Mall — Servidor Go rodando com sucesso!     ║")
 
 	log.Printf(
-		"║   Acesse: http://localhost:%s/templates/index.html       ║\n",
+				"║   Acesse: http://localhost:%s		       ║\n",
 		port,
 	)
 
-	log.Println("║   API pronta para desenvolvimento.              ║")
+	log.Println("║   API pronta para desenvolvimento.               ║")
 	log.Println("╚══════════════════════════════════════════════════╝")
 
 	// =========================================================
