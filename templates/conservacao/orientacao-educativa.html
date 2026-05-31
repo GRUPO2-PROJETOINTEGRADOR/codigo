@@ -475,7 +475,7 @@
                 <div class="space-y-1.5">
                   <label class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Loja
                     Atendida *</label>
-                  <div class="relative">
+                  <div class="relative" id="loja-search-container">
                     <svg viewBox="0 0 24 24" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
                       xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
                       stroke-linecap="round" stroke-linejoin="round">
@@ -484,16 +484,14 @@
                         d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244" />
                       <path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05" />
                     </svg>
-                    <select name="loja_id" id="loja_id"
-                      class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none outline-none">
-
-                      <option value="">Selecione a loja...</option>
-
-                      {{range .Lojas}}
-                      <option value="{{.ID}}">{{.ID}} - {{.Nome}}</option>
-                      {{end}}
-
-                    </select>
+                    <input type="text" id="loja-search-input"
+                      placeholder="Digite para buscar loja por nome ou ID (LUC)..."
+                      class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                      autocomplete="off">
+                    <input type="hidden" name="loja_id" id="loja-id-hidden" value="">
+                    <div id="loja-search-results"
+                      class="absolute z-50 mt-1 w-full bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg max-h-60 overflow-y-auto hidden">
+                    </div>
                   </div>
                 </div>
                 <div class="space-y-1.5">
@@ -617,7 +615,7 @@
 
                 <button onclick="openEdit(this)" data-id="{{.ID}}" data-loja="{{.LojaID}}"
                   data-responsavel="{{.ResponsavelPresente}}" data-funcao="{{.FuncaoResponsavel}}"
-                  data-data="{{.DataOrientacao.Format " 2006-01-02"}}" data-obs="{{.Observacoes}}"
+                  data-data="{{.DataOrientacao.Format "2006-01-02"}}" data-obs="{{.Observacoes}}"
                   class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors cursor-pointer"
                   title="Editar">
                   <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -850,6 +848,9 @@
 
   <script>
 
+    let orientacoes = {{.Orientacoes | json}};
+    let lojas = {{.Lojas | json}};
+
     function confirmarExclusao(id, nomeLoja) {
       const modal = document.getElementById('modal-exclusao');
       const modalContent = modal.querySelector('.transform');
@@ -980,15 +981,7 @@
     // POST /api/orientacoes/criar → criar nova orientação
     // GET  /api/lojas            → lista de lojas para dropdown
 
-    let orientacoes = [];
-    let lojas = [];
 
-    /*async function loadLojas() {
-      try { const r = await fetch('/api/lojas'); if (r.ok) lojas = await r.json(); else lojas = []; } catch { lojas = []; }
-      const sel = document.getElementById('loja_id');
-      sel.innerHTML = '<option value="">Selecione a loja...</option>';
-      lojas.forEach(l => { const o = document.createElement('option'); o.value = l.id; o.textContent = `${l.nome} (LUC ${l.id})`; sel.appendChild(o); });
-    }*/
 
     async function loadStats() {
       try {
@@ -1001,11 +994,6 @@
       } catch { }
     }
     loadStats();
-
-    function getLojaNome(id) {
-      const l = lojas.find(l => l.id === id);
-      return l ? `${l.nome} (LUC ${id})` : `LUC ${id}`;
-    }
 
     function formatDate(d) {
       if (!d) return '-';
@@ -1100,34 +1088,51 @@
     let searchTerm = '';
 
     function renderHistorico() {
-      const filtered = orientacoes.filter(o => {
-        if (!searchTerm) return true;
-        const nome = getLojaNome(o.loja_id).toLowerCase();
-        return nome.includes(searchTerm.toLowerCase()) || o.responsavel_presente.toLowerCase().includes(searchTerm.toLowerCase()) || o.observacoes.toLowerCase().includes(searchTerm.toLowerCase());
-      }).sort((a, b) => new Date(b.data_orientacao) - new Date(a.data_orientacao));
+      const term = searchTerm.toLowerCase();
+      const filtered = orientacoes
+        .filter(o => {
+          if (!term) return true;
+          return o.loja_id.toLowerCase().includes(term) ||
+            o.nome_loja.toLowerCase().includes(term);
+        })
+        .sort((a, b) => new Date(b.data_orientacao) - new Date(a.data_orientacao));
 
       const list = document.getElementById('historico-list');
       if (filtered.length === 0) {
-        list.innerHTML = `<div class="bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-12 text-center shadow-sm"><svg viewBox="0 0 24 24" class="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg><p class="text-gray-500 dark:text-gray-400 font-medium">Nenhum registro encontrado.</p></div>`;
+        list.innerHTML = `<div class="bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-12 text-center shadow-sm">
+          <svg viewBox="0 0 24 24" class="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <p class="text-gray-500 dark:text-gray-400 font-medium">Nenhum registro encontrado.</p>
+        </div>`;
         return;
       }
       list.innerHTML = filtered.map(o => `
         <div class="group bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500/30 transition-all flex flex-col md:flex-row gap-4 md:gap-6 relative overflow-hidden">
           <div class="absolute left-0 top-0 bottom-0 w-1 bg-gray-200 dark:bg-gray-700 group-hover:bg-blue-500 transition-colors"></div>
+
+          <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-white/90 dark:bg-[#252525]/90 backdrop-blur-sm rounded-lg z-10 p-1">
+            <button onclick="openEdit(this)" data-id="${o.id}" data-loja="${o.loja_id}" data-responsavel="${o.responsavel_presente}" data-funcao="${o.funcao_responsavel}" data-data="${o.data_orientacao}" data-obs="${o.observacoes}" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors cursor-pointer" title="Editar">
+              <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </button>
+            <button onclick="confirmarExclusao('${o.id}', '${o.nome_loja}')" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg transition-colors cursor-pointer" title="Remover">
+              <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+            </button>
+          </div>
+
           <div class="flex-shrink-0 md:w-48 space-y-2 pl-3">
-            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></svg>
-              <span class="font-bold text-sm">${getLojaNome(o.loja_id)}</span>
+            <div class="flex items-start gap-2 text-blue-600 dark:text-blue-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/></svg>
+              <span class="font-bold text-sm">${o.nome_loja}<br><span class="text-xs font-medium opacity-80">(LUC ${o.loja_id})</span></span>
             </div>
             <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs font-medium">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
               ${formatDate(o.data_orientacao)}
             </div>
           </div>
+
           <div class="flex-1 space-y-3">
-            <div class="flex flex-wrap items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2 pr-20">
               <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-100 dark:border-blue-800/50">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 ${o.responsavel_presente}
               </span>
               <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300">${o.funcao_responsavel}</span>
@@ -1137,6 +1142,46 @@
         </div>
       `).join('');
     }
+
+    function renderLojasSearch(term) {
+      const results = document.getElementById('loja-search-results');
+      if (!term) { results.classList.add('hidden'); return; }
+      const filtered = lojas.filter(l =>
+        l.id.toLowerCase().includes(term) || l.nome.toLowerCase().includes(term)
+      );
+      if (filtered.length === 0) {
+        results.innerHTML = '<div class="p-3 text-sm text-gray-400 text-center">Nenhuma loja encontrada.</div>';
+        results.classList.remove('hidden');
+        return;
+      }
+      results.innerHTML = filtered.map(l =>
+        `<div class="px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer border-b border-gray-100 dark:border-gray-800 last:border-b-0 flex items-center gap-2"
+              onclick="selectLoja('${l.id}', '${l.nome.replace(/'/g, "\\'")}')">
+            <span class="font-mono font-bold text-blue-600 dark:text-blue-400 text-xs bg-blue-50 dark:bg-blue-900/30 px-1.5 py-0.5 rounded">${l.id}</span>
+            <span>${l.nome}</span>
+        </div>`
+      ).join('');
+      results.classList.remove('hidden');
+    }
+
+    function selectLoja(id, nome) {
+      document.getElementById('loja-id-hidden').value = id;
+      document.getElementById('loja-search-input').value = `${id} — ${nome}`;
+      document.getElementById('loja-search-results').classList.add('hidden');
+    }
+
+    document.getElementById('loja-search-input').addEventListener('input', e => {
+      const term = e.target.value.trim().toLowerCase();
+      renderLojasSearch(term);
+    });
+
+    document.getElementById('loja-search-input').addEventListener('blur', () => {
+      setTimeout(() => document.getElementById('loja-search-results').classList.add('hidden'), 200);
+    });
+
+    document.getElementById('loja-search-input').addEventListener('focus', e => {
+      if (e.target.value.trim()) renderLojasSearch(e.target.value.trim().toLowerCase());
+    });
 
     document.getElementById('search-historico').addEventListener('input', e => { searchTerm = e.target.value; renderHistorico(); });
 
@@ -1193,8 +1238,6 @@
       setTimeout(() => { toast.classList.add('translate-y-2', 'opacity-0'); setTimeout(() => toast.remove(), 300); }, 4000);
     }
 
-    //loadLojas();    // Comentado pois loadLojas foi comentada acima
-    //loadOrientacoes(); // Comentado pois loadOrientacoes foi comentada acima
   </script>
 </body>
 

@@ -42,13 +42,14 @@ func (c *OrientacaoController) ListarPaginaHandler(w http.ResponseWriter, r *htt
 
 	// 4. RENDERIZA APENAS A TELA DE ORIENTAÇÃO
 	// Como a tela já está completa, passamos apenas o caminho dela no ParseFiles
-	tmpl := template.Must(template.ParseFiles(
-		"templates/conservacao/orientacao-educativa.html",
-	))
-
-	// Mudamos para tmpl.Execute (sem a palavra Template), pois não precisamos
-	// chamar um bloco específico como "layout", ele vai rodar o arquivo inteiro direto.
+	tmpl := template.Must(template.New("orientacao-educativa.html").Funcs(template.FuncMap{
+		"json": func(v interface{}) template.JS {
+			b, _ := json.Marshal(v)
+			return template.JS(b)
+		},
+	}).ParseFiles("templates/conservacao/orientacao-educativa.html"))
 	tmpl.Execute(w, contexto)
+
 }
 
 func (c *OrientacaoController) ExibirStats(w http.ResponseWriter, r *http.Request) { //
@@ -201,3 +202,13 @@ func (c *OrientacaoController) DeleteHandler(w http.ResponseWriter, r *http.Requ
 
 	w.WriteHeader(http.StatusOK)
 }
+
+/*func (c *OrientacaoController) ListarJSONHandler(w http.ResponseWriter, r *http.Request) { //Função para realizar a pesquisa na tabela
+	orientacoes, err := c.Service.ListarTodas()
+	if err != nil {
+		http.Error(w, "Erro ao buscar orientações", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-type", "aplication/json")
+	json.NewEncoder(w).Encode(orientacoes)
+}*/
