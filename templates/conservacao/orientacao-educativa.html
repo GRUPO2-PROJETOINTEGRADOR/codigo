@@ -31,7 +31,7 @@
   <aside id="desktop-sidebar"
     class="hidden md:flex w-64 bg-[#8B1A1A] dark:bg-[#2a0a0a] flex-col flex-shrink-0 shadow-xl transition-all duration-300 ease-in-out relative">
     <button id="collapse-btn"
-      class="absolute -right-3 top-6 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-full p-1 shadow-md text-gray-500 hover:text-gray-900 dark:hover:text-white z-50">
+      class="absolute -right-3 top-6 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-full p-1 shadow-md text-gray-500 hover:text-gray-900 dark:hover:text-white z-50 transition-all active:scale-[0.97] cursor-pointer">
       <svg viewBox="0 0 24 24" id="collapse-icon-left" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="m15 18-6-6 6-6" />
@@ -103,7 +103,7 @@
         </div>
         <div class="space-y-1">
           <button
-            class="nav-item w-full group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 bg-white/10 text-white">
+            class="nav-item w-full group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 bg-white/10 text-white active:scale-[0.97]">
             <span class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 mr-2.5 bg-[#D93030]"><svg
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -236,7 +236,7 @@
   <aside id="mobile-sidebar"
     class="fixed top-0 left-0 h-full w-64 bg-[#8B1A1A] dark:bg-[#2a0a0a] z-50 md:hidden flex flex-col transform transition-transform duration-300 ease-in-out shadow-2xl -translate-x-full">
     <button id="close-mobile-sidebar"
-      class="absolute top-4 right-4 p-1.5 text-white/60 hover:text-white rounded-lg hover:bg-white/10"><svg
+      class="absolute top-4 right-4 p-1.5 text-white/60 hover:text-white rounded-lg hover:bg-white/10 transition-all active:scale-[0.97]"><svg
         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M18 6 6 18" />
@@ -272,7 +272,7 @@
       <!-- Left -->
       <div class="flex items-center gap-3">
         <button id="open-mobile-sidebar"
-          class="md:hidden p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+          class="md:hidden p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all active:scale-[0.97]">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="4" x2="20" y1="12" y2="12" />
@@ -320,7 +320,7 @@
       <div class="flex items-center gap-2">
         <!-- Bell -->
         <button id="notif-btn"
-          class="relative p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700/60 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
+          class="relative p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700/60 rounded-lg transition-all active:scale-[0.97] min-h-[44px] min-w-[44px] flex items-center justify-center">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
@@ -330,7 +330,7 @@
         <!-- User -->
         <div class="hidden sm:flex items-center border-l border-gray-200 dark:border-gray-700 pl-3 ml-1">
           <button
-            class="flex items-center gap-2.5 py-1.5 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/60 transition-colors min-h-[44px]">
+            class="flex items-center gap-2.5 py-1.5 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/60 transition-all active:scale-[0.97] min-h-[44px]">
             <div
               class="w-8 h-8 rounded-full bg-[#C8A882] dark:bg-[#a08560] text-[#8B1A1A] dark:text-white font-bold flex items-center justify-center text-xs">
               GR</div>
@@ -347,7 +347,7 @@
         </div>
         <!-- Theme Toggle -->
         <button id="theme-toggle"
-          class="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer">
+          class="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-all active:scale-[0.97] cursor-pointer">
           <svg viewBox="0 0 24 24" id="theme-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             class="hidden dark:block">
@@ -376,9 +376,9 @@
 
         <!-- Header -->
         <div
-          class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-blue-900/20 to-transparent p-6 rounded-2xl border border-blue-500/20 dark:border-blue-500/10">
+          class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-[#8B1A1A]/15 to-transparent p-6 rounded-2xl border border-[#8B1A1A]/20 dark:border-[#D93030]/10">
           <div class="flex items-center gap-4">
-            <div class="p-3 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl shadow-inner">
+            <div class="p-3 bg-[#8B1A1A]/10 dark:bg-[#D93030]/20 text-[#8B1A1A] dark:text-[#D93030] rounded-xl shadow-inner">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="flex-shrink-0">
@@ -390,12 +390,12 @@
             <div>
               <h1 class="text-2xl md:text-3xl font-black tracking-tight text-gray-900 dark:text-white">Orientação
                 Educativa</h1>
-              <p class="text-sm text-blue-600/80 dark:text-blue-400/80 mt-1 font-medium">Programa de suporte,
+              <p class="text-sm text-[#8B1A1A]/70 dark:text-[#D93030]/70 mt-1 font-medium">Programa de suporte,
                 treinamento e acompanhamento operacional dos lojistas</p>
             </div>
           </div>
           <button onclick="openCreate()"
-            class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all transform hover:-translate-y-0.5 flex-shrink-0">
+            class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-[#8B1A1A] hover:bg-[#6B1414] active:bg-[#5a1010] text-white font-bold text-sm rounded-xl shadow-lg shadow-[#8B1A1A]/20 hover:shadow-[#8B1A1A]/40 transition-all transform hover:-translate-y-0.5 active:scale-[0.97] flex-shrink-0">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14"/><path d="M12 5v14"/>
             </svg>
@@ -406,8 +406,8 @@
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div
-            class="bg-white dark:bg-[#252525] p-5 rounded-2xl border-l-4 border-l-blue-500 border-y border-r border-gray-100 dark:border-gray-800 shadow-sm flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:scale-[1.02]">
-            <div class="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg">
+            class="bg-white dark:bg-[#252525] p-5 rounded-2xl border-l-4 border-l-[#8B1A1A] border-y border-r border-gray-100 dark:border-gray-800 shadow-sm flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:scale-[1.02]">
+            <div class="p-3 bg-[#8B1A1A]/10 text-[#8B1A1A] dark:bg-[#D93030]/20 dark:text-[#D93030] rounded-lg">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path
@@ -422,8 +422,8 @@
             </div>
           </div>
           <div
-            class="bg-white dark:bg-[#252525] p-5 rounded-2xl border-l-4 border-l-cyan-500 border-y border-r border-gray-100 dark:border-gray-800 shadow-sm flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:scale-[1.02]">
-            <div class="p-3 bg-cyan-50 dark:bg-cyan-900/20 text-cyan-600 dark:text-cyan-400 rounded-lg">
+            class="bg-white dark:bg-[#252525] p-5 rounded-2xl border-l-4 border-l-[#C8A882] border-y border-r border-gray-100 dark:border-gray-800 shadow-sm flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:scale-[1.02]">
+            <div class="p-3 bg-[#C8A882]/20 text-amber-800 dark:bg-[#C8A882]/10 dark:text-amber-200 rounded-lg">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -477,7 +477,7 @@
                 <path d="m21 21-4.3-4.3" />
               </svg>
               <input type="text" id="search-historico" placeholder="Buscar histórico..."
-                class="w-full pl-10 pr-4 py-2 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
+                class="w-full pl-10 pr-4 py-2 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all outline-none">
             </div>
           </div>
 
@@ -485,10 +485,11 @@
 
             {{range .Orientacoes}}
             <div
-              class="group bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500/30 transition-all flex flex-col md:flex-row gap-4 md:gap-6 relative overflow-hidden">
+              class="group bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm hover:shadow-md hover:border-[#8B1A1A]/30 dark:hover:border-[#D93030]/30 transition-all flex flex-col md:flex-row gap-4 md:gap-6 relative overflow-hidden">
 
-              <div
-                class="absolute left-0 top-0 bottom-0 w-1 bg-gray-200 dark:bg-gray-700 group-hover:bg-blue-500 transition-colors">
+              <div id="barra-{{.ID}}"
+                class="absolute left-0 top-0 bottom-0 w-1 bg-gray-200 dark:bg-gray-700 group-hover:bg-[#8B1A1A] transition-colors"
+                data-data="{{.DataOrientacao.Format "2006-01-02"}}">
               </div>
 
               <div
@@ -497,7 +498,7 @@
                 <button onclick="openEdit(this)" data-id="{{.ID}}" data-loja="{{.LojaID}}"
                   data-responsavel="{{.ResponsavelPresente}}" data-funcao="{{.FuncaoResponsavel}}"
                   data-data="{{.DataOrientacao.Format "2006-01-02"}}" data-obs="{{.Observacoes}}"
-                  class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors cursor-pointer"
+                  class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-[#8B1A1A] dark:hover:text-[#D93030] rounded-lg transition-all active:scale-[0.97] cursor-pointer"
                   title="Editar">
                   <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -507,7 +508,7 @@
                 </button>
 
                 <button onclick="confirmarExclusao('{{.ID}}', '{{.NomeLoja}}')"
-                  class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg transition-colors cursor-pointer"
+                  class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg transition-all active:scale-[0.97] cursor-pointer"
                   title="Remover">
                   <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -518,8 +519,8 @@
                 </button>
               </div>
 
-              <div class="flex-shrink-0 md:w-48 space-y-2 pl-3">
-                <div class="flex items-start gap-2 text-blue-600 dark:text-blue-400">
+              <div class="flex-shrink-0 md:w-52 space-y-2 pl-3">
+                <div class="flex items-start gap-2 text-[#8B1A1A] dark:text-[#D93030]">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mt-0.5 shrink-0" viewBox="0 0 24 24"
                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7" />
@@ -532,7 +533,7 @@
                   <span class="font-bold text-sm">{{.NomeLoja}}<br><span class="text-xs font-medium opacity-80">(LUC
                       {{.LojaID}})</span></span>
                 </div>
-                <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs font-medium">
+                <div class="flex items-center gap-2 text-[#8B1A1A]/70 dark:text-[#D93030]/70 text-xs font-semibold">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -547,7 +548,7 @@
               <div class="flex-1 space-y-3">
                 <div class="flex flex-wrap items-center gap-2 pr-20">
                   <span
-                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-100 dark:border-blue-800/50">
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-[#8B1A1A]/10 text-[#8B1A1A] dark:bg-[#D93030]/20 dark:text-[#D93030] border border-[#8B1A1A]/20 dark:border-[#D93030]/30">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none"
                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -556,7 +557,13 @@
                     {{.ResponsavelPresente}}
                   </span>
                   <span
-                    class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-[#C8A882]/20 text-amber-800 dark:bg-[#C8A882]/10 dark:text-amber-200 border border-[#C8A882]/30 dark:border-[#C8A882]/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                      <circle cx="9" cy="7" r="4"/>
+                      <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
                     {{.FuncaoResponsavel}}
                   </span>
                 </div>
@@ -597,7 +604,7 @@
 
       <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 px-6 py-4">
         <h3 class="text-lg font-bold text-gray-900 dark:text-white">Editar Orientação Educativa</h3>
-        <button onclick="closeEdit()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer">
+        <button onclick="closeEdit()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-all active:scale-[0.97] cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
@@ -627,13 +634,13 @@
             <label
               class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Responsável</label>
             <input type="text" id="edit-responsavel" name="responsavel_presente"
-              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all">
+              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] outline-none transition-all">
           </div>
           <div>
             <label
               class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Função</label>
             <input type="text" id="edit-funcao" name="funcao_responsavel"
-              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all">
+              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] outline-none transition-all">
           </div>
         </div>
 
@@ -641,14 +648,14 @@
           <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Data da
             Orientação</label>
           <input type="date" id="edit-data" name="data_orientacao"
-            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all">
+            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] outline-none transition-all">
         </div>
 
         <div>
           <label
             class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Observações</label>
           <textarea id="edit-obs" name="observacoes" rows="3"
-            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"></textarea>
+            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] outline-none transition-all"></textarea>
         </div>
 
         <div id="form-error-editar"
@@ -657,9 +664,9 @@
 
         <div class="flex items-center justify-end gap-3 border-t border-gray-200 dark:border-gray-800 pt-4 mt-6">
           <button type="button" onclick="closeEdit()"
-            class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 cursor-pointer">Cancelar</button>
+            class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-all active:scale-[0.97] cursor-pointer">Cancelar</button>
           <button type="submit"
-            class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors cursor-pointer">Salvar
+            class="px-5 py-2 bg-[#8B1A1A] hover:bg-[#6B1414] active:bg-[#5a1010] text-white font-medium text-sm rounded-lg shadow-sm transition-all active:scale-[0.97] cursor-pointer">Salvar
             Alterações</button>
         </div>
       </form>
@@ -693,11 +700,11 @@
 
       <div class="flex items-center justify-center gap-3">
         <button onclick="fecharModalExclusao()"
-          class="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer text-center">
+          class="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all active:scale-[0.97] cursor-pointer text-center">
           Cancelar
         </button>
         <button onclick="executarExclusao()"
-          class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-sm font-semibold shadow-md hover:shadow-red-500/10 transition-all cursor-pointer text-center flex items-center justify-center gap-2">
+          class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-sm font-semibold shadow-md hover:shadow-red-500/10 transition-all active:scale-[0.97] cursor-pointer text-center flex items-center justify-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 6h18" />
@@ -719,7 +726,7 @@
 
       <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 px-6 py-4">
         <h3 class="text-lg font-bold text-gray-900 dark:text-white">Novo Treinamento</h3>
-        <button onclick="closeCreate()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer">
+        <button onclick="closeCreate()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-all active:scale-[0.97] cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
@@ -740,7 +747,7 @@
             </svg>
             <input type="text" id="loja-search-input-modal"
               placeholder="Digite para buscar loja por nome ou ID (LUC)..."
-              class="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+              class="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all outline-none"
               autocomplete="off">
             <input type="hidden" name="loja_id" id="loja-id-hidden-modal" value="">
             <div id="loja-search-results-modal"
@@ -762,7 +769,7 @@
                 <line x1="3" x2="21" y1="10" y2="10" />
               </svg>
               <input type="date" name="data_orientacao" id="create-data"
-                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
+                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all outline-none">
             </div>
           </div>
           <div>
@@ -775,7 +782,7 @@
                 <circle cx="12" cy="7" r="4" />
               </svg>
               <input type="text" id="create-responsavel" name="responsavel_presente" placeholder="Quem recebeu a orientação?"
-                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
+                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all outline-none">
             </div>
           </div>
         </div>
@@ -793,7 +800,7 @@
                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
               </svg>
               <input type="text" id="create-funcao" name="funcao_responsavel" placeholder="Ex: Gerente, Vendedor, Franquia..."
-                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
+                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all outline-none">
             </div>
           </div>
         </div>
@@ -802,14 +809,14 @@
           <label class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider flex items-center gap-2 mb-2">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="text-blue-500">
+              class="text-[#8B1A1A] dark:text-[#D93030]">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
             </svg>
             Conteúdo da Orientação / Observações *
           </label>
           <textarea id="create-obs" name="observacoes" rows="3"
             placeholder="Detalhe as orientações repassadas. Ex: Foram instruídos sobre o descarte correto de recicláveis..."
-            class="w-full p-3 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none outline-none"></textarea>
+            class="w-full p-3 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all resize-none outline-none"></textarea>
         </div>
 
         <div id="form-error-criar"
@@ -818,9 +825,9 @@
 
         <div class="flex items-center justify-end gap-3 border-t border-gray-200 dark:border-gray-800 pt-4">
           <button type="button" onclick="closeCreate()"
-            class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 cursor-pointer">Cancelar</button>
+            class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-all active:scale-[0.97] cursor-pointer">Cancelar</button>
           <button type="submit"
-            class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors cursor-pointer flex items-center gap-2">
+            class="px-5 py-2 bg-[#8B1A1A] hover:bg-[#6B1414] active:bg-[#5a1010] text-white font-medium text-sm rounded-lg shadow-sm transition-all active:scale-[0.97] cursor-pointer flex items-center gap-2">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14"/><path d="M12 5v14"/>
             </svg>
@@ -833,7 +840,7 @@
 
   <!-- Mobile FAB -->
   <button onclick="openCreate()"
-    class="md:hidden fixed bottom-6 right-6 z-40 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-xl shadow-blue-500/30 hover:shadow-blue-500/50 transition-all flex items-center justify-center transform hover:scale-110 active:scale-95">
+    class="md:hidden fixed bottom-6 right-6 z-40 w-14 h-14 bg-[#8B1A1A] hover:bg-[#6B1414] active:bg-[#5a1010] text-white rounded-full shadow-xl shadow-[#8B1A1A]/30 hover:shadow-[#8B1A1A]/50 transition-all flex items-center justify-center transform hover:scale-110 active:scale-[0.97]">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M5 12h14"/><path d="M12 5v14"/>
     </svg>
@@ -993,6 +1000,29 @@
 
 
 
+    function colorirBarras() {
+      const todas = document.querySelectorAll('[id^="barra-"]');
+      const agora = new Date();
+      const msDia = 86400000;
+      todas.forEach(el => {
+        const raw = el.getAttribute('data-data');
+        if (!raw) return;
+        const dataOri = new Date(raw.split('T')[0] + 'T00:00:00');
+        if (isNaN(dataOri.getTime())) return;
+        const diff = (agora - dataOri) / msDia;
+        if (diff <= 7) {
+          el.classList.remove('group-hover:bg-[#8B1A1A]');
+          el.style.backgroundColor = '#D93030';
+        } else if (diff <= 30) {
+          el.classList.remove('group-hover:bg-[#8B1A1A]');
+          el.style.backgroundColor = '#C8A882';
+        } else {
+          el.classList.remove('group-hover:bg-[#8B1A1A]');
+          el.style.backgroundColor = '#8B1A1A';
+        }
+      });
+    }
+
     async function loadStats() {
       try {
         const r = await fetch('/conservacao/orientacoes/stats');
@@ -1004,6 +1034,7 @@
       } catch { }
     }
     loadStats();
+    colorirBarras();
 
     function formatDate(d) {
       if (!d) return '-';
@@ -1148,24 +1179,24 @@
         return;
       }
       list.innerHTML = filtered.map(o => `
-        <div class="group bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500/30 transition-all flex flex-col md:flex-row gap-4 md:gap-6 relative overflow-hidden">
-          <div class="absolute left-0 top-0 bottom-0 w-1 bg-gray-200 dark:bg-gray-700 group-hover:bg-blue-500 transition-colors"></div>
+        <div class="group bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm hover:shadow-md hover:border-[#8B1A1A]/30 dark:hover:border-[#D93030]/30 transition-all flex flex-col md:flex-row gap-4 md:gap-6 relative overflow-hidden">
+          <div id="barra-js-${o.id}" class="absolute left-0 top-0 bottom-0 w-1 bg-gray-200 dark:bg-gray-700 transition-colors" data-data="${o.data_orientacao}"></div>
 
           <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-white/90 dark:bg-[#252525]/90 backdrop-blur-sm rounded-lg z-10 p-1">
-            <button onclick="openEdit(this)" data-id="${o.id}" data-loja="${o.loja_id}" data-responsavel="${o.responsavel_presente}" data-funcao="${o.funcao_responsavel}" data-data="${o.data_orientacao}" data-obs="${o.observacoes}" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors cursor-pointer" title="Editar">
+            <button onclick="openEdit(this)" data-id="${o.id}" data-loja="${o.loja_id}" data-responsavel="${o.responsavel_presente}" data-funcao="${o.funcao_responsavel}" data-data="${o.data_orientacao}" data-obs="${o.observacoes}" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-[#8B1A1A] dark:hover:text-[#D93030] rounded-lg transition-all active:scale-[0.97] cursor-pointer" title="Editar">
               <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
             </button>
-            <button onclick="confirmarExclusao('${o.id}', '${o.nome_loja}')" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg transition-colors cursor-pointer" title="Remover">
+            <button onclick="confirmarExclusao('${o.id}', '${o.nome_loja}')" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg transition-all active:scale-[0.97] cursor-pointer" title="Remover">
               <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
             </button>
           </div>
 
-          <div class="flex-shrink-0 md:w-48 space-y-2 pl-3">
-            <div class="flex items-start gap-2 text-blue-600 dark:text-blue-400">
+          <div class="flex-shrink-0 md:w-52 space-y-2 pl-3">
+            <div class="flex items-start gap-2 text-[#8B1A1A] dark:text-[#D93030]">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/></svg>
               <span class="font-bold text-sm">${o.nome_loja}<br><span class="text-xs font-medium opacity-80">(LUC ${o.loja_id})</span></span>
             </div>
-            <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs font-medium">
+            <div class="flex items-center gap-2 text-[#8B1A1A]/70 dark:text-[#D93030]/70 text-xs font-semibold">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
               ${formatDate(o.data_orientacao)}
             </div>
@@ -1173,16 +1204,20 @@
 
           <div class="flex-1 space-y-3">
             <div class="flex flex-wrap items-center gap-2 pr-20">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-100 dark:border-blue-800/50">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-[#8B1A1A]/10 text-[#8B1A1A] dark:bg-[#D93030]/20 dark:text-[#D93030] border border-[#8B1A1A]/20 dark:border-[#D93030]/30">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 ${o.responsavel_presente}
               </span>
-              <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300">${o.funcao_responsavel}</span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-[#C8A882]/20 text-amber-800 dark:bg-[#C8A882]/10 dark:text-amber-200 border border-[#C8A882]/30 dark:border-[#C8A882]/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                ${o.funcao_responsavel}
+              </span>
             </div>
             <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed bg-gray-50 dark:bg-[#1a1a1a] p-3 rounded-lg border border-gray-100 dark:border-gray-800/50">${o.observacoes}</p>
           </div>
         </div>
       `).join('');
+      colorirBarras();
     }
 
     // Modal loja search
@@ -1198,9 +1233,9 @@
         return;
       }
       results.innerHTML = filtered.map(l =>
-        `<div class="px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer border-b border-gray-100 dark:border-gray-800 last:border-b-0 flex items-center gap-2"
+        `<div class="px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-[#8B1A1A]/5 dark:hover:bg-[#D93030]/10 cursor-pointer border-b border-gray-100 dark:border-gray-800 last:border-b-0 flex items-center gap-2"
               onclick="selectLojaModal('${l.id}', '${l.nome.replace(/'/g, "\\'")}')">
-            <span class="font-mono font-bold text-blue-600 dark:text-blue-400 text-xs bg-blue-50 dark:bg-blue-900/30 px-1.5 py-0.5 rounded">${l.id}</span>
+            <span class="font-mono font-bold text-[#8B1A1A] dark:text-[#D93030] text-xs bg-[#8B1A1A]/10 dark:bg-[#D93030]/20 px-1.5 py-0.5 rounded">${l.id}</span>
             <span>${l.nome}</span>
         </div>`
       ).join('');
