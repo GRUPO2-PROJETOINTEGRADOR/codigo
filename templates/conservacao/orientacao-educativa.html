@@ -467,7 +467,7 @@
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 6 12 12 16 14" />
               </svg>
-              <h2 class="text-xl font-bold text-gray-900 dark:text-white">Linha do Tempo (Orientações)</h2>
+              <h2 class="text-xl font-bold text-gray-900 dark:text-white">Orientações Registradas</h2>
             </div>
             <div class="relative w-full sm:w-72">
               <svg viewBox="0 0 24 24" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
@@ -481,114 +481,44 @@
             </div>
           </div>
 
+          <div id="pagination-bar-top"
+            class="hidden flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-gray-100 dark:border-gray-800/50">
+            <p id="pagination-summary-top" class="text-xs text-gray-500 dark:text-gray-400 font-medium"></p>
+            <div id="pagination-controls-top" class="flex items-center gap-1.5">
+              <button data-page="prev"
+                class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all active:scale-[0.97] disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100"
+                disabled>
+                <svg viewBox="0 0 24 24" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <div id="pagination-pages-top" class="flex items-center gap-1"></div>
+              <button data-page="next"
+                class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all active:scale-[0.97] disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100"
+                disabled>
+                <svg viewBox="0 0 24 24" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+            </div>
+          </div>
+
           <div id="historico-list" class="space-y-4">
+          </div>
 
-            {{range .Orientacoes}}
-            <div
-              class="group bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm hover:shadow-md hover:border-[#8B1A1A]/30 dark:hover:border-[#D93030]/30 transition-all flex flex-col md:flex-row gap-4 md:gap-6 relative overflow-hidden">
-
-              <div id="barra-{{.ID}}"
-                class="absolute left-0 top-0 bottom-0 w-1 bg-gray-200 dark:bg-gray-700 group-hover:bg-[#8B1A1A] transition-colors"
-                data-data="{{.DataOrientacao.Format "2006-01-02"}}">
-              </div>
-
-              <div
-                class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-white/90 dark:bg-[#252525]/90 backdrop-blur-sm rounded-lg z-10 p-1">
-
-                <button onclick="openEdit(this)" data-id="{{.ID}}" data-loja="{{.LojaID}}"
-                  data-responsavel="{{.ResponsavelPresente}}" data-funcao="{{.FuncaoResponsavel}}"
-                  data-data="{{.DataOrientacao.Format "2006-01-02"}}" data-obs="{{.Observacoes}}"
-                  class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-[#8B1A1A] dark:hover:text-[#D93030] rounded-lg transition-all active:scale-[0.97] cursor-pointer"
-                  title="Editar">
-                  <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 20h9" />
-                    <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
-                  </svg>
-                </button>
-
-                <button onclick="confirmarExclusao('{{.ID}}', '{{.NomeLoja}}')"
-                  class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg transition-all active:scale-[0.97] cursor-pointer"
-                  title="Remover">
-                  <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 6h18" />
-                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                  </svg>
-                </button>
-              </div>
-
-              <div class="flex-shrink-0 md:w-52 space-y-2 pl-3">
-                <div class="flex items-start gap-2 text-[#8B1A1A] dark:text-[#D93030]">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mt-0.5 shrink-0" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7" />
-                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-                    <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4" />
-                    <path d="M2 7h20" />
-                    <path
-                      d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7" />
-                  </svg>
-                  <span class="font-bold text-sm">{{.NomeLoja}}<br><span class="text-xs font-medium opacity-80">(LUC
-                      {{.LojaID}})</span></span>
-                </div>
-                <div class="flex items-center gap-2 text-[#8B1A1A]/70 dark:text-[#D93030]/70 text-xs font-semibold">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                  </svg>
-                  {{.DataOrientacao.Format "02/01/2006"}}
-                </div>
-              </div>
-
-              <div class="flex-1 space-y-3">
-                <div class="flex flex-wrap items-center gap-2 pr-20">
-                  <span
-                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-[#8B1A1A]/10 text-[#8B1A1A] dark:bg-[#D93030]/20 dark:text-[#D93030] border border-[#8B1A1A]/20 dark:border-[#D93030]/30">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                    {{.ResponsavelPresente}}
-                  </span>
-                  <span
-                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-[#C8A882]/20 text-amber-800 dark:bg-[#C8A882]/10 dark:text-amber-200 border border-[#C8A882]/30 dark:border-[#C8A882]/20">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                      <circle cx="9" cy="7" r="4"/>
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
-                    {{.FuncaoResponsavel}}
-                  </span>
-                </div>
-
-                <p
-                  class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed bg-gray-50 dark:bg-[#1a1a1a] p-3 rounded-lg border border-gray-100 dark:border-gray-800/50">
-                  {{.Observacoes}}
-                </p>
-              </div>
-
+          <div id="pagination-bar"
+            class="hidden flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-4 border-t border-gray-100 dark:border-gray-800/50">
+            <p id="pagination-summary" class="text-xs text-gray-500 dark:text-gray-400 font-medium"></p>
+            <div id="pagination-controls" class="flex items-center gap-1.5">
+              <button data-page="prev"
+                class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all active:scale-[0.97] disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100"
+                disabled>
+                <svg viewBox="0 0 24 24" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <div id="pagination-pages" class="flex items-center gap-1"></div>
+              <button data-page="next"
+                class="px-2.5 py-1.5 rounded-lg text-xs font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all active:scale-[0.97] disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100"
+                disabled>
+                <svg viewBox="0 0 24 24" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
             </div>
-
-            {{else}}
-            <div
-              class="bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-12 text-center shadow-sm">
-              <svg class="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-4" fill="none" stroke="currentColor"
-                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
-                </path>
-              </svg>
-              <p class="text-gray-500 dark:text-gray-400 font-medium">Nenhuma orientação registrada ainda.</p>
-            </div>
-            {{end}}
-
+          </div>
           </div>
         </div>
 
@@ -865,8 +795,11 @@
 
   <script>
 
-    let orientacoes = {{.Orientacoes | json}};
-    let lojas = {{.Lojas | json}};
+    let orientacoes = ({{.Orientacoes | json}}) || [];
+    let lojas = ({{.Lojas | json}}) || [];
+    let currentPage = 1;
+    const pageSize = 10;
+    let searchTerm = '';
 
     function confirmarExclusao(id, nomeLoja) {
       const modal = document.getElementById('modal-exclusao');
@@ -1034,7 +967,7 @@
       } catch { }
     }
     loadStats();
-    colorirBarras();
+    renderHistorico();
 
     function formatDate(d) {
       if (!d) return '-';
@@ -1158,7 +1091,50 @@
       }
     });
 
-    let searchTerm = '';
+
+    function renderPagination(filtered, total) {
+      const totalPages = Math.ceil(total / pageSize);
+
+      function syncBar(suffix) {
+        const bar = document.getElementById('pagination-bar' + suffix);
+        const summary = document.getElementById('pagination-summary' + suffix);
+        const pages = document.getElementById('pagination-pages' + suffix);
+        const prev = bar.querySelector('[data-page="prev"]');
+        const next = bar.querySelector('[data-page="next"]');
+
+        if (total <= pageSize) { bar.classList.add('hidden'); return; }
+        bar.classList.remove('hidden');
+
+        const start = (currentPage - 1) * pageSize + 1;
+        const end = Math.min(currentPage * pageSize, total);
+        summary.textContent = `Exibindo ${start}–${end} de ${total} resultado${total !== 1 ? 's' : ''}`;
+
+        prev.disabled = currentPage <= 1;
+        next.disabled = currentPage >= totalPages;
+
+        let html = '';
+        const range = 2;
+        const startPage = Math.max(1, currentPage - range);
+        const endPage = Math.min(totalPages, currentPage + range);
+
+        if (startPage > 1) {
+          html += `<button data-page="1" class="px-2.5 py-1 rounded-lg text-xs font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all active:scale-[0.97]">1</button>`;
+          if (startPage > 2) html += `<span class="px-1 text-xs text-gray-400">…</span>`;
+        }
+        for (let i = startPage; i <= endPage; i++) {
+          const active = i === currentPage;
+          html += `<button data-page="${i}" class="px-2.5 py-1 rounded-lg text-xs font-medium transition-all active:scale-[0.97] ${active ? 'bg-[#8B1A1A] text-white shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}">${i}</button>`;
+        }
+        if (endPage < totalPages) {
+          if (endPage < totalPages - 1) html += `<span class="px-1 text-xs text-gray-400">…</span>`;
+          html += `<button data-page="${totalPages}" class="px-2.5 py-1 rounded-lg text-xs font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all active:scale-[0.97]">${totalPages}</button>`;
+        }
+        pages.innerHTML = html;
+      }
+
+      syncBar('');
+      syncBar('-top');
+    }
 
     function renderHistorico() {
       const term = searchTerm.toLowerCase();
@@ -1170,17 +1146,25 @@
         })
         .sort((a, b) => new Date(b.data_orientacao) - new Date(a.data_orientacao));
 
+      const total = filtered.length;
+      const totalPages = Math.ceil(total / pageSize);
+      if (currentPage > totalPages) currentPage = totalPages || 1;
+
+      const start = (currentPage - 1) * pageSize;
+      const page = filtered.slice(start, start + pageSize);
+
       const list = document.getElementById('historico-list');
-      if (filtered.length === 0) {
+      if (page.length === 0) {
         list.innerHTML = `<div class="bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-12 text-center shadow-sm">
           <svg viewBox="0 0 24 24" class="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
           <p class="text-gray-500 dark:text-gray-400 font-medium">Nenhum registro encontrado.</p>
         </div>`;
+        renderPagination(filtered, total);
         return;
       }
-      list.innerHTML = filtered.map(o => `
+      list.innerHTML = page.map(o => `
         <div class="group bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm hover:shadow-md hover:border-[#8B1A1A]/30 dark:hover:border-[#D93030]/30 transition-all flex flex-col md:flex-row gap-4 md:gap-6 relative overflow-hidden">
-          <div id="barra-js-${o.id}" class="absolute left-0 top-0 bottom-0 w-1 bg-gray-200 dark:bg-gray-700 transition-colors" data-data="${o.data_orientacao}"></div>
+          <div id="barra-js-${o.id}" class="absolute left-0 top-0 bottom-0 w-1 bg-gray-200 dark:bg-gray-700 group-hover:bg-[#8B1A1A] transition-colors" data-data="${o.data_orientacao}"></div>
 
           <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-white/90 dark:bg-[#252525]/90 backdrop-blur-sm rounded-lg z-10 p-1">
             <button onclick="openEdit(this)" data-id="${o.id}" data-loja="${o.loja_id}" data-responsavel="${o.responsavel_presente}" data-funcao="${o.funcao_responsavel}" data-data="${o.data_orientacao}" data-obs="${o.observacoes}" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-[#8B1A1A] dark:hover:text-[#D93030] rounded-lg transition-all active:scale-[0.97] cursor-pointer" title="Editar">
@@ -1217,6 +1201,7 @@
           </div>
         </div>
       `).join('');
+      renderPagination(filtered, total);
       colorirBarras();
     }
 
@@ -1261,7 +1246,20 @@
       if (e.target.value.trim()) renderLojasSearchModal(e.target.value.trim().toLowerCase());
     });
 
-    document.getElementById('search-historico').addEventListener('input', e => { searchTerm = e.target.value; renderHistorico(); });
+    document.getElementById('search-historico').addEventListener('input', e => { searchTerm = e.target.value; currentPage = 1; renderHistorico(); });
+
+    function onPaginationClick(e) {
+      const btn = e.target.closest('[data-page]');
+      if (!btn || btn.disabled) return;
+      const target = btn.getAttribute('data-page');
+      if (target === 'prev') currentPage--;
+      else if (target === 'next') currentPage++;
+      else currentPage = parseInt(target, 10);
+      renderHistorico();
+    }
+
+    document.getElementById('pagination-controls').addEventListener('click', onPaginationClick);
+    document.getElementById('pagination-controls-top').addEventListener('click', onPaginationClick);
 
     document.getElementById('form-criar').addEventListener('submit', async e => {
       e.preventDefault();
