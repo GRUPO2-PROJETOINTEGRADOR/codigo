@@ -444,7 +444,7 @@
           </div>
 
           <!-- Stats Cards (InspectionStatsCards) -->
-          <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div id="card-total"
               class="bg-white dark:bg-[#252525] p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 flex flex-col justify-between border-l-4 border-l-[#8B1A1A] dark:border-l-[#D93030]">
               <div class="flex items-center justify-between gap-3">
@@ -521,49 +521,6 @@
               </div>
               <p class="text-xs text-gray-400 dark:text-gray-500 mt-3 font-semibold truncate">Laudo mais recente</p>
             </div>
-            <div id="card-aprovadas"
-              class="bg-white dark:bg-[#252525] p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 flex flex-col justify-between border-l-4 border-l-green-500">
-              <div class="flex items-center justify-between gap-3">
-                <div class="min-w-0">
-                  <span
-                    class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider block truncate">Aprovadas</span>
-                  <span id="stat-aprovadas"
-                    class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white block mt-1 select-all leading-none tracking-tight">0</span>
-                </div>
-                <div
-                  class="p-2 rounded-lg border flex-shrink-0 text-green-600 dark:text-green-400 bg-green-500/10 border-green-200 dark:border-green-900/30">
-                  <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                    <polyline points="22 4 12 14.01 9 11.01" />
-                  </svg>
-                </div>
-              </div>
-              <p id="stat-aprovadas-pct" class="text-xs text-gray-400 dark:text-gray-500 mt-3 font-semibold truncate">0%
-                conformidade</p>
-            </div>
-            <div id="card-pendentes"
-              class="col-span-2 lg:col-span-1 bg-white dark:bg-[#252525] p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 flex flex-col justify-between border-l-4 border-l-red-500">
-              <div class="flex items-center justify-between gap-3">
-                <div class="min-w-0">
-                  <span
-                    class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider block truncate">Pendentes</span>
-                  <span id="stat-pendentes"
-                    class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white block mt-1 select-all leading-none tracking-tight">0</span>
-                </div>
-                <div
-                  class="p-2 rounded-lg border flex-shrink-0 text-red-600 dark:text-red-400 bg-red-500/10 border-red-200 dark:border-red-900/30">
-                  <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                      d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                    <line x1="12" x2="12" y1="9" y2="13" />
-                    <line x1="12" x2="12.01" y1="17" y2="17" />
-                  </svg>
-                </div>
-              </div>
-              <p class="text-xs text-gray-400 dark:text-gray-500 mt-3 font-semibold truncate">Requerem plano de ação</p>
-            </div>
           </div>
 
           <!-- Filters (InspectionFilters) -->
@@ -579,7 +536,7 @@
                   <path d="m21 21-4.3-4.3" />
                 </svg>
                 <input id="search-input" type="text"
-                  placeholder="Pesquisar por responsável, LUC, loja ou classificação..."
+                  placeholder="Pesquisar por responsável, Nome Fantasia, loja ou classificação..."
                   class="w-full pl-10 pr-4 h-11 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#8B1A1A]/15 focus:border-[#8B1A1A] dark:focus:border-[#D93030] transition-all outline-none">
               </div>
               <div class="flex gap-2 justify-end">
@@ -608,7 +565,7 @@
               </div>
             </div>
             <div id="advanced-filters"
-              class="hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 pt-3.5 border-t border-gray-200 dark:border-gray-800/60">
+              class="hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4 pt-3.5 border-t border-gray-200 dark:border-gray-800/60">
               <div>
                 <label
                   class="block text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wider flex items-center gap-1.5">
@@ -617,12 +574,26 @@
                     <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
                     <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
                   </svg>
-                  Loja (LUC)
+                  Loja (Nome Fantasia)
                 </label>
                 <select id="filter-loja"
                   class="w-full px-3 h-10 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/15 focus:border-[#8B1A1A] dark:focus:border-[#D93030] transition-all outline-none cursor-pointer">
                   <option value="">Todas as lojas</option>
                 </select>
+              </div>
+              <div>
+                <label
+                  class="block text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wider flex items-center gap-1.5">
+                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 22h20" />
+                    <path d="M4 22V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14" />
+                    <path d="M9 22V12h6v10" />
+                  </svg>
+                  Nome Fantasia
+                </label>
+                <input type="text" id="filter-nome-fantasia" placeholder="Filtrar por nome..."
+                  class="w-full px-3 h-10 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/15 focus:border-[#8B1A1A] dark:focus:border-[#D93030] transition-all outline-none">
               </div>
               <div>
                 <label
@@ -639,9 +610,6 @@
                   class="w-full px-3 h-10 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-800 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/15 focus:border-[#8B1A1A] dark:focus:border-[#D93030] transition-all outline-none cursor-pointer">
                   <option value="">Todos os tipos</option>
                   <option value="Rotina">Rotina</option>
-                  <option value="Retorno/Revisão">Retorno/Revisão</option>
-                  <option value="Denúncia">Denúncia</option>
-                  <option value="Especial">Especial</option>
                   <option value="Periódica">Periódica</option>
                 </select>
               </div>
@@ -888,10 +856,10 @@
                 stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" />
               </svg>
-              Loja (LUC) *
+              Loja (Nome Fantasia) *
             </label>
             <div class="relative">
-              <input type="text" id="store-search-input" placeholder="Pesquisar por nome ou número LUC..."
+              <input type="text" id="store-search-input" placeholder="Pesquisar por nome fantasia ou número LUC..."
                 autocomplete="off"
                 class="w-full px-4 h-12 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A] dark:focus:ring-[#D93030] outline-none font-semibold">
               <input type="hidden" id="store-id-input" name="loja_id">
@@ -904,13 +872,10 @@
           <div>
             <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">Tipo
               de Inspeção *</label>
-            <select id="tipo-inspecao" name="tipo" required
+            <select id="tipo-inspecao" name="tipo_inspecao" required
               class="w-full px-4 h-12 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A] dark:focus:ring-[#D93030] outline-none cursor-pointer font-bold">
               <option value="">Selecione o tipo</option>
               <option value="Rotina">Rotina</option>
-              <option value="Retorno/Revisão">Retorno/Revisão</option>
-              <option value="Denúncia">Denúncia</option>
-              <option value="Especial">Especial</option>
               <option value="Periódica">Periódica</option>
             </select>
           </div>
@@ -939,7 +904,7 @@
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
               </svg>
-              Responsável Presente *
+              Responsável presente pela loja *
             </label>
             <input type="text" id="input-responsavel" name="responsavel_loja" placeholder="Nome completo do responsável"
               required
@@ -967,8 +932,26 @@
             <input type="number" id="input-nota" name="nota" min="0" max="100" step="0.1" placeholder="Ex: 85" required
               class="w-full px-4 h-12 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A] dark:focus:ring-[#D93030] outline-none font-bold">
           </div>
+          <!-- NC Grave -->
+          <div>
+            <label
+              class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider flex items-center gap-1.5">
+              <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+              NC Grave? *
+            </label>
+            <select id="input-nc-grave" name="nc_grave" required
+              class="w-full px-4 h-12 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A] dark:focus:ring-[#D93030] outline-none cursor-pointer font-bold">
+              <option value="false" selected>Não</option>
+              <option value="true">Sim</option>
+            </select>
+          </div>
           <!-- Classificação Preview -->
-          <div class="flex flex-col justify-end">
+          <div class="col-span-1 sm:col-span-2 flex flex-col justify-end">
             <div id="class-preview"
               class="h-12 px-4 bg-gray-50/50 dark:bg-[#1a1a1a]/20 border border-dashed border-gray-200 dark:border-gray-800/80 rounded-lg flex items-center justify-center text-xs text-gray-400 italic">
               Digite a nota para calcular a classificação
@@ -983,7 +966,7 @@
                 <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
                 <polyline points="14 2 14 8 20 8" />
               </svg>
-              Relatório Tyler (PDF - Máx 5MB) *
+              Relatório da Inspeção (PDF - Máx 5MB) *
             </label>
             <div class="relative">
               <input type="file" id="pdf-upload-input" accept=".pdf,application/pdf" class="hidden">
@@ -1182,6 +1165,7 @@
     // Filters state
     let searchTerm = '';
     let filterLoja = '';
+    let filterNomeFantasia = '';
     let filterTipo = '';
     let filterClassificacao = '';
     let filterDesempenho = 'todas';
@@ -1242,7 +1226,10 @@
     }
 
     // Helpers
-    function getClassification(nota) {
+    function getClassification(nota, label) {
+      if (label === 'Crítica') {
+        return { label: 'Crítica', cls: 'text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800' };
+      }
       if (nota >= 80) return { label: 'Bom', cls: 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800' };
       if (nota >= 60) return { label: 'Regular', cls: 'text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800' };
       if (nota >= 30) return { label: 'Ruim', cls: 'text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800' };
@@ -1305,14 +1292,20 @@
           const q = searchTerm.toLowerCase();
           const nome = getLojaNome(i.loja_id).toLowerCase();
           const resp = (i.responsavel_loja || '').toLowerCase();
-          const tipo = (i.tipo || '').toLowerCase();
-          const cls = (i.classificacao || getClassification(i.nota).label).toLowerCase();
+          const tipo = (i.tipo_inspecao || '').toLowerCase();
+          const cls = (i.classificacao || getClassification(i.nota, i.classificacao).label).toLowerCase();
           if (!nome.includes(q) && !i.loja_id.includes(q) && !resp.includes(q) && !tipo.includes(q) && !cls.includes(q)) return false;
         }
         // Loja
         if (filterLoja && i.loja_id.toString() !== filterLoja) return false;
+        // Nome Fantasia
+        if (filterNomeFantasia.trim()) {
+          const nf = filterNomeFantasia.toLowerCase();
+          const nome = getLojaNome(i.loja_id).toLowerCase();
+          if (!nome.includes(nf)) return false;
+        }
         // Tipo
-        if (filterTipo && (i.tipo || '') !== filterTipo) return false;
+        if (filterTipo && (i.tipo_inspecao || '') !== filterTipo) return false;
         // Classificação
         if (filterClassificacao) {
           const iClass = i.classificacao || getClassification(i.nota).label;
@@ -1349,16 +1342,10 @@
       const media = total > 0 ? all.reduce((s, i) => s + i.nota, 0) / total : 0;
       const sorted = [...all].sort((a, b) => new Date(b.data_auditoria) - new Date(a.data_auditoria));
       const ultima = sorted.length > 0 ? sorted[0].data_auditoria : null;
-      const aprovadas = all.filter(i => i.nota >= 60).length;
-      const pendentes = all.filter(i => i.nota < 60).length;
-      const pct = total > 0 ? ((aprovadas / total) * 100).toFixed(0) : 0;
 
       document.getElementById('stat-total').textContent = total;
       document.getElementById('stat-media').textContent = media.toFixed(1);
       document.getElementById('stat-ultima').textContent = ultima ? formatDate(ultima) : '—';
-      document.getElementById('stat-aprovadas').textContent = aprovadas;
-      document.getElementById('stat-aprovadas-pct').textContent = `${pct}% conformidade`;
-      document.getElementById('stat-pendentes').textContent = pendentes;
 
       const mediaCard = document.getElementById('card-media');
       const mediaIcon = mediaCard.querySelector('.flex-shrink-0');
@@ -1371,16 +1358,6 @@
       } else {
         mediaCard.className = mediaCard.className.replace(/border-l-\w+(-\w+)?/, 'border-l-red-500');
         mediaIcon.className = 'p-2 rounded-lg border flex-shrink-0 text-red-600 dark:text-red-400 bg-red-500/10 border-red-200 dark:border-red-900/30';
-      }
-
-      const pendCard = document.getElementById('card-pendentes');
-      const pendIcon = pendCard.querySelector('.flex-shrink-0');
-      if (pendentes === 0) {
-        pendCard.className = pendCard.className.replace(/border-l-\w+(-\w+)?/, 'border-l-gray-300 dark:border-l-gray-600');
-        pendIcon.className = 'p-2 rounded-lg border flex-shrink-0 text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700';
-      } else {
-        pendCard.className = pendCard.className.replace(/border-l-\w+(-\w+)?/, 'border-l-red-500');
-        pendIcon.className = 'p-2 rounded-lg border flex-shrink-0 text-red-600 dark:text-red-400 bg-red-500/10 border-red-200 dark:border-red-900/30';
       }
     }
 
@@ -1429,11 +1406,11 @@
       }
 
       tbody.innerHTML = paginated.map((i, idx) => {
-        const cls = getClassification(i.nota);
+        const cls = getClassification(i.nota, i.classificacao);
         const notaColor = getNotaColor(i.nota);
         const lojaNome = getLojaNome(i.loja_id);
         const isRecente = idx === 0 && currentPage === 0;
-        const iTipo = i.tipo || '—';
+        const iTipo = i.tipo_inspecao || '—';
         const iResp = i.responsavel_loja || '—';
         const iFuncao = i.cargo_responsavel || '';
         const iClass = i.classificacao || cls.label;
@@ -1446,15 +1423,16 @@
               </div>
               <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-1.5">
-                  <span class="font-bold text-gray-900 dark:text-white text-sm">LUC ${i.loja_id}</span>
+                  <span class="font-bold text-gray-900 dark:text-white text-sm">${lojaNome}</span>
                   ${isRecente ? '<span class="text-[9px] font-bold text-[#8B1A1A] bg-[#8B1A1A]/10 px-1.5 py-0.5 rounded uppercase tracking-wider">Novo</span>' : ''}
                 </div>
-                <p class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[240px] mt-0.5">${lojaNome}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[240px] mt-0.5">LUC ${i.loja_id}</p>
               </div>
             </div>
           </td>
           <td class="py-4 px-4">
             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 uppercase tracking-wider border border-gray-200 dark:border-gray-700">${iTipo}</span>
+            <div class="text-[10px] text-gray-500 dark:text-gray-400 mt-1 font-semibold">NC Grave: ${i.nc_grave ? 'Sim' : 'Não'}</div>
           </td>
           <td class="py-4 px-4">
             <div class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-400 font-semibold">
@@ -1503,27 +1481,29 @@
     function openDetail(id) {
       const i = inspecoes.find(x => x.id === id);
       if (!i) return;
-      const cls = getClassification(i.nota);
+      const cls = getClassification(i.nota, i.classificacao);
       const notaColor = getNotaColor(i.nota);
       const lojaNome = getLojaNome(i.loja_id);
-      const iTipo = i.tipo || '—';
+      const iTipo = i.tipo_inspecao || '—';
       const iFuncao = i.cargo_responsavel || '—';
       const iResp = i.responsavel_loja || '—';
       const iAnexo = i.anexo_tiller;
       const iClass = i.classificacao || cls.label;
 
-      const ctxMsg = i.nota >= 80
-        ? 'A unidade atende plenamente aos critérios regulatórios de segurança alimentar.'
-        : i.nota >= 60
-          ? 'A unidade apresenta inconformidades parciais de criticidade leve. Recomenda-se acompanhamento.'
-          : 'Unidade não conforme. Ações corretivas severas imediatas sob pena de interdição ou autuação.';
+      const ctxMsg = i.classificacao === 'Crítica'
+        ? 'Unidade com não conformidade grave detectada. Risco imediato para a operação.'
+        : i.nota >= 80
+          ? 'A unidade atende plenamente aos critérios regulatórios de segurança alimentar.'
+          : i.nota >= 60
+            ? 'A unidade apresenta inconformidades parciais de criticidade leve. Recomenda-se acompanhamento.'
+            : 'Unidade não conforme. Ações corretivas severas imediatas sob pena de interdição ou autuação.';
 
       document.getElementById('detail-body').innerHTML = `
         <div class="flex items-center justify-between bg-gray-50 dark:bg-[#1a1a1a]/40 p-4 rounded-lg border border-gray-200 dark:border-gray-800">
           <div class="min-w-0">
             <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider block">Estabelecimento</span>
-            <span class="text-base font-bold text-gray-900 dark:text-white block mt-0.5">LUC ${i.loja_id}</span>
-            <span class="text-xs text-gray-500 dark:text-gray-400 truncate block mt-0.5">${lojaNome}</span>
+            <span class="text-base font-bold text-gray-900 dark:text-white block mt-0.5">${lojaNome}</span>
+            <span class="text-xs text-gray-500 dark:text-gray-400 truncate block mt-0.5">LUC ${i.loja_id}</span>
           </div>
           <div class="text-center">
             <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider block">Nota Final</span>
@@ -1532,6 +1512,7 @@
         </div>
         <div class="grid grid-cols-2 gap-5 text-sm">
           <div><span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase block">Tipo de Inspeção</span><span class="font-bold text-gray-800 dark:text-gray-200 mt-1 inline-block bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded text-xs uppercase tracking-wider border border-gray-200 dark:border-gray-700">${iTipo}</span></div>
+          <div><span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase block">NC Grave</span><span class="font-bold text-gray-800 dark:text-gray-200 mt-1.5 inline-block">${i.nc_grave ? 'Sim' : 'Não'}</span></div>
           <div><span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase block">Data da Auditoria</span><span class="font-bold text-gray-800 dark:text-gray-200 mt-1.5 inline-block">${formatDate(i.data_auditoria)}</span></div>
           <div><span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase block">Responsável</span><span class="font-bold text-gray-800 dark:text-gray-200 mt-1.5 inline-block">${iResp}</span></div>
           <div><span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase block">Cargo / Função</span><span class="font-bold text-gray-800 dark:text-gray-200 mt-1.5 inline-block">${iFuncao}</span></div>
@@ -1569,7 +1550,7 @@
       deleteTarget = inspecoes.find(x => x.id === id) || null;
       if (!deleteTarget) return;
       const lojaNome = getLojaNome(deleteTarget.loja_id);
-      document.getElementById('delete-message').innerHTML = `Você está prestes a excluir permanentemente o laudo técnico da <span class="font-bold text-gray-900 dark:text-gray-200">LUC ${deleteTarget.loja_id} (${lojaNome})</span> realizado em ${formatDate(deleteTarget.data_auditoria)}.`;
+      document.getElementById('delete-message').innerHTML = `Você está prestes a excluir permanentemente o laudo técnico da <span class="font-bold text-gray-900 dark:text-gray-200">${lojaNome} (LUC ${deleteTarget.loja_id})</span> realizado em ${formatDate(deleteTarget.data_auditoria)}.`;
       document.getElementById('delete-modal').classList.remove('hidden');
     }
 
@@ -1603,7 +1584,7 @@
 
     // Check if any advanced filter is active
     function hasActiveFilters() {
-      return filterLoja || filterTipo || filterClassificacao || filterDesempenho !== 'todas' || filterDataInicio || filterDataFim;
+      return filterLoja || filterNomeFantasia || filterTipo || filterClassificacao || filterDesempenho !== 'todas' || filterDataInicio || filterDataFim;
     }
 
     function updateFilterButtons() {
@@ -1647,6 +1628,7 @@
 
     // Advanced filters
     document.getElementById('filter-loja').addEventListener('change', e => { filterLoja = e.target.value; currentPage = 0; updateFilterButtons(); renderTable(); });
+    document.getElementById('filter-nome-fantasia').addEventListener('input', e => { filterNomeFantasia = e.target.value; currentPage = 0; updateFilterButtons(); renderTable(); });
     document.getElementById('filter-tipo').addEventListener('change', e => { filterTipo = e.target.value; currentPage = 0; updateFilterButtons(); renderTable(); });
     document.getElementById('filter-classificacao').addEventListener('change', e => { filterClassificacao = e.target.value; currentPage = 0; updateFilterButtons(); renderTable(); });
     document.getElementById('filter-desempenho').addEventListener('change', e => { filterDesempenho = e.target.value; currentPage = 0; updateFilterButtons(); renderTable(); });
@@ -1661,10 +1643,11 @@
 
     // Reset filters
     document.getElementById('reset-filters-btn').addEventListener('click', () => {
-      searchTerm = ''; filterLoja = ''; filterTipo = ''; filterClassificacao = ''; filterDesempenho = 'todas'; filterDataInicio = ''; filterDataFim = '';
+      searchTerm = ''; filterLoja = ''; filterNomeFantasia = ''; filterTipo = ''; filterClassificacao = ''; filterDesempenho = 'todas'; filterDataInicio = ''; filterDataFim = '';
       currentPage = 0;
       document.getElementById('search-input').value = '';
       document.getElementById('filter-loja').value = '';
+      document.getElementById('filter-nome-fantasia').value = '';
       document.getElementById('filter-tipo').value = '';
       document.getElementById('filter-classificacao').value = '';
       document.getElementById('filter-desempenho').value = 'todas';
@@ -1747,16 +1730,18 @@
       // Preencher campos
       const loja = lojas.find(l => l.id.toString() === i.loja_id.toString());
       if (loja) {
-        storeSearchInput.value = `LUC ${loja.id} - ${loja.nome}`;
+        storeSearchInput.value = `${loja.nome} (LUC ${loja.id})`;
         storeIdInput.value = loja.id;
         selectedLojaId = loja.id;
       } else {
-        storeSearchInput.value = `LUC ${i.loja_id}`;
+        const lojaNome = getLojaNome(i.loja_id);
+        storeSearchInput.value = `${lojaNome} (LUC ${i.loja_id})`;
         storeIdInput.value = i.loja_id;
         selectedLojaId = i.loja_id;
       }
 
-      document.getElementById('tipo-inspecao').value = i.tipo || '';
+      document.getElementById('tipo-inspecao').value = i.tipo_inspecao || '';
+      document.getElementById('input-nc-grave').value = i.nc_grave ? 'true' : 'false';
 
       if (i.data_auditoria) {
         document.getElementById('audit-date').value = i.data_auditoria.split('T')[0];
@@ -1788,13 +1773,13 @@
       storeDropdown.classList.remove('hidden');
       storeDropdown.innerHTML = filtered.map(l =>
         `<div class="px-4 py-2.5 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center gap-2 text-sm border-b border-gray-100 dark:border-gray-800 last:border-0" data-id="${l.id}" data-nome="${l.nome}">
-          <span class="font-bold text-[#8B1A1A] bg-[#8B1A1A]/5 dark:text-[#D93030] dark:bg-[#D93030]/5 px-2 py-0.5 rounded text-xs whitespace-nowrap">LUC ${l.id}</span>
           <span class="font-bold text-gray-800 dark:text-gray-200">${l.nome}</span>
+          <span class="font-bold text-[#8B1A1A] bg-[#8B1A1A]/5 dark:text-[#D93030] dark:bg-[#D93030]/5 px-2 py-0.5 rounded text-xs whitespace-nowrap">LUC ${l.id}</span>
         </div>`
       ).join('');
       storeDropdown.querySelectorAll('div[data-id]').forEach(el => {
         el.addEventListener('click', function () {
-          storeSearchInput.value = `LUC ${this.dataset.id} - ${this.dataset.nome}`;
+          storeSearchInput.value = `${this.dataset.nome} (LUC ${this.dataset.id})`;
           storeIdInput.value = this.dataset.id;
           selectedLojaId = this.dataset.id;
           storeDropdown.classList.add('hidden');
@@ -1805,21 +1790,34 @@
     storeSearchInput.addEventListener('focus', function () { if (this.value.length > 0) this.dispatchEvent(new Event('input')); });
 
     // Classification preview on nota input
-    document.getElementById('input-nota').addEventListener('input', function () {
-      const v = parseFloat(this.value);
+    function updateClassificationPreview() {
+      const v = parseFloat(document.getElementById('input-nota').value);
+      const ncGrave = document.getElementById('input-nc-grave').value === 'true';
       const preview = document.getElementById('class-preview');
+
+      if (ncGrave) {
+        const cls = { label: 'Crítica', bg: 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900/40', text: 'text-red-700 dark:text-red-400' };
+        preview.innerHTML = `<span class="text-xs font-bold text-gray-400 uppercase">Classificação:</span><span class="inline-flex items-center px-3 py-0.5 rounded-lg text-xs font-black uppercase border tracking-wider ${cls.bg} ${cls.text}">${cls.label}</span>`;
+        preview.className = `h-12 px-4 border rounded-lg flex items-center gap-3 ${cls.bg}`;
+        return;
+      }
+
       if (isNaN(v) || v < 0 || v > 100) {
-        preview.innerHTML = 'Digite a nota para calcular a classifica\u00e7\u00e3o';
+        preview.innerHTML = 'Digite a nota para calcular a classificação';
         preview.className = 'h-12 px-4 bg-gray-50/50 dark:bg-[#1a1a1a]/20 border border-dashed border-gray-200 dark:border-gray-800/80 rounded-lg flex items-center justify-center text-xs text-gray-400 italic';
         return;
       }
+
       const cls = v >= 80 ? { label: 'Bom', bg: 'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-900/40', text: 'text-green-600 dark:text-green-400' }
         : v >= 60 ? { label: 'Regular', bg: 'bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-900/40', text: 'text-yellow-600 dark:text-yellow-400' }
           : v >= 30 ? { label: 'Ruim', bg: 'bg-orange-50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-900/40', text: 'text-orange-500 dark:text-orange-400' }
             : { label: 'Inaceitável', bg: 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900/40', text: 'text-red-600 dark:text-red-400' };
       preview.innerHTML = `<span class="text-xs font-bold text-gray-400 uppercase">Classificação:</span><span class="inline-flex items-center px-3 py-0.5 rounded-lg text-xs font-black uppercase border tracking-wider ${cls.bg} ${cls.text}">${cls.label}</span>`;
       preview.className = `h-12 px-4 border rounded-lg flex items-center gap-3 ${cls.bg}`;
-    });
+    }
+
+    document.getElementById('input-nota').addEventListener('input', updateClassificationPreview);
+    document.getElementById('input-nc-grave').addEventListener('change', updateClassificationPreview);
 
     // PDF upload
     const pdfInput = document.getElementById('pdf-upload-input');
@@ -1880,21 +1878,24 @@
         const todayStr = new Date().toISOString().split('T')[0];
         if (data_auditoria < todayStr) { showFormError('A data da auditoria não pode ser retroativa (anterior a hoje).'); return; }
       }
-      if (!responsavel_loja) { showFormError('Insira o nome do responsável presente.'); return; }
+      if (!responsavel_loja) { showFormError('Insira o nome do responsável presente pela loja.'); return; }
       if (!cargo_responsavel) { showFormError('Insira o cargo ou função do responsável.'); return; }
       if (isNaN(nota) || nota < 0 || nota > 100) { showFormError('Nota inválida. Insira um número de 0 a 100.'); return; }
-      if (!pdfFileName.value && !selectedPdfFile) { showFormError('O relatório Tyler em formato PDF é obrigatório.'); return; }
+      if (!pdfFileName.value && !selectedPdfFile) { showFormError('O relatório da inspeção em formato PDF é obrigatório.'); return; }
 
       const submitBtn = document.getElementById('submit-inspecao-btn');
       const originalText = submitBtn.innerHTML;
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin flex-shrink-0"></div><span>Salvando...</span>';
 
-      const classificacao = nota >= 80 ? 'Bom' : nota >= 60 ? 'Regular' : nota >= 30 ? 'Ruim' : 'Inaceitável';
+      const ncGrave = document.getElementById('input-nc-grave').value === 'true';
+      const classificacao = ncGrave ? 'Crítica' : (nota >= 80 ? 'Bom' : nota >= 60 ? 'Regular' : nota >= 30 ? 'Ruim' : 'Inaceitável');
       const formData = new FormData();
 
       formData.append('loja_id', loja_id);
       formData.append('tipo', tipo);
+      formData.append('tipo_inspecao', tipo);
+      formData.append('nc_grave', ncGrave ? 'true' : 'false');
       formData.append('data_auditoria', data_auditoria);
       formData.append('responsavel_loja', responsavel_loja);
       formData.append('cargo_responsavel', cargo_responsavel);

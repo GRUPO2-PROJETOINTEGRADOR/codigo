@@ -9,4 +9,6 @@ type SegurancaAlimentar struct {
 	Nota             int    `json:"nota"`
 	AnexoTiller      string `json:"anexo_tiller"`
 	Classificacao    string `json:"classificacao"`
+	TipoInspecao string `json:"tipo_inspecao"`
+	NCGrave      bool   `json:"nc_grave"`
 }

@@ -75,13 +75,15 @@ func (c SegurancaAlimentarController) SalvarHandler(w http.ResponseWriter, r *ht
 	nota, _ := strconv.Atoi(r.FormValue("nota"))
 
 	auditoria := models.SegurancaAlimentar{
-		LojaID:           r.FormValue("loja_id"),
-		DataAuditoria:    r.FormValue("data_auditoria"),
-		ResponsavelLoja:  r.FormValue("responsavel_loja"),
-		CargoResponsavel: r.FormValue("cargo_responsavel"),
-		Nota:             nota,
-		Classificacao:    r.FormValue("classificacao"),
-		AnexoTiller:      pdfURL,
+	LojaID:           r.FormValue("loja_id"),
+	DataAuditoria:    r.FormValue("data_auditoria"),
+	ResponsavelLoja:  r.FormValue("responsavel_loja"),
+	CargoResponsavel: r.FormValue("cargo_responsavel"),
+	Nota:             nota,
+	Classificacao:    r.FormValue("classificacao"),
+	AnexoTiller:      pdfURL,
+	TipoInspecao:     r.FormValue("tipo_inspecao"),
+	NCGrave:          r.FormValue("nc_grave") == "true",
 	}
 
 	// =========================
