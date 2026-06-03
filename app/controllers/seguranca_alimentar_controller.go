@@ -13,7 +13,7 @@ type SegurancaAlimentarController struct{}
 
 func (c SegurancaAlimentarController) ListarPaginaHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(
-		template.ParseFiles("templates/conservacao/relatorio-seguranca-alimentar.html"),
+		template.ParseFiles("templates/conservacao/seguranca-alimentar.html"),
 	)
 
 	tmpl.Execute(w, nil)
