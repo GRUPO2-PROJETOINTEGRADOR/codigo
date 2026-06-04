@@ -106,3 +106,23 @@ func CriarKit(db *sql.DB, lojaID, dataEntregaKitStr, qntKitStr string) error {
 func ObterKits(db *sql.DB) ([]models.Kit, error) {
 	return utils.ListarKits(db)
 }
+
+func ObterFluxoKits(db *sql.DB) ([]models.PontoKits, error) {
+	return utils.FluxoKitsPorPeriodo(db)
+}
+
+func ObterTotalKits(db *sql.DB) (int, error) {
+	return utils.SomarTotalKits(db)
+}
+
+func ObterDadosLojas(db *sql.DB) (int, []models.PontoLojas, error) {
+	total, err := utils.ContarLojasAtivas(db)
+	if err != nil {
+		return 0, nil, err
+	}
+	crescimento, err := utils.CrescimentoLojasPorMes(db)
+	if err != nil {
+		return 0, nil, err
+	}
+	return total, crescimento, nil
+}

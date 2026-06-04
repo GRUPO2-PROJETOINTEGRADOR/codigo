@@ -26,11 +26,26 @@ type Kit struct {
 	QntKit         int
 }
 
+type PontoLojas struct {
+	Mes      string
+	Total    int
+	Entradas int
+}
+
+type PontoKits struct {
+	Periodo  string
+	Total    int
+	Entregas int
+}
+
 type EcoFlamboyantPageData struct {
-	Participantes  []Participante
-	Lojas          []Loja
-	Residuos       []Residuo
-	TotalResiduos  int
-	Kits           []Kit
-	TotalKits      int
+	Participantes          []Participante
+	Lojas                  []Loja
+	Residuos               []Residuo
+	TotalResiduos          int
+	Kits                   []Kit
+	TotalKits              int
+	TotalLojasParticipantes int
+	CrescimentoLojas       []PontoLojas
+	FluxoKits              []PontoKits
 }

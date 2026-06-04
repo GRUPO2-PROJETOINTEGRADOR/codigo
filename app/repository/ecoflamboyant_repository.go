@@ -85,6 +85,66 @@ func ListarKits(db *sql.DB) ([]models.Kit, error) {
 	return lista, nil
 }
 
+func ContarLojasAtivas(db *sql.DB) (int, error) {
+	var total int
+	err := db.QueryRow(`SELECT COUNT(*) FROM eco_participantes WHERE status_participacao = TRUE`).Scan(&total)
+	return total, err
+}
+
+func CrescimentoLojasPorMes(db *sql.DB) ([]models.PontoLojas, error) {
+	rows, err := db.Query(`SELECT TO_CHAR(data_entrada, 'Mon/YY') AS mes, COUNT(*) AS entradas
+		FROM eco_participantes
+		GROUP BY DATE_TRUNC('month', data_entrada), mes
+		ORDER BY DATE_TRUNC('month', data_entrada)`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var pontos []models.PontoLojas
+	acumulado := 0
+	for rows.Next() {
+		var mes string
+		var entradas int
+		if err := rows.Scan(&mes, &entradas); err != nil {
+			return nil, err
+		}
+		acumulado += entradas
+		pontos = append(pontos, models.PontoLojas{Mes: mes, Total: acumulado, Entradas: entradas})
+	}
+	return pontos, nil
+}
+
+func SomarTotalKits(db *sql.DB) (int, error) {
+	var total int
+	err := db.QueryRow(`SELECT COALESCE(SUM(qnt_kit), 0) FROM kit`).Scan(&total)
+	return total, err
+}
+
+func FluxoKitsPorPeriodo(db *sql.DB) ([]models.PontoKits, error) {
+	rows, err := db.Query(`SELECT TO_CHAR(data_entrega_kit, 'DD/MM') AS periodo,
+		COUNT(*) AS entregas,
+		COALESCE(SUM(qnt_kit), 0) AS total_unidades
+		FROM kit
+		WHERE data_entrega_kit IS NOT NULL
+		GROUP BY DATE_TRUNC('day', data_entrega_kit), periodo
+		ORDER BY DATE_TRUNC('day', data_entrega_kit)`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var pontos []models.PontoKits
+	for rows.Next() {
+		var p models.PontoKits
+		if err := rows.Scan(&p.Periodo, &p.Entregas, &p.Total); err != nil {
+			return nil, err
+		}
+		pontos = append(pontos, p)
+	}
+	return pontos, nil
+}
+
 func ListarParticipantes(db *sql.DB) ([]models.Participante, error) {
 	query := `SELECT ep.loja_id, l.nome, ep.status_participacao, ep.data_entrada, ep.data_saida, ep.anexo_eco
 		FROM eco_participantes ep

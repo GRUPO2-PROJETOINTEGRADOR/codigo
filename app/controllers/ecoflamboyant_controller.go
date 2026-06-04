@@ -46,13 +46,37 @@ func (c *EcoflamboyantController) ListarEcoFlamboyantHandler(w http.ResponseWrit
 		return
 	}
 
+	totalKits, err := s.ObterTotalKits(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao somar kits: %v", err)
+		http.Error(w, "Erro ao carregar total de kits", http.StatusInternalServerError)
+		return
+	}
+
+	totalLojasParticipantes, crescimentoLojas, err := s.ObterDadosLojas(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao obter dados de lojas: %v", err)
+		http.Error(w, "Erro ao carregar dados de lojas", http.StatusInternalServerError)
+		return
+	}
+
+	fluxoKits, err := s.ObterFluxoKits(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao obter fluxo de kits: %v", err)
+		http.Error(w, "Erro ao carregar fluxo de kits", http.StatusInternalServerError)
+		return
+	}
+
 	data := models.EcoFlamboyantPageData{
-		Participantes: participantes,
-		Lojas:         lojas,
-		Residuos:      residuos,
-		TotalResiduos: len(residuos),
-		Kits:          kits,
-		TotalKits:     len(kits),
+		Participantes:          participantes,
+		Lojas:                  lojas,
+		Residuos:               residuos,
+		TotalResiduos:          len(residuos),
+		Kits:                   kits,
+		TotalKits:              totalKits,
+		TotalLojasParticipantes: totalLojasParticipantes,
+		CrescimentoLojas:        crescimentoLojas,
+		FluxoKits:              fluxoKits,
 	}
 
 	tmpl := template.Must(template.ParseFiles("templates/conservacao/eco-flamboyant.html"))

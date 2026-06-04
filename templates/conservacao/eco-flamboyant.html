@@ -9,6 +9,7 @@
   <meta name="description" content="Dashboard de Gestão Sustentável" />
   <link rel="stylesheet" href="/static/css/global.css" />
   <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="/static/css/theme.css" />
   <style type="text/tailwindcss">
     @custom-variant dark (&:is(.dark *));
@@ -485,7 +486,7 @@
             </div>
             <div>
               <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Lojas Participantes</p>
-              <h4 id="kpi-lojas" class="text-3xl font-black text-gray-900 dark:text-gray-100">0</h4>
+              <h4 id="kpi-lojas" class="text-3xl font-black text-gray-900 dark:text-gray-100">{{.TotalLojasParticipantes}}</h4>
             </div>
           </div>
           <div
@@ -520,7 +521,7 @@
             </div>
             <div>
               <p class="text-[10px] font-black text-white/70 uppercase tracking-[0.2em] mb-1">Total de Kits (Cestas)</p>
-              <h4 id="kpi-kits" class="text-3xl font-black">0 <span
+              <h4 id="kpi-kits" class="text-3xl font-black">{{.TotalKits}} <span
                   class="text-sm font-medium text-white/60 ml-1">unid</span></h4>
             </div>
           </div>
@@ -565,22 +566,8 @@
               </svg>
               Crescimento do Projeto (Lojas)
             </h3>
-            <div class="h-[200px] w-full relative pt-4 border-l border-b border-gray-200 dark:border-gray-700 pb-2">
-              <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
-                <polygon points="0,100 0,90 20,70 40,50 60,30 80,20 100,10 100,100" fill="url(#grad1)" opacity="0.3">
-                </polygon>
-                <polyline points="0,90 20,70 40,50 60,30 80,20 100,10" fill="none" stroke="#8B1A1A" stroke-width="2">
-                </polyline>
-                <defs>
-                  <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style="stop-color:#8B1A1A;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#8B1A1A;stop-opacity:0" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-            <div class="flex justify-between mt-2 text-[10px] text-gray-400 font-bold px-2">
-              <span>Jan</span><span>Mar</span><span>Mai</span>
+            <div class="h-[200px] w-full relative">
+              <canvas id="chart-crescimento" class="w-full h-full"></canvas>
             </div>
           </div>
           <!-- Chart 3 -->
@@ -594,17 +581,8 @@
               </svg>
               Fluxo de Entrega de Kits
             </h3>
-            <div
-              class="h-[200px] w-full flex items-end justify-between gap-2 opacity-80 pt-4 border-l border-b border-gray-200 dark:border-gray-700 pb-2">
-              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 10%"></div>
-              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 30%"></div>
-              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 50%"></div>
-              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 40%"></div>
-              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 70%"></div>
-              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 90%"></div>
-            </div>
-            <div class="flex justify-between mt-2 text-[10px] text-gray-400 font-bold px-2">
-              <span>10/05</span><span>15/05</span><span>20/05</span>
+            <div class="h-[200px] w-full relative">
+              <canvas id="chart-fluxo-kits" class="w-full h-full"></canvas>
             </div>
           </div>
         </section>
@@ -635,7 +613,7 @@
               </div>
             </div>
             <span id="badge-lojas"
-              class="px-2 py-0.5 text-xs font-bold rounded-full bg-[#8B1A1A] dark:bg-[#D93030] text-white">0</span>
+              class="px-2 py-0.5 text-xs font-bold rounded-full bg-[#8B1A1A] dark:bg-[#D93030] text-white">{{.TotalLojasParticipantes}}</span>
           </button>
           <button onclick="setTab('residuos')" id="tab-residuos"
             class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700">
@@ -1019,6 +997,14 @@
     let kits = [];
     let UNIDADES = [];
 
+    const crescimentoLabels = [{{range .CrescimentoLojas}}"{{.Mes}}",{{end}}];
+    const crescimentoData = [{{range .CrescimentoLojas}}{{.Total}},{{end}}];
+    const entradasData = [{{range .CrescimentoLojas}}{{.Entradas}},{{end}}];
+
+    const labelsKits = [{{range .FluxoKits}}"{{.Periodo}}",{{end}}];
+    const dataKits = [{{range .FluxoKits}}{{.Total}},{{end}}];
+    const entregasKits = [{{range .FluxoKits}}{{.Entregas}},{{end}}];
+
     async function loadLojas() {
       try { const r = await fetch('/api/lojas'); if (r.ok) UNIDADES = await r.json(); else UNIDADES = []; } catch { UNIDADES = []; }
       renderData();
@@ -1130,7 +1116,6 @@
       // Update Badges
       const atvRes = residuos.filter(r => participantes.find(p => p.lojaId === r.loja_id && p.status === 'Ativo'));
       const atvKit = kits.filter(k => participantes.find(p => p.lojaId === k.loja_id && p.status === 'Ativo'));
-      document.getElementById('badge-lojas').textContent = participantes.length;
 
       // Update KPIs
       const tPeso = atvRes.reduce((acc, c) => acc + c.kg_total, 0);
@@ -1142,11 +1127,138 @@
       document.getElementById('kpi-total').innerHTML = tPeso.toFixed(1) + ' <span class="text-sm font-medium text-white/60 ml-1">kg</span>';
       document.getElementById('kpi-adubo').innerHTML = tAdubo.toFixed(1) + ' <span class="text-sm font-medium text-gray-400 ml-1">kg</span>';
       document.getElementById('kpi-descarte').innerHTML = tDescarte.toFixed(1) + ' <span class="text-sm font-medium text-gray-400 ml-1">kg</span>';
-      document.getElementById('kpi-lojas').textContent = activeStores.length;
       document.getElementById('kpi-taxa').textContent = taxa.toFixed(0) + '%';
-      document.getElementById('kpi-kits').innerHTML = tKits + ' <span class="text-sm font-medium text-white/60 ml-1">unid</span>';
 
+      renderCrescimentoChart();
+      renderFluxoKitsChart();
       renderTabContent();
+    }
+
+    let crescimentoChart = null;
+    let fluxoKitsChart = null;
+
+    function renderFluxoKitsChart() {
+      const canvas = document.getElementById('chart-fluxo-kits');
+      if (!canvas || labelsKits.length === 0) return;
+      const ctx = canvas.getContext('2d');
+
+      if (fluxoKitsChart) {
+        fluxoKitsChart.data.labels = labelsKits;
+        fluxoKitsChart.data.datasets[0].data = dataKits;
+        fluxoKitsChart.update();
+        return;
+      }
+
+      fluxoKitsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labelsKits,
+          datasets: [{
+            label: 'Unidades',
+            data: dataKits,
+            backgroundColor: '#10B981',
+            borderRadius: 4,
+            barPercentage: 0.6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              enabled: true,
+              callbacks: {
+                title: function(items) { return items[0].label; },
+                label: function(item) {
+                  const idx = item.dataIndex;
+                  return [
+                    'Unidades entregues: ' + item.raw,
+                    'Nº de entregas: ' + entregasKits[idx]
+                  ];
+                }
+              }
+            },
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              ticks: { maxTicksLimit: 6, maxRotation: 0 },
+              grid: { display: false }
+            },
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1, precision: 0 },
+              grid: { color: 'rgba(0,0,0,0.05)' }
+            }
+          },
+          interaction: { mode: 'index', intersect: false }
+        }
+      });
+    }
+
+    function renderCrescimentoChart() {
+      const canvas = document.getElementById('chart-crescimento');
+      if (!canvas || crescimentoData.length === 0) return;
+      const ctx = canvas.getContext('2d');
+
+      if (crescimentoChart) {
+        crescimentoChart.data.labels = crescimentoLabels;
+        crescimentoChart.data.datasets[0].data = crescimentoData;
+        crescimentoChart.update();
+        return;
+      }
+
+      crescimentoChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: crescimentoLabels,
+          datasets: [{
+            label: 'Lojas',
+            data: crescimentoData,
+            borderColor: '#8B1A1A',
+            backgroundColor: 'rgba(139, 26, 26, 0.15)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 4,
+            pointHoverRadius: 7
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              enabled: true,
+              callbacks: {
+                title: function(items) { return items[0].label; },
+                label: function(item) {
+                    const idx = item.dataIndex;
+                    const acumulado = item.raw;
+                    const entradas = entradasData[idx];
+                    return [
+                        'Total acumulado: ' + acumulado + ' loja(s)',
+                        'Novas em ' + item.label + ': ' + entradas + ' loja(s)'
+                    ];
+                }
+              }
+            },
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              ticks: { maxTicksLimit: 6, maxRotation: 0 },
+              grid: { display: false }
+            },
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1, precision: 0 },
+              grid: { color: 'rgba(0,0,0,0.05)' }
+            }
+          },
+          interaction: { mode: 'index', intersect: false },
+          elements: { point: { radius: 4, hoverRadius: 7 } }
+        }
+      });
     }
 
     function showToast(message, type = 'success') {
