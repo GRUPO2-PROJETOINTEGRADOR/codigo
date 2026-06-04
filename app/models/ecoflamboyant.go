@@ -11,7 +11,26 @@ type Participante struct {
 	AnexoEco    string     `json:"anexo_eco"`
 }
 
+type Residuo struct {
+	ID          int
+	LojaNome    string
+	DataColeta  time.Time
+	PesoKG      float64
+	Aproveitado bool
+}
+
+type Kit struct {
+	ID             int
+	LojaNome       string
+	DataEntregaKit time.Time
+	QntKit         int
+}
+
 type EcoFlamboyantPageData struct {
-	Participantes []Participante
-	Lojas         []Loja
+	Participantes  []Participante
+	Lojas          []Loja
+	Residuos       []Residuo
+	TotalResiduos  int
+	Kits           []Kit
+	TotalKits      int
 }

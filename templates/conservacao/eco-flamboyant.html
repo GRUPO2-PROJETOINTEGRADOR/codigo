@@ -655,7 +655,7 @@
               </div>
             </div>
             <span id="badge-residuos"
-              class="px-2 py-0.5 text-xs font-bold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">0</span>
+              class="px-2 py-0.5 text-xs font-bold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">{{.TotalResiduos}}</span>
           </button>
           <button onclick="setTab('kits')" id="tab-kits"
             class="p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left relative overflow-hidden cursor-pointer hover:shadow-md bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/30 text-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600 shadow-sm">
@@ -687,7 +687,7 @@
               </div>
             </div>
             <span id="badge-kits"
-              class="px-2.5 py-0.5 text-xs font-black rounded-full bg-emerald-600 text-white">0</span>
+              class="px-2.5 py-0.5 text-xs font-black rounded-full bg-emerald-600 text-white">{{.TotalKits}}</span>
           </button>
         </div>
 
@@ -712,6 +712,45 @@
                   {{ else }}
                   <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum participante cadastrado.</td></tr>
                   {{ end }}
+                </tbody>
+              </table></div>
+            </div>
+            <div id="tab-residuos-content" class="hidden">
+              <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
+                <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>Histórico de Recebimento de Resíduos</h3>
+              </div>
+              <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Peso (kg)</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Aproveitado</th></tr></thead>
+                <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+                  {{range .Residuos}}
+                  <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{.LojaNome}}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{.DataColeta.Format "02/01/2006"}}</td>
+                    <td class="px-6 py-4 text-sm font-bold text-[#8B1A1A]">{{printf "%.1f" .PesoKG}} kg</td>
+                    <td class="px-6 py-4">{{if .Aproveitado}}<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">Sim</span>{{else}}<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-100">Não</span>{{end}}</td>
+                  </tr>
+                  {{else}}
+                  <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum resíduo registrado.</td></tr>
+                  {{end}}
+                </tbody>
+              </table></div>
+            </div>
+            <div id="tab-kits-content" class="hidden">
+              <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
+                <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/></svg>Histórico Detalhado de Cestas</h3>
+              </div>
+              <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja Destinatária</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data Entrega</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Quantidade</th></tr></thead>
+                <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+                  {{range .Kits}}
+                  <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{.LojaNome}}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{.DataEntregaKit.Format "02/01/2006"}}</td>
+                    <td class="px-6 py-4"><span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">{{.QntKit}} Cestas</span></td>
+                  </tr>
+                  {{else}}
+                  <tr><td colspan="3" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum kit registrado.</td></tr>
+                  {{end}}
                 </tbody>
               </table></div>
             </div>
@@ -812,30 +851,34 @@
       </div>
       <!-- INTEGRATION(codigo/app/controllers/residuos_controller.go): 
            Rota para inserir novos resíduos gerados. -->
-      <form action="/api/residuos/lancar" method="POST" onsubmit="handleWasteSubmit(event)" class="p-6 space-y-4">
+      <form action="/conservacao/eco-flamboyant/residuos" method="POST" class="p-6 space-y-4">
         <div class="space-y-1">
           <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Loja Participante</label>
-          <select id="waste-store" name="loja_id" required
-            class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white"></select>
+          <select name="loja_id" required
+            class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+            <option value="">Selecione uma loja...</option>
+            {{range .Participantes}}{{if .Status}}<option value="{{.LojaID}}">{{.LojaName}}</option>{{end}}{{end}}
+          </select>
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data Coleta</label>
-            <input type="date" id="waste-date" name="data" required
+            <input type="date" name="data_coleta" required
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
           </div>
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Peso Total (kg)</label>
-            <input type="number" id="waste-weight" name="peso" required step="0.1" min="0.1"
+            <input type="number" name="peso_kg" required step="0.01" min="0.01"
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
           </div>
         </div>
         <div class="space-y-1">
-          <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Destino</label>
-          <select id="waste-dest" name="destino" required
+          <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Aproveitado para Adubo</label>
+          <select name="aproveitado" required
             class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
-            <option value="Sim">Adubo (Horta)</option>
-            <option value="Nao">Descarte Comum</option>
+            <option value="">Selecione...</option>
+            <option value="Sim">Sim — Adubo (Horta)</option>
+            <option value="Nao">Não — Descarte</option>
           </select>
         </div>
         <div class="flex justify-end gap-3 mt-6">
@@ -867,21 +910,24 @@
       </div>
       <!-- INTEGRATION(codigo/app/controllers/kits_controller.go): 
            Rota para registrar entrega de cesta. -->
-      <form action="/api/kits/registrar" method="POST" onsubmit="handleKitSubmit(event)" class="p-6 space-y-4">
+      <form action="/conservacao/eco-flamboyant/kits" method="POST" class="p-6 space-y-4">
         <div class="space-y-1">
           <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Loja Destinatária</label>
-          <select id="kit-store" name="loja_id" required
-            class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white"></select>
+          <select name="loja_id" required
+            class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+            <option value="">Selecione uma loja...</option>
+            {{range .Participantes}}{{if .Status}}<option value="{{.LojaID}}">{{.LojaName}}</option>{{end}}{{end}}
+          </select>
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data Entrega</label>
-            <input type="date" id="kit-date" name="data" required
+            <input type="date" name="data_entrega_kit" required
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
           </div>
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Quantidade</label>
-            <input type="number" id="kit-qty" name="quantidade" required min="1" step="1"
+            <input type="number" name="qnt_kit" required min="1" step="1"
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
           </div>
         </div>
@@ -1060,62 +1106,31 @@
 
     function renderTabContent() {
       const c = document.getElementById('tab-content');
+      const lojasContent = document.getElementById('tab-lojas-content');
+      const residuosContent = document.getElementById('tab-residuos-content');
       if (activeTab === 'lojas') {
-        document.getElementById('tab-content').innerHTML = originalLojaContent;
+        c.innerHTML = originalLojaContent;
         return;
       } else if (activeTab === 'residuos') {
-        const atvRes = residuos.filter(r => participantes.find(p => p.lojaId === r.loja_id && p.status === 'Ativo'));
-        c.innerHTML = `
-          <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
-            <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>Histórico de Recebimento de Resíduos</h3>
-          </div>
-          <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
-            <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja Originária</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data Coleta</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Peso (kg)</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Destino</th></tr></thead>
-            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
-              ${atvRes.map(r => `
-                <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
-                  <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">${r.lojaNome}</td>
-                  <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${new Date(r.data).toLocaleDateString('pt-BR')}</td>
-                  <td class="px-6 py-4 text-sm font-bold text-[#8B1A1A]">${r.kg_total.toFixed(1)} kg</td>
-                  <td class="px-6 py-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${r.aproveitou ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-amber-50 text-amber-700 border-amber-100'}">${r.aproveitou ? 'Adubo (Horta)' : 'Descarte Comum'}</span></td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table></div>`;
+        c.innerHTML = originalLojaContent;
+        const r = document.getElementById('tab-residuos-content');
+        const l = document.getElementById('tab-lojas-content');
+        if (r) r.classList.remove('hidden');
+        if (l) l.classList.add('hidden');
       } else if (activeTab === 'kits') {
-        const atvKit = kits.filter(k => participantes.find(p => p.lojaId === k.loja_id && p.status === 'Ativo'));
-        c.innerHTML = `
-          <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
-            <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/></svg>Histórico Detalhado de Cestas</h3>
-          </div>
-          <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
-            <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja Destinatária</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data Entrega</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Quantidade</th></tr></thead>
-            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
-              ${atvKit.map(k => `
-                <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
-                  <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">${k.lojaNome}</td>
-                  <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${new Date(k.data).toLocaleDateString('pt-BR')}</td>
-                  <td class="px-6 py-4"><span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">${k.quantidade_kit} Cestas</span></td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table></div>`;
+        c.innerHTML = originalLojaContent;
+        const k = document.getElementById('tab-kits-content');
+        const l = document.getElementById('tab-lojas-content');
+        if (k) k.classList.remove('hidden');
+        if (l) l.classList.add('hidden');
       }
     }
 
     function renderData() {
-      // populate select options
-      const activeStores = participantes.filter(p => p.status === 'Ativo');
-      const activeStoresHTML = activeStores.map(u => `<option value="${u.lojaId}">${u.lojaNome}</option>`).join('');
-      document.getElementById('waste-store').innerHTML = '<option value="">Selecione uma loja...</option>' + activeStoresHTML;
-      document.getElementById('kit-store').innerHTML = '<option value="">Selecione uma loja...</option>' + activeStoresHTML;
-
       // Update Badges
       const atvRes = residuos.filter(r => participantes.find(p => p.lojaId === r.loja_id && p.status === 'Ativo'));
       const atvKit = kits.filter(k => participantes.find(p => p.lojaId === k.loja_id && p.status === 'Ativo'));
       document.getElementById('badge-lojas').textContent = participantes.length;
-      document.getElementById('badge-residuos').textContent = atvRes.length;
-      document.getElementById('badge-kits').textContent = atvKit.length;
 
       // Update KPIs
       const tPeso = atvRes.reduce((acc, c) => acc + c.kg_total, 0);

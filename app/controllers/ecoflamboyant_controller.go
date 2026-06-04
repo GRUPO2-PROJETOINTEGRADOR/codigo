@@ -32,9 +32,27 @@ func (c *EcoflamboyantController) ListarEcoFlamboyantHandler(w http.ResponseWrit
 		return
 	}
 
+	residuos, err := s.ObterResiduos(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao listar resíduos: %v", err)
+		http.Error(w, "Erro ao carregar resíduos", http.StatusInternalServerError)
+		return
+	}
+
+	kits, err := s.ObterKits(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao listar kits: %v", err)
+		http.Error(w, "Erro ao carregar kits", http.StatusInternalServerError)
+		return
+	}
+
 	data := models.EcoFlamboyantPageData{
 		Participantes: participantes,
 		Lojas:         lojas,
+		Residuos:      residuos,
+		TotalResiduos: len(residuos),
+		Kits:          kits,
+		TotalKits:     len(kits),
 	}
 
 	tmpl := template.Must(template.ParseFiles("templates/conservacao/eco-flamboyant.html"))
@@ -115,4 +133,53 @@ func (c *EcoflamboyantController) CriarParticipanteHandler(w http.ResponseWriter
 	}
 
 	http.Redirect(w, r, "/conservacao/eco-flamboyant", http.StatusSeeOther)
+}
+
+func (c *EcoflamboyantController) CriarResiduoHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		return
+	}
+
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Erro ao processar formulário", http.StatusBadRequest)
+		return
+	}
+
+	err := s.CriarResiduo(utils.DB,
+		r.FormValue("loja_id"),
+		r.FormValue("data_coleta"),
+		r.FormValue("peso_kg"),
+		r.FormValue("aproveitado"))
+	if err != nil {
+		log.Printf("Erro ao criar resíduo: %v", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	http.Redirect(w, r, "/conservacao/eco-flamboyant?aba=residuos", http.StatusSeeOther)
+}
+
+func (c *EcoflamboyantController) CriarKitHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		return
+	}
+
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Erro ao processar formulário", http.StatusBadRequest)
+		return
+	}
+
+	err := s.CriarKit(utils.DB,
+		r.FormValue("loja_id"),
+		r.FormValue("data_entrega_kit"),
+		r.FormValue("qnt_kit"))
+	if err != nil {
+		log.Printf("Erro ao criar kit: %v", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	http.Redirect(w, r, "/conservacao/eco-flamboyant?aba=kits", http.StatusSeeOther)
 }

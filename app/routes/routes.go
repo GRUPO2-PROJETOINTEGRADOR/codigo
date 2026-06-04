@@ -10,6 +10,10 @@ func Rotas() {
 	RotasSegurancaAlimentar()
 	RotasEcoflamboyant()
 
+	var ecoCtrl controllers.EcoflamboyantController
+	http.HandleFunc("/conservacao/eco-flamboyant/residuos", ecoCtrl.CriarResiduoHandler)
+	http.HandleFunc("/conservacao/eco-flamboyant/kits", ecoCtrl.CriarKitHandler)
+
 	var dashCtrl controllers.DashboardController
 	http.HandleFunc("/conservacao/dashboard", dashCtrl.ListarPaginaHandler)
 
