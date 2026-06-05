@@ -69,6 +69,16 @@ func (c *EcoflamboyantController) ListarEcoFlamboyantHandler(w http.ResponseWrit
 		log.Printf("Erro ao obter resumo de resíduos: %v", err)
 	}
 
+	registros, err := s.ListarAuditorias(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao listar auditorias: %v", err)
+	}
+
+	aba := r.URL.Query().Get("aba")
+	if aba == "" {
+		aba = "lojas"
+	}
+
 	data := models.EcoFlamboyantPageData{
 		Participantes:          participantes,
 		Lojas:                  lojas,
@@ -84,6 +94,8 @@ func (c *EcoflamboyantController) ListarEcoFlamboyantHandler(w http.ResponseWrit
 		TotalDescartado:        totalDescartado,
 		TaxaAproveitamento:     taxaAproveitamento,
 		FluxoResiduos:          fluxoResiduos,
+		Registros:              registros,
+		AbaAtiva:               aba,
 	}
 
 	tmpl := template.Must(template.ParseFiles("templates/conservacao/eco-flamboyant.html"))

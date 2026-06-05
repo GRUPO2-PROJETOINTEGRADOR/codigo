@@ -27,7 +27,10 @@ func CriarParticipante(db *sql.DB, lojaID string, dataEntrada time.Time, dataSai
 		return errors.New("data de saída deve ser após a data de entrada")
 	}
 
-	return utils.CriarParticipante(db, lojaID, dataEntrada, dataSaida, nomeAnexo, dadosAnexo)
+	if err := utils.CriarParticipante(db, lojaID, dataEntrada, dataSaida, nomeAnexo, dadosAnexo); err != nil {
+		return err
+	}
+	return utils.InserirAuditoria(db, lojaID, "eco_participante", "cadastro")
 }
 
 func ListarParticipantes(db *sql.DB) ([]models.Participante, error) {
@@ -62,7 +65,10 @@ func CriarResiduo(db *sql.DB, lojaID, dataColetaStr, pesoKGStr, aproveitadoStr s
 	}
 
 	aproveitado := aproveitadoStr == "Sim"
-	return utils.InserirResiduo(db, lojaID, dataColeta, pesoKG, aproveitado)
+	if err := utils.InserirResiduo(db, lojaID, dataColeta, pesoKG, aproveitado); err != nil {
+		return err
+	}
+	return utils.InserirAuditoria(db, lojaID, "residuo", "cadastro")
 }
 
 func ObterResiduos(db *sql.DB) ([]models.Residuo, error) {
@@ -93,7 +99,10 @@ func CriarKit(db *sql.DB, lojaID, dataEntregaKitStr, qntKitStr string) error {
 		return errors.New("quantidade deve ser maior que zero")
 	}
 
-	return utils.InserirKit(db, lojaID, dataEntregaKit, qntKit)
+	if err := utils.InserirKit(db, lojaID, dataEntregaKit, qntKit); err != nil {
+		return err
+	}
+	return utils.InserirAuditoria(db, lojaID, "kit", "cadastro")
 }
 
 func ObterKits(db *sql.DB) ([]models.Kit, error) {
@@ -121,11 +130,21 @@ func ObterDadosLojas(db *sql.DB) (int, []models.PontoLojas, error) {
 }
 
 func InativarLoja(db *sql.DB, lojaID string) error {
-	return utils.InativarLoja(db, lojaID)
+	if err := utils.InativarLoja(db, lojaID); err != nil {
+		return err
+	}
+	return utils.InserirAuditoria(db, lojaID, "eco_participante", "inativacao")
 }
 
 func AtivarLoja(db *sql.DB, lojaID string) error {
-	return utils.AtivarLoja(db, lojaID)
+	if err := utils.AtivarLoja(db, lojaID); err != nil {
+		return err
+	}
+	return utils.InserirAuditoria(db, lojaID, "eco_participante", "reativacao")
+}
+
+func ListarAuditorias(db *sql.DB) ([]models.RegistroAuditoria, error) {
+	return utils.ListarAuditoriasEventos(db)
 }
 
 func ObterResumoResiduos(db *sql.DB) (totalGeral, totalAdubo, totalDescarte, taxa float64, fluxo []models.PontoResiduos, err error) {

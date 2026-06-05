@@ -3,8 +3,23 @@ package repo
 import (
 	"codigo/app/models"
 	"database/sql"
+	"sync"
 	"time"
 )
+
+var ensureAuditTable sync.Once
+
+func garantirTabelaAuditoria(db *sql.DB) {
+	ensureAuditTable.Do(func() {
+		db.Exec(`CREATE TABLE IF NOT EXISTS auditoria_eventos (
+			id SERIAL PRIMARY KEY,
+			loja_id VARCHAR(100) REFERENCES lojas(id),
+			entidade VARCHAR(50),
+			acao VARCHAR(20),
+			data_evento TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		)`)
+	})
+}
 
 func ListarLojas(db *sql.DB) ([]models.Loja, error) {
 	rows, err := db.Query("SELECT id, nome FROM lojas ORDER BY nome ASC")
@@ -206,6 +221,34 @@ func InativarLoja(db *sql.DB, lojaID string) error {
 func AtivarLoja(db *sql.DB, lojaID string) error {
 	_, err := db.Exec(`UPDATE eco_participantes SET status_participacao = TRUE, data_saida = NULL WHERE loja_id = $1`, lojaID)
 	return err
+}
+
+func InserirAuditoria(db *sql.DB, lojaID, entidade, acao string) error {
+	garantirTabelaAuditoria(db)
+	_, err := db.Exec(`INSERT INTO auditoria_eventos (loja_id, entidade, acao) VALUES ($1, $2, $3)`, lojaID, entidade, acao)
+	return err
+}
+
+func ListarAuditoriasEventos(db *sql.DB) ([]models.RegistroAuditoria, error) {
+	rows, err := db.Query(`SELECT a.id, l.nome, a.entidade, a.acao, a.data_evento
+		FROM auditoria_eventos a
+		JOIN lojas l ON l.id = a.loja_id
+		ORDER BY a.data_evento DESC
+		LIMIT 50`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var lista []models.RegistroAuditoria
+	for rows.Next() {
+		var r models.RegistroAuditoria
+		if err := rows.Scan(&r.ID, &r.LojaNome, &r.Entidade, &r.Acao, &r.DataEvento); err != nil {
+			return nil, err
+		}
+		lista = append(lista, r)
+	}
+	return lista, nil
 }
 
 func FluxoResiduosPorPeriodo(db *sql.DB) ([]models.PontoResiduos, error) {

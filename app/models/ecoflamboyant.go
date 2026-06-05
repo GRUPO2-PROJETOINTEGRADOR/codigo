@@ -2,6 +2,14 @@ package models
 
 import "time"
 
+type RegistroAuditoria struct {
+	ID         int
+	LojaNome   string
+	Entidade   string
+	Acao       string
+	DataEvento time.Time
+}
+
 type Participante struct {
 	LojaID      string     `json:"loja_id"`
 	LojaName    string     `json:"loja_nome"`
@@ -59,4 +67,6 @@ type EcoFlamboyantPageData struct {
 	TotalDescartado        float64
 	TaxaAproveitamento     float64
 	FluxoResiduos          []PontoResiduos
+	Registros              []RegistroAuditoria
+	AbaAtiva               string
 }

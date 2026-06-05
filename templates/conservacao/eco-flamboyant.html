@@ -684,6 +684,18 @@
             <span id="badge-kits"
               class="px-2.5 py-0.5 text-xs font-black rounded-full bg-emerald-600 text-white">{{.TotalKits}}</span>
           </button>
+          <button onclick="setTab('registros')" id="tab-registros"
+            class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700">
+            <div class="flex items-center gap-3">
+              <div class="tab-icon p-2.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-400"><svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-[inherit]">Registros</p>
+                <p class="text-[10px] font-medium opacity-70">Histórico de Atividade</p>
+              </div>
+            </div>
+            <span id="badge-registros"
+              class="px-2 py-0.5 text-xs font-bold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">{{len .Registros}}</span>
+          </button>
         </div>
 
         <!-- Content Area -->
@@ -746,6 +758,39 @@
                   </tr>
                   {{else}}
                   <tr><td colspan="3" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum kit registrado.</td></tr>
+                  {{end}}
+                </tbody>
+              </table></div>
+            </div>
+            <div id="tab-registros-content" class="hidden">
+              <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
+                <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>🕐 REGISTROS DE ATIVIDADE</h3>
+              </div>
+              <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">DATA / HORA</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">LOJA</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">EVENTO</th></tr></thead>
+                <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+                  {{range .Registros}}
+                  <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
+                    <td class="px-6 py-4 text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">{{.DataEvento.Format "02/01/2006 15:04"}}</td>
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{.LojaNome}}</td>
+                    <td class="px-6 py-4 text-xs">
+                      {{if eq .Acao "cadastro"}}
+                        {{if eq .Entidade "eco_participante"}}
+                          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 text-green-700 border border-green-200">🟢 Participante cadastrado</span>
+                        {{else if eq .Entidade "residuo"}}
+                          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">⚖️ Resíduo registrado</span>
+                        {{else if eq .Entidade "kit"}}
+                          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">🧺 Kit entregue</span>
+                        {{end}}
+                      {{else if eq .Acao "inativacao"}}
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-50 text-red-600 border border-red-100">🔴 Loja inativada</span>
+                      {{else if eq .Acao "reativacao"}}
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 text-green-700 border border-green-200">🟢 Loja reativada</span>
+                      {{end}}
+                    </td>
+                  </tr>
+                  {{else}}
+                  <tr><td colspan="3" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum registro ainda</td></tr>
                   {{end}}
                 </tbody>
               </table></div>
@@ -1098,12 +1143,14 @@
       const tLojas = document.getElementById('tab-lojas');
       const tResiduos = document.getElementById('tab-residuos');
       const tKits = document.getElementById('tab-kits');
+      const tRegistros = document.getElementById('tab-registros');
 
       const unselectedClasses = "p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700".split(" ");
       const selectedLojas = "p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-[#8B1A1A]/5 border-[#8B1A1A] text-[#8B1A1A] dark:bg-[#8B1A1A]/10 dark:border-[#D93030] dark:text-[#D93030] shadow-sm ring-2 ring-[#8B1A1A]/10".split(" ");
 
       tLojas.className = ''; tLojas.classList.add(...(tab === 'lojas' ? selectedLojas : unselectedClasses));
       tResiduos.className = ''; tResiduos.classList.add(...(tab === 'residuos' ? selectedLojas : unselectedClasses));
+      tRegistros.className = ''; tRegistros.classList.add(...(tab === 'registros' ? selectedLojas : unselectedClasses));
 
       const kitsUnselected = "p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left relative overflow-hidden cursor-pointer hover:shadow-md bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/30 text-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600 shadow-sm".split(" ");
       const kitsSelected = "p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left relative overflow-hidden cursor-pointer hover:shadow-md bg-emerald-100/90 border-emerald-600 text-emerald-900 dark:bg-emerald-900/30 dark:border-emerald-400 dark:text-emerald-200 shadow-md ring-2 ring-emerald-500/30 scale-[1.02]".split(" ");
@@ -1116,6 +1163,8 @@
       const c = document.getElementById('tab-content');
       const lojasContent = document.getElementById('tab-lojas-content');
       const residuosContent = document.getElementById('tab-residuos-content');
+      const kitsContent = document.getElementById('tab-kits-content');
+      const registrosContent = document.getElementById('tab-registros-content');
       if (activeTab === 'lojas') {
         c.innerHTML = originalLojaContent;
         return;
@@ -1130,6 +1179,12 @@
         const k = document.getElementById('tab-kits-content');
         const l = document.getElementById('tab-lojas-content');
         if (k) k.classList.remove('hidden');
+        if (l) l.classList.add('hidden');
+      } else if (activeTab === 'registros') {
+        c.innerHTML = originalLojaContent;
+        const reg = document.getElementById('tab-registros-content');
+        const l = document.getElementById('tab-lojas-content');
+        if (reg) reg.classList.remove('hidden');
         if (l) l.classList.add('hidden');
       }
     }
@@ -1330,7 +1385,7 @@
     }
 
     loadAll();
-    setTab('lojas');
+    setTab('{{.AbaAtiva}}');
 
   </script>
 </body>
