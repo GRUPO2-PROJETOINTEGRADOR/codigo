@@ -24,10 +24,10 @@ func ListarLojas(db *sql.DB) ([]models.Loja, error) {
 	return lista, nil
 }
 
-func CriarParticipante(db *sql.DB, p models.Participante) error {
-	query := `INSERT INTO eco_participantes (loja_id, status_participacao, data_entrada, data_saida, anexo_eco)
-		VALUES ($1, TRUE, $2, $3, $4)`
-	_, err := db.Exec(query, p.LojaID, p.DataEntrada, p.DataSaida, p.AnexoEco)
+func CriarParticipante(db *sql.DB, lojaID string, dataEntrada time.Time, dataSaida *time.Time, nomeAnexo string, dadosAnexo []byte) error {
+	query := `INSERT INTO eco_participantes (loja_id, status_participacao, data_entrada, data_saida, anexo_eco_nome, anexo_eco_dados)
+		VALUES ($1, TRUE, $2, $3, $4, $5)`
+	_, err := db.Exec(query, lojaID, dataEntrada, dataSaida, nomeAnexo, dadosAnexo)
 	return err
 }
 
@@ -93,7 +93,7 @@ func ContarLojasAtivas(db *sql.DB) (int, error) {
 
 func CrescimentoLojasPorMes(db *sql.DB) ([]models.PontoLojas, error) {
 	rows, err := db.Query(`SELECT TO_CHAR(data_entrada, 'Mon/YY') AS mes, COUNT(*) AS entradas
-		FROM eco_participantes
+		FROM eco_participantes WHERE status_participacao = TRUE
 		GROUP BY DATE_TRUNC('month', data_entrada), mes
 		ORDER BY DATE_TRUNC('month', data_entrada)`)
 	if err != nil {
@@ -146,10 +146,10 @@ func FluxoKitsPorPeriodo(db *sql.DB) ([]models.PontoKits, error) {
 }
 
 func ListarParticipantes(db *sql.DB) ([]models.Participante, error) {
-	query := `SELECT ep.loja_id, l.nome, ep.status_participacao, ep.data_entrada, ep.data_saida, ep.anexo_eco
+	query := `SELECT ep.loja_id, l.nome, ep.status_participacao, ep.data_entrada, ep.data_saida, ep.anexo_eco_nome
 		FROM eco_participantes ep
 		JOIN lojas l ON l.id = ep.loja_id
-		ORDER BY ep.data_entrada DESC`
+		ORDER BY ep.status_participacao DESC, ep.data_entrada DESC`
 
 	rows, err := db.Query(query)
 	if err != nil {
@@ -171,9 +171,62 @@ func ListarParticipantes(db *sql.DB) ([]models.Participante, error) {
 			p.DataSaida = &nt.Time
 		}
 		if ns.Valid {
-			p.AnexoEco = ns.String
+			p.AnexoEcoNome = ns.String
 		}
 
+		lista = append(lista, p)
+	}
+	return lista, nil
+}
+
+func BuscarTermoPorLoja(db *sql.DB, lojaID string) (string, []byte, error) {
+	var nome string
+	var dados []byte
+	err := db.QueryRow(`SELECT anexo_eco_nome, anexo_eco_dados FROM eco_participantes WHERE loja_id = $1`, lojaID).Scan(&nome, &dados)
+	if err != nil {
+		return "", nil, err
+	}
+	return nome, dados, nil
+}
+
+func ResumoResiduos(db *sql.DB) (totalGeral, totalAdubo, totalDescarte float64, err error) {
+	err = db.QueryRow(`SELECT
+		COALESCE(SUM(peso_kg), 0),
+		COALESCE(SUM(CASE WHEN aproveitado = true THEN peso_kg ELSE 0 END), 0),
+		COALESCE(SUM(CASE WHEN aproveitado = false THEN peso_kg ELSE 0 END), 0)
+		FROM residuos_eco`).Scan(&totalGeral, &totalAdubo, &totalDescarte)
+	return
+}
+
+func InativarLoja(db *sql.DB, lojaID string) error {
+	_, err := db.Exec(`UPDATE eco_participantes SET status_participacao = FALSE, data_saida = CURRENT_DATE WHERE loja_id = $1`, lojaID)
+	return err
+}
+
+func AtivarLoja(db *sql.DB, lojaID string) error {
+	_, err := db.Exec(`UPDATE eco_participantes SET status_participacao = TRUE, data_saida = NULL WHERE loja_id = $1`, lojaID)
+	return err
+}
+
+func FluxoResiduosPorPeriodo(db *sql.DB) ([]models.PontoResiduos, error) {
+	rows, err := db.Query(`SELECT TO_CHAR(data_coleta, 'DD/MM') AS periodo,
+		COALESCE(SUM(CASE WHEN aproveitado = true THEN peso_kg ELSE 0 END), 0) AS peso_adubo,
+		COALESCE(SUM(CASE WHEN aproveitado = false THEN peso_kg ELSE 0 END), 0) AS peso_descarte
+		FROM residuos_eco
+		WHERE data_coleta IS NOT NULL
+		GROUP BY DATE_TRUNC('day', data_coleta), periodo
+		ORDER BY DATE_TRUNC('day', data_coleta)`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var lista []models.PontoResiduos
+	for rows.Next() {
+		var p models.PontoResiduos
+		if err := rows.Scan(&p.Periodo, &p.PesoAdubo, &p.PesoDescarte); err != nil {
+			return nil, err
+		}
 		lista = append(lista, p)
 	}
 	return lista, nil

@@ -19,6 +19,32 @@
       --color-secondary: #C8A882;
       --color-destructive: #D93030;
     }*/
+
+    .btn-inativar {
+        transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+    .btn-inativar:hover {
+        background-color: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(192, 57, 43, 0.35);
+    }
+    .btn-inativar:active {
+        transform: translateY(0px);
+        box-shadow: none;
+    }
+
+    .btn-ativar {
+        transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+    .btn-ativar:hover {
+        background-color: #27ae60;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.35);
+    }
+    .btn-ativar:active {
+        transform: translateY(0px);
+        box-shadow: none;
+    }
   </style>
   <script>
     (function () {
@@ -435,8 +461,8 @@
             </div>
             <div>
               <p class="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] mb-1">Volume Total Geral</p>
-              <h4 id="kpi-total" class="text-3xl font-black">0.0 <span
-                  class="text-sm font-medium text-white/60 ml-1">kg</span></h4>
+              <h4 id="kpi-total" class="text-3xl font-black">{{printf "%.1f" .VolumeTotalGeral}} <span
+                   class="text-sm font-medium text-white/60 ml-1">kg</span></h4>
             </div>
           </div>
           <div
@@ -451,8 +477,8 @@
             </div>
             <div>
               <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Total Adubo</p>
-              <h4 id="kpi-adubo" class="text-3xl font-black text-gray-900 dark:text-gray-100">0.0 <span
-                  class="text-sm font-medium text-gray-400 ml-1">kg</span></h4>
+              <h4 id="kpi-adubo" class="text-3xl font-black text-gray-900 dark:text-gray-100">{{printf "%.1f" .TotalAdubo}} <span
+                   class="text-sm font-medium text-gray-400 ml-1">kg</span></h4>
             </div>
           </div>
           <div
@@ -468,8 +494,8 @@
             </div>
             <div>
               <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Total Descartado</p>
-              <h4 id="kpi-descarte" class="text-3xl font-black text-gray-900 dark:text-gray-100">0.0 <span
-                  class="text-sm font-medium text-gray-400 ml-1">kg</span></h4>
+              <h4 id="kpi-descarte" class="text-3xl font-black text-gray-900 dark:text-gray-100">{{printf "%.1f" .TotalDescartado}} <span
+                   class="text-sm font-medium text-gray-400 ml-1">kg</span></h4>
             </div>
           </div>
           <div
@@ -501,7 +527,7 @@
             </div>
             <div>
               <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Taxa de Aproveitamento</p>
-              <h4 id="kpi-taxa" class="text-3xl font-black text-gray-900 dark:text-gray-100">0%</h4>
+              <h4 id="kpi-taxa" class="text-3xl font-black text-gray-900 dark:text-gray-100">{{printf "%.0f" .TaxaAproveitamento}}%</h4>
             </div>
           </div>
           <div
@@ -540,17 +566,8 @@
               </svg>
               Volume de Resíduos (kg)
             </h3>
-            <div
-              class="h-[200px] w-full flex items-end justify-between gap-2 opacity-80 pt-4 border-l border-b border-gray-200 dark:border-gray-700 pb-2">
-              <div class="w-full bg-emerald-500/80 rounded-t-sm" style="height: 40%"></div>
-              <div class="w-full bg-amber-500/80 rounded-t-sm" style="height: 20%"></div>
-              <div class="w-full bg-emerald-500/80 rounded-t-sm" style="height: 60%"></div>
-              <div class="w-full bg-emerald-500/80 rounded-t-sm" style="height: 80%"></div>
-              <div class="w-full bg-amber-500/80 rounded-t-sm" style="height: 30%"></div>
-              <div class="w-full bg-emerald-500/80 rounded-t-sm" style="height: 90%"></div>
-            </div>
-            <div class="flex justify-between mt-2 text-[10px] text-gray-400 font-bold px-2">
-              <span>10/05</span><span>15/05</span><span>20/05</span>
+            <div class="h-[200px] w-full relative">
+              <canvas id="chart-residuos" class="w-full h-full"></canvas>
             </div>
           </div>
           <!-- Chart 2 -->
@@ -678,17 +695,18 @@
                 <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>Lojas Participantes</h3>
               </div>
               <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
-                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja / LUC</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Início</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Status</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Ações</th></tr></thead>
+                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja / LUC</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Início</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Status</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Termo</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Ações</th></tr></thead>
                 <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
                   {{ range .Participantes }}
                   <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
                     <td class="px-6 py-4"><div class="text-sm font-bold text-gray-900 dark:text-gray-100">{{ .LojaName }}</div><div class="text-xs text-gray-500">LUC {{ .LojaID }}</div></td>
                     <td class="px-6 py-4 text-xs text-gray-600 dark:text-gray-400">{{ .DataEntrada.Format "02/01/2006" }}</td>
                     <td class="px-6 py-4">{{ if .Status }}<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 text-green-700 border border-green-200">Ativo</span>{{ else }}<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 text-gray-600">Inativo</span>{{ end }}</td>
-                    <td class="px-6 py-4"><button class="px-3 py-1.5 rounded-lg text-xs font-bold border bg-red-50 text-red-600 border-red-100">Inativar</button></td>
+                    <td class="px-6 py-4">{{if .AnexoEcoNome}}<a href="/conservacao/eco-flamboyant/termo/{{.LojaID}}" target="_blank" class="text-[#8B1A1A] underline text-xs font-medium">📄 {{.AnexoEcoNome}}</a>{{else}}<span class="text-xs text-gray-400">—</span>{{end}}</td>
+                    <td class="px-6 py-4">{{ if .Status }}<form action="/conservacao/eco-flamboyant/status" method="POST" class="inline"><input type="hidden" name="loja_id" value="{{.LojaID}}"><input type="hidden" name="acao" value="inativar"><button type="submit" class="btn-inativar px-3 py-1.5 rounded-lg text-xs font-bold border bg-red-50 text-red-600 border-red-100 cursor-pointer">Inativar</button></form>{{ else }}<form action="/conservacao/eco-flamboyant/status" method="POST" class="inline"><input type="hidden" name="loja_id" value="{{.LojaID}}"><input type="hidden" name="acao" value="ativar"><button type="submit" class="btn-ativar px-3 py-1.5 rounded-lg text-xs font-bold border bg-emerald-50 text-emerald-600 border-emerald-200 cursor-pointer">Ativar</button></form>{{ end }}</td>
                   </tr>
                   {{ else }}
-                  <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum participante cadastrado.</td></tr>
+                  <tr><td colspan="5" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum participante cadastrado.</td></tr>
                   {{ end }}
                 </tbody>
               </table></div>
@@ -1001,6 +1019,10 @@
     const crescimentoData = [{{range .CrescimentoLojas}}{{.Total}},{{end}}];
     const entradasData = [{{range .CrescimentoLojas}}{{.Entradas}},{{end}}];
 
+    const labelsResiduos = [{{range .FluxoResiduos}}"{{.Periodo}}",{{end}}];
+    const dataAdubo = [{{range .FluxoResiduos}}{{.PesoAdubo}},{{end}}];
+    const dataDescarte = [{{range .FluxoResiduos}}{{.PesoDescarte}},{{end}}];
+
     const labelsKits = [{{range .FluxoKits}}"{{.Periodo}}",{{end}}];
     const dataKits = [{{range .FluxoKits}}{{.Total}},{{end}}];
     const entregasKits = [{{range .FluxoKits}}{{.Entregas}},{{end}}];
@@ -1117,18 +1139,9 @@
       const atvRes = residuos.filter(r => participantes.find(p => p.lojaId === r.loja_id && p.status === 'Ativo'));
       const atvKit = kits.filter(k => participantes.find(p => p.lojaId === k.loja_id && p.status === 'Ativo'));
 
-      // Update KPIs
-      const tPeso = atvRes.reduce((acc, c) => acc + c.kg_total, 0);
-      const tAdubo = atvRes.filter(r => r.aproveitou).reduce((acc, c) => acc + c.kg_total, 0);
-      const tDescarte = atvRes.filter(r => !r.aproveitou).reduce((acc, c) => acc + c.kg_total, 0);
-      const taxa = tPeso > 0 ? (tAdubo / tPeso) * 100 : 0;
       const tKits = atvKit.reduce((acc, c) => acc + c.quantidade_kit, 0);
 
-      document.getElementById('kpi-total').innerHTML = tPeso.toFixed(1) + ' <span class="text-sm font-medium text-white/60 ml-1">kg</span>';
-      document.getElementById('kpi-adubo').innerHTML = tAdubo.toFixed(1) + ' <span class="text-sm font-medium text-gray-400 ml-1">kg</span>';
-      document.getElementById('kpi-descarte').innerHTML = tDescarte.toFixed(1) + ' <span class="text-sm font-medium text-gray-400 ml-1">kg</span>';
-      document.getElementById('kpi-taxa').textContent = taxa.toFixed(0) + '%';
-
+      renderResiduosChart();
       renderCrescimentoChart();
       renderFluxoKitsChart();
       renderTabContent();
@@ -1136,6 +1149,7 @@
 
     let crescimentoChart = null;
     let fluxoKitsChart = null;
+    let residuosChart = null;
 
     function renderFluxoKitsChart() {
       const canvas = document.getElementById('chart-fluxo-kits');
@@ -1190,6 +1204,50 @@
               ticks: { stepSize: 1, precision: 0 },
               grid: { color: 'rgba(0,0,0,0.05)' }
             }
+          },
+          interaction: { mode: 'index', intersect: false }
+        }
+      });
+    }
+
+    function renderResiduosChart() {
+      const canvas = document.getElementById('chart-residuos');
+      if (!canvas || labelsResiduos.length === 0) return;
+      const ctx = canvas.getContext('2d');
+      if (residuosChart) {
+        residuosChart.data.labels = labelsResiduos;
+        residuosChart.data.datasets[0].data = dataAdubo;
+        residuosChart.data.datasets[1].data = dataDescarte;
+        residuosChart.update();
+        return;
+      }
+      residuosChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labelsResiduos,
+          datasets: [
+            { label: 'Adubo (aproveitado)', data: dataAdubo, backgroundColor: '#10B981', borderRadius: 4, barPercentage: 0.6 },
+            { label: 'Descarte', data: dataDescarte, backgroundColor: '#F59E0B', borderRadius: 4, barPercentage: 0.6 }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              enabled: true,
+              callbacks: {
+                title: function(items) { return items[0].label; },
+                label: function(item) {
+                  const tipo = item.datasetIndex === 0 ? 'Adubo (aproveitado)' : 'Descarte';
+                  return tipo + ': ' + item.raw + ' kg';
+                }
+              }
+            },
+            legend: { display: false }
+          },
+          scales: {
+            x: { stacked: true, ticks: { maxTicksLimit: 6, maxRotation: 0 }, grid: { display: false } },
+            y: { stacked: true, beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } }
           },
           interaction: { mode: 'index', intersect: false }
         }

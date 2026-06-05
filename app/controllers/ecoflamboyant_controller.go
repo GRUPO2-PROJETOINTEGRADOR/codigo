@@ -4,13 +4,10 @@ import (
 	"codigo/app/models"
 	utils "codigo/app/repository"
 	s "codigo/app/services"
-	"fmt"
 	"html/template"
 	"io"
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
 	"strings"
 	"time"
 )
@@ -67,6 +64,11 @@ func (c *EcoflamboyantController) ListarEcoFlamboyantHandler(w http.ResponseWrit
 		return
 	}
 
+	volumeTotalGeral, totalAdubo, totalDescartado, taxaAproveitamento, fluxoResiduos, err := s.ObterResumoResiduos(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao obter resumo de resíduos: %v", err)
+	}
+
 	data := models.EcoFlamboyantPageData{
 		Participantes:          participantes,
 		Lojas:                  lojas,
@@ -77,6 +79,11 @@ func (c *EcoflamboyantController) ListarEcoFlamboyantHandler(w http.ResponseWrit
 		TotalLojasParticipantes: totalLojasParticipantes,
 		CrescimentoLojas:        crescimentoLojas,
 		FluxoKits:              fluxoKits,
+		VolumeTotalGeral:       volumeTotalGeral,
+		TotalAdubo:             totalAdubo,
+		TotalDescartado:        totalDescartado,
+		TaxaAproveitamento:     taxaAproveitamento,
+		FluxoResiduos:          fluxoResiduos,
 	}
 
 	tmpl := template.Must(template.ParseFiles("templates/conservacao/eco-flamboyant.html"))
@@ -86,11 +93,6 @@ func (c *EcoflamboyantController) ListarEcoFlamboyantHandler(w http.ResponseWrit
 func (c *EcoflamboyantController) CriarParticipanteHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
-		return
-	}
-
-	if err := os.MkdirAll("static/uploads/termos", 0755); err != nil {
-		http.Error(w, "Erro ao preparar diretório de uploads", http.StatusInternalServerError)
 		return
 	}
 
@@ -119,38 +121,27 @@ func (c *EcoflamboyantController) CriarParticipanteHandler(w http.ResponseWriter
 		dataSaida = &parsed
 	}
 
-	file, handler, err := r.FormFile("anexo_eco")
+	file, header, err := r.FormFile("anexo_eco")
 	if err != nil {
 		http.Error(w, "Termo de aceite obrigatório", http.StatusBadRequest)
 		return
 	}
 	defer file.Close()
 
-	ext := strings.ToLower(filepath.Ext(handler.Filename))
-	if ext != ".pdf" {
+	ext := strings.ToLower(header.Filename[strings.LastIndex(header.Filename, ".")+1:])
+	if ext != "pdf" {
 		http.Error(w, "Apenas arquivos PDF são aceitos", http.StatusBadRequest)
 		return
 	}
 
-	nomeArquivo := fmt.Sprintf("%d_%s", time.Now().UnixNano(), handler.Filename)
-	caminho := filepath.Join("static", "uploads", "termos", nomeArquivo)
-
-	dst, err := os.Create(caminho)
+	dados, err := io.ReadAll(file)
 	if err != nil {
-		http.Error(w, "Erro ao salvar arquivo", http.StatusInternalServerError)
-		return
-	}
-	defer dst.Close()
-
-	if _, err := io.Copy(dst, file); err != nil {
-		os.Remove(caminho)
-		http.Error(w, "Erro ao salvar arquivo", http.StatusInternalServerError)
+		http.Error(w, "Erro ao ler arquivo", http.StatusInternalServerError)
 		return
 	}
 
-	err = s.CriarParticipante(utils.DB, lojaID, dataEntrada, dataSaida, caminho)
+	err = s.CriarParticipante(utils.DB, lojaID, dataEntrada, dataSaida, header.Filename, dados)
 	if err != nil {
-		os.Remove(caminho)
 		log.Printf("Erro ao criar participante: %v", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -206,4 +197,33 @@ func (c *EcoflamboyantController) CriarKitHandler(w http.ResponseWriter, r *http
 	}
 
 	http.Redirect(w, r, "/conservacao/eco-flamboyant?aba=kits", http.StatusSeeOther)
+}
+
+func (c *EcoflamboyantController) AlterarStatusLoja(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		return
+	}
+	r.ParseForm()
+	lojaID := r.FormValue("loja_id")
+	acao := r.FormValue("acao")
+	switch acao {
+	case "inativar":
+		s.InativarLoja(utils.DB, lojaID)
+	case "ativar":
+		s.AtivarLoja(utils.DB, lojaID)
+	}
+	http.Redirect(w, r, "/conservacao/eco-flamboyant?aba=lojas", http.StatusSeeOther)
+}
+
+func (c *EcoflamboyantController) DownloadTermo(w http.ResponseWriter, r *http.Request) {
+	lojaID := strings.TrimPrefix(r.URL.Path, "/conservacao/eco-flamboyant/termo/")
+	nome, dados, err := utils.BuscarTermoPorLoja(utils.DB, lojaID)
+	if err != nil || dados == nil {
+		http.NotFound(w, r)
+		return
+	}
+	w.Header().Set("Content-Type", "application/pdf")
+	w.Header().Set("Content-Disposition", "inline; filename=\""+nome+"\"")
+	w.Write(dados)
 }

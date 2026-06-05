@@ -23,7 +23,8 @@ CREATE TABLE IF NOT EXISTS eco_participantes (
     status_participacao BOOLEAN DEFAULT TRUE,
     data_entrada DATE NOT NULL,
     data_saida DATE,
-    anexo_eco VARCHAR(255)
+    anexo_eco_nome VARCHAR(255),
+    anexo_eco_dados BYTEA
 );
 
 CREATE TABLE IF NOT EXISTS kit (

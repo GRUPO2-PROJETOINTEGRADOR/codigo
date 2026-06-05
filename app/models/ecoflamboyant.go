@@ -8,7 +8,7 @@ type Participante struct {
 	Status      bool       `json:"status_participacao"`
 	DataEntrada time.Time  `json:"data_entrada"`
 	DataSaida   *time.Time `json:"data_saida,omitempty"`
-	AnexoEco    string     `json:"anexo_eco"`
+	AnexoEcoNome string    `json:"anexo_eco_nome"`
 }
 
 type Residuo struct {
@@ -38,6 +38,12 @@ type PontoKits struct {
 	Entregas int
 }
 
+type PontoResiduos struct {
+	Periodo      string
+	PesoAdubo    float64
+	PesoDescarte float64
+}
+
 type EcoFlamboyantPageData struct {
 	Participantes          []Participante
 	Lojas                  []Loja
@@ -48,4 +54,9 @@ type EcoFlamboyantPageData struct {
 	TotalLojasParticipantes int
 	CrescimentoLojas       []PontoLojas
 	FluxoKits              []PontoKits
+	VolumeTotalGeral       float64
+	TotalAdubo             float64
+	TotalDescartado        float64
+	TaxaAproveitamento     float64
+	FluxoResiduos          []PontoResiduos
 }

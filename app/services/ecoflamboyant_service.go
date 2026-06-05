@@ -13,28 +13,21 @@ func ListarLojas(db *sql.DB) ([]models.Loja, error) {
 	return utils.ListarLojas(db)
 }
 
-func CriarParticipante(db *sql.DB, lojaID string, dataEntrada time.Time, dataSaida *time.Time, caminhoAnexo string) error {
+func CriarParticipante(db *sql.DB, lojaID string, dataEntrada time.Time, dataSaida *time.Time, nomeAnexo string, dadosAnexo []byte) error {
 	if lojaID == "" {
 		return errors.New("loja obrigatória")
 	}
 	if dataEntrada.IsZero() {
 		return errors.New("data de entrada obrigatória")
 	}
-	if caminhoAnexo == "" {
+	if nomeAnexo == "" {
 		return errors.New("termo de aceite obrigatório")
 	}
 	if dataSaida != nil && !dataSaida.After(dataEntrada) {
 		return errors.New("data de saída deve ser após a data de entrada")
 	}
 
-	p := models.Participante{
-		LojaID:      lojaID,
-		DataEntrada: dataEntrada,
-		DataSaida:   dataSaida,
-		AnexoEco:    caminhoAnexo,
-	}
-
-	return utils.CriarParticipante(db, p)
+	return utils.CriarParticipante(db, lojaID, dataEntrada, dataSaida, nomeAnexo, dadosAnexo)
 }
 
 func ListarParticipantes(db *sql.DB) ([]models.Participante, error) {
@@ -125,4 +118,27 @@ func ObterDadosLojas(db *sql.DB) (int, []models.PontoLojas, error) {
 		return 0, nil, err
 	}
 	return total, crescimento, nil
+}
+
+func InativarLoja(db *sql.DB, lojaID string) error {
+	return utils.InativarLoja(db, lojaID)
+}
+
+func AtivarLoja(db *sql.DB, lojaID string) error {
+	return utils.AtivarLoja(db, lojaID)
+}
+
+func ObterResumoResiduos(db *sql.DB) (totalGeral, totalAdubo, totalDescarte, taxa float64, fluxo []models.PontoResiduos, err error) {
+	totalGeral, totalAdubo, totalDescarte, err = utils.ResumoResiduos(db)
+	if err != nil {
+		return
+	}
+	fluxo, err = utils.FluxoResiduosPorPeriodo(db)
+	if err != nil {
+		return
+	}
+	if totalGeral > 0 {
+		taxa = (totalAdubo / totalGeral) * 100
+	}
+	return
 }
