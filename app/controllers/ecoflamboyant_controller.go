@@ -29,7 +29,18 @@ func (c *EcoflamboyantController) ListarEcoFlamboyantHandler(w http.ResponseWrit
 		return
 	}
 
-	residuos, err := s.ObterResiduos(utils.DB)
+	lojasParticipantes, err := s.ObterLojasParticipantes(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao listar lojas participantes: %v", err)
+		http.Error(w, "Erro ao carregar lojas participantes", http.StatusInternalServerError)
+		return
+	}
+
+	filtroDataInicio := r.URL.Query().Get("filtro_data_inicio")
+	filtroDataFim := r.URL.Query().Get("filtro_data_fim")
+	filtroLojaID := r.URL.Query().Get("filtro_loja_id")
+
+	residuos, err := s.ObterResiduos(utils.DB, filtroDataInicio, filtroDataFim, filtroLojaID)
 	if err != nil {
 		log.Printf("Erro ao listar resíduos: %v", err)
 		http.Error(w, "Erro ao carregar resíduos", http.StatusInternalServerError)
@@ -96,6 +107,10 @@ func (c *EcoflamboyantController) ListarEcoFlamboyantHandler(w http.ResponseWrit
 		FluxoResiduos:          fluxoResiduos,
 		Registros:              registros,
 		AbaAtiva:               aba,
+		TodasLojas:             lojasParticipantes,
+		FiltroDataInicio:       filtroDataInicio,
+		FiltroDataFim:          filtroDataFim,
+		FiltroLojaID:           filtroLojaID,
 	}
 
 	tmpl := template.Must(template.ParseFiles("templates/conservacao/eco-flamboyant.html"))

@@ -7,7 +7,9 @@ import (
 	"time"
 )
 
-var ensureAuditTable sync.Once
+var (
+	ensureAuditTable     sync.Once
+)
 
 func garantirTabelaAuditoria(db *sql.DB) {
 	ensureAuditTable.Do(func() {
@@ -39,6 +41,24 @@ func ListarLojas(db *sql.DB) ([]models.Loja, error) {
 	return lista, nil
 }
 
+func ListarLojasParticipantes(db *sql.DB) ([]models.Loja, error) {
+	rows, err := db.Query(`SELECT l.id, l.nome FROM lojas l INNER JOIN eco_participantes ep ON ep.loja_id = l.id ORDER BY l.nome`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var lista []models.Loja
+	for rows.Next() {
+		var l models.Loja
+		if err := rows.Scan(&l.ID, &l.Nome); err != nil {
+			return nil, err
+		}
+		lista = append(lista, l)
+	}
+	return lista, nil
+}
+
 func CriarParticipante(db *sql.DB, lojaID string, dataEntrada time.Time, dataSaida *time.Time, nomeAnexo string, dadosAnexo []byte) error {
 	query := `INSERT INTO eco_participantes (loja_id, status_participacao, data_entrada, data_saida, anexo_eco_nome, anexo_eco_dados)
 		VALUES ($1, TRUE, $2, $3, $4, $5)`
@@ -52,11 +72,15 @@ func InserirResiduo(db *sql.DB, lojaID string, dataColeta time.Time, pesoKG floa
 	return err
 }
 
-func ListarResiduos(db *sql.DB) ([]models.Residuo, error) {
-	rows, err := db.Query(`SELECT r.id, l.nome, r.data_coleta, r.peso_kg, r.aproveitado
+func ListarResiduos(db *sql.DB, dataInicio, dataFim, lojaID string) ([]models.Residuo, error) {
+	query := `SELECT r.id, l.nome, r.data_coleta, r.peso_kg, r.aproveitado
 		FROM residuos_eco r
 		JOIN lojas l ON l.id = r.loja_id
-		ORDER BY r.data_coleta DESC`)
+		WHERE ($1 = '' OR r.data_coleta >= $1::date)
+		  AND ($2 = '' OR r.data_coleta <= $2::date)
+		  AND ($3 = '' OR r.loja_id = $3)
+		ORDER BY r.data_coleta DESC`
+	rows, err := db.Query(query, dataInicio, dataFim, lojaID)
 	if err != nil {
 		return nil, err
 	}

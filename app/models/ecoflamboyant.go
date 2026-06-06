@@ -69,4 +69,8 @@ type EcoFlamboyantPageData struct {
 	FluxoResiduos          []PontoResiduos
 	Registros              []RegistroAuditoria
 	AbaAtiva               string
+	TodasLojas             []Loja
+	FiltroDataInicio       string
+	FiltroDataFim          string
+	FiltroLojaID           string
 }

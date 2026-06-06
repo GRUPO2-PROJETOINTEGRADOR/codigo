@@ -172,7 +172,7 @@
                 <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" />
                 <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
               </svg>
-              <span class="truncate">Eco-Flamboyant</span>
+              <span class="truncate">Eco Flamboyant</span>
             </a>
             <a href="/conservacao/orientacao-educativa"
               class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white">
@@ -337,7 +337,7 @@
           <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" />
           <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
         </svg>
-        Eco-Flamboyant
+        Eco Flamboyant
       </a>
       <a href="/conservacao/orientacao-educativa"
         class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all text-white/60 hover:bg-white/5 hover:text-white">
@@ -1252,7 +1252,7 @@
 
     // INTEGRATION: Dashboard data loading via API
     // GET /api/inspecoes → inspeções sanitárias (para KPIs e últimas auditorias)
-    // GET /api/eco/participantes → participantes do Eco-Flamboyant
+    // GET /api/eco/participantes → participantes do Eco Flamboyant
     // GET /api/eco/residuos → resíduos (para KPIs, chart e últimas coletas)
     // GET /api/eco/kits → kits/cestas
 
@@ -1316,7 +1316,7 @@
           audEl.innerHTML = '<p class="font-bold">Nenhuma auditoria registrada.</p>';
         }
 
-        // Eco-Flamboyant KPIs
+        // Eco Flamboyant KPIs
         const ativos = participantes.filter(p => p.status === 'Ativo').length;
         const tPeso = residuos.reduce((acc, r) => acc + (r.kg_total || 0), 0);
         const tAdubo = residuos.filter(r => r.aproveitou).reduce((acc, r) => acc + (r.kg_total || 0), 0);

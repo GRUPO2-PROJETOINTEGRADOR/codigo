@@ -13,6 +13,10 @@ func ListarLojas(db *sql.DB) ([]models.Loja, error) {
 	return utils.ListarLojas(db)
 }
 
+func ObterLojasParticipantes(db *sql.DB) ([]models.Loja, error) {
+	return utils.ListarLojasParticipantes(db)
+}
+
 func CriarParticipante(db *sql.DB, lojaID string, dataEntrada time.Time, dataSaida *time.Time, nomeAnexo string, dadosAnexo []byte) error {
 	if lojaID == "" {
 		return errors.New("loja obrigatória")
@@ -71,8 +75,8 @@ func CriarResiduo(db *sql.DB, lojaID, dataColetaStr, pesoKGStr, aproveitadoStr s
 	return utils.InserirAuditoria(db, lojaID, "residuo", "cadastro")
 }
 
-func ObterResiduos(db *sql.DB) ([]models.Residuo, error) {
-	return utils.ListarResiduos(db)
+func ObterResiduos(db *sql.DB, dataInicio, dataFim, lojaID string) ([]models.Residuo, error) {
+	return utils.ListarResiduos(db, dataInicio, dataFim, lojaID)
 }
 
 func CriarKit(db *sql.DB, lojaID, dataEntregaKitStr, qntKitStr string) error {
