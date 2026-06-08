@@ -866,12 +866,12 @@
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data de Início</label>
-            <input type="date" id="store-start-date" name="data_entrada" required
+            <input type="date" id="store-start-date" name="data_entrada" max="{{.HojeStr}}" required
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white">
           </div>
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data de Saída (Opcional)</label>
-            <input type="date" id="store-end-date" name="data_saida"
+            <input type="date" id="store-end-date" name="data_saida" max="{{.HojeStr}}"
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white">
           </div>
         </div>
@@ -889,6 +889,7 @@
           >
           <small class="text-xs text-gray-400">Somente arquivos .pdf são aceitos</small>
         </div>
+        {{if .ErroForm}}<div class="form-erro" style="color: #c0392b; background: #fdecea; border: 1px solid #e74c3c; border-radius: 6px; padding: 10px 14px; margin-bottom: 12px; font-size: 14px;">⚠️ {{.ErroForm}}</div>{{end}}
         <div class="flex justify-end gap-3 mt-6">
           <button type="button" onclick="closeModal('store-modal')"
             class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Cancelar</button>
@@ -930,12 +931,12 @@
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data Coleta</label>
-            <input type="date" name="data_coleta" required
+            <input type="date" name="data_coleta" max="{{.HojeStr}}" required
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
           </div>
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Peso Total (kg)</label>
-            <input type="number" name="peso_kg" required step="0.01" min="0.01"
+            <input type="number" name="peso_kg" required step="0.01" min="0.01" max="9999.99"
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
           </div>
         </div>
@@ -948,6 +949,7 @@
             <option value="Nao">Não</option>
           </select>
         </div>
+        {{if .ErroForm}}<div class="form-erro" style="color: #c0392b; background: #fdecea; border: 1px solid #e74c3c; border-radius: 6px; padding: 10px 14px; margin-bottom: 12px; font-size: 14px;">⚠️ {{.ErroForm}}</div>{{end}}
         <div class="flex justify-end gap-3 mt-6">
           <button type="button" onclick="closeModal('waste-modal')"
             class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Cancelar</button>
@@ -989,7 +991,7 @@
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data Entrega</label>
-            <input type="date" name="data_entrega_kit" required
+            <input type="date" name="data_entrega_kit" max="{{.HojeStr}}" required
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
           </div>
           <div class="space-y-1">
@@ -998,6 +1000,7 @@
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
           </div>
         </div>
+        {{if .ErroForm}}<div class="form-erro" style="color: #c0392b; background: #fdecea; border: 1px solid #e74c3c; border-radius: 6px; padding: 10px 14px; margin-bottom: 12px; font-size: 14px;">⚠️ {{.ErroForm}}</div>{{end}}
         <div class="flex justify-end gap-3 mt-6">
           <button type="button" onclick="closeModal('kit-modal')"
             class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Cancelar</button>
@@ -1412,6 +1415,13 @@
 
     loadAll();
     setTab('{{.AbaAtiva}}');
+    {{if .ErroForm}}
+    document.addEventListener('DOMContentLoaded', function() {
+      {{if eq .AbaAtiva "lojas"}}openModal('store-modal');{{end}}
+      {{if eq .AbaAtiva "residuos"}}openModal('waste-modal');{{end}}
+      {{if eq .AbaAtiva "kits"}}openModal('kit-modal');{{end}}
+    });
+    {{end}}
 
   </script>
 </body>

@@ -24,6 +24,9 @@ func CriarParticipante(db *sql.DB, lojaID string, dataEntrada time.Time, dataSai
 	if dataEntrada.IsZero() {
 		return errors.New("data de entrada obrigatória")
 	}
+	if dataEntrada.After(time.Now()) {
+		return errors.New("data de entrada não pode ser futura")
+	}
 	if nomeAnexo == "" {
 		return errors.New("termo de aceite obrigatório")
 	}
@@ -59,6 +62,9 @@ func CriarResiduo(db *sql.DB, lojaID, dataColetaStr, pesoKGStr, aproveitadoStr s
 	if err != nil {
 		return errors.New("data de coleta inválida")
 	}
+	if dataColeta.After(time.Now()) {
+		return errors.New("data de coleta não pode ser futura")
+	}
 
 	pesoKG, err := strconv.ParseFloat(pesoKGStr, 64)
 	if err != nil {
@@ -66,6 +72,9 @@ func CriarResiduo(db *sql.DB, lojaID, dataColetaStr, pesoKGStr, aproveitadoStr s
 	}
 	if pesoKG <= 0 {
 		return errors.New("peso deve ser maior que zero")
+	}
+	if pesoKG > 9999.99 {
+		return errors.New("O peso não pode ultrapassar 9.999,99 kg por registro")
 	}
 
 	aproveitado := aproveitadoStr == "Sim"
@@ -93,6 +102,9 @@ func CriarKit(db *sql.DB, lojaID, dataEntregaKitStr, qntKitStr string) error {
 	dataEntregaKit, err := time.Parse("2006-01-02", dataEntregaKitStr)
 	if err != nil {
 		return errors.New("data de entrega inválida")
+	}
+	if dataEntregaKit.After(time.Now()) {
+		return errors.New("data de entrega não pode ser futura")
 	}
 
 	qntKit, err := strconv.Atoi(qntKitStr)

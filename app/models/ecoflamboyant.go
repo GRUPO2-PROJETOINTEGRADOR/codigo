@@ -73,4 +73,6 @@ type EcoFlamboyantPageData struct {
 	FiltroDataInicio       string
 	FiltroDataFim          string
 	FiltroLojaID           string
+	HojeStr                string
+	ErroForm               string
 }

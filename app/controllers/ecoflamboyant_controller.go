@@ -110,7 +110,8 @@ func (c *EcoflamboyantController) ListarEcoFlamboyantHandler(w http.ResponseWrit
 		TodasLojas:             lojasParticipantes,
 		FiltroDataInicio:       filtroDataInicio,
 		FiltroDataFim:          filtroDataFim,
-		FiltroLojaID:           filtroLojaID,
+		FiltroLojaID:            filtroLojaID,
+		HojeStr:                 time.Now().Format("2006-01-02"),
 	}
 
 	tmpl := template.Must(template.ParseFiles("templates/conservacao/eco-flamboyant.html"))
@@ -170,7 +171,14 @@ func (c *EcoflamboyantController) CriarParticipanteHandler(w http.ResponseWriter
 	err = s.CriarParticipante(utils.DB, lojaID, dataEntrada, dataSaida, header.Filename, dados)
 	if err != nil {
 		log.Printf("Erro ao criar participante: %v", err)
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		msg := err.Error()
+		if strings.Contains(msg, "23505") || strings.Contains(msg, "unicidade") || strings.Contains(msg, "unique") {
+			msg = "Esta loja já está cadastrada como participante do Eco Flamboyant."
+		}
+		pageData := c.montarPaginaErro(r, "lojas", time.Now().Format("2006-01-02"))
+		pageData.ErroForm = msg
+		tmpl := template.Must(template.ParseFiles("templates/conservacao/eco-flamboyant.html"))
+		tmpl.ExecuteTemplate(w, "eco-flamboyant", pageData)
 		return
 	}
 
@@ -195,7 +203,14 @@ func (c *EcoflamboyantController) CriarResiduoHandler(w http.ResponseWriter, r *
 		r.FormValue("aproveitado"))
 	if err != nil {
 		log.Printf("Erro ao criar resíduo: %v", err)
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		msg := err.Error()
+		if strings.Contains(msg, "23505") || strings.Contains(msg, "unicidade") || strings.Contains(msg, "unique") {
+			msg = "Este resíduo já foi registrado."
+		}
+		pageData := c.montarPaginaErro(r, "residuos", time.Now().Format("2006-01-02"))
+		pageData.ErroForm = msg
+		tmpl := template.Must(template.ParseFiles("templates/conservacao/eco-flamboyant.html"))
+		tmpl.ExecuteTemplate(w, "eco-flamboyant", pageData)
 		return
 	}
 
@@ -219,7 +234,14 @@ func (c *EcoflamboyantController) CriarKitHandler(w http.ResponseWriter, r *http
 		r.FormValue("qnt_kit"))
 	if err != nil {
 		log.Printf("Erro ao criar kit: %v", err)
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		msg := err.Error()
+		if strings.Contains(msg, "23505") || strings.Contains(msg, "unicidade") || strings.Contains(msg, "unique") {
+			msg = "Este kit já foi registrado."
+		}
+		pageData := c.montarPaginaErro(r, "kits", time.Now().Format("2006-01-02"))
+		pageData.ErroForm = msg
+		tmpl := template.Must(template.ParseFiles("templates/conservacao/eco-flamboyant.html"))
+		tmpl.ExecuteTemplate(w, "eco-flamboyant", pageData)
 		return
 	}
 
@@ -253,4 +275,70 @@ func (c *EcoflamboyantController) DownloadTermo(w http.ResponseWriter, r *http.R
 	w.Header().Set("Content-Type", "application/pdf")
 	w.Header().Set("Content-Disposition", "inline; filename=\""+nome+"\"")
 	w.Write(dados)
+}
+
+func (c *EcoflamboyantController) montarPaginaErro(r *http.Request, abaAtiva, hojeStr string) models.EcoFlamboyantPageData {
+	participantes, err := s.ListarParticipantes(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao listar participantes: %v", err)
+	}
+	lojas, err := s.ListarLojas(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao listar lojas: %v", err)
+	}
+	lojasParticipantes, err := s.ObterLojasParticipantes(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao listar lojas participantes: %v", err)
+	}
+
+	filtroDataInicio := r.URL.Query().Get("filtro_data_inicio")
+	filtroDataFim := r.URL.Query().Get("filtro_data_fim")
+	filtroLojaID := r.URL.Query().Get("filtro_loja_id")
+
+	residuos, err := s.ObterResiduos(utils.DB, filtroDataInicio, filtroDataFim, filtroLojaID)
+	if err != nil {
+		log.Printf("Erro ao listar resíduos: %v", err)
+	}
+	kits, err := s.ObterKits(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao listar kits: %v", err)
+	}
+	totalKits, err := s.ObterTotalKits(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao somar kits: %v", err)
+	}
+	totalLojasParticipantes, crescimentoLojas, err := s.ObterDadosLojas(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao obter dados de lojas: %v", err)
+	}
+	fluxoKits, err := s.ObterFluxoKits(utils.DB)
+	if err != nil {
+		log.Printf("Erro ao obter fluxo de kits: %v", err)
+	}
+	volumeTotalGeral, totalAdubo, totalDescartado, taxaAproveitamento, fluxoResiduos, _ := s.ObterResumoResiduos(utils.DB)
+	registros, _ := s.ListarAuditorias(utils.DB)
+
+	return models.EcoFlamboyantPageData{
+		Participantes:           participantes,
+		Lojas:                   lojas,
+		Residuos:                residuos,
+		TotalResiduos:           len(residuos),
+		Kits:                    kits,
+		TotalKits:               totalKits,
+		TotalLojasParticipantes: totalLojasParticipantes,
+		CrescimentoLojas:        crescimentoLojas,
+		FluxoKits:               fluxoKits,
+		VolumeTotalGeral:        volumeTotalGeral,
+		TotalAdubo:              totalAdubo,
+		TotalDescartado:         totalDescartado,
+		TaxaAproveitamento:      taxaAproveitamento,
+		FluxoResiduos:           fluxoResiduos,
+		Registros:               registros,
+		AbaAtiva:                abaAtiva,
+		TodasLojas:              lojasParticipantes,
+		FiltroDataInicio:        filtroDataInicio,
+		FiltroDataFim:           filtroDataFim,
+		FiltroLojaID:            filtroLojaID,
+		HojeStr:                 hojeStr,
+	}
 }
