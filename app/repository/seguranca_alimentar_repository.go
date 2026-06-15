@@ -2,6 +2,7 @@ package repo
 
 import (
 	"codigo/app/models"
+	"errors"
 )
 
 func CriarAuditoria(a models.SegurancaAlimentar) error {
@@ -84,9 +85,20 @@ func DeletarAuditoria(id int) error {
 		WHERE id = $1
 	`
 
-	_, err := DB.Exec(query, id)
+	result, err := DB.Exec(query, id)
+	if err != nil {
+		return err
+	}
 
-	return err
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return errors.New("nenhuma auditoria foi encontrada")
+	}
+
+	return nil
 }
 
 func AtualizarAuditoria(a models.SegurancaAlimentar) error {
@@ -105,7 +117,7 @@ func AtualizarAuditoria(a models.SegurancaAlimentar) error {
 		WHERE id = $10
 	`
 
-	_, err := DB.Exec(
+	result, err := DB.Exec(
 		query,
 		a.LojaID,
 		a.DataAuditoria,
@@ -118,6 +130,31 @@ func AtualizarAuditoria(a models.SegurancaAlimentar) error {
 		a.NCGrave,
 		a.ID,
 	)
+	if err != nil {
+		return err
+	}
 
-	return err
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return errors.New("nenhuma auditoria foi encontrada")
+	}
+
+	return nil
+}
+
+func BuscarAnexoAuditoria(id int) (string, error) {
+	var anexo string
+	query := `
+		SELECT anexo_tiller
+		FROM auditorias_seguranca
+		WHERE id = $1
+	`
+	err := DB.QueryRow(query, id).Scan(&anexo)
+	if err != nil {
+		return "", err
+	}
+	return anexo, nil
 }

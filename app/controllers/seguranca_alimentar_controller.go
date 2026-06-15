@@ -5,6 +5,7 @@ import (
 	utils "codigo/app/repository"
 	"encoding/json"
 	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -125,11 +126,26 @@ func (c SegurancaAlimentarController) ExcluirHandler(w http.ResponseWriter, r *h
 		return
 	}
 
+	// 1. Buscar anexo_tiller antes de deletar
+	anexo, err := utils.BuscarAnexoAuditoria(auditoriaID)
+	if err != nil {
+		log.Printf("Aviso: erro ao buscar anexo da auditoria %d: %v", auditoriaID, err)
+	}
+
+	// 2. Deletar auditoria do banco
 	err = utils.DeletarAuditoria(auditoriaID)
 
 	if err != nil {
 		http.Error(w, "Erro ao deletar auditoria", http.StatusInternalServerError)
 		return
+	}
+
+	// 3. Se o delete funcionou e havia anexo, remover do MinIO
+	if anexo != "" {
+		err = utils.RemoverPDF(anexo)
+		if err != nil {
+			log.Printf("Erro ao remover PDF %s do MinIO: %v", anexo, err)
+		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -147,34 +163,72 @@ func (c SegurancaAlimentarController) EditarHandler(w http.ResponseWriter, r *ht
 	}
 
 	idStr := r.URL.Query().Get("id")
-
-	var auditoria models.SegurancaAlimentar
-
-	err := json.NewDecoder(r.Body).Decode(&auditoria)
-
-	if err != nil {
-		http.Error(w, "JSON inválido", http.StatusBadRequest)
+	if idStr == "" {
+		http.Error(w, "ID não informado", http.StatusBadRequest)
 		return
 	}
 
-	if idStr != "" {
-		id, err := strconv.Atoi(idStr)
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "ID inválido", http.StatusBadRequest)
+		return
+	}
+
+	err = r.ParseMultipartForm(10 << 20)
+	if err != nil {
+		http.Error(w, "Erro ao processar formulário", http.StatusBadRequest)
+		return
+	}
+
+	file, header, err := r.FormFile("pdf")
+	var pdfURL string
+	if err == nil {
+		defer file.Close()
+		pdfURL, err = utils.UploadPDF(
+			file,
+			header.Filename,
+			header.Size,
+		)
 		if err != nil {
-			http.Error(w, "ID inválido", http.StatusBadRequest)
+			http.Error(w, "Erro ao enviar PDF para MinIO", http.StatusInternalServerError)
 			return
 		}
-		auditoria.ID = id
+	} else {
+		pdfURL = r.FormValue("anexo_tiller")
+	}
+
+	nota, _ := strconv.Atoi(r.FormValue("nota"))
+	ncGrave := r.FormValue("nc_grave") == "true"
+	classificacao := r.FormValue("classificacao")
+	if ncGrave {
+		classificacao = "Crítica"
+	}
+
+	tipoInspecao := r.FormValue("tipo_inspecao")
+	if tipoInspecao == "" {
+		tipoInspecao = r.FormValue("tipo")
+	}
+
+	auditoria := models.SegurancaAlimentar{
+		ID:               id,
+		LojaID:           r.FormValue("loja_id"),
+		DataAuditoria:    r.FormValue("data_auditoria"),
+		ResponsavelLoja:  r.FormValue("responsavel_loja"),
+		CargoResponsavel: r.FormValue("cargo_responsavel"),
+		Nota:             nota,
+		Classificacao:    classificacao,
+		AnexoTiller:      pdfURL,
+		TipoInspecao:     tipoInspecao,
+		NCGrave:          ncGrave,
 	}
 
 	err = utils.AtualizarAuditoria(auditoria)
-
 	if err != nil {
 		http.Error(w, "Erro ao atualizar auditoria", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-
 	json.NewEncoder(w).Encode(map[string]string{
 		"status": "ok",
 	})

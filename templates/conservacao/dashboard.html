@@ -1266,11 +1266,21 @@
           fetch('/api/lojas')
         ]);
 
-        const inspecoes = rInsp.ok ? await rInsp.json() : [];
-        const participantes = rPart.ok ? await rPart.json() : [];
-        const residuos = rRes.ok ? await rRes.json() : [];
-        const kits = rKits.ok ? await rKits.json() : [];
-        _lojasData = rLojas.ok ? await rLojas.json() : [];
+        const getJsonData = async (res) => {
+          if (!res || !res.ok) return [];
+          try {
+            const data = await res.json();
+            return Array.isArray(data) ? data : [];
+          } catch {
+            return [];
+          }
+        };
+
+        const inspecoes = await getJsonData(rInsp);
+        const participantes = await getJsonData(rPart);
+        const residuos = await getJsonData(rRes);
+        const kits = await getJsonData(rKits);
+        _lojasData = await getJsonData(rLojas);
         _cachedInspecoes = inspecoes;
         _cachedResiduos = residuos;
 
@@ -1281,11 +1291,11 @@
         const regular = inspecoes.filter(i => i.nota >= 60 && i.nota < 80).length;
         const bom = inspecoes.filter(i => i.nota >= 80).length;
 
-        document.getElementById('dash-total-auditados').textContent = total || '—';
-        document.getElementById('dash-inaceitavel').textContent = inaceitavel || '—';
-        document.getElementById('dash-ruim').textContent = ruim || '—';
-        document.getElementById('dash-regular').textContent = regular || '—';
-        document.getElementById('dash-bom').textContent = bom || '—';
+        document.getElementById('dash-total-auditados').textContent = total;
+        document.getElementById('dash-inaceitavel').textContent = inaceitavel;
+        document.getElementById('dash-ruim').textContent = ruim;
+        document.getElementById('dash-regular').textContent = regular;
+        document.getElementById('dash-bom').textContent = bom;
 
         // Últimas Auditorias
         const ultimasAud = inspecoes.sort((a, b) => new Date(b.data_auditoria) - new Date(a.data_auditoria)).slice(0, 3);
