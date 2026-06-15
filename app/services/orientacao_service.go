@@ -19,9 +19,9 @@ func (s *OrientacaoService) CriarNovaOrientacao(o models.OrientacaoEducativa) er
 	if o.LojaID == "" || o.ResponsavelPresente == "" {
 		return errors.New("Os campos 'Loja' e 'Responsável Presente' não podem estar vazios")
 	}
-	if o.DataOrientacao.After(time.Now()) {
-		return errors.New("Data de orientação não pode ser futura")
-	}
+	//if o.DataOrientacao.After(time.Now()) {
+	//	return errors.New("Data de orientação não pode ser futura")
+	//}
 	return s.Repo.Salvar(o)
 }
 
@@ -42,9 +42,9 @@ func (s *OrientacaoService) Atualizar(o models.OrientacaoEducativa) error {
 	if o.ID <= 0 {
 		return errors.New("id de orientação inválido para atualização")
 	}
-	if o.DataOrientacao.After(time.Now()) {
-		return errors.New("Data de orientação não pode ser futura")
-	}
+	//if o.DataOrientacao.After(time.Now()) {
+	//	return errors.New("Data de orientação não pode ser futura")
+	//}
 
 	// Se passou nas regras, manda o repositório fazer o trabalho sujo
 	return s.Repo.Atualizar(o)
