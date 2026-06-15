@@ -7,8 +7,8 @@ import (
 func CriarAuditoria(a models.SegurancaAlimentar) error {
 	query := `
 		INSERT INTO auditorias_seguranca 
-		(loja_id, data_auditoria, responsavel_loja, cargo_responsavel, nota, anexo_tiller, classificacao)
-		VALUES ($1, $2, $3, $4, $5, $6, $7)
+		(loja_id, data_auditoria, responsavel_loja, cargo_responsavel, nota, anexo_tiller, classificacao, tipo_inspecao, nc_grave)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 	`
 
 	_, err := DB.Exec(
@@ -20,6 +20,8 @@ func CriarAuditoria(a models.SegurancaAlimentar) error {
 		a.Nota,
 		a.AnexoTiller,
 		a.Classificacao,
+		a.TipoInspecao,
+		a.NCGrave,
 	)
 
 	return err
@@ -27,7 +29,17 @@ func CriarAuditoria(a models.SegurancaAlimentar) error {
 
 func ListarAuditorias() ([]models.SegurancaAlimentar, error) {
 	query := `
-		SELECT id, loja_id, data_auditoria, responsavel_loja, cargo_responsavel, nota, anexo_tiller, classificacao
+		SELECT 
+			id, 
+			loja_id, 
+			data_auditoria, 
+			responsavel_loja, 
+			cargo_responsavel, 
+			nota, 
+			anexo_tiller, 
+			classificacao,
+			tipo_inspecao,
+			nc_grave
 		FROM auditorias_seguranca
 		ORDER BY data_auditoria DESC
 	`
@@ -52,6 +64,8 @@ func ListarAuditorias() ([]models.SegurancaAlimentar, error) {
 			&a.Nota,
 			&a.AnexoTiller,
 			&a.Classificacao,
+			&a.TipoInspecao,
+			&a.NCGrave,
 		)
 
 		if err != nil {
@@ -63,30 +77,32 @@ func ListarAuditorias() ([]models.SegurancaAlimentar, error) {
 
 	return auditorias, nil
 }
-func DeletarAuditoria(id int) error {
 
+func DeletarAuditoria(id int) error {
 	query := `
-	DELETE FROM auditorias_seguranca
-	WHERE id = $1
+		DELETE FROM auditorias_seguranca
+		WHERE id = $1
 	`
 
 	_, err := DB.Exec(query, id)
 
 	return err
 }
-func AtualizarAuditoria(a models.SegurancaAlimentar) error {
 
+func AtualizarAuditoria(a models.SegurancaAlimentar) error {
 	query := `
-	UPDATE auditorias_seguranca
-	SET
-		loja_id = $1,
-		data_auditoria = $2,
-		responsavel_loja = $3,
-		cargo_responsavel = $4,
-		nota = $5,
-		anexo_tiller = $6,
-		classificacao = $7
-	WHERE id = $8
+		UPDATE auditorias_seguranca
+		SET
+			loja_id = $1,
+			data_auditoria = $2,
+			responsavel_loja = $3,
+			cargo_responsavel = $4,
+			nota = $5,
+			anexo_tiller = $6,
+			classificacao = $7,
+			tipo_inspecao = $8,
+			nc_grave = $9
+		WHERE id = $10
 	`
 
 	_, err := DB.Exec(
@@ -98,6 +114,8 @@ func AtualizarAuditoria(a models.SegurancaAlimentar) error {
 		a.Nota,
 		a.AnexoTiller,
 		a.Classificacao,
+		a.TipoInspecao,
+		a.NCGrave,
 		a.ID,
 	)
 

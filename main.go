@@ -34,7 +34,10 @@ func main() {
 	// Garante que as tabelas necessárias existam.
 	if err := utils.Criar_banco(); err != nil {
 		log.Fatalln("Erro na criação de tabelas SQL")
+
 	}
+
+	utils.ConnectMinio()
 
 	// Endpoint:
 	//   GET /api/lojas
