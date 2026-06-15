@@ -1201,13 +1201,20 @@
       renderTable(); // mostra skeletons
       try {
         const res = await fetch('/api/inspecoes');
-        if (res.ok) inspecoes = await res.json();
-        else inspecoes = [];
-      } catch { inspecoes = []; }
-      isLoading = false;
-      currentPage = 0;
-      updateStats();
-      renderTable();
+        if (res.ok) {
+          const data = await res.json();
+          inspecoes = Array.isArray(data) ? data : [];
+        } else {
+          inspecoes = [];
+        }
+      } catch {
+        inspecoes = [];
+      } finally {
+        isLoading = false;
+        currentPage = 0;
+        updateStats();
+        renderTable();
+      }
     }
 
     function populateLojaSelects() {
@@ -1286,7 +1293,8 @@
 
     // Filtering
     function getFiltered() {
-      return [...inspecoes].filter(i => {
+      const list = Array.isArray(inspecoes) ? inspecoes : [];
+      return [...list].filter(i => {
         // Search
         if (searchTerm.trim()) {
           const q = searchTerm.toLowerCase();
@@ -1337,19 +1345,22 @@
     }
 
     function updateStats() {
-      const all = inspecoes;
+      const all = Array.isArray(inspecoes) ? inspecoes : [];
       const total = all.length;
       const media = total > 0 ? all.reduce((s, i) => s + i.nota, 0) / total : 0;
       const sorted = [...all].sort((a, b) => new Date(b.data_auditoria) - new Date(a.data_auditoria));
       const ultima = sorted.length > 0 ? sorted[0].data_auditoria : null;
 
       document.getElementById('stat-total').textContent = total;
-      document.getElementById('stat-media').textContent = media.toFixed(1);
-      document.getElementById('stat-ultima').textContent = ultima ? formatDate(ultima) : '—';
+      document.getElementById('stat-media').textContent = total > 0 ? media.toFixed(1) : '0';
+      document.getElementById('stat-ultima').textContent = ultima ? formatDate(ultima) : '-';
 
       const mediaCard = document.getElementById('card-media');
       const mediaIcon = mediaCard.querySelector('.flex-shrink-0');
-      if (media >= 80) {
+      if (total === 0) {
+        mediaCard.className = mediaCard.className.replace(/border-l-\w+(-\w+)?/, 'border-l-gray-300');
+        mediaIcon.className = 'p-2 rounded-lg border flex-shrink-0 text-gray-500 dark:text-gray-400 bg-gray-500/10 border-gray-200 dark:border-gray-800';
+      } else if (media >= 80) {
         mediaCard.className = mediaCard.className.replace(/border-l-\w+(-\w+)?/, 'border-l-green-500');
         mediaIcon.className = 'p-2 rounded-lg border flex-shrink-0 text-green-600 dark:text-green-400 bg-green-500/10 border-green-200 dark:border-green-900/30';
       } else if (media >= 60) {
@@ -1388,16 +1399,18 @@
       if (currentPage >= totalPages) currentPage = 0;
       const start = currentPage * pageSize;
       const paginated = filtered.slice(start, start + pageSize);
-
       const tbody = document.getElementById('inspection-table-body');
       if (filtered.length === 0) {
+        const isEmptyState = (inspecoes || []).length === 0;
+        const title = isEmptyState ? 'Nenhuma inspeção cadastrada.' : 'Nenhuma inspeção encontrada.';
+        const subtitle = isEmptyState ? 'Não há laudos cadastrados no sistema.' : 'Não há laudos que correspondam aos filtros configurados.';
         tbody.innerHTML = `<tr><td colspan="8" class="p-12 text-center">
           <div class="max-w-md mx-auto py-6 flex flex-col items-center justify-center text-center">
             <div class="w-14 h-14 rounded-full bg-gray-50 dark:bg-gray-800/40 flex items-center justify-center text-gray-400 mb-4 border border-dashed border-gray-200 dark:border-gray-700">
               <svg viewBox="0 0 24 24" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             </div>
-            <h4 class="text-base font-bold text-gray-900 dark:text-white mb-2">Nenhuma inspeção encontrada</h4>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-5 leading-relaxed">Não há laudos que correspondam aos filtros configurados.</p>
+            <h4 class="text-base font-bold text-gray-900 dark:text-white mb-2">${title}</h4>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-5 leading-relaxed">${subtitle}</p>
             <button onclick="document.getElementById('nova-inspecao-btn').click()" class="px-6 py-2.5 bg-[#8B1A1A] hover:bg-[#a43030] dark:bg-[#D93030] dark:hover:bg-[#a43030] text-sm font-bold text-white rounded-lg shadow-sm transition-all cursor-pointer">Registrar Nova Inspeção</button>
           </div>
         </td></tr>`;
@@ -1570,7 +1583,7 @@
         if (res.ok) {
           closeDelete();
           await loadInspecoes();
-          showToast('Inspeção removida.', 'error');
+          showToast('Inspeção removida com sucesso.', 'success');
         } else {
           showToast('Erro ao remover inspeção.', 'error');
         }

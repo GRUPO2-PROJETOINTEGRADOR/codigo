@@ -14,7 +14,9 @@ CREATE TABLE IF NOT EXISTS auditorias_seguranca (
     cargo_responsavel VARCHAR(100),
     nota INTEGER,
     anexo_tiller VARCHAR(255),
-    classificacao VARCHAR(20)
+    classificacao VARCHAR(20),
+    tipo_inspecao VARCHAR(20) DEFAULT 'Rotina',
+    nc_grave BOOLEAN DEFAULT FALSE
 );
 
 -- 3. Eco Participantes
