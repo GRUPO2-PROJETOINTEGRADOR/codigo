@@ -100,12 +100,16 @@ func (c *OrientacaoController) SalvarHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
+	now := time.Now()
+
 	novaOrientacao := models.OrientacaoEducativa{
 		LojaID:              r.FormValue("loja_id"), //lê do html a var name="loja_id"
 		ResponsavelPresente: r.FormValue("responsavel_presente"),
 		FuncaoResponsavel:   r.FormValue("funcao_responsavel"),
 		DataOrientacao:      dataformat,
 		Observacoes:         r.FormValue("observacoes"),
+		Signatario:          r.FormValue("signatario"),
+		DataAssinatura:      &now,
 	}
 
 	err = c.Service.CriarNovaOrientacao(novaOrientacao)
@@ -137,6 +141,7 @@ func (c *OrientacaoController) EditarHandler(w http.ResponseWriter, r *http.Requ
 	funcao := r.FormValue("funcao_responsavel")        // Pega do <input name="funcao_responsavel">
 	dataStr := r.FormValue("data_orientacao")          // Pega do <input type="date" name="data_orientacao">
 	observacoes := r.FormValue("observacoes")          // Pega do <textarea name="observacoes">
+	signatario := r.FormValue("signatario")            // Pega do <input name="signatario">
 
 	// 4. Conversão de Tipos: O HTML envia tudo como texto (string). O Go precisa converter.
 	// Convertendo o ID de String para Inteiro (int)
@@ -153,6 +158,8 @@ func (c *OrientacaoController) EditarHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
+	now := time.Now()
+
 	// 5. Montando a nossa Struct com os dados limpos e convertidos
 	orientacaoAtualizada := models.OrientacaoEducativa{
 		ID:                  id,
@@ -160,6 +167,8 @@ func (c *OrientacaoController) EditarHandler(w http.ResponseWriter, r *http.Requ
 		FuncaoResponsavel:   funcao,
 		DataOrientacao:      dataOrientacao,
 		Observacoes:         observacoes,
+		Signatario:          signatario,
+		DataAssinatura:      &now,
 		// LojaID não entra aqui porque decidimos travar a edição da loja!
 	}
 

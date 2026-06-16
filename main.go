@@ -68,7 +68,7 @@ func main() {
 	log.Println("║   JP Mall — Servidor Go rodando com sucesso!     ║")
 
 	log.Printf(
-				"║   Acesse: http://localhost:%s		       ║\n",
+		"║   Acesse: http://localhost:%s		       ║\n",
 		port,
 	)
 

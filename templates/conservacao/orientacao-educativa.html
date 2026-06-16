@@ -9,6 +9,8 @@
     content="Programa de suporte, treinamento e acompanhamento operacional dos lojistas do JP Mall." />
   <link rel="stylesheet" href="/static/css/global.css" />
   <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <link rel="stylesheet" href="/static/css/theme.css" />
   <style type="text/tailwindcss">
     @custom-variant dark (&:is(.dark *));
@@ -469,16 +471,57 @@
               </svg>
               <h2 class="text-xl font-bold text-gray-900 dark:text-white">Orientações Registradas</h2>
             </div>
-            <div class="relative w-full sm:w-72">
-              <svg viewBox="0 0 24 24" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
-                xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.3-4.3" />
-              </svg>
-              <input type="text" id="search-historico" placeholder="Buscar histórico..."
-                class="w-full pl-10 pr-4 py-2 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all outline-none">
+            <div class="flex items-center gap-2 flex-1 sm:flex-none sm:max-w-lg">
+              <div class="relative flex-1">
+                <svg viewBox="0 0 24 24" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+                  xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+                <input type="text" id="search-historico" placeholder="Buscar histórico..."
+                  class="w-full pl-10 pr-4 py-2 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all outline-none">
+              </div>
+              <button onclick="toggleFilters()"
+                class="flex items-center gap-1.5 px-3 py-2 rounded-lg border text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all cursor-pointer text-sm font-medium"
+                title="Filtros de data">
+                <svg viewBox="0 0 24 24" class="w-5 h-5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="2" x2="6" y1="14" y2="14"/><line x1="10" x2="14" y1="8" y2="8"/><line x1="18" x2="22" y1="16" y2="16"/></svg>
+                <span class="hidden sm:inline">Filtros</span>
+              </button>
+              <button onclick="exportPDF()"
+                class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#8B1A1A] hover:bg-[#6B1414] text-white transition-all cursor-pointer text-sm font-medium"
+                title="Exportar PDF">
+                <svg viewBox="0 0 24 24" class="w-5 h-5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+                <span class="hidden sm:inline">PDF</span>
+              </button>
             </div>
+          </div>
+
+          <!-- Date Filters (collapsible) -->
+          <div id="filter-bar" class="hidden pb-4 border-b border-gray-100 dark:border-gray-800/50">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-1.5 flex items-center gap-1.5">
+                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                  De
+                </label>
+                <input type="date" id="filter-start-date"
+                  class="w-full h-10 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg px-3 text-sm text-gray-800 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all outline-none">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-1.5 flex items-center gap-1.5">
+                  <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                  Até
+                </label>
+                <input type="date" id="filter-end-date"
+                  class="w-full h-10 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg px-3 text-sm text-gray-800 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all outline-none">
+              </div>
+            </div>
+            <button id="clear-filters-btn" onclick="clearFilters()"
+              class="mt-3 hidden text-xs font-medium text-[#8B1A1A] dark:text-[#D93030] hover:text-[#6B1414] dark:hover:text-[#ff4444] transition-all active:scale-[0.97] cursor-pointer flex items-center gap-1.5">
+              <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+              Limpar filtros
+            </button>
           </div>
 
           <div id="pagination-bar-top"
@@ -588,6 +631,16 @@
             class="w-full px-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] outline-none transition-all"></textarea>
         </div>
 
+        <div>
+          <label
+            class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Signatário <span class="text-red-500">*</span></label>
+          <div class="relative">
+            <svg viewBox="0 0 24 24" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+            <input type="text" id="edit-signatario" name="signatario" required placeholder="Nome completo do signatário"
+              class="w-full pl-9 pr-4 py-2.5 bg-gray-50 dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] outline-none transition-all">
+          </div>
+        </div>
+
         <div id="form-error-editar"
           class="hidden bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-2.5 rounded-xl text-xs font-medium">
         </div>
@@ -649,13 +702,13 @@
 
   <!-- Modal Criar -->
   <div id="modal-criar"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden animate-fade-in">
+    class="fixed inset-0 z-50 flex items-start justify-center bg-black/60 backdrop-blur-sm hidden animate-fade-in overflow-y-auto py-4 md:py-10">
     <div
-      class="bg-white dark:bg-[#1a1a1a] w-full max-w-lg mx-4 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 transform transition-all scale-95 opacity-0 duration-200"
+      class="bg-white dark:bg-[#1a1a1a] w-full max-w-lg mx-4 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 transform transition-all scale-95 opacity-0 duration-200 my-auto"
       id="modal-create-content">
 
-      <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 px-6 py-4">
-        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Novo Treinamento</h3>
+      <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 px-5 py-3.5">
+        <h3 class="text-base font-bold text-gray-900 dark:text-white">Novo Treinamento</h3>
         <button onclick="closeCreate()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-all active:scale-[0.97] cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -663,7 +716,7 @@
         </button>
       </div>
 
-      <form id="form-criar" action="/conservacao/orientacao-educativa/salvar" method="POST" class="p-6 space-y-4">
+      <form id="form-criar" action="/conservacao/orientacao-educativa/salvar" method="POST" class="p-5 space-y-3">
 
         <div>
           <label class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2 block">Loja Atendida *</label>
@@ -749,15 +802,55 @@
             class="w-full p-3 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all resize-none outline-none"></textarea>
         </div>
 
+        <!-- Declaração de Ciência -->
+        <div class="bg-blue-50/50 dark:bg-blue-950/10 border border-blue-100 dark:border-blue-900/30 rounded-xl p-3.5 space-y-2.5">
+          <div class="flex items-center gap-1.5">
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+            <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100">Declaração de Ciência</h3>
+            <span class="text-[10px] text-gray-500 dark:text-gray-400 ml-auto">Confirmação</span>
+          </div>
+
+          <div class="bg-white dark:bg-[#1e1e1e] rounded-lg border border-blue-100 dark:border-blue-900/20 p-2.5 text-xs text-gray-700 dark:text-gray-300 leading-relaxed" id="declaracao-texto">
+            <p>
+              Eu, <strong id="declaracao-responsavel">_________________</strong>, ocupante da função de <strong id="declaracao-funcao">_________________</strong>,
+              lotado na loja <strong id="declaracao-loja">... - LUC ...</strong>,
+              declaro que recebi, li e compreendi as orientações descritas acima, estando ciente das informações e procedimentos
+              apresentados durante esta orientação educativa.
+            </p>
+          </div>
+
+          <div class="flex items-start gap-2">
+            <input type="checkbox" id="declaracaoCiente"
+              class="mt-0.5 w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 cursor-pointer">
+            <label for="declaracaoCiente" class="text-xs font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none">
+              Declaro estar ciente <span class="text-red-500">*</span>
+            </label>
+          </div>
+
+          <div>
+            <label class="text-xs font-bold text-gray-700 dark:text-gray-300">Assinatura eletrônica <span class="text-red-500">*</span></label>
+            <div class="relative mt-1">
+              <svg viewBox="0 0 24 24" class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+              <input type="text" id="create-signatario" name="signatario" required placeholder="Nome completo do signatário"
+                class="w-full pl-9 pr-3 h-9 text-sm bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all outline-none">
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1.5 text-[10px] text-gray-500 dark:text-gray-400">
+            <svg viewBox="0 0 24 24" class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Assinado em: <strong class="text-gray-700 dark:text-gray-300" id="create-timestamp">—</strong>
+          </div>
+        </div>
+
         <div id="form-error-criar"
           class="hidden bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-2.5 rounded-lg text-xs font-medium">
         </div>
 
-        <div class="flex items-center justify-end gap-3 border-t border-gray-200 dark:border-gray-800 pt-4">
+        <div class="flex items-center justify-end gap-3 border-t border-gray-200 dark:border-gray-800 pt-3.5">
           <button type="button" onclick="closeCreate()"
             class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-all active:scale-[0.97] cursor-pointer">Cancelar</button>
-          <button type="submit"
-            class="px-5 py-2 bg-[#8B1A1A] hover:bg-[#6B1414] active:bg-[#5a1010] text-white font-medium text-sm rounded-lg shadow-sm transition-all active:scale-[0.97] cursor-pointer flex items-center gap-2">
+          <button type="submit" id="btn-registrar"
+            class="px-5 py-2 bg-[#8B1A1A] hover:bg-[#6B1414] active:bg-[#5a1010] text-white font-medium text-sm rounded-lg shadow-sm transition-all active:scale-[0.97] cursor-pointer flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14"/><path d="M12 5v14"/>
             </svg>
@@ -765,6 +858,58 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal de Visualização -->
+  <div id="modal-visualizar"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden animate-fade-in">
+    <div
+      class="bg-white dark:bg-[#252525] w-full max-w-lg mx-4 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-2xl z-10 max-h-[90vh] flex flex-col transform transition-all scale-95 opacity-0 duration-200"
+      id="modal-view-content">
+      <div class="flex items-center justify-between p-5 border-b border-gray-100 dark:border-gray-800 shrink-0">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white">Detalhes do Treinamento</h2>
+        <button onclick="closeView()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-all cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="p-5 overflow-y-auto space-y-4" id="view-content">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1">Loja</p>
+            <p id="view-loja" class="text-sm font-bold text-gray-900 dark:text-gray-100"></p>
+            <p id="view-luc" class="text-xs font-medium text-[#8B1A1A] dark:text-[#D93030]"></p>
+          </div>
+          <div>
+            <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1">Data</p>
+            <p id="view-data" class="text-sm font-bold text-gray-900 dark:text-gray-100"></p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1">Responsável</p>
+            <p id="view-responsavel" class="text-sm font-medium text-gray-900 dark:text-gray-100"></p>
+          </div>
+          <div>
+            <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1">Função</p>
+            <p id="view-funcao" class="text-sm font-medium text-gray-900 dark:text-gray-100"></p>
+          </div>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-1">Observações</p>
+          <p id="view-obs" class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed bg-gray-50 dark:bg-[#1a1a1a] p-3 rounded-lg border border-gray-100 dark:border-gray-800/50"></p>
+        </div>
+        <div id="view-assinatura" class="hidden bg-blue-50/50 dark:bg-blue-950/10 border border-blue-100 dark:border-blue-900/30 rounded-lg p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+            <span class="text-sm font-bold text-gray-900 dark:text-gray-100">Assinatura Eletrônica</span>
+          </div>
+          <p id="view-signatario" class="text-sm font-bold text-gray-900 dark:text-gray-100"></p>
+          <p id="view-data-assinatura" class="text-xs text-gray-500 dark:text-gray-400 mt-1"></p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -800,6 +945,9 @@
     let currentPage = 1;
     const pageSize = 10;
     let searchTerm = '';
+    let filterStartDate = '';
+    let filterEndDate = '';
+    let showFilters = false;
 
     function confirmarExclusao(id, nomeLoja) {
       const modal = document.getElementById('modal-exclusao');
@@ -966,6 +1114,17 @@
         document.getElementById('stat-ultimo').textContent = data.ultimo_registro || '—';
       } catch { }
     }
+    // Set max date to today
+    const todayStr = new Date().toISOString().split('T')[0];
+    document.getElementById('create-data').setAttribute('max', todayStr);
+    document.getElementById('edit-data').setAttribute('max', todayStr);
+    document.getElementById('filter-start-date').setAttribute('max', todayStr);
+    document.getElementById('filter-end-date').setAttribute('max', todayStr);
+    // Date filter validation
+    document.getElementById('filter-start-date').addEventListener('change', function() {
+      document.getElementById('filter-end-date').setAttribute('min', this.value);
+    });
+
     loadStats();
     renderHistorico();
 
@@ -997,6 +1156,7 @@
       var rawDate = button.getAttribute('data-data') || '';
       document.getElementById('edit-data').value = rawDate.split('T')[0].trim();
       document.getElementById('edit-obs').value = button.getAttribute('data-obs');
+      document.getElementById('edit-signatario').value = button.getAttribute('data-signatario') || '';
 
       // 2. Torna o modal visível tirando a classe 'hidden'
       modal.classList.remove('hidden');
@@ -1031,6 +1191,11 @@
       document.getElementById('loja-id-hidden-modal').value = '';
       document.getElementById('loja-search-results-modal').classList.add('hidden');
       document.getElementById('form-error-criar').classList.add('hidden');
+      document.getElementById('btn-registrar').disabled = false;
+      document.getElementById('btn-registrar').innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Registrar';
+
+      // Atualiza pré-visualização da declaração
+      updateDeclarationPreview();
 
       // Torna o modal visível
       modal.classList.remove('hidden');
@@ -1051,6 +1216,8 @@
 
       setTimeout(() => {
         modal.classList.add('hidden');
+        document.getElementById('btn-registrar').disabled = false;
+        document.getElementById('btn-registrar').innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Registrar';
       }, 200);
     }
 
@@ -1059,9 +1226,9 @@
       const formData = new FormData(this);
       const errEl = document.getElementById('form-error-editar');
 
-      if (!formData.get('id') || !formData.get('responsavel_presente').trim() || !formData.get('data_orientacao')) {
+      if (!formData.get('id') || !formData.get('responsavel_presente').trim() || !formData.get('data_orientacao') || !formData.get('signatario').trim()) {
         if (errEl) {
-          errEl.textContent = 'Preencha todos os campos obrigatórios.';
+          errEl.textContent = 'Preencha todos os campos obrigatórios (incluindo signatário).';
           errEl.classList.remove('hidden');
         }
         return;
@@ -1140,9 +1307,12 @@
       const term = searchTerm.toLowerCase();
       const filtered = orientacoes
         .filter(o => {
-          if (!term) return true;
-          return o.loja_id.toLowerCase().includes(term) ||
-            o.nome_loja.toLowerCase().includes(term);
+          if (!term && !filterStartDate && !filterEndDate) return true;
+          if (term && !o.loja_id.toLowerCase().includes(term) && !o.nome_loja.toLowerCase().includes(term)) return false;
+          const d = o.data_orientacao ? o.data_orientacao.split('T')[0] : '';
+          if (filterStartDate && d < filterStartDate) return false;
+          if (filterEndDate && d > filterEndDate) return false;
+          return true;
         })
         .sort((a, b) => new Date(b.data_orientacao) - new Date(a.data_orientacao));
 
@@ -1163,11 +1333,14 @@
         return;
       }
       list.innerHTML = page.map(o => `
-        <div class="group bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm hover:shadow-md hover:border-[#8B1A1A]/30 dark:hover:border-[#D93030]/30 transition-all flex flex-col md:flex-row gap-4 md:gap-6 relative overflow-hidden">
+        <div class="group bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm hover:shadow-md hover:border-[#8B1A1A]/30 dark:hover:border-[#D93030]/30 transition-all flex flex-col md:flex-row gap-4 md:gap-6 relative overflow-hidden cursor-pointer" onclick="openView(orientacoes.find(el => el.id == ${o.id}))">
           <div id="barra-js-${o.id}" class="absolute left-0 top-0 bottom-0 w-1 bg-gray-200 dark:bg-gray-700 group-hover:bg-[#8B1A1A] transition-colors" data-data="${o.data_orientacao}"></div>
 
-          <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-white/90 dark:bg-[#252525]/90 backdrop-blur-sm rounded-lg z-10 p-1">
-            <button onclick="openEdit(this)" data-id="${o.id}" data-loja="${o.loja_id}" data-responsavel="${o.responsavel_presente}" data-funcao="${o.funcao_responsavel}" data-data="${o.data_orientacao}" data-obs="${o.observacoes}" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-[#8B1A1A] dark:hover:text-[#D93030] rounded-lg transition-all active:scale-[0.97] cursor-pointer" title="Editar">
+          <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-white/90 dark:bg-[#252525]/90 backdrop-blur-sm rounded-lg z-10 p-1" onclick="event.stopPropagation()">
+            <button onclick="openView(orientacoes.find(el => el.id == ${o.id}))" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-all active:scale-[0.97] cursor-pointer" title="Visualizar">
+              <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+            <button onclick="openEdit(this)" data-id="${o.id}" data-loja="${o.loja_id}" data-responsavel="${o.responsavel_presente}" data-funcao="${o.funcao_responsavel}" data-data="${o.data_orientacao}" data-obs="${o.observacoes}" data-signatario="${o.signatario || ''}" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-[#8B1A1A] dark:hover:text-[#D93030] rounded-lg transition-all active:scale-[0.97] cursor-pointer" title="Editar">
               <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
             </button>
             <button onclick="confirmarExclusao('${o.id}', '${o.nome_loja}')" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg transition-all active:scale-[0.97] cursor-pointer" title="Remover">
@@ -1183,6 +1356,7 @@
             <div class="flex items-center gap-2 text-[#8B1A1A]/70 dark:text-[#D93030]/70 text-xs font-semibold">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
               ${formatDate(o.data_orientacao)}
+              ${o.signatario ? '<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"><svg viewBox="0 0 24 24" class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg> Assinado</span>' : ''}
             </div>
           </div>
 
@@ -1205,7 +1379,165 @@
       colorirBarras();
     }
 
-    // Modal loja search
+    // View modal functions
+    function openView(orientacao) {
+      const modal = document.getElementById('modal-visualizar');
+      const content = document.getElementById('modal-view-content');
+
+      document.getElementById('view-loja').textContent = orientacao.nome_loja || `LUC ${orientacao.loja_id}`;
+      document.getElementById('view-luc').textContent = `LUC ${orientacao.loja_id}`;
+      document.getElementById('view-data').textContent = formatDate(orientacao.data_orientacao);
+      document.getElementById('view-responsavel').textContent = orientacao.responsavel_presente;
+      document.getElementById('view-funcao').textContent = orientacao.funcao_responsavel;
+      document.getElementById('view-obs').textContent = orientacao.observacoes;
+
+      const assinaturaDiv = document.getElementById('view-assinatura');
+      if (orientacao.signatario) {
+        document.getElementById('view-signatario').textContent = orientacao.signatario;
+        document.getElementById('view-data-assinatura').textContent = orientacao.data_assinatura
+          ? 'Assinado em: ' + new Date(orientacao.data_assinatura).toLocaleString('pt-BR')
+          : '';
+        assinaturaDiv.classList.remove('hidden');
+      } else {
+        assinaturaDiv.classList.add('hidden');
+      }
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+      }, 10);
+    }
+
+    function closeView() {
+      const modal = document.getElementById('modal-visualizar');
+      const content = document.getElementById('modal-view-content');
+      content.classList.remove('scale-100', 'opacity-100');
+      content.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => modal.classList.add('hidden'), 200);
+    }
+
+    // Filter functions
+    function toggleFilters() {
+      const bar = document.getElementById('filter-bar');
+      showFilters = !showFilters;
+      bar.classList.toggle('hidden', !showFilters);
+    }
+
+    function toggleClearBtn() {
+      const start = document.getElementById('filter-start-date').value;
+      const end = document.getElementById('filter-end-date').value;
+      const btn = document.getElementById('clear-filters-btn');
+      btn.classList.toggle('hidden', !start && !end);
+    }
+
+    document.getElementById('filter-start-date').addEventListener('change', function() {
+      filterStartDate = this.value;
+      currentPage = 1;
+      renderHistorico();
+      toggleClearBtn();
+    });
+
+    document.getElementById('filter-end-date').addEventListener('change', function() {
+      filterEndDate = this.value;
+      currentPage = 1;
+      renderHistorico();
+      toggleClearBtn();
+    });
+
+    function clearFilters() {
+      document.getElementById('filter-start-date').value = '';
+      document.getElementById('filter-end-date').value = '';
+      filterStartDate = '';
+      filterEndDate = '';
+      currentPage = 1;
+      renderHistorico();
+      toggleClearBtn();
+    }
+
+    // PDF Export
+    function exportPDF() {
+      const { jsPDF } = window.jspdf;
+      if (!jsPDF) {
+        showToast('Biblioteca PDF não carregada. Tente novamente.');
+        return;
+      }
+      const doc = new jsPDF('portrait', 'mm', 'a4');
+      const pageWidth = doc.internal.pageSize.getWidth();
+
+      doc.setFontSize(18);
+      doc.text('Relatório de Orientações Educativas', pageWidth / 2, 20, { align: 'center' });
+      doc.setFontSize(10);
+
+      const periodo = filterStartDate || filterEndDate
+        ? `${filterStartDate || '...'} a ${filterEndDate || '...'}`
+        : 'Todo o período';
+      doc.text(`Período: ${periodo}`, pageWidth / 2, 28, { align: 'center' });
+      doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`, pageWidth / 2, 34, { align: 'center' });
+
+      const term = searchTerm.toLowerCase();
+      const filtered = orientacoes
+        .filter(o => {
+          if (term && !o.loja_id.toLowerCase().includes(term) && !o.nome_loja.toLowerCase().includes(term)) return false;
+          const d = o.data_orientacao ? o.data_orientacao.split('T')[0] : '';
+          if (filterStartDate && d < filterStartDate) return false;
+          if (filterEndDate && d > filterEndDate) return false;
+          return true;
+        })
+        .sort((a, b) => new Date(b.data_orientacao) - new Date(a.data_orientacao));
+
+      doc.setFontSize(12);
+      doc.text('Registros', 14, 46);
+
+      if (filtered.length === 0) {
+        doc.text('Nenhum registro encontrado para o período.', 14, 56);
+      } else {
+        doc.autoTable({
+          startY: 50,
+          head: [['Loja', 'Data', 'Responsável', 'Função', 'Observações']],
+          body: filtered.map(o => [
+            `${o.nome_loja} (LUC ${o.loja_id})`,
+            formatDate(o.data_orientacao),
+            o.responsavel_presente,
+            o.funcao_responsavel,
+            o.observacoes,
+          ]),
+          theme: 'striped',
+          headStyles: { fillColor: [139, 26, 26] },
+          styles: { fontSize: 8 },
+        });
+      }
+
+      doc.save('relatorio-orientacoes.pdf');
+    }
+
+    // Payment Button & Declaration preview
+    function updateDeclarationPreview() {
+      const lojaId = document.getElementById('loja-id-hidden-modal').value;
+      const loja = lojas.find(l => l.id === lojaId);
+      const responsavel = document.getElementById('create-responsavel').value || '_________________';
+      const funcao = document.getElementById('create-funcao').value || '_________________';
+      const lojaNome = loja ? `${loja.nome} - LUC ${loja.id}` : '... - LUC ...';
+
+      document.getElementById('declaracao-responsavel').textContent = responsavel;
+      document.getElementById('declaracao-funcao').textContent = funcao;
+      document.getElementById('declaracao-loja').textContent = lojaNome;
+
+      // Update timestamp
+      document.getElementById('create-timestamp').textContent = new Date().toLocaleString('pt-BR');
+    }
+
+    document.getElementById('create-responsavel').addEventListener('input', updateDeclarationPreview);
+    document.getElementById('create-funcao').addEventListener('input', updateDeclarationPreview);
+
+    // Close store search dropdown on click outside
+    document.addEventListener('click', function(e) {
+      const container = document.getElementById('loja-search-container-modal');
+      if (container && !container.contains(e.target)) {
+        document.getElementById('loja-search-results-modal').classList.add('hidden');
+      }
+    });
+
     function renderLojasSearchModal(term) {
       const results = document.getElementById('loja-search-results-modal');
       if (!term) { results.classList.add('hidden'); return; }
@@ -1231,6 +1563,7 @@
       document.getElementById('loja-id-hidden-modal').value = id;
       document.getElementById('loja-search-input-modal').value = `${id} — ${nome}`;
       document.getElementById('loja-search-results-modal').classList.add('hidden');
+      updateDeclarationPreview();
     }
 
     document.getElementById('loja-search-input-modal').addEventListener('input', e => {
@@ -1270,13 +1603,24 @@
       const funcao_responsavel = fd.get('funcao_responsavel').trim();
       const data_orientacao = fd.get('data_orientacao');
       const observacoes = fd.get('observacoes').trim();
+      const signatario = fd.get('signatario').trim();
+      const declaracaoCiente = document.getElementById('declaracaoCiente').checked;
 
-      if (!loja_id || !responsavel_presente || !funcao_responsavel || !data_orientacao || !observacoes) {
+      if (!loja_id || !responsavel_presente || !funcao_responsavel || !data_orientacao || !observacoes || !signatario) {
         errEl.textContent = 'Por favor, preencha todos os campos obrigatórios.';
         errEl.classList.remove('hidden');
         return;
       }
+      if (!declaracaoCiente) {
+        errEl.textContent = 'Você deve marcar a declaração de ciência.';
+        errEl.classList.remove('hidden');
+        return;
+      }
       errEl.classList.add('hidden');
+
+      const btn = document.getElementById('btn-registrar');
+      btn.disabled = true;
+      btn.innerHTML = '<svg class="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke="currentColor" fill="none"/><path d="M12 6v2" stroke="currentColor"/></svg> Registrando...';
 
       try {
         const formData = new FormData(e.target);
@@ -1296,9 +1640,13 @@
           const text = await r.text();
           errEl.textContent = 'Erro: ' + text;
           errEl.classList.remove('hidden');
+          btn.disabled = false;
+          btn.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Registrar';
         }
       } catch {
-        showToast('Erro ao conectar com o servidor.', 'error');
+        showToast('Erro ao conectar com o servidor.');
+        btn.disabled = false;
+        btn.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Registrar';
       }
     });
 

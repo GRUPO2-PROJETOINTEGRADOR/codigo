@@ -56,8 +56,21 @@ CREATE TABLE IF NOT EXISTS orientacoes_educativas (
     responsavel_presente VARCHAR(255) NOT NULL,
     funcao_responsavel VARCHAR(255),
     data_orientacao DATE NOT NULL,
-    observacoes TEXT
+    observacoes TEXT,
+    signatario VARCHAR(255),
+    data_assinatura TIMESTAMP
 );
+
+-- 4.1. Migração: adiciona colunas se não existirem (upgrade seguro)
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='orientacoes_educativas' AND column_name='signatario') THEN
+        ALTER TABLE orientacoes_educativas ADD COLUMN signatario VARCHAR(255);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='orientacoes_educativas' AND column_name='data_assinatura') THEN
+        ALTER TABLE orientacoes_educativas ADD COLUMN data_assinatura TIMESTAMP;
+    END IF;
+END $$;
 
 -- 5. Log Consolidado do Painel Lateral
 CREATE TABLE IF NOT EXISTS auditoria_eventos (
