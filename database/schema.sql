@@ -16,7 +16,11 @@ CREATE TABLE IF NOT EXISTS auditorias_seguranca (
     anexo_tiller VARCHAR(255),
     classificacao VARCHAR(20),
     tipo_inspecao VARCHAR(20) DEFAULT 'Rotina',
-    nc_grave BOOLEAN DEFAULT FALSE
+    nc_grave BOOLEAN DEFAULT FALSE,
+    pdf_nome VARCHAR(255),
+    pdf_tipo VARCHAR(100),
+    pdf_tamanho BIGINT,
+    pdf_arquivo BYTEA
 );
 
 -- 3. Eco Participantes
