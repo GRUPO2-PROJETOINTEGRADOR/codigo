@@ -1,13 +1,15 @@
+{{ define "eco-flamboyant" }}
 <!DOCTYPE html>
 <html lang="pt-BR" class="light">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eco-Flamboyant — JP Mall</title>
+  <title>Eco Flamboyant — JP Mall</title>
   <meta name="description" content="Dashboard de Gestão Sustentável" />
   <link rel="stylesheet" href="/static/css/global.css" />
   <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="/static/css/theme.css" />
   <style type="text/tailwindcss">
     @custom-variant dark (&:is(.dark *));
@@ -17,6 +19,32 @@
       --color-secondary: #C8A882;
       --color-destructive: #D93030;
     }*/
+
+    .btn-inativar {
+        transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+    .btn-inativar:hover {
+        background-color: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(192, 57, 43, 0.35);
+    }
+    .btn-inativar:active {
+        transform: translateY(0px);
+        box-shadow: none;
+    }
+
+    .btn-ativar {
+        transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+    .btn-ativar:hover {
+        background-color: #27ae60;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.35);
+    }
+    .btn-ativar:active {
+        transform: translateY(0px);
+        box-shadow: none;
+    }
   </style>
   <script>
     (function () {
@@ -124,7 +152,7 @@
             </svg>
           </button>
           <div id="conservacao-submenu" class="ml-4 pl-4 border-l border-white/10 space-y-1 mt-1">
-            <a href="dashboard.html"
+            <a href="/conservacao/dashboard"
               class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg
                 viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -133,7 +161,7 @@
                 <rect width="7" height="9" x="14" y="12" rx="1" />
                 <rect width="7" height="5" x="3" y="16" rx="1" />
               </svg>Dashboard</a>
-            <a href="relatorio-seguranca-alimentar.html"
+            <a href="/conservacao/seguranca-alimentar"
               class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg
                 viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -141,13 +169,13 @@
                   d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
                 <path d="m9 12 2 2 4-4" />
               </svg>Segurança Alimentar</a>
-            <a href="eco-flamboyant.html"
+            <a href="/conservacao/eco-flamboyant"
               class="flex items-center px-3 py-2 rounded-lg text-xs font-medium bg-[#D93030]/20 text-white"><svg
                 viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-[#D93030]" xmlns="http://www.w3.org/2000/svg"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" />
                 <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
-              </svg>Eco-Flamboyant<span class="ml-auto w-1 h-1 rounded-full bg-[#D93030]"></span></a>
+              </svg>Eco Flamboyant<span class="ml-auto w-1 h-1 rounded-full bg-[#D93030]"></span></a>
             <a href="/conservacao/orientacao-educativa"
               class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all text-white/60 hover:bg-white/5 hover:text-white">
               <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +187,7 @@
               </svg>
               <span class="truncate">Orientação Educativa</span>
             </a>
-            <a href="relatorios.html"
+            <a href="/conservacao/relatorios"
               class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white"><svg
                 viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -251,17 +279,17 @@
       <p class="text-white font-bold text-sm">JP Mall</p>
     </div>
     <nav class="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
-      <a href="dashboard.html"
+      <a href="/conservacao/dashboard"
         class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Dashboard</a>
-      <a href="relatorio-seguranca-alimentar.html"
+      <a href="/conservacao/seguranca-alimentar"
         class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Segurança
         Alimentar</a>
-      <a href="eco-flamboyant.html"
-        class="flex items-center px-3 py-2 rounded-lg text-xs font-medium bg-[#D93030]/20 text-white">Eco-Flamboyant</a>
-      <a href="orientacao-educativa.html"
+      <a href="/conservacao/eco-flamboyant"
+        class="flex items-center px-3 py-2 rounded-lg text-xs font-medium bg-[#D93030]/20 text-white">Eco Flamboyant</a>
+      <a href="/conservacao/orientacao-educativa"
         class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Orientação
         Educativa</a>
-      <a href="relatorios.html"
+      <a href="/conservacao/relatorios"
         class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">Relatórios</a>
     </nav>
     <div class="p-3 border-t border-[#a43030] dark:border-[#4a1515]"><a href="/templates/index.html"
@@ -380,7 +408,7 @@
         <!-- Page Header -->
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 class="text-2xl font-bold text-[#1F2937] dark:text-gray-100">Eco-Flamboyant</h1>
+            <h1 class="text-2xl font-bold text-[#1F2937] dark:text-gray-100">Eco Flamboyant</h1>
             <p class="text-sm text-gray-500 dark:text-gray-400">Dashboard de Gestão Sustentável</p>
           </div>
           <div class="flex flex-wrap gap-3">
@@ -424,17 +452,14 @@
               class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20">
               <svg viewBox="0 0 24 24" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
-                <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
-                <path d="M7 21h10" />
-                <path d="M12 3v18" />
-                <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
               </svg>
             </div>
             <div>
-              <p class="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] mb-1">Volume Total Geral</p>
-              <h4 id="kpi-total" class="text-3xl font-black">0.0 <span
-                  class="text-sm font-medium text-white/60 ml-1">kg</span></h4>
+              <p class="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] mb-1">Volume Total Gerado</p>
+              <h4 id="kpi-total" class="text-3xl font-black">{{printf "%.1f" .VolumeTotalGeral}} <span
+                   class="text-sm font-medium text-white/60 ml-1">kg</span></h4>
             </div>
           </div>
           <div
@@ -448,9 +473,9 @@
               </svg>
             </div>
             <div>
-              <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Total Adubo</p>
-              <h4 id="kpi-adubo" class="text-3xl font-black text-gray-900 dark:text-gray-100">0.0 <span
-                  class="text-sm font-medium text-gray-400 ml-1">kg</span></h4>
+              <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Total Aproveitado</p>
+              <h4 id="kpi-adubo" class="text-3xl font-black text-gray-900 dark:text-gray-100">{{printf "%.1f" .TotalAdubo}} <span
+                   class="text-sm font-medium text-gray-400 ml-1">kg</span></h4>
             </div>
           </div>
           <div
@@ -466,8 +491,8 @@
             </div>
             <div>
               <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Total Descartado</p>
-              <h4 id="kpi-descarte" class="text-3xl font-black text-gray-900 dark:text-gray-100">0.0 <span
-                  class="text-sm font-medium text-gray-400 ml-1">kg</span></h4>
+              <h4 id="kpi-descarte" class="text-3xl font-black text-gray-900 dark:text-gray-100">{{printf "%.1f" .TotalDescartado}} <span
+                   class="text-sm font-medium text-gray-400 ml-1">kg</span></h4>
             </div>
           </div>
           <div
@@ -483,8 +508,8 @@
               </svg>
             </div>
             <div>
-              <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Lojas Participantes</p>
-              <h4 id="kpi-lojas" class="text-3xl font-black text-gray-900 dark:text-gray-100">0</h4>
+              <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Lojas Parceiras</p>
+              <h4 id="kpi-lojas" class="text-3xl font-black text-gray-900 dark:text-gray-100">{{.TotalLojasParticipantes}}</h4>
             </div>
           </div>
           <div
@@ -499,7 +524,7 @@
             </div>
             <div>
               <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Taxa de Aproveitamento</p>
-              <h4 id="kpi-taxa" class="text-3xl font-black text-gray-900 dark:text-gray-100">0%</h4>
+              <h4 id="kpi-taxa" class="text-3xl font-black text-gray-900 dark:text-gray-100">{{printf "%.0f" .TaxaAproveitamento}}%</h4>
             </div>
           </div>
           <div
@@ -519,7 +544,7 @@
             </div>
             <div>
               <p class="text-[10px] font-black text-white/70 uppercase tracking-[0.2em] mb-1">Total de Kits (Cestas)</p>
-              <h4 id="kpi-kits" class="text-3xl font-black">0 <span
+              <h4 id="kpi-kits" class="text-3xl font-black">{{.TotalKits}} <span
                   class="text-sm font-medium text-white/60 ml-1">unid</span></h4>
             </div>
           </div>
@@ -538,17 +563,8 @@
               </svg>
               Volume de Resíduos (kg)
             </h3>
-            <div
-              class="h-[200px] w-full flex items-end justify-between gap-2 opacity-80 pt-4 border-l border-b border-gray-200 dark:border-gray-700 pb-2">
-              <div class="w-full bg-emerald-500/80 rounded-t-sm" style="height: 40%"></div>
-              <div class="w-full bg-amber-500/80 rounded-t-sm" style="height: 20%"></div>
-              <div class="w-full bg-emerald-500/80 rounded-t-sm" style="height: 60%"></div>
-              <div class="w-full bg-emerald-500/80 rounded-t-sm" style="height: 80%"></div>
-              <div class="w-full bg-amber-500/80 rounded-t-sm" style="height: 30%"></div>
-              <div class="w-full bg-emerald-500/80 rounded-t-sm" style="height: 90%"></div>
-            </div>
-            <div class="flex justify-between mt-2 text-[10px] text-gray-400 font-bold px-2">
-              <span>10/05</span><span>15/05</span><span>20/05</span>
+            <div class="h-[200px] w-full relative">
+              <canvas id="chart-residuos" class="w-full h-full"></canvas>
             </div>
           </div>
           <!-- Chart 2 -->
@@ -564,22 +580,8 @@
               </svg>
               Crescimento do Projeto (Lojas)
             </h3>
-            <div class="h-[200px] w-full relative pt-4 border-l border-b border-gray-200 dark:border-gray-700 pb-2">
-              <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
-                <polygon points="0,100 0,90 20,70 40,50 60,30 80,20 100,10 100,100" fill="url(#grad1)" opacity="0.3">
-                </polygon>
-                <polyline points="0,90 20,70 40,50 60,30 80,20 100,10" fill="none" stroke="#8B1A1A" stroke-width="2">
-                </polyline>
-                <defs>
-                  <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style="stop-color:#8B1A1A;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#8B1A1A;stop-opacity:0" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-            <div class="flex justify-between mt-2 text-[10px] text-gray-400 font-bold px-2">
-              <span>Jan</span><span>Mar</span><span>Mai</span>
+            <div class="h-[200px] w-full relative">
+              <canvas id="chart-crescimento" class="w-full h-full"></canvas>
             </div>
           </div>
           <!-- Chart 3 -->
@@ -593,17 +595,8 @@
               </svg>
               Fluxo de Entrega de Kits
             </h3>
-            <div
-              class="h-[200px] w-full flex items-end justify-between gap-2 opacity-80 pt-4 border-l border-b border-gray-200 dark:border-gray-700 pb-2">
-              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 10%"></div>
-              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 30%"></div>
-              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 50%"></div>
-              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 40%"></div>
-              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 70%"></div>
-              <div class="w-full bg-emerald-500 rounded-t-sm" style="height: 90%"></div>
-            </div>
-            <div class="flex justify-between mt-2 text-[10px] text-gray-400 font-bold px-2">
-              <span>10/05</span><span>15/05</span><span>20/05</span>
+            <div class="h-[200px] w-full relative">
+              <canvas id="chart-fluxo-kits" class="w-full h-full"></canvas>
             </div>
           </div>
         </section>
@@ -634,7 +627,7 @@
               </div>
             </div>
             <span id="badge-lojas"
-              class="px-2 py-0.5 text-xs font-bold rounded-full bg-[#8B1A1A] dark:bg-[#D93030] text-white">0</span>
+              class="px-2 py-0.5 text-xs font-bold rounded-full bg-[#8B1A1A] dark:bg-[#D93030] text-white">{{.TotalLojasParticipantes}}</span>
           </button>
           <button onclick="setTab('residuos')" id="tab-residuos"
             class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700">
@@ -654,7 +647,7 @@
               </div>
             </div>
             <span id="badge-residuos"
-              class="px-2 py-0.5 text-xs font-bold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">0</span>
+              class="px-2 py-0.5 text-xs font-bold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">{{.TotalResiduos}}</span>
           </button>
           <button onclick="setTab('kits')" id="tab-kits"
             class="p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left relative overflow-hidden cursor-pointer hover:shadow-md bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/30 text-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600 shadow-sm">
@@ -686,7 +679,19 @@
               </div>
             </div>
             <span id="badge-kits"
-              class="px-2.5 py-0.5 text-xs font-black rounded-full bg-emerald-600 text-white">0</span>
+              class="px-2.5 py-0.5 text-xs font-black rounded-full bg-emerald-600 text-white">{{.TotalKits}}</span>
+          </button>
+          <button onclick="setTab('registros')" id="tab-registros"
+            class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700">
+            <div class="flex items-center gap-3">
+              <div class="tab-icon p-2.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-400"><svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-[inherit]">Registros</p>
+                <p class="text-[10px] font-medium opacity-70">Histórico de Atividade</p>
+              </div>
+            </div>
+            <span id="badge-registros"
+              class="px-2 py-0.5 text-xs font-bold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">{{len .Registros}}</span>
           </button>
         </div>
 
@@ -694,7 +699,128 @@
         <div
           class="bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
           <div id="tab-content">
-            <!-- Dynamically populated by JS based on tab -->
+            <div id="tab-lojas-content">
+              <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
+                <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>Lojas Parceiras</h3>
+              </div>
+              <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja / LUC</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Início</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Status</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Termo</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Ações</th></tr></thead>
+                <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+                  {{ range .Participantes }}
+                  <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
+                    <td class="px-6 py-4"><div class="text-sm font-bold text-gray-900 dark:text-gray-100">{{ .LojaName }}</div><div class="text-xs text-gray-500">LUC {{ .LojaID }}</div></td>
+                    <td class="px-6 py-4 text-xs text-gray-600 dark:text-gray-400">{{ .DataEntrada.Format "02/01/2006" }}</td>
+                    <td class="px-6 py-4">{{ if .Status }}<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 text-green-700 border border-green-200">Ativo</span>{{ else }}<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 text-gray-600">Inativo</span>{{ end }}</td>
+                    <td class="px-6 py-4">{{if .AnexoEcoNome}}<a href="/conservacao/eco-flamboyant/termo/{{.LojaID}}" target="_blank" class="text-[#8B1A1A] underline text-xs font-medium">📄 {{.AnexoEcoNome}}</a>{{else}}<span class="text-xs text-gray-400">—</span>{{end}}</td>
+                    <td class="px-6 py-4">{{ if .Status }}<form action="/conservacao/eco-flamboyant/status" method="POST" class="inline"><input type="hidden" name="loja_id" value="{{.LojaID}}"><input type="hidden" name="acao" value="inativar"><button type="submit" class="btn-inativar px-3 py-1.5 rounded-lg text-xs font-bold border bg-red-50 text-red-600 border-red-100 cursor-pointer">Inativar</button></form>{{ else }}<form action="/conservacao/eco-flamboyant/status" method="POST" class="inline"><input type="hidden" name="loja_id" value="{{.LojaID}}"><input type="hidden" name="acao" value="ativar"><button type="submit" class="btn-ativar px-3 py-1.5 rounded-lg text-xs font-bold border bg-emerald-50 text-emerald-600 border-emerald-200 cursor-pointer">Ativar</button></form>{{ end }}</td>
+                  </tr>
+                  {{ else }}
+                  <tr><td colspan="5" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum participante cadastrado.</td></tr>
+                  {{ end }}
+                </tbody>
+              </table></div>
+            </div>
+            <div id="tab-residuos-content" class="hidden">
+              <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
+                <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>Histórico de Recebimento de Resíduos</h3>
+              </div>
+              <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-[#1a1a1a]/50">
+                <form method="GET" action="/conservacao/eco-flamboyant" class="flex flex-wrap items-end gap-3">
+                  <input type="hidden" name="aba" value="residuos">
+                  <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Data início</label>
+                    <input type="date" name="filtro_data_inicio" value="{{.FiltroDataInicio}}"
+                      class="bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Data fim</label>
+                    <input type="date" name="filtro_data_fim" value="{{.FiltroDataFim}}"
+                      class="bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Loja</label>
+                    <select name="filtro_loja_id"
+                      class="bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+                      <option value="">Todas</option>
+                      {{range .TodasLojas}}
+                      <option value="{{.ID}}" {{if eq $.FiltroLojaID .ID}}selected{{end}}>{{.Nome}}</option>
+                      {{end}}
+                    </select>
+                  </div>
+                  <button type="submit"
+                    class="px-4 py-2 text-sm font-bold text-white bg-[#8B1A1A] hover:bg-[#a43030] rounded-lg">Filtrar</button>
+                  <a href="?aba=residuos"
+                    class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Limpar</a>
+                </form>
+              </div>
+              <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Peso (kg)</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Aproveitado</th></tr></thead>
+                <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+                  {{range .Residuos}}
+                  <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{.LojaNome}}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{.DataColeta.Format "02/01/2006"}}</td>
+                    <td class="px-6 py-4 text-sm font-bold text-[#8B1A1A]">{{printf "%.1f" .PesoKG}} kg</td>
+                    <td class="px-6 py-4">{{if .Aproveitado}}<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">Sim</span>{{else}}<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-100">Não</span>{{end}}</td>
+                  </tr>
+                  {{else}}
+                  <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum resíduo registrado.</td></tr>
+                  {{end}}
+                </tbody>
+              </table></div>
+            </div>
+            <div id="tab-kits-content" class="hidden">
+              <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
+                <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/></svg>Histórico Detalhado de Cestas</h3>
+              </div>
+              <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja Destinatária</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data Entrega</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Quantidade</th></tr></thead>
+                <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+                  {{range .Kits}}
+                  <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{.LojaNome}}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{.DataEntregaKit.Format "02/01/2006"}}</td>
+                    <td class="px-6 py-4"><span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">{{.QntKit}} Cestas</span></td>
+                  </tr>
+                  {{else}}
+                  <tr><td colspan="3" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum kit registrado.</td></tr>
+                  {{end}}
+                </tbody>
+              </table></div>
+            </div>
+            <div id="tab-registros-content" class="hidden">
+              <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
+                <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>🕐 REGISTROS DE ATIVIDADE</h3>
+              </div>
+              <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">DATA / HORA</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">LOJA</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">EVENTO</th></tr></thead>
+                <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+                  {{range .Registros}}
+                  <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
+                    <td class="px-6 py-4 text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">{{.DataEvento.Format "02/01/2006 15:04"}}</td>
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{.LojaNome}}</td>
+                    <td class="px-6 py-4 text-xs">
+                      {{if eq .Acao "cadastro"}}
+                        {{if eq .Entidade "eco_participante"}}
+                          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 text-green-700 border border-green-200">🟢 Participante cadastrado</span>
+                        {{else if eq .Entidade "residuo"}}
+                          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">⚖️ Resíduo registrado</span>
+                        {{else if eq .Entidade "kit"}}
+                          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">🧺 Kit entregue</span>
+                        {{end}}
+                      {{else if eq .Acao "inativacao"}}
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-50 text-red-600 border border-red-100">🔴 Loja inativada</span>
+                      {{else if eq .Acao "reativacao"}}
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 text-green-700 border border-green-200">🟢 Loja reativada</span>
+                      {{end}}
+                    </td>
+                  </tr>
+                  {{else}}
+                  <tr><td colspan="3" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum registro ainda</td></tr>
+                  {{end}}
+                </tbody>
+              </table></div>
+            </div>
           </div>
         </div>
 
@@ -721,28 +847,49 @@
             <path d="m6 6 12 12" />
           </svg></button>
       </div>
-      <!-- INTEGRATION(codigo/app/controllers/lojas_controller.go): 
-           Correspondente à função utils.Insert_loja() do main.go -->
-      <form action="/api/lojas/criar" method="POST" onsubmit="handleStoreSubmit(event)" class="p-6 space-y-4">
+      <form
+        method="POST"
+        action="/conservacao/eco-flamboyant/criar"
+        enctype="multipart/form-data"
+        class="p-6 space-y-4"
+      >
         <div class="space-y-1">
           <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Selecionar Loja</label>
           <select id="store-select" name="loja_id" required
             class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white">
             <option value="">Selecione uma loja...</option>
+            {{ range .Lojas }}
+            <option value="{{ .ID }}">{{ .Nome }}</option>
+            {{ end }}
           </select>
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data de Início</label>
-            <input type="date" id="store-start-date" name="data_inicio" required
+            <input type="date" id="store-start-date" name="data_entrada" max="{{.HojeStr}}" required
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white">
           </div>
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data de Saída (Opcional)</label>
-            <input type="date" id="store-end-date" name="data_saida"
+            <input type="date" id="store-end-date" name="data_saida" max="{{.HojeStr}}"
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white">
           </div>
         </div>
+        <div class="space-y-1">
+          <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">
+            Termo de Aceite (PDF) *
+          </label>
+          <input
+            type="file"
+            id="anexo_eco"
+            name="anexo_eco"
+            accept=".pdf"
+            required
+            class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[#8B1A1A] file:text-white hover:file:bg-[#a43030]"
+          >
+          <small class="text-xs text-gray-400">Somente arquivos .pdf são aceitos</small>
+        </div>
+        {{if .ErroForm}}<div class="form-erro" style="color: #c0392b; background: #fdecea; border: 1px solid #e74c3c; border-radius: 6px; padding: 10px 14px; margin-bottom: 12px; font-size: 14px;">⚠️ {{.ErroForm}}</div>{{end}}
         <div class="flex justify-end gap-3 mt-6">
           <button type="button" onclick="closeModal('store-modal')"
             class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Cancelar</button>
@@ -772,32 +919,37 @@
       </div>
       <!-- INTEGRATION(codigo/app/controllers/residuos_controller.go): 
            Rota para inserir novos resíduos gerados. -->
-      <form action="/api/residuos/lancar" method="POST" onsubmit="handleWasteSubmit(event)" class="p-6 space-y-4">
+      <form action="/conservacao/eco-flamboyant/residuos" method="POST" class="p-6 space-y-4">
         <div class="space-y-1">
           <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Loja Participante</label>
-          <select id="waste-store" name="loja_id" required
-            class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white"></select>
+          <select name="loja_id" required
+            class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+            <option value="">Selecione uma loja...</option>
+            {{range .Participantes}}{{if .Status}}<option value="{{.LojaID}}">{{.LojaName}}</option>{{end}}{{end}}
+          </select>
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data Coleta</label>
-            <input type="date" id="waste-date" name="data" required
+            <input type="date" name="data_coleta" max="{{.HojeStr}}" required
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
           </div>
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Peso Total (kg)</label>
-            <input type="number" id="waste-weight" name="peso" required step="0.1" min="0.1"
+            <input type="number" name="peso_kg" required step="0.01" min="0.01" max="9999.99"
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
           </div>
         </div>
         <div class="space-y-1">
-          <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Destino</label>
-          <select id="waste-dest" name="destino" required
+          <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Tratado?</label>
+          <select name="aproveitado" required
             class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
-            <option value="Sim">Adubo (Horta)</option>
-            <option value="Nao">Descarte Comum</option>
+            <option value="">Selecione...</option>
+            <option value="Sim">Sim</option>
+            <option value="Nao">Não</option>
           </select>
         </div>
+        {{if .ErroForm}}<div class="form-erro" style="color: #c0392b; background: #fdecea; border: 1px solid #e74c3c; border-radius: 6px; padding: 10px 14px; margin-bottom: 12px; font-size: 14px;">⚠️ {{.ErroForm}}</div>{{end}}
         <div class="flex justify-end gap-3 mt-6">
           <button type="button" onclick="closeModal('waste-modal')"
             class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Cancelar</button>
@@ -827,24 +979,28 @@
       </div>
       <!-- INTEGRATION(codigo/app/controllers/kits_controller.go): 
            Rota para registrar entrega de cesta. -->
-      <form action="/api/kits/registrar" method="POST" onsubmit="handleKitSubmit(event)" class="p-6 space-y-4">
+      <form action="/conservacao/eco-flamboyant/kits" method="POST" class="p-6 space-y-4">
         <div class="space-y-1">
           <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Loja Destinatária</label>
-          <select id="kit-store" name="loja_id" required
-            class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white"></select>
+          <select name="loja_id" required
+            class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+            <option value="">Selecione uma loja...</option>
+            {{range .Participantes}}{{if .Status}}<option value="{{.LojaID}}">{{.LojaName}}</option>{{end}}{{end}}
+          </select>
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data Entrega</label>
-            <input type="date" id="kit-date" name="data" required
+            <input type="date" name="data_entrega_kit" max="{{.HojeStr}}" required
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
           </div>
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Quantidade</label>
-            <input type="number" id="kit-qty" name="quantidade" required min="1" step="1"
+            <input type="number" name="qnt_kit" required min="1" step="1"
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
           </div>
         </div>
+        {{if .ErroForm}}<div class="form-erro" style="color: #c0392b; background: #fdecea; border: 1px solid #e74c3c; border-radius: 6px; padding: 10px 14px; margin-bottom: 12px; font-size: 14px;">⚠️ {{.ErroForm}}</div>{{end}}
         <div class="flex justify-end gap-3 mt-6">
           <button type="button" onclick="closeModal('kit-modal')"
             class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Cancelar</button>
@@ -933,6 +1089,18 @@
     let kits = [];
     let UNIDADES = [];
 
+    const crescimentoLabels = [{{range .CrescimentoLojas}}"{{.Mes}}",{{end}}];
+    const crescimentoData = [{{range .CrescimentoLojas}}{{.Total}},{{end}}];
+    const entradasData = [{{range .CrescimentoLojas}}{{.Entradas}},{{end}}];
+
+    const labelsResiduos = [{{range .FluxoResiduos}}"{{.Periodo}}",{{end}}];
+    const dataAdubo = [{{range .FluxoResiduos}}{{.PesoAdubo}},{{end}}];
+    const dataDescarte = [{{range .FluxoResiduos}}{{.PesoDescarte}},{{end}}];
+
+    const labelsKits = [{{range .FluxoKits}}"{{.Periodo}}",{{end}}];
+    const dataKits = [{{range .FluxoKits}}{{.Total}},{{end}}];
+    const entregasKits = [{{range .FluxoKits}}{{.Entregas}},{{end}}];
+
     async function loadLojas() {
       try { const r = await fetch('/api/lojas'); if (r.ok) UNIDADES = await r.json(); else UNIDADES = []; } catch { UNIDADES = []; }
       renderData();
@@ -997,18 +1165,21 @@
     }
 
     let activeTab = 'lojas';
+    const originalLojaContent = document.getElementById('tab-content').innerHTML;
 
     function setTab(tab) {
       activeTab = tab;
       const tLojas = document.getElementById('tab-lojas');
       const tResiduos = document.getElementById('tab-residuos');
       const tKits = document.getElementById('tab-kits');
+      const tRegistros = document.getElementById('tab-registros');
 
       const unselectedClasses = "p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700".split(" ");
       const selectedLojas = "p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-[#8B1A1A]/5 border-[#8B1A1A] text-[#8B1A1A] dark:bg-[#8B1A1A]/10 dark:border-[#D93030] dark:text-[#D93030] shadow-sm ring-2 ring-[#8B1A1A]/10".split(" ");
 
       tLojas.className = ''; tLojas.classList.add(...(tab === 'lojas' ? selectedLojas : unselectedClasses));
       tResiduos.className = ''; tResiduos.classList.add(...(tab === 'residuos' ? selectedLojas : unselectedClasses));
+      tRegistros.className = ''; tRegistros.classList.add(...(tab === 'registros' ? selectedLojas : unselectedClasses));
 
       const kitsUnselected = "p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left relative overflow-hidden cursor-pointer hover:shadow-md bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/30 text-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600 shadow-sm".split(" ");
       const kitsSelected = "p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left relative overflow-hidden cursor-pointer hover:shadow-md bg-emerald-100/90 border-emerald-600 text-emerald-900 dark:bg-emerald-900/30 dark:border-emerald-400 dark:text-emerald-200 shadow-md ring-2 ring-emerald-500/30 scale-[1.02]".split(" ");
@@ -1019,96 +1190,217 @@
 
     function renderTabContent() {
       const c = document.getElementById('tab-content');
+      const lojasContent = document.getElementById('tab-lojas-content');
+      const residuosContent = document.getElementById('tab-residuos-content');
+      const kitsContent = document.getElementById('tab-kits-content');
+      const registrosContent = document.getElementById('tab-registros-content');
       if (activeTab === 'lojas') {
-        c.innerHTML = `
-          <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
-            <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>Lojas Participantes</h3>
-          </div>
-          <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
-            <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja / LUC</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Início</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Status</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Ações</th></tr></thead>
-            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
-              ${participantes.map(p => `
-                <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
-                  <td class="px-6 py-4"><div class="text-sm font-bold text-gray-900 dark:text-gray-100">${p.lojaNome}</div><div class="text-xs text-gray-500">LUC ${p.lojaId}</div></td>
-                  <td class="px-6 py-4 text-xs text-gray-600 dark:text-gray-400">${new Date(p.dataInicio).toLocaleDateString('pt-BR')}</td>
-                  <td class="px-6 py-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.status === 'Ativo' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-gray-100 text-gray-600'}">${p.status}</span></td>
-                  <td class="px-6 py-4"><button onclick="toggleStatus(${p.id})" class="px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${p.status === 'Ativo' ? 'bg-red-50 text-red-600 border-red-100 hover:bg-red-600 hover:text-white' : 'bg-green-50 text-green-600 border-green-100 hover:bg-green-600 hover:text-white'}">${p.status === 'Ativo' ? 'Inativar' : 'Ativar'}</button></td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table></div>`;
+        c.innerHTML = originalLojaContent;
+        return;
       } else if (activeTab === 'residuos') {
-        const atvRes = residuos.filter(r => participantes.find(p => p.lojaId === r.loja_id && p.status === 'Ativo'));
-        c.innerHTML = `
-          <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
-            <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>Histórico de Recebimento de Resíduos</h3>
-          </div>
-          <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
-            <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja Originária</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data Coleta</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Peso (kg)</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Destino</th></tr></thead>
-            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
-              ${atvRes.map(r => `
-                <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
-                  <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">${r.lojaNome}</td>
-                  <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${new Date(r.data).toLocaleDateString('pt-BR')}</td>
-                  <td class="px-6 py-4 text-sm font-bold text-[#8B1A1A]">${r.kg_total.toFixed(1)} kg</td>
-                  <td class="px-6 py-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${r.aproveitou ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-amber-50 text-amber-700 border-amber-100'}">${r.aproveitou ? 'Adubo (Horta)' : 'Descarte Comum'}</span></td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table></div>`;
+        c.innerHTML = originalLojaContent;
+        const r = document.getElementById('tab-residuos-content');
+        const l = document.getElementById('tab-lojas-content');
+        if (r) r.classList.remove('hidden');
+        if (l) l.classList.add('hidden');
       } else if (activeTab === 'kits') {
-        const atvKit = kits.filter(k => participantes.find(p => p.lojaId === k.loja_id && p.status === 'Ativo'));
-        c.innerHTML = `
-          <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
-            <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/></svg>Histórico Detalhado de Cestas</h3>
-          </div>
-          <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
-            <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja Destinatária</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data Entrega</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Quantidade</th></tr></thead>
-            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
-              ${atvKit.map(k => `
-                <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
-                  <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">${k.lojaNome}</td>
-                  <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${new Date(k.data).toLocaleDateString('pt-BR')}</td>
-                  <td class="px-6 py-4"><span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">${k.quantidade_kit} Cestas</span></td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table></div>`;
+        c.innerHTML = originalLojaContent;
+        const k = document.getElementById('tab-kits-content');
+        const l = document.getElementById('tab-lojas-content');
+        if (k) k.classList.remove('hidden');
+        if (l) l.classList.add('hidden');
+      } else if (activeTab === 'registros') {
+        c.innerHTML = originalLojaContent;
+        const reg = document.getElementById('tab-registros-content');
+        const l = document.getElementById('tab-lojas-content');
+        if (reg) reg.classList.remove('hidden');
+        if (l) l.classList.add('hidden');
       }
     }
 
     function renderData() {
-      // populate select options
-      const storesHTML = UNIDADES.map(u => `<option value="${u.id}">LUC ${u.id} - ${u.nome}</option>`).join('');
-      document.getElementById('store-select').innerHTML = '<option value="">Selecione uma loja...</option>' + storesHTML;
-
-      const activeStores = participantes.filter(p => p.status === 'Ativo');
-      const activeStoresHTML = activeStores.map(u => `<option value="${u.lojaId}">${u.lojaNome}</option>`).join('');
-      document.getElementById('waste-store').innerHTML = '<option value="">Selecione uma loja...</option>' + activeStoresHTML;
-      document.getElementById('kit-store').innerHTML = '<option value="">Selecione uma loja...</option>' + activeStoresHTML;
-
       // Update Badges
       const atvRes = residuos.filter(r => participantes.find(p => p.lojaId === r.loja_id && p.status === 'Ativo'));
       const atvKit = kits.filter(k => participantes.find(p => p.lojaId === k.loja_id && p.status === 'Ativo'));
-      document.getElementById('badge-lojas').textContent = participantes.length;
-      document.getElementById('badge-residuos').textContent = atvRes.length;
-      document.getElementById('badge-kits').textContent = atvKit.length;
 
-      // Update KPIs
-      const tPeso = atvRes.reduce((acc, c) => acc + c.kg_total, 0);
-      const tAdubo = atvRes.filter(r => r.aproveitou).reduce((acc, c) => acc + c.kg_total, 0);
-      const tDescarte = atvRes.filter(r => !r.aproveitou).reduce((acc, c) => acc + c.kg_total, 0);
-      const taxa = tPeso > 0 ? (tAdubo / tPeso) * 100 : 0;
       const tKits = atvKit.reduce((acc, c) => acc + c.quantidade_kit, 0);
 
-      document.getElementById('kpi-total').innerHTML = tPeso.toFixed(1) + ' <span class="text-sm font-medium text-white/60 ml-1">kg</span>';
-      document.getElementById('kpi-adubo').innerHTML = tAdubo.toFixed(1) + ' <span class="text-sm font-medium text-gray-400 ml-1">kg</span>';
-      document.getElementById('kpi-descarte').innerHTML = tDescarte.toFixed(1) + ' <span class="text-sm font-medium text-gray-400 ml-1">kg</span>';
-      document.getElementById('kpi-lojas').textContent = activeStores.length;
-      document.getElementById('kpi-taxa').textContent = taxa.toFixed(0) + '%';
-      document.getElementById('kpi-kits').innerHTML = tKits + ' <span class="text-sm font-medium text-white/60 ml-1">unid</span>';
-
+      renderResiduosChart();
+      renderCrescimentoChart();
+      renderFluxoKitsChart();
       renderTabContent();
+    }
+
+    let crescimentoChart = null;
+    let fluxoKitsChart = null;
+    let residuosChart = null;
+
+    function renderFluxoKitsChart() {
+      const canvas = document.getElementById('chart-fluxo-kits');
+      if (!canvas || labelsKits.length === 0) return;
+      const ctx = canvas.getContext('2d');
+
+      if (fluxoKitsChart) {
+        fluxoKitsChart.data.labels = labelsKits;
+        fluxoKitsChart.data.datasets[0].data = dataKits;
+        fluxoKitsChart.update();
+        return;
+      }
+
+      fluxoKitsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labelsKits,
+          datasets: [{
+            label: 'Unidades',
+            data: dataKits,
+            backgroundColor: '#10B981',
+            borderRadius: 4,
+            barPercentage: 0.6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              enabled: true,
+              callbacks: {
+                title: function(items) { return items[0].label; },
+                label: function(item) {
+                  const idx = item.dataIndex;
+                  return [
+                    'Unidades entregues: ' + item.raw,
+                    'Nº de entregas: ' + entregasKits[idx]
+                  ];
+                }
+              }
+            },
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              ticks: { maxTicksLimit: 6, maxRotation: 0 },
+              grid: { display: false }
+            },
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1, precision: 0 },
+              grid: { color: 'rgba(0,0,0,0.05)' }
+            }
+          },
+          interaction: { mode: 'index', intersect: false }
+        }
+      });
+    }
+
+    function renderResiduosChart() {
+      const canvas = document.getElementById('chart-residuos');
+      if (!canvas || labelsResiduos.length === 0) return;
+      const ctx = canvas.getContext('2d');
+      if (residuosChart) {
+        residuosChart.data.labels = labelsResiduos;
+        residuosChart.data.datasets[0].data = dataAdubo;
+        residuosChart.data.datasets[1].data = dataDescarte;
+        residuosChart.update();
+        return;
+      }
+      residuosChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labelsResiduos,
+          datasets: [
+            { label: 'Adubo (aproveitado)', data: dataAdubo, backgroundColor: '#10B981', borderRadius: 4, barPercentage: 0.6 },
+            { label: 'Descarte', data: dataDescarte, backgroundColor: '#F59E0B', borderRadius: 4, barPercentage: 0.6 }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              enabled: true,
+              callbacks: {
+                title: function(items) { return items[0].label; },
+                label: function(item) {
+                  const tipo = item.datasetIndex === 0 ? 'Adubo (aproveitado)' : 'Descarte';
+                  return tipo + ': ' + item.raw + ' kg';
+                }
+              }
+            },
+            legend: { display: false }
+          },
+          scales: {
+            x: { stacked: true, ticks: { maxTicksLimit: 6, maxRotation: 0 }, grid: { display: false } },
+            y: { stacked: true, beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } }
+          },
+          interaction: { mode: 'index', intersect: false }
+        }
+      });
+    }
+
+    function renderCrescimentoChart() {
+      const canvas = document.getElementById('chart-crescimento');
+      if (!canvas || crescimentoData.length === 0) return;
+      const ctx = canvas.getContext('2d');
+
+      if (crescimentoChart) {
+        crescimentoChart.data.labels = crescimentoLabels;
+        crescimentoChart.data.datasets[0].data = crescimentoData;
+        crescimentoChart.update();
+        return;
+      }
+
+      crescimentoChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: crescimentoLabels,
+          datasets: [{
+            label: 'Lojas',
+            data: crescimentoData,
+            borderColor: '#8B1A1A',
+            backgroundColor: 'rgba(139, 26, 26, 0.15)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 4,
+            pointHoverRadius: 7
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              enabled: true,
+              callbacks: {
+                title: function(items) { return items[0].label; },
+                label: function(item) {
+                    const idx = item.dataIndex;
+                    const acumulado = item.raw;
+                    const entradas = entradasData[idx];
+                    return [
+                        'Total acumulado: ' + acumulado + ' loja(s)',
+                        'Novas em ' + item.label + ': ' + entradas + ' loja(s)'
+                    ];
+                }
+              }
+            },
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              ticks: { maxTicksLimit: 6, maxRotation: 0 },
+              grid: { display: false }
+            },
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1, precision: 0 },
+              grid: { color: 'rgba(0,0,0,0.05)' }
+            }
+          },
+          interaction: { mode: 'index', intersect: false },
+          elements: { point: { radius: 4, hoverRadius: 7 } }
+        }
+      });
     }
 
     function showToast(message, type = 'success') {
@@ -1122,9 +1414,16 @@
     }
 
     loadAll();
-    setTab('lojas');
+    setTab('{{.AbaAtiva}}');
+    {{if .ErroForm}}
+    document.addEventListener('DOMContentLoaded', function() {
+      {{if eq .AbaAtiva "lojas"}}openModal('store-modal');{{end}}
+      {{if eq .AbaAtiva "residuos"}}openModal('waste-modal');{{end}}
+      {{if eq .AbaAtiva "kits"}}openModal('kit-modal');{{end}}
+    });
+    {{end}}
 
   </script>
 </body>
 
-</html>
+</html>{{ end }}

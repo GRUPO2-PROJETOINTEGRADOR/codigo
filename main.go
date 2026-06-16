@@ -2,7 +2,6 @@ package main
 
 //Comentários com auxílio do CHAT GPT
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -43,39 +42,6 @@ func main() {
 	//   1. Valida método HTTP
 	//   2. Busca lojas no banco
 	//   3. Retorna JSON
-	http.HandleFunc("/api/lojas", func(w http.ResponseWriter, r *http.Request) {
-
-		// Permite apenas GET
-		if r.Method != http.MethodGet {
-
-			// Retorna erro 405
-			http.Error(
-				w,
-				"Método não permitido",
-				http.StatusMethodNotAllowed,
-			)
-
-			return
-		}
-
-		// Busca lojas no banco
-		lojas, err := utils.Read_lojas()
-
-		// Tratamento de erro
-		if err != nil {
-
-			jsonError(
-				w,
-				"Erro ao buscar lojas",
-				http.StatusInternalServerError,
-			)
-
-			return
-		}
-
-		// Retorna lista em JSO
-		jsonResponse(w, lojas)
-	})
 
 	http.Handle(
 		"/static/",
@@ -141,49 +107,4 @@ func main() {
 	}
 }
 
-// =========================================================
-// FUNÇÃO AUXILIAR - RESPOSTA JSON
-// =========================================================
-// Recebe qualquer estrutura e transforma em JSON.
-//
-// Exemplo:
-//
-//	jsonResponse(w, usuario)
-//
-// =========================================================
-func jsonResponse(w http.ResponseWriter, data interface{}) {
 
-	// Define header da resposta
-	w.Header().Set("Content-Type", "application/json")
-
-	// Converte struct/map/slice para JSON
-	json.NewEncoder(w).Encode(data)
-}
-
-// =========================================================
-// FUNÇÃO AUXILIAR - RESPOSTA DE ERRO JSON
-// =========================================================
-// Padroniza respostas de erro da API.
-//
-// Exemplo de retorno:
-//
-//	{
-//	  "error": "Erro ao buscar lojas"
-//	}
-//
-// =========================================================
-func jsonError(w http.ResponseWriter, msg string, code int) {
-
-	// Header JSON
-	w.Header().Set("Content-Type", "application/json")
-
-	// Status HTTP
-	w.WriteHeader(code)
-
-	// Corpo da resposta
-	json.NewEncoder(w).Encode(
-		map[string]string{
-			"error": msg,
-		},
-	)
-}
