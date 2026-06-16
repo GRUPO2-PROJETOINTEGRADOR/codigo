@@ -15,4 +15,5 @@ func RotasSegurancaAlimentar() {
 
 	http.HandleFunc("/api/inspecoes/editar", segurancaController.EditarHandler)
 	http.HandleFunc("/api/inspecoes/deletar", segurancaController.ExcluirHandler)
+	http.HandleFunc("/api/inspecoes/pdf", segurancaController.AbrirPDFHandler)
 }

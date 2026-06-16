@@ -9,6 +9,8 @@
     content="Acompanhamento técnico e auditorias regulatórias de Segurança Alimentar do JP Mall (Padrão Tyler)." />
   <link rel="stylesheet" href="/static/css/global.css" />
   <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <link rel="stylesheet" href="/static/css/theme.css" />
   <style type="text/tailwindcss">
     @custom-variant dark (&:is(.dark *));
@@ -431,22 +433,35 @@
                   auditorias regulatórias (Padrão Tyler)</p>
               </div>
             </div>
-            <button id="nova-inspecao-btn"
-              class="w-full md:w-auto px-6 h-11 bg-[#8B1A1A] hover:bg-[#a43030] dark:bg-[#D93030] dark:hover:bg-[#a43030] text-white text-sm font-bold rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transform transition-all flex items-center justify-center gap-2 cursor-pointer focus:ring-2 focus:ring-[#8B1A1A] dark:focus:ring-[#D93030]">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="flex-shrink-0">
-                <path d="M5 12h14" />
-                <path d="M12 5v14" />
-              </svg>
-              <span>Nova Inspeção</span>
-            </button>
+            <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+              <button id="exportar-pdf-btn"
+                class="w-full sm:w-auto px-5 h-11 bg-white hover:bg-gray-50 dark:bg-[#252525] dark:hover:bg-[#303030] text-gray-700 dark:text-gray-200 text-sm font-bold rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 transition-all flex items-center justify-center gap-2 cursor-pointer focus:ring-2 focus:ring-[#8B1A1A] dark:focus:ring-[#D93030]">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="flex-shrink-0 text-[#8B1A1A] dark:text-[#D93030]">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                <span>Exportar PDF</span>
+              </button>
+              <button id="nova-inspecao-btn"
+                class="w-full sm:w-auto px-6 h-11 bg-[#8B1A1A] hover:bg-[#a43030] dark:bg-[#D93030] dark:hover:bg-[#a43030] text-white text-sm font-bold rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transform transition-all flex items-center justify-center gap-2 cursor-pointer focus:ring-2 focus:ring-[#8B1A1A] dark:focus:ring-[#D93030]">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="flex-shrink-0">
+                  <path d="M5 12h14" />
+                  <path d="M12 5v14" />
+                </svg>
+                <span>Nova Inspeção</span>
+              </button>
+            </div>
           </div>
 
           <!-- Stats Cards (InspectionStatsCards) -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div id="card-total"
-              class="bg-white dark:bg-[#252525] p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 flex flex-col justify-between border-l-4 border-l-[#8B1A1A] dark:border-l-[#D93030]">
+              class="bg-white dark:bg-[#252525] p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 flex flex-col justify-between border-l-4 border-l-blue-500">
               <div class="flex items-center justify-between gap-3">
                 <div class="min-w-0">
                   <span
@@ -456,22 +471,21 @@
                     class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white block mt-1 select-all leading-none tracking-tight">0</span>
                 </div>
                 <div
-                  class="p-2 rounded-lg border flex-shrink-0 text-[#8B1A1A] dark:text-[#D93030] bg-[#8B1A1A]/10 border-red-200 dark:border-red-900/30">
+                  class="p-2 rounded-lg border flex-shrink-0 text-blue-600 dark:text-blue-400 bg-blue-500/10 border-blue-200 dark:border-blue-900/30">
                   <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
-                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-                    <path d="M12 11h4" />
-                    <path d="M12 16h4" />
-                    <path d="M8 11h.01" />
-                    <path d="M8 16h.01" />
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
                   </svg>
                 </div>
               </div>
               <p class="text-xs text-gray-400 dark:text-gray-500 mt-3 font-semibold truncate">Auditorias registradas</p>
             </div>
             <div id="card-media"
-              class="bg-white dark:bg-[#252525] p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 flex flex-col justify-between border-l-4 border-l-green-500">
+              class="bg-white dark:bg-[#252525] p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 flex flex-col justify-between border-l-4 border-l-yellow-500">
               <div class="flex items-center justify-between gap-3">
                 <div class="min-w-0">
                   <span
@@ -481,19 +495,17 @@
                     class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white block mt-1 select-all leading-none tracking-tight">0.0</span>
                 </div>
                 <div
-                  class="p-2 rounded-lg border flex-shrink-0 text-green-600 dark:text-green-400 bg-green-500/10 border-green-200 dark:border-green-900/30">
+                  class="p-2 rounded-lg border flex-shrink-0 text-yellow-600 dark:text-yellow-400 bg-yellow-500/10 border-yellow-200 dark:border-yellow-900/30">
                   <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 6v12" />
-                    <path d="M17.196 9 6.804 15" />
-                    <path d="M6.804 9l10.392 6" />
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                   </svg>
                 </div>
               </div>
               <p class="text-xs text-gray-400 dark:text-gray-500 mt-3 font-semibold truncate">Desempenho (0 a 100)</p>
             </div>
             <div id="card-ultima"
-              class="bg-white dark:bg-[#252525] p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 flex flex-col justify-between border-l-4 border-l-[#8B1A1A] dark:border-l-[#D93030]">
+              class="bg-white dark:bg-[#252525] p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 flex flex-col justify-between border-l-4 border-l-green-500">
               <div class="flex items-center justify-between gap-3">
                 <div class="min-w-0">
                   <span
@@ -503,7 +515,7 @@
                     class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white block mt-1 select-all leading-none tracking-tight">—</span>
                 </div>
                 <div
-                  class="p-2 rounded-lg border flex-shrink-0 text-[#8B1A1A] dark:text-[#D93030] bg-[#8B1A1A]/10 border-red-200 dark:border-red-900/30">
+                  class="p-2 rounded-lg border flex-shrink-0 text-green-600 dark:text-green-400 bg-green-500/10 border-green-200 dark:border-green-900/30">
                   <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
@@ -1354,22 +1366,6 @@
       document.getElementById('stat-total').textContent = total;
       document.getElementById('stat-media').textContent = total > 0 ? media.toFixed(1) : '0';
       document.getElementById('stat-ultima').textContent = ultima ? formatDate(ultima) : '-';
-
-      const mediaCard = document.getElementById('card-media');
-      const mediaIcon = mediaCard.querySelector('.flex-shrink-0');
-      if (total === 0) {
-        mediaCard.className = mediaCard.className.replace(/border-l-\w+(-\w+)?/, 'border-l-gray-300');
-        mediaIcon.className = 'p-2 rounded-lg border flex-shrink-0 text-gray-500 dark:text-gray-400 bg-gray-500/10 border-gray-200 dark:border-gray-800';
-      } else if (media >= 80) {
-        mediaCard.className = mediaCard.className.replace(/border-l-\w+(-\w+)?/, 'border-l-green-500');
-        mediaIcon.className = 'p-2 rounded-lg border flex-shrink-0 text-green-600 dark:text-green-400 bg-green-500/10 border-green-200 dark:border-green-900/30';
-      } else if (media >= 60) {
-        mediaCard.className = mediaCard.className.replace(/border-l-\w+(-\w+)?/, 'border-l-yellow-500');
-        mediaIcon.className = 'p-2 rounded-lg border flex-shrink-0 text-yellow-600 dark:text-yellow-400 bg-yellow-500/10 border-yellow-200 dark:border-yellow-900/30';
-      } else {
-        mediaCard.className = mediaCard.className.replace(/border-l-\w+(-\w+)?/, 'border-l-red-500');
-        mediaIcon.className = 'p-2 rounded-lg border flex-shrink-0 text-red-600 dark:text-red-400 bg-red-500/10 border-red-200 dark:border-red-900/30';
-      }
     }
 
     function renderSkeletons() {
@@ -1427,7 +1423,7 @@
         const iResp = i.responsavel_loja || '—';
         const iFuncao = i.cargo_responsavel || '';
         const iClass = i.classificacao || cls.label;
-        const iAnexo = i.anexo_tiller;
+        const iAnexo = i.pdf_nome;
         return `<tr class="even:bg-gray-50/40 dark:even:bg-gray-800/5 hover:bg-gray-50/40 dark:hover:bg-gray-800/20 transition-colors group ${isRecente ? 'bg-red-500/2 dark:bg-[#D93030]/2' : ''}">
           <td class="py-4 px-4">
             <div class="flex items-center gap-3">
@@ -1466,7 +1462,7 @@
             <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider border ${cls.cls}">${iClass}</span>
           </td>
           <td class="py-4 px-4">
-            ${iAnexo ? `<a href="${iAnexo}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#8B1A1A] bg-[#8B1A1A]/10 hover:bg-[#8B1A1A]/20 dark:text-[#D93030] dark:bg-[#D93030]/10 dark:hover:bg-[#D93030]/20 rounded-lg transition-colors w-full justify-center"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</a>` : '<span class="text-xs text-gray-400 italic">—</span>'}
+            ${iAnexo ? `<a href="/api/inspecoes/pdf?id=${i.id}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#8B1A1A] bg-[#8B1A1A]/10 hover:bg-[#8B1A1A]/20 dark:text-[#D93030] dark:bg-[#D93030]/10 dark:hover:bg-[#D93030]/20 rounded-lg transition-colors w-full justify-center"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</a>` : '<span class="text-xs text-gray-400 italic">—</span>'}
           </td>
           <td class="py-4 px-4">
             <div class="flex items-center justify-center gap-1">
@@ -1500,7 +1496,7 @@
       const iTipo = i.tipo_inspecao || '—';
       const iFuncao = i.cargo_responsavel || '—';
       const iResp = i.responsavel_loja || '—';
-      const iAnexo = i.anexo_tiller;
+      const iAnexo = i.pdf_nome;
       const iClass = i.classificacao || cls.label;
 
       const ctxMsg = i.classificacao === 'Crítica'
@@ -1544,7 +1540,7 @@
               <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#8B1A1A] dark:text-[#D93030] flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
               <span class="text-xs font-bold text-gray-800 dark:text-gray-200 truncate max-w-[280px]">${iAnexo}</span>
             </div>
-            <a href="${iAnexo}" target="_blank" class="px-3.5 py-2 bg-[#8B1A1A] hover:bg-[#a43030] dark:bg-[#D93030] dark:hover:bg-[#a43030] text-xs font-bold text-white rounded-lg flex items-center gap-1 transition-all cursor-pointer">
+            <a href="/api/inspecoes/pdf?id=${i.id}" target="_blank" class="px-3.5 py-2 bg-[#8B1A1A] hover:bg-[#a43030] dark:bg-[#D93030] dark:hover:bg-[#a43030] text-xs font-bold text-white rounded-lg flex items-center gap-1 transition-all cursor-pointer">
               <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
               <span>Ver PDF</span>
             </a>
@@ -1768,10 +1764,10 @@
       document.getElementById('input-nota').dispatchEvent(new Event('input'));
 
       // Preencher anexo existente se houver
-      if (i.anexo_tiller) {
-        pdfFileName.value = i.anexo_tiller;
+      if (i.pdf_nome) {
+        pdfFileName.value = i.pdf_nome;
         pdfLabel.className = 'w-full flex flex-col sm:flex-row items-center justify-center gap-4 px-4 py-8 border-2 border-dashed rounded-xl cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-800/10 transition-all border-green-300 bg-green-50/20 text-green-700 dark:border-green-800/40 dark:bg-green-950/10 dark:text-green-400';
-        pdfLabel.innerHTML = `<svg viewBox="0 0 24 24" class="w-10 h-10 flex-shrink-0 text-[#8B1A1A] dark:text-[#D93030]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg><div class="text-center sm:text-left min-w-0 flex-1"><span class="text-sm font-bold text-gray-800 dark:text-gray-200 block truncate max-w-[360px]">${i.anexo_tiller}</span><span class="text-[11px] text-gray-400 dark:text-gray-500 block mt-1">Laudo carregado com sucesso</span></div>`;
+        pdfLabel.innerHTML = `<svg viewBox="0 0 24 24" class="w-10 h-10 flex-shrink-0 text-[#8B1A1A] dark:text-[#D93030]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg><div class="text-center sm:text-left min-w-0 flex-1"><span class="text-sm font-bold text-gray-800 dark:text-gray-200 block truncate max-w-[360px]">${i.pdf_nome}</span><span class="text-[11px] text-gray-400 dark:text-gray-500 block mt-1">Laudo carregado com sucesso</span></div>`;
       }
 
       modal.classList.remove('hidden');
@@ -1952,6 +1948,208 @@ if (selectedPdfFile) {
       setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 50);
       setTimeout(() => { toast.classList.add('translate-y-2', 'opacity-0'); setTimeout(() => toast.remove(), 300); }, 4000);
     }
+
+    // Exportar PDF
+    document.getElementById('exportar-pdf-btn').addEventListener('click', async function () {
+      const btn = this;
+      const originalHTML = btn.innerHTML;
+
+      // 1. Mostrar loading
+      btn.disabled = true;
+      btn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>Exportando...</span>
+      `;
+
+      try {
+        // Obter dados filtrados
+        const filteredData = getFiltered();
+
+        // Calcular Resumo
+        const totalInspecoes = filteredData.length;
+        const mediaNotas = totalInspecoes > 0 ? (filteredData.reduce((s, i) => s + i.nota, 0) / totalInspecoes).toFixed(1) : '0';
+
+        let ncGraveCount = 0;
+        let bomCount = 0;
+        let regularCount = 0;
+        let ruimCount = 0;
+        let criticaCount = 0;
+
+        filteredData.forEach(i => {
+          if (i.nc_grave) ncGraveCount++;
+          const cls = i.classificacao || getClassification(i.nota, i.classificacao).label;
+          if (cls === 'Crítica') {
+            criticaCount++;
+          } else if (cls === 'Bom') {
+            bomCount++;
+          } else if (cls === 'Regular') {
+            regularCount++;
+          } else {
+            ruimCount++;
+          }
+        });
+
+        // 2. Gerar PDF usando jsPDF
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4'
+        });
+
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+
+        // Linha superior decorativa (Burgundy)
+        doc.setFillColor(139, 26, 26);
+        doc.rect(0, 0, pageWidth, 4, 'F');
+
+        // Cabeçalho
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.setTextColor(31, 41, 55);
+        doc.text('RELATÓRIO DE SEGURANÇA ALIMENTAR', 15, 18);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.setTextColor(107, 114, 128);
+        doc.text('JP Mall - Conservação', 15, 23);
+
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('pt-BR');
+        const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        doc.text(`Gerado em: ${dateStr} ${timeStr}`, pageWidth - 15, 23, { align: 'right' });
+
+        // Divisor
+        doc.setDrawColor(229, 231, 235);
+        doc.setLineWidth(0.5);
+        doc.line(15, 27, pageWidth - 15, 27);
+
+        // Bloco de Resumo
+        const summaryY = 32;
+        const summaryHeight = 35;
+        doc.setFillColor(249, 250, 251);
+        doc.rect(15, summaryY, pageWidth - 30, summaryHeight, 'F');
+
+        doc.setFillColor(139, 26, 26);
+        doc.rect(15, summaryY, 3, summaryHeight, 'F');
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.setTextColor(55, 65, 81);
+        doc.text('RESUMO GERAL', 22, summaryY + 7);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.text(`Quantidade de inspeções encontradas: ${totalInspecoes}`, 22, summaryY + 14);
+        doc.text(`Média das notas: ${mediaNotas}`, 22, summaryY + 20);
+        doc.text(`Quantidade de NC Grave: ${ncGraveCount}`, 22, summaryY + 26);
+
+        const col2X = pageWidth / 2 + 10;
+        doc.setFont('helvetica', 'bold');
+        doc.text('POR CLASSIFICAÇÃO', col2X, summaryY + 7);
+
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Bom: ${bomCount}`, col2X, summaryY + 14);
+        doc.text(`Regular: ${regularCount}`, col2X, summaryY + 20);
+        doc.text(`Ruim: ${ruimCount} | Crítica: ${criticaCount}`, col2X, summaryY + 26);
+
+        // Tabela usando jspdf-autotable
+        const tableRows = filteredData.map(i => {
+          const cls = i.classificacao || getClassification(i.nota, i.classificacao).label;
+          return [
+            getLojaNome(i.loja_id),
+            i.tipo_inspecao || '—',
+            formatDate(i.data_auditoria),
+            `${i.responsavel_loja || '—'} (${i.cargo_responsavel || ''})`,
+            i.nota.toString(),
+            cls,
+            i.nc_grave ? 'Sim' : 'Não'
+          ];
+        });
+
+        doc.autoTable({
+          startY: summaryY + summaryHeight + 8,
+          head: [['Loja', 'Tipo de Inspeção', 'Data', 'Responsável', 'Nota', 'Classificação', 'NC Grave']],
+          body: tableRows,
+          theme: 'striped',
+          headStyles: {
+            fillColor: [139, 26, 26],
+            textColor: [255, 255, 255],
+            fontStyle: 'bold',
+            fontSize: 9,
+            halign: 'left'
+          },
+          bodyStyles: {
+            fontSize: 8,
+            textColor: [55, 65, 81]
+          },
+          columnStyles: {
+            4: { halign: 'center' },
+            5: { fontStyle: 'bold' },
+            6: { fontStyle: 'bold' }
+          },
+          didParseCell: function (data) {
+            if (data.section === 'body' && data.column.index === 5) {
+              const val = data.cell.raw;
+              if (val === 'Bom') {
+                data.cell.styles.textColor = [16, 124, 65];
+              } else if (val === 'Regular') {
+                data.cell.styles.textColor = [196, 144, 0];
+              } else if (val === 'Ruim' || val === 'Inaceitável') {
+                data.cell.styles.textColor = [220, 53, 69];
+              } else if (val === 'Crítica') {
+                data.cell.styles.textColor = [139, 26, 26];
+              }
+            }
+            if (data.section === 'body' && data.column.index === 6) {
+              const val = data.cell.raw;
+              if (val === 'Sim') {
+                data.cell.styles.textColor = [220, 53, 69];
+              } else {
+                data.cell.styles.textColor = [107, 114, 128];
+              }
+            }
+          },
+          margin: { left: 15, right: 15 },
+          styles: {
+            overflow: 'linebreak',
+            cellPadding: 3
+          }
+        });
+
+        // Rodapé com paginação
+        const totalPages = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++) {
+          doc.setPage(i);
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(8);
+          doc.setTextColor(156, 163, 175);
+
+          doc.setDrawColor(243, 244, 246);
+          doc.line(15, pageHeight - 12, pageWidth - 15, pageHeight - 12);
+
+          doc.text('JP Mall - Conservação', 15, pageHeight - 8);
+          doc.text(`Página ${i} de ${totalPages}`, pageWidth - 15, pageHeight - 8, { align: 'right' });
+        }
+
+        // Fazer download automático
+        const formattedDate = dateStr.replace(/\//g, '-');
+        doc.save(`relatorio-seguranca-alimentar-${formattedDate}.pdf`);
+
+        showToast('PDF exportado com sucesso!', 'success');
+      } catch (err) {
+        console.error('Erro ao exportar PDF:', err);
+        showToast('Ocorreu um erro ao gerar o PDF.', 'error');
+      } finally {
+        // Restaurar estado do botão
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+      }
+    });
 
     // Initial load
     updateSortIcons();

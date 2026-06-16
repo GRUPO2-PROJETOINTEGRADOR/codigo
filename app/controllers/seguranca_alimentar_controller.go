@@ -4,10 +4,12 @@ import (
 	"codigo/app/models"
 	utils "codigo/app/repository"
 	"encoding/json"
+	"fmt"
 	"html/template"
-	"log"
+	"io"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type SegurancaAlimentarController struct{}
@@ -51,24 +53,44 @@ func (c SegurancaAlimentarController) SalvarHandler(w http.ResponseWriter, r *ht
 	// PDF
 	// =========================
 	file, header, err := r.FormFile("pdf")
-
-	var pdfURL string
-
-	if err == nil {
-
-		defer file.Close()
-
-		pdfURL, err = utils.UploadPDF(
-			file,
-			header.Filename,
-			header.Size,
-		)
-
-		if err != nil {
-			http.Error(w, "Erro ao enviar PDF para MinIO", http.StatusInternalServerError)
-			return
-		}
+	if err != nil {
+		http.Error(w, "O arquivo PDF é obrigatório", http.StatusBadRequest)
+		return
 	}
+	defer file.Close()
+
+	// Validação de tamanho (máximo 5MB)
+	if header.Size > 5*1024*1024 {
+		http.Error(w, "O tamanho do arquivo PDF excede o limite de 5MB", http.StatusBadRequest)
+		return
+	}
+
+	// Validação de tipo MIME / Extensão
+	contentType := header.Header.Get("Content-Type")
+	if contentType != "application/pdf" && !strings.HasSuffix(strings.ToLower(header.Filename), ".pdf") {
+		http.Error(w, "Apenas arquivos PDF são permitidos", http.StatusBadRequest)
+		return
+	}
+
+	// Ler bytes
+	pdfBytes, err := io.ReadAll(file)
+	if err != nil {
+		http.Error(w, "Erro ao ler o arquivo PDF", http.StatusInternalServerError)
+		return
+	}
+
+	// Validação da assinatura do arquivo PDF (%PDF)
+	if len(pdfBytes) > 4 && string(pdfBytes[:4]) != "%PDF" {
+		http.Error(w, "O arquivo enviado não é um PDF válido", http.StatusBadRequest)
+		return
+	}
+
+	pdfNome := header.Filename
+	pdfTipo := contentType
+	if pdfTipo == "" {
+		pdfTipo = "application/pdf"
+	}
+	pdfTamanho := int64(len(pdfBytes))
 
 	// =========================
 	// CAMPOS FORM
@@ -76,15 +98,19 @@ func (c SegurancaAlimentarController) SalvarHandler(w http.ResponseWriter, r *ht
 	nota, _ := strconv.Atoi(r.FormValue("nota"))
 
 	auditoria := models.SegurancaAlimentar{
-	LojaID:           r.FormValue("loja_id"),
-	DataAuditoria:    r.FormValue("data_auditoria"),
-	ResponsavelLoja:  r.FormValue("responsavel_loja"),
-	CargoResponsavel: r.FormValue("cargo_responsavel"),
-	Nota:             nota,
-	Classificacao:    r.FormValue("classificacao"),
-	AnexoTiller:      pdfURL,
-	TipoInspecao:     r.FormValue("tipo_inspecao"),
-	NCGrave:          r.FormValue("nc_grave") == "true",
+		LojaID:           r.FormValue("loja_id"),
+		DataAuditoria:    r.FormValue("data_auditoria"),
+		ResponsavelLoja:  r.FormValue("responsavel_loja"),
+		CargoResponsavel: r.FormValue("cargo_responsavel"),
+		Nota:             nota,
+		Classificacao:    r.FormValue("classificacao"),
+		AnexoTiller:      pdfNome,
+		TipoInspecao:     r.FormValue("tipo_inspecao"),
+		NCGrave:          r.FormValue("nc_grave") == "true",
+		PDFNome:          pdfNome,
+		PDFTipo:          pdfTipo,
+		PDFTamanho:       pdfTamanho,
+		PDFArquivo:       pdfBytes,
 	}
 
 	// =========================
@@ -101,7 +127,7 @@ func (c SegurancaAlimentarController) SalvarHandler(w http.ResponseWriter, r *ht
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
-		"pdf_url": pdfURL,
+		"pdf_url": pdfNome,
 	})
 }
 
@@ -126,26 +152,12 @@ func (c SegurancaAlimentarController) ExcluirHandler(w http.ResponseWriter, r *h
 		return
 	}
 
-	// 1. Buscar anexo_tiller antes de deletar
-	anexo, err := utils.BuscarAnexoAuditoria(auditoriaID)
-	if err != nil {
-		log.Printf("Aviso: erro ao buscar anexo da auditoria %d: %v", auditoriaID, err)
-	}
-
-	// 2. Deletar auditoria do banco
+	// Deletar auditoria do banco (deleta registro e o binário junto)
 	err = utils.DeletarAuditoria(auditoriaID)
 
 	if err != nil {
 		http.Error(w, "Erro ao deletar auditoria", http.StatusInternalServerError)
 		return
-	}
-
-	// 3. Se o delete funcionou e havia anexo, remover do MinIO
-	if anexo != "" {
-		err = utils.RemoverPDF(anexo)
-		if err != nil {
-			log.Printf("Erro ao remover PDF %s do MinIO: %v", anexo, err)
-		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -181,18 +193,49 @@ func (c SegurancaAlimentarController) EditarHandler(w http.ResponseWriter, r *ht
 	}
 
 	file, header, err := r.FormFile("pdf")
+	var pdfNome string
+	var pdfTipo string
+	var pdfTamanho int64
+	var pdfArquivo []byte
 	var pdfURL string
+
 	if err == nil {
 		defer file.Close()
-		pdfURL, err = utils.UploadPDF(
-			file,
-			header.Filename,
-			header.Size,
-		)
-		if err != nil {
-			http.Error(w, "Erro ao enviar PDF para MinIO", http.StatusInternalServerError)
+
+		// Validação de tamanho (máximo 5MB)
+		if header.Size > 5*1024*1024 {
+			http.Error(w, "O tamanho do arquivo PDF excede o limite de 5MB", http.StatusBadRequest)
 			return
 		}
+
+		// Validação de tipo MIME / Extensão
+		contentType := header.Header.Get("Content-Type")
+		if contentType != "application/pdf" && !strings.HasSuffix(strings.ToLower(header.Filename), ".pdf") {
+			http.Error(w, "Apenas arquivos PDF são permitidos", http.StatusBadRequest)
+			return
+		}
+
+		// Ler bytes
+		pdfBytes, readErr := io.ReadAll(file)
+		if readErr != nil {
+			http.Error(w, "Erro ao ler o arquivo PDF", http.StatusInternalServerError)
+			return
+		}
+
+		// Validação da assinatura do arquivo PDF (%PDF)
+		if len(pdfBytes) > 4 && string(pdfBytes[:4]) != "%PDF" {
+			http.Error(w, "O arquivo enviado não é um PDF válido", http.StatusBadRequest)
+			return
+		}
+
+		pdfNome = header.Filename
+		pdfTipo = contentType
+		if pdfTipo == "" {
+			pdfTipo = "application/pdf"
+		}
+		pdfTamanho = int64(len(pdfBytes))
+		pdfArquivo = pdfBytes
+		pdfURL = pdfNome
 	} else {
 		pdfURL = r.FormValue("anexo_tiller")
 	}
@@ -220,6 +263,10 @@ func (c SegurancaAlimentarController) EditarHandler(w http.ResponseWriter, r *ht
 		AnexoTiller:      pdfURL,
 		TipoInspecao:     tipoInspecao,
 		NCGrave:          ncGrave,
+		PDFNome:          pdfNome,
+		PDFTipo:          pdfTipo,
+		PDFTamanho:       pdfTamanho,
+		PDFArquivo:       pdfArquivo,
 	}
 
 	err = utils.AtualizarAuditoria(auditoria)
@@ -232,4 +279,51 @@ func (c SegurancaAlimentarController) EditarHandler(w http.ResponseWriter, r *ht
 	json.NewEncoder(w).Encode(map[string]string{
 		"status": "ok",
 	})
+}
+
+func (c SegurancaAlimentarController) AbrirPDFHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		return
+	}
+
+	idStr := r.URL.Query().Get("id")
+	if idStr == "" {
+		http.Error(w, "ID não informado", http.StatusBadRequest)
+		return
+	}
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "ID inválido", http.StatusBadRequest)
+		return
+	}
+
+	pdf, err := utils.BuscarPDFAuditoria(id)
+	if err != nil {
+		http.Error(w, "PDF não encontrado", http.StatusNotFound)
+		return
+	}
+
+	// Se pdf_arquivo estiver vazio (como em registros antigos sem dados binários)
+	if len(pdf.Arquivo) == 0 {
+		http.Error(w, "PDF não disponível no banco de dados", http.StatusNotFound)
+		return
+	}
+
+	contentType := pdf.Tipo
+	if contentType == "" {
+		contentType = "application/pdf"
+	}
+
+	filename := pdf.Nome
+	if filename == "" {
+		filename = "laudo.pdf"
+	}
+
+	w.Header().Set("Content-Type", contentType)
+	w.Header().Set("Content-Disposition", fmt.Sprintf("inline; filename=%q", filename))
+	w.Header().Set("Content-Length", strconv.FormatInt(pdf.Tamanho, 10))
+
+	w.Write(pdf.Arquivo)
 }
