@@ -36,13 +36,6 @@ func main() {
 
 	}
 
-	// Endpoint:
-	//   GET /api/lojas
-	// Fluxo:
-	//   1. Valida método HTTP
-	//   2. Busca lojas no banco
-	//   3. Retorna JSON
-
 	http.Handle(
 		"/static/",
 		http.StripPrefix(

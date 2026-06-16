@@ -22,6 +22,22 @@ func (c SegurancaAlimentarController) ListarPaginaHandler(w http.ResponseWriter,
 	tmpl.Execute(w, nil)
 }
 
+func (c SegurancaAlimentarController) ListarLojasHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		return
+	}
+
+	lojas, err := utils.Read_lojas()
+	if err != nil {
+		http.Error(w, "Erro ao listar lojas", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(lojas)
+}
+
 func (c SegurancaAlimentarController) ListarHandler(w http.ResponseWriter, r *http.Request) {
 
 	auditorias, err := utils.ListarAuditorias()

@@ -10,6 +10,7 @@ func RotasSegurancaAlimentar() {
 
 	http.HandleFunc("/conservacao/seguranca-alimentar", segurancaController.ListarPaginaHandler)
 
+	http.HandleFunc("/api/lojas", segurancaController.ListarLojasHandler)
 	http.HandleFunc("/api/inspecoes", segurancaController.ListarHandler)
 	http.HandleFunc("/api/inspecoes/criar", segurancaController.SalvarHandler)
 
