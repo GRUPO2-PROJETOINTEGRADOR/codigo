@@ -14,7 +14,9 @@ CREATE TABLE IF NOT EXISTS auditorias_seguranca (
     cargo_responsavel VARCHAR(100),
     nota INTEGER,
     anexo_tiller VARCHAR(255),
-    classificacao VARCHAR(20)
+    classificacao VARCHAR(20),
+    tipo_inspecao VARCHAR(20) DEFAULT 'Rotina',
+    nc_grave BOOLEAN DEFAULT FALSE
 );
 
 -- 3. Eco Participantes
@@ -23,7 +25,8 @@ CREATE TABLE IF NOT EXISTS eco_participantes (
     status_participacao BOOLEAN DEFAULT TRUE,
     data_entrada DATE NOT NULL,
     data_saida DATE,
-    anexo_eco VARCHAR(255)
+    anexo_eco_nome VARCHAR(255),
+    anexo_eco_dados BYTEA
 );
 
 CREATE TABLE IF NOT EXISTS kit (
@@ -49,8 +52,21 @@ CREATE TABLE IF NOT EXISTS orientacoes_educativas (
     responsavel_presente VARCHAR(255) NOT NULL,
     funcao_responsavel VARCHAR(255),
     data_orientacao DATE NOT NULL,
-    observacoes TEXT
+    observacoes TEXT,
+    signatario VARCHAR(255),
+    data_assinatura TIMESTAMP
 );
+
+-- 4.1. Migração: adiciona colunas se não existirem (upgrade seguro)
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='orientacoes_educativas' AND column_name='signatario') THEN
+        ALTER TABLE orientacoes_educativas ADD COLUMN signatario VARCHAR(255);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='orientacoes_educativas' AND column_name='data_assinatura') THEN
+        ALTER TABLE orientacoes_educativas ADD COLUMN data_assinatura TIMESTAMP;
+    END IF;
+END $$;
 
 -- 5. Log Consolidado do Painel Lateral
 CREATE TABLE IF NOT EXISTS auditoria_eventos (

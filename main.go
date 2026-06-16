@@ -19,6 +19,9 @@ func main() {
 
 	// Aqui são carregadas as rotas definidas no package routes.
 	routes.Rotas()
+	http.HandleFunc("/conservacao/dashboard", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/conservacao/dashboard.html", http.StatusFound)
+	})
 
 	// CONEXÃO COM O BANCO POSTGRESQL
 	// utils.Connect():
@@ -108,7 +111,7 @@ func main() {
 	log.Println("║   JP Mall — Servidor Go rodando com sucesso!     ║")
 
 	log.Printf(
-				"║   Acesse: http://localhost:%s		       ║\n",
+		"║   Acesse: http://localhost:%s		       ║\n",
 		port,
 	)
 

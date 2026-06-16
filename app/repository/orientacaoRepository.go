@@ -9,8 +9,8 @@ import (
 type OrientacaoRepository struct{}
 
 func (repo *OrientacaoRepository) Salvar(o models.OrientacaoEducativa) error {
-	query := `INSERT INTO orientacoes_educativas (loja_id, responsavel_presente, funcao_responsavel, data_orientacao, observacoes) VALUES ($1, $2, $3, $4, $5)`
-	_, err := DB.Exec(query, o.LojaID, o.ResponsavelPresente, o.FuncaoResponsavel, o.DataOrientacao, o.Observacoes)
+	query := `INSERT INTO orientacoes_educativas (loja_id, responsavel_presente, funcao_responsavel, data_orientacao, observacoes, signatario, data_assinatura) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	_, err := DB.Exec(query, o.LojaID, o.ResponsavelPresente, o.FuncaoResponsavel, o.DataOrientacao, o.Observacoes, o.Signatario, o.DataAssinatura)
 	if err != nil {
 		log.Printf("ERRO INSERT orientacoes_educativas, err: %e\n", err)
 		return err
@@ -19,7 +19,7 @@ func (repo *OrientacaoRepository) Salvar(o models.OrientacaoEducativa) error {
 }
 
 func (repo *OrientacaoRepository) ListarTodas() ([]models.OrientacaoEducativa, error) {
-	query := `SELECT o.id, o.loja_id, l.nome, o.responsavel_presente, o.funcao_responsavel, o.data_orientacao, o.observacoes
+	query := `SELECT o.id, o.loja_id, l.nome, o.responsavel_presente, o.funcao_responsavel, o.data_orientacao, o.observacoes, COALESCE(o.signatario, ''), o.data_assinatura
         FROM orientacoes_educativas o
         INNER JOIN lojas l ON o.loja_id = l.id
         ORDER BY o.data_orientacao DESC`
@@ -34,7 +34,7 @@ func (repo *OrientacaoRepository) ListarTodas() ([]models.OrientacaoEducativa, e
 	var lista []models.OrientacaoEducativa //cria uma lista com todas as structs lidas dentro
 	for rows.Next() {                      //Itera no banco de dados e armazena em variáveis correspondentes
 		var o models.OrientacaoEducativa
-		if err := rows.Scan(&o.ID, &o.LojaID, &o.NomeLoja, &o.ResponsavelPresente, &o.FuncaoResponsavel, &o.DataOrientacao, &o.Observacoes); err != nil {
+		if err := rows.Scan(&o.ID, &o.LojaID, &o.NomeLoja, &o.ResponsavelPresente, &o.FuncaoResponsavel, &o.DataOrientacao, &o.Observacoes, &o.Signatario, &o.DataAssinatura); err != nil {
 			return nil, err
 		}
 		lista = append(lista, o) //ao final da leitura de cada linha, adiciona um "pacote" inteiro na lista
@@ -44,9 +44,9 @@ func (repo *OrientacaoRepository) ListarTodas() ([]models.OrientacaoEducativa, e
 
 func (repo *OrientacaoRepository) BuscaPorID(id int) (models.OrientacaoEducativa, error) {
 	var o models.OrientacaoEducativa
-	query := `SELECT id, loja_id, responsavel_presente, funcao_responsavel, data_orientacao, observacoes FROM
+	query := `SELECT id, loja_id, responsavel_presente, funcao_responsavel, data_orientacao, observacoes, COALESCE(signatario, ''), data_assinatura FROM
 	orientacoes_educativas WHERE id = $1`
-	err := DB.QueryRow(query, id).Scan(&o.ID, &o.LojaID, &o.ResponsavelPresente, &o.FuncaoResponsavel, &o.DataOrientacao, &o.Observacoes)
+	err := DB.QueryRow(query, id).Scan(&o.ID, &o.LojaID, &o.ResponsavelPresente, &o.FuncaoResponsavel, &o.DataOrientacao, &o.Observacoes, &o.Signatario, &o.DataAssinatura)
 	if err != nil {
 		return o, err
 	}
@@ -60,8 +60,10 @@ func (repo *OrientacaoRepository) Atualizar(o models.OrientacaoEducativa) error 
 		SET responsavel_presente = $1, 
 		    funcao_responsavel = $2, 
 		    data_orientacao = $3, 
-		    observacoes = $4 
-		WHERE id = $5
+		    observacoes = $4,
+		    signatario = $5,
+		    data_assinatura = $6
+		WHERE id = $7
 	`
 
 	// Executa a query passando os valores na ordem dos $1, $2, etc.
@@ -70,6 +72,8 @@ func (repo *OrientacaoRepository) Atualizar(o models.OrientacaoEducativa) error 
 		o.FuncaoResponsavel,
 		o.DataOrientacao,
 		o.Observacoes,
+		o.Signatario,
+		o.DataAssinatura,
 		o.ID,
 	)
 

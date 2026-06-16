@@ -2,11 +2,17 @@ package routes
 
 import (
 	"codigo/app/controllers"
+	repo "codigo/app/repository"
+	"codigo/app/services"
 	"net/http"
 )
 
 func RotasOrientacao() {
-	var orientacaoController controllers.OrientacaoController
+	orientacaoController := controllers.OrientacaoController{
+		Service: services.OrientacaoService{
+			Repo: &repo.OrientacaoRepository{},
+		},
+	}
 
 	http.HandleFunc("/conservacao/orientacao-educativa", orientacaoController.ListarPaginaHandler)
 	http.HandleFunc("/conservacao/orientacoes/stats", orientacaoController.ExibirStats)
