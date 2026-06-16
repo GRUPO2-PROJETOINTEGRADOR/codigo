@@ -1260,7 +1260,7 @@
       try {
         const [rInsp, rPart, rRes, rKits, rLojas] = await Promise.all([
           fetch('/api/inspecoes'),
-          fetch('/conservacao/eco-flamboyant'),
+          fetch('/api/eco/participantes'),
           fetch('/api/eco/residuos'),
           fetch('/api/eco/kits'),
           fetch('/api/lojas')
