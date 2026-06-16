@@ -37,8 +37,6 @@ func main() {
 
 	}
 
-	utils.ConnectMinio()
-
 	// Endpoint:
 	//   GET /api/lojas
 	// Fluxo:
