@@ -198,3 +198,38 @@ func ListarLojasBusca(db *sql.DB, q string) ([]models.LojaBusca, error) {
 func BuscarLojasDisponiveis(db *sql.DB, q string) ([]models.Loja, error) {
 	return utils.BuscarLojasDisponiveis(db, q)
 }
+
+func AtualizarParticipante(db *sql.DB, lojaID, dataEntradaStr, dataSaidaStr string) error {
+	if lojaID == "" {
+		return errors.New("loja obrigatória")
+	}
+	dataEntrada, err := time.Parse("2006-01-02", dataEntradaStr)
+	if err != nil {
+		return errors.New("data de entrada inválida")
+	}
+	var dataSaida *time.Time
+	if dataSaidaStr != "" {
+		parsed, err := time.Parse("2006-01-02", dataSaidaStr)
+		if err != nil {
+			return errors.New("data de saída inválida")
+		}
+		dataSaida = &parsed
+	}
+	if dataSaida != nil && dataSaida.Before(dataEntrada) {
+		return errors.New("A data de saída não pode ser anterior à data de entrada.")
+	}
+	if err := utils.AtualizarParticipante(db, lojaID, dataEntrada, dataSaida); err != nil {
+		return err
+	}
+	return utils.InserirAuditoria(db, lojaID, "eco_participantes", "EDITAR")
+}
+
+func InativarParticipante(db *sql.DB, lojaID string) error {
+	if lojaID == "" {
+		return errors.New("loja obrigatória")
+	}
+	if err := utils.InativarParticipante(db, lojaID); err != nil {
+		return err
+	}
+	return utils.InserirAuditoria(db, lojaID, "eco_participantes", "INATIVAR")
+}

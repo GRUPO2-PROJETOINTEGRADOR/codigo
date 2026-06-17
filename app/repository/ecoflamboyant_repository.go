@@ -311,7 +311,12 @@ func ResumoResiduos(db *sql.DB, dataInicio, dataFim, lojaID string) (totalGeral,
 }
 
 func InativarLoja(db *sql.DB, lojaID string) error {
-	_, err := db.Exec(`UPDATE eco_participantes SET status_participacao = FALSE, data_saida = CURRENT_DATE WHERE loja_id = $1`, lojaID)
+	_, err := db.Exec(`UPDATE eco_participantes SET status_participacao = FALSE, data_saida = CURRENT_DATE WHERE loja_id = $1 AND data_entrada = (SELECT MAX(data_entrada) FROM eco_participantes WHERE loja_id = $1)`, lojaID)
+	return err
+}
+
+func InativarParticipante(db *sql.DB, lojaID string) error {
+	_, err := db.Exec(`UPDATE eco_participantes SET status_participacao = false, data_saida = CURRENT_DATE WHERE loja_id = $1 AND data_entrada = (SELECT MAX(data_entrada) FROM eco_participantes WHERE loja_id = $1)`, lojaID)
 	return err
 }
 
@@ -396,6 +401,14 @@ func BuscarLojas(db *sql.DB, q string) ([]models.LojaBusca, error) {
 		lista = append(lista, models.LojaBusca{ID: id, Nome: nome, LUC: id})
 	}
 	return lista, nil
+}
+
+func AtualizarParticipante(db *sql.DB, lojaID string, dataEntrada time.Time, dataSaida *time.Time) error {
+	query := `UPDATE eco_participantes
+		SET data_entrada = $1, data_saida = $2
+		WHERE loja_id = $3 AND data_entrada = (SELECT MAX(data_entrada) FROM eco_participantes WHERE loja_id = $3)`
+	_, err := db.Exec(query, dataEntrada, dataSaida, lojaID)
+	return err
 }
 
 func BuscarLojasDisponiveis(db *sql.DB, q string) ([]models.Loja, error) {

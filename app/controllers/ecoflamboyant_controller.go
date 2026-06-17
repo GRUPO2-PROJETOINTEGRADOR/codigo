@@ -306,6 +306,52 @@ func (c *EcoflamboyantController) AlterarStatusLoja(w http.ResponseWriter, r *ht
 	http.Redirect(w, r, "/conservacao/eco-flamboyant?aba=lojas", http.StatusSeeOther)
 }
 
+func (c *EcoflamboyantController) EditarParticipanteHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		return
+	}
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Erro ao processar formulário", http.StatusBadRequest)
+		return
+	}
+	lojaID := r.FormValue("loja_id")
+	dataEntrada := r.FormValue("data_entrada")
+	dataSaida := r.FormValue("data_saida")
+
+	err := s.AtualizarParticipante(utils.DB, lojaID, dataEntrada, dataSaida)
+	if err != nil {
+		log.Printf("Erro ao editar participante: %v", err)
+		pageData := c.montarPaginaErro(r, "lojas", time.Now().Format("2006-01-02"))
+		pageData.ErroForm = err.Error()
+		tmpl := tmplEcoFlamboyant()
+		tmpl.ExecuteTemplate(w, "eco-flamboyant", pageData)
+		return
+	}
+	http.Redirect(w, r, "/conservacao/eco-flamboyant?aba=lojas", http.StatusSeeOther)
+}
+
+func (c *EcoflamboyantController) RemoverParticipanteHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		return
+	}
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Erro ao processar formulário", http.StatusBadRequest)
+		return
+	}
+	lojaID := r.FormValue("loja_id")
+	if err := s.InativarParticipante(utils.DB, lojaID); err != nil {
+		log.Printf("Erro ao remover participante: %v", err)
+		pageData := c.montarPaginaErro(r, "lojas", time.Now().Format("2006-01-02"))
+		pageData.ErroForm = err.Error()
+		tmpl := tmplEcoFlamboyant()
+		tmpl.ExecuteTemplate(w, "eco-flamboyant", pageData)
+		return
+	}
+	http.Redirect(w, r, "/conservacao/eco-flamboyant?aba=lojas", http.StatusSeeOther)
+}
+
 func (c *EcoflamboyantController) DownloadTermo(w http.ResponseWriter, r *http.Request) {
 	lojaID := strings.TrimPrefix(r.URL.Path, "/conservacao/eco-flamboyant/termo/")
 	nome, dados, err := utils.BuscarTermoPorLoja(utils.DB, lojaID)

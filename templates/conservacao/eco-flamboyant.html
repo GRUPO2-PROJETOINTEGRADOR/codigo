@@ -487,13 +487,15 @@
               class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20">
               <svg viewBox="0 0 24 24" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
-                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                <line x1="10" x2="10" y1="11" y2="17" />
+                <line x1="14" x2="14" y1="11" y2="17" />
               </svg>
             </div>
             <div>
               <p class="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] mb-1">Volume Total Gerado</p>
-              <h4 id="kpi-total" class="text-3xl font-black">{{printf "%.1f" .VolumeTotalGeral}} <span
+              <h4 id="kpi-total" class="text-3xl font-bold">{{printf "%.1f" .VolumeTotalGeral}} <span
                    class="text-sm font-medium text-white/60 ml-1">kg</span></h4>
             </div>
           </div>
@@ -503,13 +505,14 @@
               class="w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
               <svg viewBox="0 0 24 24" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" />
-                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+                <polyline points="23 4 23 10 17 10" />
+                <polyline points="1 20 1 14 7 14" />
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
               </svg>
             </div>
             <div>
               <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Total Aproveitado</p>
-              <h4 id="kpi-adubo" class="text-3xl font-black text-gray-900 dark:text-gray-100">{{printf "%.1f" .TotalAdubo}} <span
+              <h4 id="kpi-adubo" class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{printf "%.1f" .TotalAdubo}} <span
                    class="text-sm font-medium text-gray-400 ml-1">kg</span></h4>
             </div>
           </div>
@@ -526,7 +529,7 @@
             </div>
             <div>
               <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Total Descartado</p>
-              <h4 id="kpi-descarte" class="text-3xl font-black text-gray-900 dark:text-gray-100">{{printf "%.1f" .TotalDescartado}} <span
+              <h4 id="kpi-descarte" class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{printf "%.1f" .TotalDescartado}} <span
                    class="text-sm font-medium text-gray-400 ml-1">kg</span></h4>
             </div>
           </div>
@@ -536,15 +539,15 @@
               class="w-14 h-14 rounded-2xl bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-[#8B1A1A] dark:text-red-400">
               <svg viewBox="0 0 24 24" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                <rect x="2" y="7" width="20" height="14" rx="2" />
+                <path d="M16 21V14a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v7" />
+                <path d="M2 7 6 3h12l4 4" />
+                <line x1="6" x2="18" y1="21" y2="21" />
               </svg>
             </div>
             <div>
               <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Lojas Parceiras</p>
-              <h4 id="kpi-lojas" class="text-3xl font-black text-gray-900 dark:text-gray-100">{{.TotalLojasParticipantes}}</h4>
+              <h4 id="kpi-lojas" class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{.TotalLojasParticipantes}}</h4>
             </div>
           </div>
           <div
@@ -559,7 +562,7 @@
             </div>
             <div>
               <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Taxa de Aproveitamento</p>
-              <h4 id="kpi-taxa" class="text-3xl font-black text-gray-900 dark:text-gray-100">{{printf "%.0f" .TaxaAproveitamento}}%</h4>
+              <h4 id="kpi-taxa" class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{printf "%.0f" .TaxaAproveitamento}}%</h4>
             </div>
           </div>
           <div
@@ -579,7 +582,7 @@
             </div>
             <div>
               <p class="text-[10px] font-black text-white/70 uppercase tracking-[0.2em] mb-1">Total de Kits (Cestas)</p>
-              <h4 id="kpi-kits" class="text-3xl font-black">{{.TotalKits}} <span
+              <h4 id="kpi-kits" class="text-3xl font-bold">{{.TotalKits}} <span
                   class="text-sm font-medium text-white/60 ml-1">unid</span></h4>
             </div>
           </div>
@@ -590,7 +593,7 @@
           <!-- Chart 1 -->
           <div class="bg-white dark:bg-[#252525] p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
             <h3
-              class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6 flex items-center gap-2">
+              class="text-sm font-bold text-gray-900 dark:text-gray-100 tracking-wider mb-6 flex items-center gap-2">
               <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
@@ -605,7 +608,7 @@
           <!-- Chart 2 -->
           <div class="bg-white dark:bg-[#252525] p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
             <h3
-              class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6 flex items-center gap-2">
+              class="text-sm font-bold text-gray-900 dark:text-gray-100 tracking-wider mb-6 flex items-center gap-2">
               <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
@@ -613,7 +616,7 @@
                 <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
               </svg>
-              Crescimento do Projeto (Lojas)
+              Evolução de lojas parceiras
             </h3>
             <div class="h-[200px] w-full relative">
               <canvas id="chart-crescimento" class="w-full h-full"></canvas>
@@ -622,13 +625,13 @@
           <!-- Chart 3 -->
           <div class="bg-white dark:bg-[#252525] p-6 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
             <h3
-              class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-6 flex items-center gap-2">
+              class="text-sm font-bold text-gray-900 dark:text-gray-100 tracking-wider mb-6 flex items-center gap-2">
               <svg viewBox="0 0 24 24" class="w-4 h-4 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
                 <polyline points="16 7 22 7 22 13" />
               </svg>
-              Fluxo de Entrega de Kits
+              Quantidade de entrega de kits
             </h3>
             <div class="h-[200px] w-full relative">
               <canvas id="chart-fluxo-kits" class="w-full h-full"></canvas>
@@ -739,18 +742,60 @@
                 <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>Lojas Parceiras</h3>
               </div>
               <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
-                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja / LUC</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Início</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Status</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Termo</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Ações</th></tr></thead>
+                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja / LUC</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Início</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Fim</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase text-right">Status</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Termo</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase text-right">Ações</th></tr></thead>
                 <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
                   {{ range .Participantes }}
                   <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
                     <td class="px-6 py-4"><div class="text-sm font-bold text-gray-900 dark:text-gray-100">{{ .LojaName }}</div><div class="text-xs text-gray-500">LUC {{ .LojaID }}</div></td>
                     <td class="px-6 py-4 text-xs text-gray-600 dark:text-gray-400">{{ .DataEntrada.Format "02/01/2006" }}</td>
-                    <td class="px-6 py-4">{{ if .Status }}<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 text-green-700 border border-green-200">Ativo</span>{{ else }}<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-100 text-gray-600">Inativo</span>{{ end }}</td>
+                    <td class="px-6 py-4 text-xs text-gray-600 dark:text-gray-400">{{if .DataSaida}}{{.DataSaida.Format "02/01/2006"}}{{else}}<span class="text-gray-300">—</span>{{end}}</td>
+                    <td class="px-6 py-4 text-right">{{ if .Status }}<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 text-green-700 border border-green-200">Ativo</span>{{ else }}<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-50 text-red-600 border border-red-200">Inativo</span>{{ end }}</td>
                     <td class="px-6 py-4">{{if .AnexoEcoNome}}<a href="/conservacao/eco-flamboyant/termo/{{.LojaID}}" target="_blank" class="text-[#8B1A1A] underline text-xs font-medium">📄 {{.AnexoEcoNome}}</a>{{else}}<span class="text-xs text-gray-400">—</span>{{end}}</td>
-                    <td class="px-6 py-4">{{ if .Status }}<form action="/conservacao/eco-flamboyant/status" method="POST" class="inline"><input type="hidden" name="loja_id" value="{{.LojaID}}"><input type="hidden" name="acao" value="inativar"><button type="submit" class="btn-inativar px-3 py-1.5 rounded-lg text-xs font-bold border bg-red-50 text-red-600 border-red-100 cursor-pointer">Inativar</button></form>{{ else }}<form action="/conservacao/eco-flamboyant/status" method="POST" class="inline"><input type="hidden" name="loja_id" value="{{.LojaID}}"><input type="hidden" name="acao" value="ativar"><button type="submit" class="btn-ativar px-3 py-1.5 rounded-lg text-xs font-bold border bg-emerald-50 text-emerald-600 border-emerald-200 cursor-pointer">Ativar</button></form>{{ end }}</td>
+                    <td class="px-6 py-4 text-right">
+                      <div class="inline-flex items-center gap-1.5">
+                        <button type="button"
+                          class="btn-editar-loja inline-flex items-center justify-center w-8 h-8 rounded-full border border-gray-200 text-gray-400 hover:text-gray-600 hover:border-gray-400 transition-colors cursor-pointer"
+                          title="Editar"
+                          data-id="{{.LojaID}}"
+                          data-nome="{{.LojaName}}"
+                          data-entrada="{{.DataEntrada.Format "2006-01-02"}}"
+                          data-saida="{{if .DataSaida}}{{.DataSaida.Format "2006-01-02"}}{{end}}">
+                          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                            <path d="m15 5 4 4" />
+                          </svg>
+                        </button>
+                        {{ if .Status }}
+                        <form action="/conservacao/eco-flamboyant/status" method="POST" class="inline">
+                          <input type="hidden" name="loja_id" value="{{.LojaID}}">
+                          <input type="hidden" name="acao" value="inativar">
+                          <button type="submit"
+                            class="inline-flex items-center justify-center w-8 h-8 rounded-full border border-red-200 bg-red-50 text-red-400 hover:bg-red-100 hover:text-red-600 transition-colors cursor-pointer"
+                            title="Inativar">
+                            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <line x1="18" x2="6" y1="6" y2="18" />
+                              <line x1="6" x2="18" y1="6" y2="18" />
+                            </svg>
+                          </button>
+                        </form>
+                        {{ else }}
+                        <form action="/conservacao/eco-flamboyant/status" method="POST" class="inline">
+                          <input type="hidden" name="loja_id" value="{{.LojaID}}">
+                          <input type="hidden" name="acao" value="ativar">
+                          <button type="submit"
+                            class="inline-flex items-center justify-center w-8 h-8 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-400 hover:bg-emerald-100 hover:text-emerald-600 transition-colors cursor-pointer"
+                            title="Ativar">
+                            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          </button>
+                        </form>
+                        {{ end }}
+                      </div>
+                    </td>
                   </tr>
                   {{ else }}
-                  <tr><td colspan="5" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum participante cadastrado.</td></tr>
+                  <tr><td colspan="6" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum participante cadastrado.</td></tr>
                   {{ end }}
                 </tbody>
               </table></div>
@@ -1113,6 +1158,59 @@
       </form>
     </div>
   </div>
+
+  <!-- Modal Editar Vínculo -->
+  <div id="modal-editar-vinculo" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.3); backdrop-filter: blur(2px); z-index: 9999; justify-content: center; align-items: center; font-family: system-ui, -apple-system, sans-serif;">
+    <div style="background: #ffffff; padding: 26px 32px; border-radius: 4px; width: 100%; max-width: 440px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); box-sizing: border-box; border: 1px solid #e2e8f0;">
+      <h3 style="margin: 0 0 4px 0; font-size: 18px; font-weight: 600; color: #0f172a;">Editar Vínculo</h3>
+      <p id="modal-nome-loja" style="margin: 0 0 20px 0; font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px;"></p>
+
+      <form id="form-editar-vinculo" method="POST" action="/conservacao/eco-flamboyant/loja/editar" style="margin: 0;">
+        <input type="hidden" id="edit-loja-id" name="loja_id">
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; letter-spacing: 0.5px; margin-bottom: 6px;">DATA INÍCIO</label>
+          <input type="date" id="edit-data-entrada" name="data_entrada" required style="width: 100%; height: 38px; padding: 0 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; color: #334155; box-sizing: border-box; outline: none;">
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; letter-spacing: 0.5px; margin-bottom: 6px;">DATA FIM</label>
+          <input type="date" id="edit-data-saida" name="data_saida" style="width: 100%; height: 38px; padding: 0 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; color: #334155; box-sizing: border-box; outline: none;">
+        </div>
+
+        <div id="rodape-acoes-padrao" style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+          <button type="button" id="btn-remover-loja-grafico" style="height: 36px; padding: 0 12px; border: 1px solid #fca5a5; border-radius: 4px; background: #fff5f5; color: #dc2626; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: all 0.2s;" onmouseover="this.style.background='#fee2e2';" onmouseout="this.style.background='#fff5f5';">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+            Remover Loja
+          </button>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button type="button" id="btn-fechar-modal-editar" style="height: 36px; padding: 0 14px; border: 1px solid #cbd5e1; border-radius: 4px; background: #ffffff; color: #64748b; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;">
+              Cancelar
+            </button>
+            <button type="submit" style="height: 36px; padding: 0 16px; border: none; border-radius: 4px; background: #1e40af; color: #ffffff; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;" onmouseover="this.style.background='#1d4ed8';" onmouseout="this.style.background='#1e40af';">
+              Salvar Alterações
+            </button>
+          </div>
+        </div>
+
+        <div id="rodape-acoes-confirmacao" style="display: none; justify-content: space-between; align-items: center; background: #fff1f2; padding: 12px; border-radius: 4px; border: 1px solid #fecdd3; margin-top: 4px;">
+          <span style="font-size: 13px; font-weight: 600; color: #991b1b;">Deseja inativar o vínculo?</span>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" id="btn-confirmar-nao" style="height: 30px; padding: 0 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: #ffffff; color: #475569; font-size: 12px; font-weight: 500; cursor: pointer;">
+              Não
+            </button>
+            <button type="button" id="btn-confirmar-sim" style="height: 30px; padding: 0 16px; border: none; border-radius: 4px; background: #dc2626; color: #ffffff; font-size: 12px; font-weight: 600; cursor: pointer;">
+              Sim
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <form id="form-remover-loja" method="POST" action="/conservacao/eco-flamboyant/loja/remover">
+    <input type="hidden" id="remover-loja-id" name="loja_id">
+  </form>
 
   <div id="toast-container" class="fixed bottom-4 right-4 z-[99999] flex flex-col gap-2 pointer-events-none"></div>
 
@@ -1655,6 +1753,68 @@
         this.value = '';
       } else {
         this.setCustomValidity('');
+      }
+    });
+
+    // Modal editar vinculo — delegacao global (funciona apos paginacao/render)
+    document.addEventListener("DOMContentLoaded", function() {
+      var modal = document.getElementById("modal-editar-vinculo");
+      var modalNomeLoja = document.getElementById("modal-nome-loja");
+      var inputId = document.getElementById("edit-loja-id");
+      var inputEntrada = document.getElementById("edit-data-entrada");
+      var inputSaida = document.getElementById("edit-data-saida");
+      var btnFechar = document.getElementById("btn-fechar-modal-editar");
+
+      if (!modal) { console.error("Modal #modal-editar-vinculo nao encontrado."); return; }
+
+      document.body.addEventListener("click", function(event) {
+        var btn = event.target.closest(".btn-editar-loja");
+        if (btn) {
+          event.preventDefault();
+          if (modalNomeLoja) modalNomeLoja.textContent = btn.getAttribute("data-nome");
+          if (inputId) inputId.value = btn.getAttribute("data-id");
+          if (inputEntrada) inputEntrada.value = btn.getAttribute("data-entrada");
+          if (inputSaida) inputSaida.value = btn.getAttribute("data-saida") === "-" ? "" : btn.getAttribute("data-saida");
+          if (rodapePadrao && rodapeConfirmacao) {
+            rodapePadrao.style.display = "flex";
+            rodapeConfirmacao.style.display = "none";
+          }
+          modal.style.display = "flex";
+        }
+      });
+
+      if (btnFechar) {
+        btnFechar.addEventListener("click", function() { modal.style.display = "none"; });
+      }
+      modal.addEventListener("click", function(e) { if (e.target === modal) modal.style.display = "none"; });
+
+      var btnRemover = document.getElementById("btn-remover-loja-grafico");
+      var rodapePadrao = document.getElementById("rodape-acoes-padrao");
+      var rodapeConfirmacao = document.getElementById("rodape-acoes-confirmacao");
+      var btnConfirmarNao = document.getElementById("btn-confirmar-nao");
+      var btnConfirmarSim = document.getElementById("btn-confirmar-sim");
+
+      if (btnRemover && rodapePadrao && rodapeConfirmacao) {
+        btnRemover.addEventListener("click", function(e) {
+          e.preventDefault();
+          rodapePadrao.style.display = "none";
+          rodapeConfirmacao.style.display = "flex";
+        });
+      }
+
+      if (btnConfirmarNao) {
+        btnConfirmarNao.addEventListener("click", function() {
+          rodapeConfirmacao.style.display = "none";
+          rodapePadrao.style.display = "flex";
+        });
+      }
+
+      if (btnConfirmarSim) {
+        btnConfirmarSim.addEventListener("click", function() {
+          var lojaId = document.getElementById("edit-loja-id").value;
+          document.getElementById("remover-loja-id").value = lojaId;
+          document.getElementById("form-remover-loja").submit();
+        });
       }
     });
   </script>
