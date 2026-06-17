@@ -115,12 +115,15 @@ func ContarResiduos(db *sql.DB, dataInicio, dataFim, lojaID string) (int, error)
 	return total, err
 }
 
-func ListarKits(db *sql.DB, limit, offset int) ([]models.Kit, error) {
+func ListarKits(db *sql.DB, dataInicio, dataFim, lojaID string, limit, offset int) ([]models.Kit, error) {
 	rows, err := db.Query(`SELECT k.id, l.nome, k.data_entrega_kit, k.qnt_kit
 		FROM kit k
 		JOIN lojas l ON l.id = k.loja_id
+		WHERE ($1 = '' OR k.data_entrega_kit >= $1::date)
+		  AND ($2 = '' OR k.data_entrega_kit <= $2::date)
+		  AND ($3 = '' OR k.loja_id = $3)
 		ORDER BY k.data_entrega_kit DESC
-		LIMIT CASE WHEN $1 > 0 THEN $1 ELSE NULL END OFFSET $2`, limit, offset)
+		LIMIT CASE WHEN $4 > 0 THEN $4 ELSE NULL END OFFSET $5`, dataInicio, dataFim, lojaID, limit, offset)
 	if err != nil {
 		return nil, err
 	}
@@ -137,25 +140,35 @@ func ListarKits(db *sql.DB, limit, offset int) ([]models.Kit, error) {
 	return lista, nil
 }
 
-func ContarParticipantes(db *sql.DB) (int, error) {
+func ContarParticipantes(db *sql.DB, dataInicio, dataFim string) (int, error) {
 	var total int
-	err := db.QueryRow(`SELECT COUNT(*)
+	err := db.QueryRow(`SELECT COUNT(*) FROM (
+		SELECT DISTINCT ON (ep.loja_id) ep.loja_id
 		FROM eco_participantes ep
-		JOIN lojas l ON l.id = ep.loja_id`).Scan(&total)
+		WHERE ($1 = '' OR ep.data_entrada >= $1::date)
+		  AND ($2 = '' OR ep.data_entrada <= $2::date)
+		ORDER BY ep.loja_id, ep.data_entrada DESC
+	) sub`, dataInicio, dataFim).Scan(&total)
 	return total, err
 }
 
-func ContarKits(db *sql.DB) (int, error) {
+func ContarKits(db *sql.DB, dataInicio, dataFim, lojaID string) (int, error) {
 	var total int
-	err := db.QueryRow(`SELECT COUNT(*) FROM kit`).Scan(&total)
+	err := db.QueryRow(`SELECT COUNT(*) FROM kit k
+		WHERE ($1 = '' OR k.data_entrega_kit >= $1::date)
+		  AND ($2 = '' OR k.data_entrega_kit <= $2::date)
+		  AND ($3 = '' OR k.loja_id = $3)`, dataInicio, dataFim, lojaID).Scan(&total)
 	return total, err
 }
 
-func ContarAuditoriasEventos(db *sql.DB) (int, error) {
+func ContarAuditoriasEventos(db *sql.DB, dataInicio, dataFim, lojaID string) (int, error) {
 	var total int
 	err := db.QueryRow(`SELECT COUNT(*)
 		FROM auditoria_eventos a
-		JOIN lojas l ON l.id = a.loja_id`).Scan(&total)
+		JOIN lojas l ON l.id = a.loja_id
+		WHERE ($1 = '' OR a.data_evento >= $1::date)
+		  AND ($2 = '' OR a.data_evento <= $2::date)
+		  AND ($3 = '' OR a.loja_id = $3)`, dataInicio, dataFim, lojaID).Scan(&total)
 	return total, err
 }
 
@@ -219,14 +232,21 @@ func FluxoKitsPorPeriodo(db *sql.DB) ([]models.PontoKits, error) {
 	return pontos, nil
 }
 
-func ListarParticipantes(db *sql.DB, limit, offset int) ([]models.Participante, error) {
-	query := `SELECT ep.loja_id, l.nome, ep.status_participacao, ep.data_entrada, ep.data_saida, ep.anexo_eco_nome
-		FROM eco_participantes ep
-		JOIN lojas l ON l.id = ep.loja_id
-		ORDER BY ep.status_participacao DESC, ep.data_entrada DESC
-		LIMIT CASE WHEN $1 > 0 THEN $1 ELSE NULL END OFFSET $2`
+func ListarParticipantes(db *sql.DB, dataInicio, dataFim string, limit, offset int) ([]models.Participante, error) {
+	query := `SELECT sub.loja_id, sub.nome, sub.status_participacao, sub.data_entrada, sub.data_saida, sub.anexo_eco_nome
+		FROM (
+			SELECT DISTINCT ON (ep.loja_id) ep.loja_id, l.nome, ep.status_participacao,
+				ep.data_entrada, ep.data_saida, ep.anexo_eco_nome
+			FROM eco_participantes ep
+			JOIN lojas l ON l.id = ep.loja_id
+			WHERE ($1 = '' OR ep.data_entrada >= $1::date)
+			  AND ($2 = '' OR ep.data_entrada <= $2::date)
+			ORDER BY ep.loja_id, ep.data_entrada DESC
+		) sub
+		ORDER BY sub.status_participacao DESC, sub.data_entrada DESC
+		LIMIT CASE WHEN $3 > 0 THEN $3 ELSE NULL END OFFSET $4`
 
-	rows, err := db.Query(query, limit, offset)
+	rows, err := db.Query(query, dataInicio, dataFim, limit, offset)
 	if err != nil {
 		return nil, err
 	}
@@ -289,12 +309,15 @@ func InserirAuditoria(db *sql.DB, lojaID, entidade, acao string) error {
 	return err
 }
 
-func ListarAuditoriasEventos(db *sql.DB, limit, offset int) ([]models.RegistroAuditoria, error) {
+func ListarAuditoriasEventos(db *sql.DB, dataInicio, dataFim, lojaID string, limit, offset int) ([]models.RegistroAuditoria, error) {
 	rows, err := db.Query(`SELECT a.id, l.nome, a.entidade, a.acao, a.data_evento
 		FROM auditoria_eventos a
 		JOIN lojas l ON l.id = a.loja_id
+		WHERE ($1 = '' OR a.data_evento >= $1::date)
+		  AND ($2 = '' OR a.data_evento <= $2::date)
+		  AND ($3 = '' OR a.loja_id = $3)
 		ORDER BY a.data_evento DESC
-		LIMIT CASE WHEN $1 > 0 THEN $1 ELSE NULL END OFFSET $2`, limit, offset)
+		LIMIT CASE WHEN $4 > 0 THEN $4 ELSE NULL END OFFSET $5`, dataInicio, dataFim, lojaID, limit, offset)
 	if err != nil {
 		return nil, err
 	}
@@ -331,6 +354,29 @@ func FluxoResiduosPorPeriodo(db *sql.DB) ([]models.PontoResiduos, error) {
 			return nil, err
 		}
 		lista = append(lista, p)
+	}
+	return lista, nil
+}
+
+func BuscarLojasDisponiveis(db *sql.DB, q string) ([]models.Loja, error) {
+	rows, err := db.Query(`SELECT l.id, l.nome FROM lojas l
+		WHERE l.id NOT IN (
+			SELECT loja_id FROM eco_participantes WHERE status_participacao = TRUE
+		)
+		AND ($1 = '' OR l.nome ILIKE '%' || $1 || '%' OR l.id ILIKE '%' || $1 || '%')
+		ORDER BY l.nome LIMIT 20`, q)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var lista []models.Loja
+	for rows.Next() {
+		var l models.Loja
+		if err := rows.Scan(&l.ID, &l.Nome); err != nil {
+			return nil, err
+		}
+		lista = append(lista, l)
 	}
 	return lista, nil
 }

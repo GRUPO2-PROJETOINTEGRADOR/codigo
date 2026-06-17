@@ -45,6 +45,16 @@
         transform: translateY(0px);
         box-shadow: none;
     }
+
+    .btn-filtro-rapido.active {
+        background-color: #8B1A1A;
+        color: white;
+        border-color: #8B1A1A;
+    }
+    .dark .btn-filtro-rapido.active {
+        background-color: #D93030;
+        border-color: #D93030;
+    }
   </style>
   <script>
     (function () {
@@ -603,8 +613,8 @@
 
         <!-- Navigation Tabs -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-2">
-          <button onclick="setTab('lojas')" id="tab-lojas"
-            class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-[#8B1A1A]/5 border-[#8B1A1A] text-[#8B1A1A] dark:bg-[#8B1A1A]/10 dark:border-[#D93030] dark:text-[#D93030] shadow-sm ring-2 ring-[#8B1A1A]/10">
+          <a href="?aba=lojas" id="tab-lojas"
+            class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-[#8B1A1A]/5 border-[#8B1A1A] text-[#8B1A1A] dark:bg-[#8B1A1A]/10 dark:border-[#D93030] dark:text-[#D93030] shadow-sm ring-2 ring-[#8B1A1A]/10 no-underline">
             <div class="flex items-center gap-3">
               <div class="tab-icon p-2.5 rounded-lg bg-[#8B1A1A]/10 text-[#8B1A1A] dark:text-[#D93030]"><svg
                   viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -628,9 +638,9 @@
             </div>
             <span id="badge-lojas"
               class="px-2 py-0.5 text-xs font-bold rounded-full bg-[#8B1A1A] dark:bg-[#D93030] text-white">{{.TotalLojasParticipantes}}</span>
-          </button>
-          <button onclick="setTab('residuos')" id="tab-residuos"
-            class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700">
+          </a>
+          <a href="?aba=residuos" id="tab-residuos"
+            class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700 no-underline">
             <div class="flex items-center gap-3">
               <div class="tab-icon p-2.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-400"><svg viewBox="0 0 24 24"
                   class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
@@ -648,9 +658,9 @@
             </div>
             <span id="badge-residuos"
               class="px-2 py-0.5 text-xs font-bold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">{{.TotalResiduos}}</span>
-          </button>
-          <button onclick="setTab('kits')" id="tab-kits"
-            class="p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left relative overflow-hidden cursor-pointer hover:shadow-md bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/30 text-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600 shadow-sm">
+          </a>
+          <a href="?aba=kits" id="tab-kits"
+            class="p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left relative overflow-hidden cursor-pointer hover:shadow-md bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/30 text-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600 shadow-sm no-underline">
             <div
               class="absolute top-0 right-0 w-12 h-12 bg-emerald-500/10 rounded-full blur-lg animate-pulse pointer-events-none">
             </div>
@@ -680,9 +690,9 @@
             </div>
             <span id="badge-kits"
               class="px-2.5 py-0.5 text-xs font-black rounded-full bg-emerald-600 text-white">{{.TotalKits}}</span>
-          </button>
-          <button onclick="setTab('registros')" id="tab-registros"
-            class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700">
+          </a>
+          <a href="?aba=registros" id="tab-registros"
+            class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700 no-underline">
             <div class="flex items-center gap-3">
               <div class="tab-icon p-2.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-400"><svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
               <div>
@@ -692,12 +702,66 @@
             </div>
             <span id="badge-registros"
               class="px-2 py-0.5 text-xs font-bold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">{{len .Registros}}</span>
-          </button>
+          </a>
         </div>
 
         <!-- Content Area -->
         <div
           class="bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
+          <!-- Unified Search + Filter Bar -->
+          <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-[#252525]">
+            <div class="flex items-center gap-3">
+              <div class="relative flex-1">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="text" id="search-table" placeholder="Buscar restaurante por nome ou LUC..."
+                  class="w-full pl-10 pr-4 py-2 text-sm bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg outline-none text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all">
+              </div>
+              <button id="btn-toggle-filtros" type="button"
+                class="flex items-center gap-2 px-4 py-2 text-sm font-bold text-[#8B1A1A] border border-[#8B1A1A] rounded-lg hover:bg-[#8B1A1A]/5 transition-all">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+                Filtros
+              </button>
+              <a href="/conservacao/eco-flamboyant/relatorio?aba={{.AbaAtiva}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}&filtro_loja_id={{.FiltroLojaID}}"
+                class="flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-[#8B1A1A] hover:bg-[#a43030] rounded-lg transition-all">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                Emitir Relatório
+              </a>
+            </div>
+          </div>
+          <!-- Retractable Date Filter Panel -->
+          <div id="painel-filtros-data" class="hidden px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-[#1a1a1a]/50">
+            <form method="GET" action="/conservacao/eco-flamboyant" class="form-filtros flex flex-wrap items-end gap-4">
+              <input type="hidden" name="aba" id="filtro-aba-hidden" value="{{.AbaAtiva}}">
+              <div class="space-y-1">
+                <label class="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  De
+                </label>
+                <input type="date" name="filtro_data_inicio" value="{{.FiltroDataInicio}}"
+                  class="bg-white dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+              </div>
+              <div class="space-y-1">
+                <label class="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Até
+                </label>
+                <input type="date" name="filtro_data_fim" value="{{.FiltroDataFim}}"
+                  class="bg-white dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
+              </div>
+              <div class="flex items-center gap-2 filtros-rapidos pb-0.5">
+                <button type="button" onclick="filtrarPeriodo(15, this)" data-dias="15"
+                  class="btn-filtro-rapido px-3 py-1.5 text-xs font-medium rounded-lg border transition-all border-gray-200 text-gray-600 bg-white hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-[#1f1f1f] dark:hover:bg-gray-800 cursor-pointer">15 dias</button>
+                <button type="button" onclick="filtrarPeriodo(30, this)" data-dias="30"
+                  class="btn-filtro-rapido px-3 py-1.5 text-xs font-medium rounded-lg border transition-all border-gray-200 text-gray-600 bg-white hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-[#1f1f1f] dark:hover:bg-gray-800 cursor-pointer">30 dias</button>
+                <button type="button" onclick="filtrarPeriodo(60, this)" data-dias="60"
+                  class="btn-filtro-rapido px-3 py-1.5 text-xs font-medium rounded-lg border transition-all border-gray-200 text-gray-600 bg-white hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-[#1f1f1f] dark:hover:bg-gray-800 cursor-pointer">60 dias</button>
+              </div>
+              <button type="submit"
+                class="px-4 py-2 text-sm font-bold text-white bg-[#8B1A1A] hover:bg-[#a43030] rounded-lg">Filtrar</button>
+              <a href="?aba={{.AbaAtiva}}"
+                class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Limpar</a>
+            </form>
+          </div>
           <div id="tab-content">
             <div id="tab-lojas-content">
               <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
@@ -719,16 +783,16 @@
                   {{ end }}
                 </tbody>
               </table></div>
-              {{if gt .TotalPaginas 1}}
+              {{if gt .TotalPaginasLojas 1}}
               <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100 dark:border-gray-800">
-                <div class="text-xs text-gray-500">Página {{.PaginaAtual}} de {{.TotalPaginas}}</div>
+                <div class="text-xs text-gray-500">Página {{.PaginaAtual}} de {{.TotalPaginasLojas}}</div>
                 <div class="flex gap-2">
                   {{if gt .PaginaAtual 1}}
-                  <a href="?aba=lojas&pagina={{sub .PaginaAtual 1}}"
+                  <a href="?aba=lojas&pagina={{sub .PaginaAtual 1}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}"
                     class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">&larr; Anterior</a>
                   {{end}}
-                  {{if lt .PaginaAtual .TotalPaginas}}
-                  <a href="?aba=lojas&pagina={{add .PaginaAtual 1}}"
+                  {{if lt .PaginaAtual .TotalPaginasLojas}}
+                  <a href="?aba=lojas&pagina={{add .PaginaAtual 1}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}"
                     class="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#8B1A1A] text-white hover:bg-[#a43030]">Próxima &rarr;</a>
                   {{end}}
                 </div>
@@ -738,35 +802,6 @@
             <div id="tab-residuos-content" class="hidden">
               <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
                 <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>Histórico de Recebimento de Resíduos</h3>
-              </div>
-              <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-[#1a1a1a]/50">
-                <form method="GET" action="/conservacao/eco-flamboyant" class="flex flex-wrap items-end gap-3">
-                  <input type="hidden" name="aba" value="residuos">
-                  <div class="space-y-1">
-                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Data início</label>
-                    <input type="date" name="filtro_data_inicio" value="{{.FiltroDataInicio}}"
-                      class="bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
-                  </div>
-                  <div class="space-y-1">
-                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Data fim</label>
-                    <input type="date" name="filtro_data_fim" value="{{.FiltroDataFim}}"
-                      class="bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
-                  </div>
-                  <div class="space-y-1">
-                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Loja</label>
-                    <select name="filtro_loja_id"
-                      class="bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
-                      <option value="">Todas</option>
-                      {{range .TodasLojas}}
-                      <option value="{{.ID}}" {{if eq $.FiltroLojaID .ID}}selected{{end}}>{{.Nome}}</option>
-                      {{end}}
-                    </select>
-                  </div>
-                  <button type="submit"
-                    class="px-4 py-2 text-sm font-bold text-white bg-[#8B1A1A] hover:bg-[#a43030] rounded-lg">Filtrar</button>
-                  <a href="?aba=residuos"
-                    class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Limpar</a>
-                </form>
               </div>
               <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
                 <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Peso (kg)</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Aproveitado</th></tr></thead>
@@ -783,15 +818,15 @@
                   {{end}}
                 </tbody>
               </table></div>
-              {{if gt .TotalPaginas 1}}
+              {{if gt .TotalPaginasResiduos 1}}
               <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100 dark:border-gray-800">
-                <div class="text-xs text-gray-500">Página {{.PaginaAtual}} de {{.TotalPaginas}}</div>
+                <div class="text-xs text-gray-500">Página {{.PaginaAtual}} de {{.TotalPaginasResiduos}}</div>
                 <div class="flex gap-2">
                   {{if gt .PaginaAtual 1}}
                   <a href="?aba=residuos&pagina={{sub .PaginaAtual 1}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}&filtro_loja_id={{.FiltroLojaID}}"
                     class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">&larr; Anterior</a>
                   {{end}}
-                  {{if lt .PaginaAtual .TotalPaginas}}
+                  {{if lt .PaginaAtual .TotalPaginasResiduos}}
                   <a href="?aba=residuos&pagina={{add .PaginaAtual 1}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}&filtro_loja_id={{.FiltroLojaID}}"
                     class="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#8B1A1A] text-white hover:bg-[#a43030]">Próxima &rarr;</a>
                   {{end}}
@@ -817,16 +852,16 @@
                   {{end}}
                 </tbody>
               </table></div>
-              {{if gt .TotalPaginas 1}}
+              {{if gt .TotalPaginasKits 1}}
               <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100 dark:border-gray-800">
-                <div class="text-xs text-gray-500">Página {{.PaginaAtual}} de {{.TotalPaginas}}</div>
+                <div class="text-xs text-gray-500">Página {{.PaginaAtual}} de {{.TotalPaginasKits}}</div>
                 <div class="flex gap-2">
                   {{if gt .PaginaAtual 1}}
-                  <a href="?aba=kits&pagina={{sub .PaginaAtual 1}}"
+                  <a href="?aba=kits&pagina={{sub .PaginaAtual 1}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}&filtro_loja_id={{.FiltroLojaID}}"
                     class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">&larr; Anterior</a>
                   {{end}}
-                  {{if lt .PaginaAtual .TotalPaginas}}
-                  <a href="?aba=kits&pagina={{add .PaginaAtual 1}}"
+                  {{if lt .PaginaAtual .TotalPaginasKits}}
+                  <a href="?aba=kits&pagina={{add .PaginaAtual 1}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}&filtro_loja_id={{.FiltroLojaID}}"
                     class="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#8B1A1A] text-white hover:bg-[#a43030]">Próxima &rarr;</a>
                   {{end}}
                 </div>
@@ -865,16 +900,16 @@
                   {{end}}
                 </tbody>
               </table></div>
-              {{if gt .TotalPaginas 1}}
+              {{if gt .TotalPaginasRegistros 1}}
               <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100 dark:border-gray-800">
-                <div class="text-xs text-gray-500">Página {{.PaginaAtual}} de {{.TotalPaginas}}</div>
+                <div class="text-xs text-gray-500">Página {{.PaginaAtual}} de {{.TotalPaginasRegistros}}</div>
                 <div class="flex gap-2">
                   {{if gt .PaginaAtual 1}}
-                  <a href="?aba=registros&pagina={{sub .PaginaAtual 1}}"
+                  <a href="?aba=registros&pagina={{sub .PaginaAtual 1}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}&filtro_loja_id={{.FiltroLojaID}}"
                     class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">&larr; Anterior</a>
                   {{end}}
-                  {{if lt .PaginaAtual .TotalPaginas}}
-                  <a href="?aba=registros&pagina={{add .PaginaAtual 1}}"
+                  {{if lt .PaginaAtual .TotalPaginasRegistros}}
+                  <a href="?aba=registros&pagina={{add .PaginaAtual 1}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}&filtro_loja_id={{.FiltroLojaID}}"
                     class="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#8B1A1A] text-white hover:bg-[#a43030]">Próxima &rarr;</a>
                   {{end}}
                 </div>
@@ -914,14 +949,12 @@
         class="p-6 space-y-4"
       >
         <div class="space-y-1">
-          <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Selecionar Loja</label>
-          <select id="store-select" name="loja_id" required
-            class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white">
-            <option value="">Selecione uma loja...</option>
-            {{ range .Lojas }}
-            <option value="{{ .ID }}">{{ .Nome }}</option>
-            {{ end }}
-          </select>
+          <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Buscar Loja</label>
+          <input id="store-search" list="lojas-disponiveis" autocomplete="off" placeholder="Digite nome ou código da loja..."
+            class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white"
+            onchange="selecionarLoja(this)">
+          <input type="hidden" id="store-id" name="loja_id">
+          <datalist id="lojas-disponiveis"></datalist>
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-1">
@@ -1285,6 +1318,8 @@
       tKits.className = ''; tKits.classList.add(...(tab === 'kits' ? kitsSelected : kitsUnselected));
 
       renderTabContent();
+      var abaHidden = document.getElementById('filtro-aba-hidden');
+      if (abaHidden) abaHidden.value = tab;
     }
 
     function renderTabContent() {
@@ -1315,6 +1350,17 @@
         if (reg) reg.classList.remove('hidden');
         if (l) l.classList.add('hidden');
       }
+    }
+
+    function filtrarPeriodo(dias, btn) {
+      const hoje = new Date();
+      const inicio = new Date();
+      inicio.setDate(hoje.getDate() - dias);
+      const fmt = d => d.toISOString().split('T')[0];
+      const form = btn.closest('.form-filtros');
+      form.querySelector('[name="filtro_data_inicio"]').value = fmt(inicio);
+      form.querySelector('[name="filtro_data_fim"]').value = fmt(hoje);
+      form.submit();
     }
 
     function renderData() {
@@ -1514,6 +1560,70 @@
 
     loadAll();
     setTab('{{.AbaAtiva}}');
+
+    // Toggle retractable filter panel
+    document.getElementById('btn-toggle-filtros').addEventListener('click', function() {
+      var panel = document.getElementById('painel-filtros-data');
+      panel.classList.toggle('hidden');
+    });
+
+    // Client-side table search
+    document.getElementById('search-table').addEventListener('input', function() {
+      var q = this.value.toLowerCase().trim();
+      document.querySelectorAll('#tab-content table tbody tr').forEach(function(row) {
+        var text = row.textContent.toLowerCase();
+        row.style.display = (!q || text.indexOf(q) !== -1) ? '' : 'none';
+      });
+    });
+
+    // Autocomplete: lojas disponiveis via API
+    (function initStoreAutocomplete() {
+      var input = document.getElementById('store-search');
+      var hiddenId = document.getElementById('store-id');
+      var list = document.getElementById('lojas-disponiveis');
+      if (!input || !list) return;
+      var timer;
+      input.addEventListener('input', function() {
+        clearTimeout(timer);
+        var q = this.value.trim();
+        if (q.length < 2) { list.innerHTML = ''; return; }
+        timer = setTimeout(async function() {
+          try {
+            var r = await fetch('/api/conservacao/eco-flamboyant/buscar-lojas?q=' + encodeURIComponent(q));
+            var data = await r.json();
+            list.innerHTML = data.map(function(loja) {
+              return '<option value="' + loja.nome + '" data-id="' + loja.id + '">LUC ' + loja.id + '</option>';
+            }).join('');
+            if (data.length > 0) { hiddenId.value = data[0].id; }
+          } catch(e) { console.error(e); }
+        }, 300);
+      });
+    })();
+
+    function selecionarLoja(input) {
+      var opt = input.list.querySelector('option[value="' + input.value + '"]');
+      if (opt) {
+        document.getElementById('store-id').value = opt.getAttribute('data-id');
+      }
+    }
+
+    (function destacarFiltroRapido() {
+      document.querySelectorAll('.form-filtros').forEach(function(form) {
+        var inicio = form.querySelector('[name="filtro_data_inicio"]');
+        var fim = form.querySelector('[name="filtro_data_fim"]');
+        if (!inicio || !fim || !inicio.value || !fim.value) return;
+        var hoje = new Date();
+        var fmt = function(d) { return d.toISOString().split('T')[0]; };
+        form.querySelectorAll('.btn-filtro-rapido').forEach(function(btn) {
+          var dias = parseInt(btn.getAttribute('data-dias'));
+          var esperadoInicio = new Date();
+          esperadoInicio.setDate(hoje.getDate() - dias);
+          if (inicio.value === fmt(esperadoInicio) && fim.value === fmt(hoje)) {
+            btn.classList.add('active');
+          }
+        });
+      });
+    })();
     {{if .ErroForm}}
     document.addEventListener('DOMContentLoaded', function() {
       {{if eq .AbaAtiva "lojas"}}openModal('store-modal');{{end}}

@@ -12,4 +12,6 @@ func RotasEcoflamboyant() {
 	http.HandleFunc("/conservacao/eco-flamboyant/criar", ctrl.CriarParticipanteHandler)
 	http.HandleFunc("/conservacao/eco-flamboyant/status", ctrl.AlterarStatusLoja)
 	http.HandleFunc("/conservacao/eco-flamboyant/termo/", ctrl.DownloadTermo)
+	http.HandleFunc("/api/conservacao/eco-flamboyant/buscar-lojas", ctrl.BuscarLojasDisponiveis)
+	http.HandleFunc("/conservacao/eco-flamboyant/relatorio", ctrl.EmitirRelatorioPDF)
 }

@@ -75,7 +75,10 @@ type EcoFlamboyantPageData struct {
 	FiltroLojaID           string
 	HojeStr                string
 	ErroForm               string
-	PaginaAtual            int
-	TotalPaginas           int
-	ItensPorPagina         int
+	PaginaAtual             int
+	TotalPaginasLojas       int
+	TotalPaginasResiduos    int
+	TotalPaginasKits        int
+	TotalPaginasRegistros   int
+	ItensPorPagina          int
 }

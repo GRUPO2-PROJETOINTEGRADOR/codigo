@@ -19,17 +19,18 @@ CREATE TABLE IF NOT EXISTS auditorias_seguranca (
 
 -- 3. Eco Participantes
 CREATE TABLE IF NOT EXISTS eco_participantes (
-    loja_id VARCHAR(100) PRIMARY KEY REFERENCES lojas(id) ON DELETE CASCADE,
+    loja_id VARCHAR(100) NOT NULL REFERENCES lojas(id) ON DELETE CASCADE,
     status_participacao BOOLEAN DEFAULT TRUE,
     data_entrada DATE NOT NULL,
     data_saida DATE,
     anexo_eco_nome VARCHAR(255),
-    anexo_eco_dados BYTEA
+    anexo_eco_dados BYTEA,
+    PRIMARY KEY (loja_id, data_entrada)
 );
 
 CREATE TABLE IF NOT EXISTS kit (
     id SERIAL PRIMARY KEY,
-    loja_id VARCHAR(100) NOT NULL REFERENCES eco_participantes(loja_id) ON DELETE CASCADE,
+    loja_id VARCHAR(100) NOT NULL REFERENCES lojas(id) ON DELETE CASCADE,
     data_entrega_kit DATE,
     qnt_kit INTEGER
 );
@@ -37,7 +38,7 @@ CREATE TABLE IF NOT EXISTS kit (
 -- 3.1. Resíduos Eco
 CREATE TABLE IF NOT EXISTS residuos_eco (
     id SERIAL PRIMARY KEY,
-    loja_id VARCHAR(100) NOT NULL REFERENCES eco_participantes(loja_id) ON DELETE CASCADE,
+    loja_id VARCHAR(100) NOT NULL REFERENCES lojas(id) ON DELETE CASCADE,
     peso_kg DECIMAL(10,2) NOT NULL,
     data_coleta DATE NOT NULL,
     aproveitado BOOLEAN DEFAULT TRUE
@@ -61,3 +62,13 @@ CREATE TABLE IF NOT EXISTS auditoria_eventos (
     acao VARCHAR(20),
     data_evento TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Migrations (executar uma vez em banco existente)
+-- ALTER TABLE residuos_eco DROP CONSTRAINT IF EXISTS residuos_eco_loja_id_fkey;
+-- ALTER TABLE kit DROP CONSTRAINT IF EXISTS kit_loja_id_fkey;
+-- ALTER TABLE eco_participantes DROP CONSTRAINT IF EXISTS eco_participantes_pkey;
+-- ALTER TABLE eco_participantes ADD PRIMARY KEY (loja_id, data_entrada);
+-- ALTER TABLE residuos_eco ADD CONSTRAINT residuos_eco_loja_id_fkey
+--     FOREIGN KEY (loja_id) REFERENCES lojas(id) ON DELETE CASCADE;
+-- ALTER TABLE kit ADD CONSTRAINT kit_loja_id_fkey
+--     FOREIGN KEY (loja_id) REFERENCES lojas(id) ON DELETE CASCADE;

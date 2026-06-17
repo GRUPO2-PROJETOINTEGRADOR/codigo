@@ -37,12 +37,12 @@ func CriarParticipante(db *sql.DB, lojaID string, dataEntrada time.Time, dataSai
 	return utils.InserirAuditoria(db, lojaID, "eco_participante", "cadastro")
 }
 
-func ListarParticipantes(db *sql.DB, limit, offset int) ([]models.Participante, error) {
-	return utils.ListarParticipantes(db, limit, offset)
+func ListarParticipantes(db *sql.DB, dataInicio, dataFim string, limit, offset int) ([]models.Participante, error) {
+	return utils.ListarParticipantes(db, dataInicio, dataFim, limit, offset)
 }
 
-func ContarParticipantes(db *sql.DB) (int, error) {
-	return utils.ContarParticipantes(db)
+func ContarParticipantes(db *sql.DB, dataInicio, dataFim string) (int, error) {
+	return utils.ContarParticipantes(db, dataInicio, dataFim)
 }
 
 func CriarResiduo(db *sql.DB, lojaID, dataColetaStr, pesoKGStr, aproveitadoStr string) error {
@@ -126,12 +126,12 @@ func CriarKit(db *sql.DB, lojaID, dataEntregaKitStr, qntKitStr string) error {
 	return utils.InserirAuditoria(db, lojaID, "kit", "cadastro")
 }
 
-func ObterKits(db *sql.DB, limit, offset int) ([]models.Kit, error) {
-	return utils.ListarKits(db, limit, offset)
+func ObterKits(db *sql.DB, dataInicio, dataFim, lojaID string, limit, offset int) ([]models.Kit, error) {
+	return utils.ListarKits(db, dataInicio, dataFim, lojaID, limit, offset)
 }
 
-func ContarKits(db *sql.DB) (int, error) {
-	return utils.ContarKits(db)
+func ContarKits(db *sql.DB, dataInicio, dataFim, lojaID string) (int, error) {
+	return utils.ContarKits(db, dataInicio, dataFim, lojaID)
 }
 
 func ObterFluxoKits(db *sql.DB) ([]models.PontoKits, error) {
@@ -168,12 +168,12 @@ func AtivarLoja(db *sql.DB, lojaID string) error {
 	return utils.InserirAuditoria(db, lojaID, "eco_participante", "reativacao")
 }
 
-func ListarAuditorias(db *sql.DB, limit, offset int) ([]models.RegistroAuditoria, error) {
-	return utils.ListarAuditoriasEventos(db, limit, offset)
+func ListarAuditorias(db *sql.DB, dataInicio, dataFim, lojaID string, limit, offset int) ([]models.RegistroAuditoria, error) {
+	return utils.ListarAuditoriasEventos(db, dataInicio, dataFim, lojaID, limit, offset)
 }
 
-func ContarAuditorias(db *sql.DB) (int, error) {
-	return utils.ContarAuditoriasEventos(db)
+func ContarAuditorias(db *sql.DB, dataInicio, dataFim, lojaID string) (int, error) {
+	return utils.ContarAuditoriasEventos(db, dataInicio, dataFim, lojaID)
 }
 
 func ObterResumoResiduos(db *sql.DB) (totalGeral, totalAdubo, totalDescarte, taxa float64, fluxo []models.PontoResiduos, err error) {
@@ -189,4 +189,8 @@ func ObterResumoResiduos(db *sql.DB) (totalGeral, totalAdubo, totalDescarte, tax
 		taxa = (totalAdubo / totalGeral) * 100
 	}
 	return
+}
+
+func BuscarLojasDisponiveis(db *sql.DB, q string) ([]models.Loja, error) {
+	return utils.BuscarLojasDisponiveis(db, q)
 }
