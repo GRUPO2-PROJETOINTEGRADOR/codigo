@@ -22,17 +22,17 @@ func GerarRelatorioPDF(db *sql.DB, dataInicio, dataFim, lojaID string) ([]byte, 
 		totalKits                                int
 		lojasAtivas                              int
 	)
-	volumeTotal, volumeAdubo, volumeDescarte, err = utils.ResumoResiduos(db)
+	volumeTotal, volumeAdubo, volumeDescarte, err = utils.ResumoResiduos(db, dataInicio, dataFim, lojaID)
 	if err != nil {
 		log.Printf("Erro ao buscar resumo residuos PDF: %v", err)
 	}
 
-	totalKits, err = utils.SomarTotalKits(db)
+	totalKits, err = utils.SomarTotalKits(db, dataInicio, dataFim, lojaID)
 	if err != nil {
 		log.Printf("Erro ao buscar total kits PDF: %v", err)
 	}
 
-	lojasAtivas, err = utils.ContarLojasAtivas(db)
+	lojasAtivas, err = utils.ContarLojasAtivas(db, dataInicio, dataFim)
 	if err != nil {
 		log.Printf("Erro ao contar lojas ativas PDF: %v", err)
 	}

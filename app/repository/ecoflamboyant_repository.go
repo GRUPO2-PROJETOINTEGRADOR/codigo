@@ -172,17 +172,25 @@ func ContarAuditoriasEventos(db *sql.DB, dataInicio, dataFim, lojaID string) (in
 	return total, err
 }
 
-func ContarLojasAtivas(db *sql.DB) (int, error) {
+func ContarLojasAtivas(db *sql.DB, dataInicio, dataFim string) (int, error) {
 	var total int
-	err := db.QueryRow(`SELECT COUNT(*) FROM eco_participantes WHERE status_participacao = TRUE`).Scan(&total)
+	err := db.QueryRow(`SELECT COUNT(*) FROM (
+		SELECT DISTINCT ON (ep.loja_id) ep.loja_id, ep.status_participacao
+		FROM eco_participantes ep
+		WHERE ($1 = '' OR ep.data_entrada >= $1::date)
+		  AND ($2 = '' OR ep.data_entrada <= $2::date)
+		ORDER BY ep.loja_id, ep.data_entrada DESC
+	) sub WHERE sub.status_participacao = TRUE`, dataInicio, dataFim).Scan(&total)
 	return total, err
 }
 
-func CrescimentoLojasPorMes(db *sql.DB) ([]models.PontoLojas, error) {
+func CrescimentoLojasPorMes(db *sql.DB, dataInicio, dataFim string) ([]models.PontoLojas, error) {
 	rows, err := db.Query(`SELECT TO_CHAR(data_entrada, 'Mon/YY') AS mes, COUNT(*) AS entradas
-		FROM eco_participantes WHERE status_participacao = TRUE
+		FROM eco_participantes
+		WHERE ($1 = '' OR data_entrada >= $1::date)
+		  AND ($2 = '' OR data_entrada <= $2::date)
 		GROUP BY DATE_TRUNC('month', data_entrada), mes
-		ORDER BY DATE_TRUNC('month', data_entrada)`)
+		ORDER BY DATE_TRUNC('month', data_entrada)`, dataInicio, dataFim)
 	if err != nil {
 		return nil, err
 	}
@@ -202,20 +210,26 @@ func CrescimentoLojasPorMes(db *sql.DB) ([]models.PontoLojas, error) {
 	return pontos, nil
 }
 
-func SomarTotalKits(db *sql.DB) (int, error) {
+func SomarTotalKits(db *sql.DB, dataInicio, dataFim, lojaID string) (int, error) {
 	var total int
-	err := db.QueryRow(`SELECT COALESCE(SUM(qnt_kit), 0) FROM kit`).Scan(&total)
+	err := db.QueryRow(`SELECT COALESCE(SUM(qnt_kit), 0) FROM kit
+		WHERE ($1 = '' OR data_entrega_kit >= $1::date)
+		  AND ($2 = '' OR data_entrega_kit <= $2::date)
+		  AND ($3 = '' OR loja_id = $3)`, dataInicio, dataFim, lojaID).Scan(&total)
 	return total, err
 }
 
-func FluxoKitsPorPeriodo(db *sql.DB) ([]models.PontoKits, error) {
+func FluxoKitsPorPeriodo(db *sql.DB, dataInicio, dataFim, lojaID string) ([]models.PontoKits, error) {
 	rows, err := db.Query(`SELECT TO_CHAR(data_entrega_kit, 'DD/MM') AS periodo,
 		COUNT(*) AS entregas,
 		COALESCE(SUM(qnt_kit), 0) AS total_unidades
 		FROM kit
 		WHERE data_entrega_kit IS NOT NULL
+		  AND ($1 = '' OR data_entrega_kit >= $1::date)
+		  AND ($2 = '' OR data_entrega_kit <= $2::date)
+		  AND ($3 = '' OR loja_id = $3)
 		GROUP BY DATE_TRUNC('day', data_entrega_kit), periodo
-		ORDER BY DATE_TRUNC('day', data_entrega_kit)`)
+		ORDER BY DATE_TRUNC('day', data_entrega_kit)`, dataInicio, dataFim, lojaID)
 	if err != nil {
 		return nil, err
 	}
@@ -284,12 +298,15 @@ func BuscarTermoPorLoja(db *sql.DB, lojaID string) (string, []byte, error) {
 	return nome, dados, nil
 }
 
-func ResumoResiduos(db *sql.DB) (totalGeral, totalAdubo, totalDescarte float64, err error) {
+func ResumoResiduos(db *sql.DB, dataInicio, dataFim, lojaID string) (totalGeral, totalAdubo, totalDescarte float64, err error) {
 	err = db.QueryRow(`SELECT
 		COALESCE(SUM(peso_kg), 0),
 		COALESCE(SUM(CASE WHEN aproveitado = true THEN peso_kg ELSE 0 END), 0),
 		COALESCE(SUM(CASE WHEN aproveitado = false THEN peso_kg ELSE 0 END), 0)
-		FROM residuos_eco`).Scan(&totalGeral, &totalAdubo, &totalDescarte)
+		FROM residuos_eco
+		WHERE ($1 = '' OR data_coleta >= $1::date)
+		  AND ($2 = '' OR data_coleta <= $2::date)
+		  AND ($3 = '' OR loja_id = $3)`, dataInicio, dataFim, lojaID).Scan(&totalGeral, &totalAdubo, &totalDescarte)
 	return
 }
 
@@ -334,14 +351,17 @@ func ListarAuditoriasEventos(db *sql.DB, dataInicio, dataFim, lojaID string, lim
 	return lista, nil
 }
 
-func FluxoResiduosPorPeriodo(db *sql.DB) ([]models.PontoResiduos, error) {
+func FluxoResiduosPorPeriodo(db *sql.DB, dataInicio, dataFim, lojaID string) ([]models.PontoResiduos, error) {
 	rows, err := db.Query(`SELECT TO_CHAR(data_coleta, 'DD/MM') AS periodo,
 		COALESCE(SUM(CASE WHEN aproveitado = true THEN peso_kg ELSE 0 END), 0) AS peso_adubo,
 		COALESCE(SUM(CASE WHEN aproveitado = false THEN peso_kg ELSE 0 END), 0) AS peso_descarte
 		FROM residuos_eco
 		WHERE data_coleta IS NOT NULL
+		  AND ($1 = '' OR data_coleta >= $1::date)
+		  AND ($2 = '' OR data_coleta <= $2::date)
+		  AND ($3 = '' OR loja_id = $3)
 		GROUP BY DATE_TRUNC('day', data_coleta), periodo
-		ORDER BY DATE_TRUNC('day', data_coleta)`)
+		ORDER BY DATE_TRUNC('day', data_coleta)`, dataInicio, dataFim, lojaID)
 	if err != nil {
 		return nil, err
 	}
@@ -354,6 +374,26 @@ func FluxoResiduosPorPeriodo(db *sql.DB) ([]models.PontoResiduos, error) {
 			return nil, err
 		}
 		lista = append(lista, p)
+	}
+	return lista, nil
+}
+
+func BuscarLojas(db *sql.DB, q string) ([]models.LojaBusca, error) {
+	rows, err := db.Query(`SELECT l.id, l.nome FROM lojas l
+		WHERE ($1 = '' OR l.nome ILIKE '%' || $1 || '%' OR l.id ILIKE '%' || $1 || '%')
+		ORDER BY l.nome LIMIT 20`, q)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var lista []models.LojaBusca
+	for rows.Next() {
+		var id, nome string
+		if err := rows.Scan(&id, &nome); err != nil {
+			return nil, err
+		}
+		lista = append(lista, models.LojaBusca{ID: id, Nome: nome, LUC: id})
 	}
 	return lista, nil
 }

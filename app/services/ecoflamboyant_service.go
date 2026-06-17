@@ -134,20 +134,20 @@ func ContarKits(db *sql.DB, dataInicio, dataFim, lojaID string) (int, error) {
 	return utils.ContarKits(db, dataInicio, dataFim, lojaID)
 }
 
-func ObterFluxoKits(db *sql.DB) ([]models.PontoKits, error) {
-	return utils.FluxoKitsPorPeriodo(db)
+func ObterFluxoKits(db *sql.DB, dataInicio, dataFim, lojaID string) ([]models.PontoKits, error) {
+	return utils.FluxoKitsPorPeriodo(db, dataInicio, dataFim, lojaID)
 }
 
-func ObterTotalKits(db *sql.DB) (int, error) {
-	return utils.SomarTotalKits(db)
+func ObterTotalKits(db *sql.DB, dataInicio, dataFim, lojaID string) (int, error) {
+	return utils.SomarTotalKits(db, dataInicio, dataFim, lojaID)
 }
 
-func ObterDadosLojas(db *sql.DB) (int, []models.PontoLojas, error) {
-	total, err := utils.ContarLojasAtivas(db)
+func ObterDadosLojas(db *sql.DB, dataInicio, dataFim string) (int, []models.PontoLojas, error) {
+	total, err := utils.ContarLojasAtivas(db, dataInicio, dataFim)
 	if err != nil {
 		return 0, nil, err
 	}
-	crescimento, err := utils.CrescimentoLojasPorMes(db)
+	crescimento, err := utils.CrescimentoLojasPorMes(db, dataInicio, dataFim)
 	if err != nil {
 		return 0, nil, err
 	}
@@ -176,12 +176,12 @@ func ContarAuditorias(db *sql.DB, dataInicio, dataFim, lojaID string) (int, erro
 	return utils.ContarAuditoriasEventos(db, dataInicio, dataFim, lojaID)
 }
 
-func ObterResumoResiduos(db *sql.DB) (totalGeral, totalAdubo, totalDescarte, taxa float64, fluxo []models.PontoResiduos, err error) {
-	totalGeral, totalAdubo, totalDescarte, err = utils.ResumoResiduos(db)
+func ObterResumoResiduos(db *sql.DB, dataInicio, dataFim, lojaID string) (totalGeral, totalAdubo, totalDescarte, taxa float64, fluxo []models.PontoResiduos, err error) {
+	totalGeral, totalAdubo, totalDescarte, err = utils.ResumoResiduos(db, dataInicio, dataFim, lojaID)
 	if err != nil {
 		return
 	}
-	fluxo, err = utils.FluxoResiduosPorPeriodo(db)
+	fluxo, err = utils.FluxoResiduosPorPeriodo(db, dataInicio, dataFim, lojaID)
 	if err != nil {
 		return
 	}
@@ -189,6 +189,10 @@ func ObterResumoResiduos(db *sql.DB) (totalGeral, totalAdubo, totalDescarte, tax
 		taxa = (totalAdubo / totalGeral) * 100
 	}
 	return
+}
+
+func ListarLojasBusca(db *sql.DB, q string) ([]models.LojaBusca, error) {
+	return utils.BuscarLojas(db, q)
 }
 
 func BuscarLojasDisponiveis(db *sql.DB, q string) ([]models.Loja, error) {

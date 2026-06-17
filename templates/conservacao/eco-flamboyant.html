@@ -46,14 +46,10 @@
         box-shadow: none;
     }
 
-    .btn-filtro-rapido.active {
+    .btn-rapido.active {
         background-color: #8B1A1A;
         color: white;
         border-color: #8B1A1A;
-    }
-    .dark .btn-filtro-rapido.active {
-        background-color: #D93030;
-        border-color: #D93030;
     }
   </style>
   <script>
@@ -454,6 +450,35 @@
           </div>
         </header>
 
+        <!-- Global Filter Form -->
+        <form id="form-filtro-global" method="GET" action="/conservacao/eco-flamboyant">
+          <input type="hidden" name="aba" value="{{.AbaAtiva}}">
+          <input type="hidden" id="filtro_loja_id" name="filtro_loja_id" value="{{.FiltroLojaID}}">
+          <div class="search-bar-container" style="display:flex;gap:12px;align-items:center;background:#fff;padding:16px;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+            <div style="position:relative;flex:1;">
+              <input type="text" id="input-autocomplete-loja" value="{{.NomeLojaFiltrada}}" placeholder="Buscar restaurante por nome ou LUC..." style="width:100%;padding:10px 40px;border:1px solid #e2e8f0;border-radius:6px;outline:none;" autocomplete="off">
+              <div id="dropdown-autocomplete-resultados" style="position:absolute;width:100%;background:#fff;border:1px solid #e2e8f0;border-top:none;max-height:200px;overflow-y:auto;z-index:999;display:none;box-shadow:0 4px 6px rgba(0,0,0,0.05);"></div>
+            </div>
+            <button type="button" id="btn-toggle-filtros" class="btn-secondary-outline" style="padding:10px 20px;border:1px solid #8B1A1A;background:transparent;color:#8B1A1A;border-radius:6px;font-weight:600;cursor:pointer;white-space:nowrap;">Filtros</button>
+            <button type="button" id="btn-emitir-relatorio" class="btn-primary-bordo" style="padding:10px 20px;background:#8B1A1A;color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer;white-space:nowrap;">Emitir Relatório</button>
+          </div>
+          <div id="painel-datas-retratil" style="{{if or .FiltroDataInicio .FiltroDataFim}}display:flex;{{else}}display:none;{{end}}gap:16px;padding:16px;background:#fafafa;border-top:1px solid #edf2f7;align-items:flex-end;">
+            <div>
+              <label style="display:block;font-size:10px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">DE</label>
+              <input type="date" name="filtro_data_inicio" value="{{.FiltroDataInicio}}" style="padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;">
+            </div>
+            <div>
+              <label style="display:block;font-size:10px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">ATÉ</label>
+              <input type="date" name="filtro_data_fim" value="{{.FiltroDataFim}}" style="padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;">
+            </div>
+            <button type="button" class="btn-rapido" data-dias="15" style="padding:8px 16px;border:1px solid #d1d5db;background:#fff;color:#666;border-radius:6px;font-size:13px;cursor:pointer;">15 dias</button>
+            <button type="button" class="btn-rapido" data-dias="30" style="padding:8px 16px;border:1px solid #d1d5db;background:#fff;color:#666;border-radius:6px;font-size:13px;cursor:pointer;">30 dias</button>
+            <button type="button" class="btn-rapido" data-dias="60" style="padding:8px 16px;border:1px solid #d1d5db;background:#fff;color:#666;border-radius:6px;font-size:13px;cursor:pointer;">60 dias</button>
+            <button type="submit" class="btn-filtrar-submit" style="padding:8px 20px;background:#8B1A1A;color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer;">Filtrar</button>
+            <a href="/conservacao/eco-flamboyant?aba={{.AbaAtiva}}" style="padding:8px 16px;color:#666;text-decoration:none;font-size:14px;">Limpar</a>
+          </div>
+        </form>
+
         <!-- KPIs -->
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div
@@ -613,7 +638,7 @@
 
         <!-- Navigation Tabs -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-2">
-          <a href="?aba=lojas" id="tab-lojas"
+          <a href="?aba=lojas&filtro_loja_id={{.FiltroLojaID}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}" id="tab-lojas"
             class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-[#8B1A1A]/5 border-[#8B1A1A] text-[#8B1A1A] dark:bg-[#8B1A1A]/10 dark:border-[#D93030] dark:text-[#D93030] shadow-sm ring-2 ring-[#8B1A1A]/10 no-underline">
             <div class="flex items-center gap-3">
               <div class="tab-icon p-2.5 rounded-lg bg-[#8B1A1A]/10 text-[#8B1A1A] dark:text-[#D93030]"><svg
@@ -639,7 +664,7 @@
             <span id="badge-lojas"
               class="px-2 py-0.5 text-xs font-bold rounded-full bg-[#8B1A1A] dark:bg-[#D93030] text-white">{{.TotalLojasParticipantes}}</span>
           </a>
-          <a href="?aba=residuos" id="tab-residuos"
+          <a href="?aba=residuos&filtro_loja_id={{.FiltroLojaID}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}" id="tab-residuos"
             class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700 no-underline">
             <div class="flex items-center gap-3">
               <div class="tab-icon p-2.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-400"><svg viewBox="0 0 24 24"
@@ -659,7 +684,7 @@
             <span id="badge-residuos"
               class="px-2 py-0.5 text-xs font-bold rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">{{.TotalResiduos}}</span>
           </a>
-          <a href="?aba=kits" id="tab-kits"
+          <a href="?aba=kits&filtro_loja_id={{.FiltroLojaID}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}" id="tab-kits"
             class="p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left relative overflow-hidden cursor-pointer hover:shadow-md bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/30 text-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600 shadow-sm no-underline">
             <div
               class="absolute top-0 right-0 w-12 h-12 bg-emerald-500/10 rounded-full blur-lg animate-pulse pointer-events-none">
@@ -691,7 +716,7 @@
             <span id="badge-kits"
               class="px-2.5 py-0.5 text-xs font-black rounded-full bg-emerald-600 text-white">{{.TotalKits}}</span>
           </a>
-          <a href="?aba=registros" id="tab-registros"
+          <a href="?aba=registros&filtro_loja_id={{.FiltroLojaID}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}" id="tab-registros"
             class="tab-btn p-4 rounded-xl border flex items-center justify-between transition-all duration-300 text-left cursor-pointer hover:shadow-md bg-white dark:bg-[#252525] border-gray-100 dark:border-gray-800 text-gray-500 hover:border-gray-300 dark:hover:border-gray-700 no-underline">
             <div class="flex items-center gap-3">
               <div class="tab-icon p-2.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-400"><svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
@@ -708,60 +733,6 @@
         <!-- Content Area -->
         <div
           class="bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
-          <!-- Unified Search + Filter Bar -->
-          <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-[#252525]">
-            <div class="flex items-center gap-3">
-              <div class="relative flex-1">
-                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input type="text" id="search-table" placeholder="Buscar restaurante por nome ou LUC..."
-                  class="w-full pl-10 pr-4 py-2 text-sm bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg outline-none text-gray-900 dark:text-white focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A] transition-all">
-              </div>
-              <button id="btn-toggle-filtros" type="button"
-                class="flex items-center gap-2 px-4 py-2 text-sm font-bold text-[#8B1A1A] border border-[#8B1A1A] rounded-lg hover:bg-[#8B1A1A]/5 transition-all">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
-                Filtros
-              </button>
-              <a href="/conservacao/eco-flamboyant/relatorio?aba={{.AbaAtiva}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}&filtro_loja_id={{.FiltroLojaID}}"
-                class="flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-[#8B1A1A] hover:bg-[#a43030] rounded-lg transition-all">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                Emitir Relatório
-              </a>
-            </div>
-          </div>
-          <!-- Retractable Date Filter Panel -->
-          <div id="painel-filtros-data" class="hidden px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-[#1a1a1a]/50">
-            <form method="GET" action="/conservacao/eco-flamboyant" class="form-filtros flex flex-wrap items-end gap-4">
-              <input type="hidden" name="aba" id="filtro-aba-hidden" value="{{.AbaAtiva}}">
-              <div class="space-y-1">
-                <label class="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                  De
-                </label>
-                <input type="date" name="filtro_data_inicio" value="{{.FiltroDataInicio}}"
-                  class="bg-white dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
-              </div>
-              <div class="space-y-1">
-                <label class="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                  Até
-                </label>
-                <input type="date" name="filtro_data_fim" value="{{.FiltroDataFim}}"
-                  class="bg-white dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none text-gray-900 dark:text-white">
-              </div>
-              <div class="flex items-center gap-2 filtros-rapidos pb-0.5">
-                <button type="button" onclick="filtrarPeriodo(15, this)" data-dias="15"
-                  class="btn-filtro-rapido px-3 py-1.5 text-xs font-medium rounded-lg border transition-all border-gray-200 text-gray-600 bg-white hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-[#1f1f1f] dark:hover:bg-gray-800 cursor-pointer">15 dias</button>
-                <button type="button" onclick="filtrarPeriodo(30, this)" data-dias="30"
-                  class="btn-filtro-rapido px-3 py-1.5 text-xs font-medium rounded-lg border transition-all border-gray-200 text-gray-600 bg-white hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-[#1f1f1f] dark:hover:bg-gray-800 cursor-pointer">30 dias</button>
-                <button type="button" onclick="filtrarPeriodo(60, this)" data-dias="60"
-                  class="btn-filtro-rapido px-3 py-1.5 text-xs font-medium rounded-lg border transition-all border-gray-200 text-gray-600 bg-white hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-[#1f1f1f] dark:hover:bg-gray-800 cursor-pointer">60 dias</button>
-              </div>
-              <button type="submit"
-                class="px-4 py-2 text-sm font-bold text-white bg-[#8B1A1A] hover:bg-[#a43030] rounded-lg">Filtrar</button>
-              <a href="?aba={{.AbaAtiva}}"
-                class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Limpar</a>
-            </form>
-          </div>
           <div id="tab-content">
             <div id="tab-lojas-content">
               <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
@@ -1352,17 +1323,6 @@
       }
     }
 
-    function filtrarPeriodo(dias, btn) {
-      const hoje = new Date();
-      const inicio = new Date();
-      inicio.setDate(hoje.getDate() - dias);
-      const fmt = d => d.toISOString().split('T')[0];
-      const form = btn.closest('.form-filtros');
-      form.querySelector('[name="filtro_data_inicio"]').value = fmt(inicio);
-      form.querySelector('[name="filtro_data_fim"]').value = fmt(hoje);
-      form.submit();
-    }
-
     function renderData() {
       // Update Badges
       const atvRes = residuos.filter(r => participantes.find(p => p.lojaId === r.loja_id && p.status === 'Ativo'));
@@ -1563,20 +1523,11 @@
 
     // Toggle retractable filter panel
     document.getElementById('btn-toggle-filtros').addEventListener('click', function() {
-      var panel = document.getElementById('painel-filtros-data');
-      panel.classList.toggle('hidden');
+      var panel = document.getElementById('painel-datas-retratil');
+      panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
     });
 
-    // Client-side table search
-    document.getElementById('search-table').addEventListener('input', function() {
-      var q = this.value.toLowerCase().trim();
-      document.querySelectorAll('#tab-content table tbody tr').forEach(function(row) {
-        var text = row.textContent.toLowerCase();
-        row.style.display = (!q || text.indexOf(q) !== -1) ? '' : 'none';
-      });
-    });
-
-    // Autocomplete: lojas disponiveis via API
+    // Autocomplete: lojas disponiveis via API (modal cadastro)
     (function initStoreAutocomplete() {
       var input = document.getElementById('store-search');
       var hiddenId = document.getElementById('store-id');
@@ -1607,21 +1558,85 @@
       }
     }
 
-    (function destacarFiltroRapido() {
-      document.querySelectorAll('.form-filtros').forEach(function(form) {
-        var inicio = form.querySelector('[name="filtro_data_inicio"]');
-        var fim = form.querySelector('[name="filtro_data_fim"]');
-        if (!inicio || !fim || !inicio.value || !fim.value) return;
+    // Autocomplete: busca global com dropdown customizado
+    (function() {
+      var input = document.getElementById('input-autocomplete-loja');
+      var dropdown = document.getElementById('dropdown-autocomplete-resultados');
+      var hiddenId = document.getElementById('filtro_loja_id');
+      if (!input || !dropdown) return;
+      var timer;
+      input.addEventListener('input', function() {
+        clearTimeout(timer); hiddenId.value = '';
+        var q = this.value.trim();
+        if (q.length < 2) { dropdown.style.display = 'none'; return; }
+        timer = setTimeout(async function() {
+          try {
+            var r = await fetch('/api/conservacao/eco-flamboyant/buscar-lojas?q=' + encodeURIComponent(q));
+            var data = await r.json();
+            dropdown.innerHTML = data.map(function(loja) {
+              return '<div class="autocomplete-item" data-id="' + loja.id + '" style="padding:8px 12px;cursor:pointer;border-bottom:1px solid #f0f0f0;">' +
+                '<strong>' + loja.nome + '</strong> <small style="color:#999;">LUC ' + loja.luc + '</small></div>';
+            }).join('');
+            dropdown.style.display = data.length > 0 ? 'block' : 'none';
+            dropdown.querySelectorAll('.autocomplete-item').forEach(function(item) {
+              item.addEventListener('click', function() {
+                input.value = this.querySelector('strong').textContent.trim() + ' (' + this.querySelector('small').textContent.trim() + ')';
+                hiddenId.value = this.getAttribute('data-id');
+                dropdown.style.display = 'none';
+                document.getElementById('form-filtro-global').submit();
+              });
+            });
+          } catch(e) { console.error(e); }
+        }, 300);
+      });
+      document.addEventListener('click', function(e) {
+        if (!input.contains(e.target) && !dropdown.contains(e.target)) dropdown.style.display = 'none';
+      });
+    })();
+
+    // Botoes rapidos 15/30/60
+    document.querySelectorAll('.btn-rapido').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var dias = parseInt(this.getAttribute('data-dias'));
         var hoje = new Date();
+        var inicio = new Date();
+        inicio.setDate(hoje.getDate() - dias);
         var fmt = function(d) { return d.toISOString().split('T')[0]; };
-        form.querySelectorAll('.btn-filtro-rapido').forEach(function(btn) {
-          var dias = parseInt(btn.getAttribute('data-dias'));
-          var esperadoInicio = new Date();
-          esperadoInicio.setDate(hoje.getDate() - dias);
-          if (inicio.value === fmt(esperadoInicio) && fim.value === fmt(hoje)) {
-            btn.classList.add('active');
-          }
-        });
+        var form = document.getElementById('form-filtro-global');
+        form.querySelector('[name="filtro_data_inicio"]').value = fmt(inicio);
+        form.querySelector('[name="filtro_data_fim"]').value = fmt(hoje);
+        form.submit();
+      });
+    });
+
+    // Emitir Relatorio: abre PDF em nova aba com filtros atuais
+    document.getElementById('btn-emitir-relatorio').addEventListener('click', function() {
+      var lojaId = document.getElementById('filtro_loja_id').value;
+      var dataInicio = document.querySelector('[name="filtro_data_inicio"]').value;
+      var dataFim = document.querySelector('[name="filtro_data_fim"]').value;
+      var aba = document.querySelector('[name="aba"]').value;
+      var url = '/conservacao/eco-flamboyant/relatorio/pdf?aba=' + encodeURIComponent(aba) +
+        '&filtro_data_inicio=' + encodeURIComponent(dataInicio) +
+        '&filtro_data_fim=' + encodeURIComponent(dataFim) +
+        '&filtro_loja_id=' + encodeURIComponent(lojaId);
+      window.open(url);
+    });
+
+    // Destacar botao rapido ativo
+    (function() {
+      var form = document.getElementById('form-filtro-global');
+      var inicio = form.querySelector('[name="filtro_data_inicio"]');
+      var fim = form.querySelector('[name="filtro_data_fim"]');
+      if (!inicio || !fim || !inicio.value || !fim.value) return;
+      var hoje = new Date();
+      var fmt = function(d) { return d.toISOString().split('T')[0]; };
+      document.querySelectorAll('.btn-rapido').forEach(function(btn) {
+        var dias = parseInt(btn.getAttribute('data-dias'));
+        var esperado = new Date();
+        esperado.setDate(hoje.getDate() - dias);
+        if (inicio.value === fmt(esperado) && fim.value === fmt(hoje)) {
+          btn.classList.add('active');
+        }
       });
     })();
     {{if .ErroForm}}
