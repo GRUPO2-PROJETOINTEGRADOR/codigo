@@ -820,7 +820,7 @@
                 <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>Histórico de Recebimento de Resíduos</h3>
               </div>
               <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
-                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Peso (kg)</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Aproveitado</th></tr></thead>
+                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Peso (kg)</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Aproveitado</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Ações</th></tr></thead>
                 <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
                   {{range .Residuos}}
                   <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
@@ -828,9 +828,23 @@
                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{.DataColeta.Format "02/01/2006"}}</td>
                     <td class="px-6 py-4 text-sm font-bold text-[#8B1A1A]">{{printf "%.1f" .PesoKG}} kg</td>
                     <td class="px-6 py-4">{{if .Aproveitado}}<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">Sim</span>{{else}}<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-100">Não</span>{{end}}</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-2">
+                        <button type="button" class="btn-editar-residuo text-[11px] font-bold px-2.5 py-1.5 rounded-lg bg-[#8B1A1A]/10 text-[#8B1A1A] hover:bg-[#8B1A1A]/20 transition-colors"
+                          data-id="{{.ID}}" data-loja-id="{{.LojaID}}" data-loja-nome="{{.LojaNome}}" data-data="{{.DataColeta.Format "2006-01-02"}}" data-peso="{{.PesoKG}}" data-aproveitado="{{.Aproveitado}}"
+                          style="cursor: pointer; border: none;">
+                          Editar
+                        </button>
+                        <button type="button" class="btn-excluir-residuo text-[11px] font-bold px-2.5 py-1.5 rounded-lg bg-red-50 text-red-700 hover:bg-red-100 transition-colors"
+                          data-id="{{.ID}}" data-loja-nome="{{.LojaNome}}" data-data="{{.DataColeta.Format "02/01/2006"}}"
+                          style="cursor: pointer; border: none;">
+                          Excluir
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                   {{else}}
-                  <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum resíduo registrado.</td></tr>
+                  <tr><td colspan="5" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum resíduo registrado.</td></tr>
                   {{end}}
                 </tbody>
               </table></div>
@@ -1210,6 +1224,51 @@
 
   <form id="form-remover-loja" method="POST" action="/conservacao/eco-flamboyant/loja/remover">
     <input type="hidden" id="remover-loja-id" name="loja_id">
+  </form>
+
+  <!-- Modal Editar Resíduo -->
+  <div id="modal-editar-residuo" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.3); backdrop-filter: blur(2px); z-index: 9999; justify-content: center; align-items: center; font-family: system-ui, -apple-system, sans-serif;">
+    <div style="background: #ffffff; padding: 26px 32px; border-radius: 4px; width: 100%; max-width: 440px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); box-sizing: border-box; border: 1px solid #e2e8f0;">
+      <h3 style="margin: 0 0 4px 0; font-size: 18px; font-weight: 600; color: #0f172a;">Editar Resíduo</h3>
+      <p id="modal-residuo-loja-nome" style="margin: 0 0 20px 0; font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px;"></p>
+
+      <form id="form-editar-residuo" method="POST" action="/conservacao/eco-flamboyant/residuo/editar" style="margin: 0;">
+        <input type="hidden" id="edit-residuo-id" name="residuo_id">
+        <input type="hidden" id="edit-residuo-loja-id" name="loja_id">
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; letter-spacing: 0.5px; margin-bottom: 6px;">DATA COLETA</label>
+          <input type="date" id="edit-residuo-data" name="data_coleta" required style="width: 100%; height: 38px; padding: 0 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; color: #334155; box-sizing: border-box; outline: none;">
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; letter-spacing: 0.5px; margin-bottom: 6px;">PESO (KG)</label>
+          <input type="number" step="0.01" min="0.01" max="9999.99" id="edit-residuo-peso" name="peso_kg" required style="width: 100%; height: 38px; padding: 0 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; color: #334155; box-sizing: border-box; outline: none;">
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; letter-spacing: 0.5px; margin-bottom: 6px;">APROVEITADO PARA ADUBO</label>
+          <select id="edit-residuo-aproveitado" name="aproveitado" required style="width: 100%; height: 38px; padding: 0 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; color: #334155; box-sizing: border-box; outline: none; background: #fff;">
+            <option value="" disabled selected>Selecione...</option>
+            <option value="true">Aproveitado (Horta/Adubo)</option>
+            <option value="false">Descarte Comum</option>
+          </select>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px; align-items: center;">
+          <button type="button" id="btn-fechar-modal-editar-residuo" style="height: 36px; padding: 0 14px; border: 1px solid #cbd5e1; border-radius: 4px; background: #ffffff; color: #64748b; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;">
+            Cancelar
+          </button>
+          <button type="submit" style="height: 36px; padding: 0 16px; border: none; border-radius: 4px; background: #8B1A1A; color: #ffffff; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;" onmouseover="this.style.background='#a43030';" onmouseout="this.style.background='#8B1A1A';">
+            Salvar Alterações
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <form id="form-excluir-residuo" method="POST" action="/conservacao/eco-flamboyant/residuo/excluir">
+    <input type="hidden" id="excluir-residuo-id" name="residuo_id">
   </form>
 
   <div id="toast-container" class="fixed bottom-4 right-4 z-[99999] flex flex-col gap-2 pointer-events-none"></div>
@@ -1816,6 +1875,61 @@
           document.getElementById("form-remover-loja").submit();
         });
       }
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      var modal = document.getElementById("modal-editar-residuo");
+      var btnFechar = document.getElementById("btn-fechar-modal-editar-residuo");
+      if (!modal) return;
+
+      document.body.addEventListener("click", function(event) {
+        var btn = event.target.closest(".btn-editar-residuo");
+        if (btn) {
+          event.preventDefault();
+          var form = document.getElementById("form-editar-residuo");
+          if (form) form.reset();
+          var residuoId = btn.getAttribute("data-id");
+          var lojaId = btn.getAttribute("data-loja-id");
+          var dataColeta = btn.getAttribute("data-data");
+          var pesoKg = btn.getAttribute("data-peso");
+          var aproveitadoRaw = btn.getAttribute("data-aproveitado");
+          var inputId = document.getElementById("edit-residuo-id");
+          var inputLoja = document.getElementById("edit-residuo-loja-id");
+          var inputData = document.getElementById("edit-residuo-data");
+          var inputPeso = document.getElementById("edit-residuo-peso");
+          var inputAproveitado = document.getElementById("edit-residuo-aproveitado");
+          if (inputId) inputId.value = residuoId;
+          if (inputData) inputData.value = dataColeta;
+          if (inputPeso) inputPeso.value = pesoKg;
+          if (inputAproveitado) {
+            if (aproveitadoRaw === "true" || aproveitadoRaw === "1") {
+              inputAproveitado.value = "true";
+            } else if (aproveitadoRaw === "false" || aproveitadoRaw === "0") {
+              inputAproveitado.value = "false";
+            } else {
+              inputAproveitado.value = "";
+            }
+          }
+          if (inputLoja && lojaId) inputLoja.value = lojaId;
+          if (modal) modal.style.display = "flex";
+        }
+      });
+
+      document.body.addEventListener("click", function(event) {
+        var btn = event.target.closest(".btn-excluir-residuo");
+        if (btn) {
+          event.preventDefault();
+          if (confirm('Excluir resíduo de ' + btn.getAttribute("data-loja-nome") + ' em ' + btn.getAttribute("data-data") + '?')) {
+            document.getElementById("excluir-residuo-id").value = btn.getAttribute("data-id");
+            document.getElementById("form-excluir-residuo").submit();
+          }
+        }
+      });
+
+      if (btnFechar) {
+        btnFechar.addEventListener("click", function() { modal.style.display = "none"; });
+      }
+      modal.addEventListener("click", function(e) { if (e.target === modal) modal.style.display = "none"; });
     });
   </script>
 </body>

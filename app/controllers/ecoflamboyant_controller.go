@@ -258,6 +258,58 @@ func (c *EcoflamboyantController) CriarResiduoHandler(w http.ResponseWriter, r *
 	http.Redirect(w, r, "/conservacao/eco-flamboyant?aba=residuos", http.StatusSeeOther)
 }
 
+func (c *EcoflamboyantController) EditarResiduoHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		return
+	}
+
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Erro ao processar formulário", http.StatusBadRequest)
+		return
+	}
+
+	err := s.AtualizarResiduo(utils.DB,
+		r.FormValue("residuo_id"),
+		r.FormValue("loja_id"),
+		r.FormValue("data_coleta"),
+		r.FormValue("peso_kg"),
+		r.FormValue("aproveitado"))
+	if err != nil {
+		log.Printf("Erro ao editar resíduo: %v", err)
+		pageData := c.montarPaginaErro(r, "residuos", time.Now().Format("2006-01-02"))
+		pageData.ErroForm = err.Error()
+		tmpl := tmplEcoFlamboyant()
+		tmpl.ExecuteTemplate(w, "eco-flamboyant", pageData)
+		return
+	}
+
+	http.Redirect(w, r, "/conservacao/eco-flamboyant?aba=residuos", http.StatusSeeOther)
+}
+
+func (c *EcoflamboyantController) ExcluirResiduoHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		return
+	}
+
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Erro ao processar formulário", http.StatusBadRequest)
+		return
+	}
+
+	if err := s.ExcluirResiduo(utils.DB, r.FormValue("residuo_id")); err != nil {
+		log.Printf("Erro ao excluir resíduo: %v", err)
+		pageData := c.montarPaginaErro(r, "residuos", time.Now().Format("2006-01-02"))
+		pageData.ErroForm = err.Error()
+		tmpl := tmplEcoFlamboyant()
+		tmpl.ExecuteTemplate(w, "eco-flamboyant", pageData)
+		return
+	}
+
+	http.Redirect(w, r, "/conservacao/eco-flamboyant?aba=residuos", http.StatusSeeOther)
+}
+
 func (c *EcoflamboyantController) CriarKitHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)

@@ -73,7 +73,7 @@ func InserirResiduo(db *sql.DB, lojaID string, dataColeta time.Time, pesoKG floa
 }
 
 func ListarResiduos(db *sql.DB, dataInicio, dataFim, lojaID string, limit, offset int) ([]models.Residuo, error) {
-	query := `SELECT r.id, l.nome, r.data_coleta, r.peso_kg, r.aproveitado
+	query := `SELECT r.id, r.loja_id, l.nome, r.data_coleta, r.peso_kg, r.aproveitado
 		FROM residuos_eco r
 		JOIN lojas l ON l.id = r.loja_id
 		WHERE ($1 = '' OR r.data_coleta >= $1::date)
@@ -90,12 +90,23 @@ func ListarResiduos(db *sql.DB, dataInicio, dataFim, lojaID string, limit, offse
 	var lista []models.Residuo
 	for rows.Next() {
 		var r models.Residuo
-		if err := rows.Scan(&r.ID, &r.LojaNome, &r.DataColeta, &r.PesoKG, &r.Aproveitado); err != nil {
+		if err := rows.Scan(&r.ID, &r.LojaID, &r.LojaNome, &r.DataColeta, &r.PesoKG, &r.Aproveitado); err != nil {
 			return nil, err
 		}
 		lista = append(lista, r)
 	}
 	return lista, nil
+}
+
+func AtualizarResiduo(db *sql.DB, id int, lojaID string, dataColeta time.Time, pesoKG float64, aproveitado bool) error {
+	_, err := db.Exec(`UPDATE residuos_eco SET loja_id = $1, data_coleta = $2, peso_kg = $3, aproveitado = $4 WHERE id = $5`,
+		lojaID, dataColeta, pesoKG, aproveitado, id)
+	return err
+}
+
+func ExcluirResiduo(db *sql.DB, id int) error {
+	_, err := db.Exec(`DELETE FROM residuos_eco WHERE id = $1`, id)
+	return err
 }
 
 func InserirKit(db *sql.DB, lojaID string, dataEntregaKit time.Time, qntKit int) error {

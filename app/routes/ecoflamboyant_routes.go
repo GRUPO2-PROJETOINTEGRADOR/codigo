@@ -16,4 +16,6 @@ func RotasEcoflamboyant() {
 	http.HandleFunc("/conservacao/eco-flamboyant/relatorio/pdf", ctrl.EmitirRelatorioPDF)
 	http.HandleFunc("/conservacao/eco-flamboyant/loja/editar", ctrl.EditarParticipanteHandler)
 	http.HandleFunc("/conservacao/eco-flamboyant/loja/remover", ctrl.RemoverParticipanteHandler)
+	http.HandleFunc("/conservacao/eco-flamboyant/residuo/editar", ctrl.EditarResiduoHandler)
+	http.HandleFunc("/conservacao/eco-flamboyant/residuo/excluir", ctrl.ExcluirResiduoHandler)
 }

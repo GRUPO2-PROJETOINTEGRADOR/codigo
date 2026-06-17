@@ -93,6 +93,62 @@ func ContarResiduos(db *sql.DB, dataInicio, dataFim, lojaID string) (int, error)
 	return utils.ContarResiduos(db, dataInicio, dataFim, lojaID)
 }
 
+func AtualizarResiduo(db *sql.DB, idStr, lojaIDStr, dataColetaStr, pesoKGStr, aproveitadoStr string) error {
+	if lojaIDStr == "" {
+		return errors.New("loja obrigatória")
+	}
+	if dataColetaStr == "" {
+		return errors.New("data de coleta obrigatória")
+	}
+	if pesoKGStr == "" {
+		return errors.New("peso obrigatório")
+	}
+	if aproveitadoStr == "" {
+		return errors.New("informe se foi aproveitado para adubo")
+	}
+
+	dataColeta, err := time.Parse("2006-01-02", dataColetaStr)
+	if err != nil {
+		return errors.New("data de coleta inválida")
+	}
+	if dataColeta.After(time.Now()) {
+		return errors.New("data de coleta não pode ser futura")
+	}
+
+	pesoKG, err := strconv.ParseFloat(pesoKGStr, 64)
+	if err != nil {
+		return errors.New("peso inválido")
+	}
+	if pesoKG <= 0 {
+		return errors.New("peso deve ser maior que zero")
+	}
+	if pesoKG > 9999.99 {
+		return errors.New("O peso não pode ultrapassar 9.999,99 kg por registro")
+	}
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return errors.New("id inválido")
+	}
+
+	aproveitado := aproveitadoStr == "true"
+	if err := utils.AtualizarResiduo(db, id, lojaIDStr, dataColeta, pesoKG, aproveitado); err != nil {
+		return err
+	}
+	return utils.InserirAuditoria(db, lojaIDStr, "residuos_eco", "EDITAR")
+}
+
+func ExcluirResiduo(db *sql.DB, idStr string) error {
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return errors.New("id inválido")
+	}
+	if err := utils.ExcluirResiduo(db, id); err != nil {
+		return err
+	}
+	return utils.InserirAuditoria(db, "", "residuos_eco", "EXCLUIR")
+}
+
 func CriarKit(db *sql.DB, lojaID, dataEntregaKitStr, qntKitStr string) error {
 	if lojaID == "" {
 		return errors.New("loja obrigatória")

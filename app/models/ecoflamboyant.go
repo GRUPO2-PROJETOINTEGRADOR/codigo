@@ -21,6 +21,7 @@ type Participante struct {
 
 type Residuo struct {
 	ID          int
+	LojaID      string
 	LojaNome    string
 	DataColeta  time.Time
 	PesoKG      float64
