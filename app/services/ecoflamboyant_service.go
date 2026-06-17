@@ -24,14 +24,11 @@ func CriarParticipante(db *sql.DB, lojaID string, dataEntrada time.Time, dataSai
 	if dataEntrada.IsZero() {
 		return errors.New("data de entrada obrigatória")
 	}
-	if dataEntrada.After(time.Now()) {
-		return errors.New("data de entrada não pode ser futura")
-	}
 	if nomeAnexo == "" {
 		return errors.New("termo de aceite obrigatório")
 	}
-	if dataSaida != nil && !dataSaida.After(dataEntrada) {
-		return errors.New("data de saída deve ser após a data de entrada")
+	if dataSaida != nil && !dataSaida.IsZero() && dataSaida.Before(dataEntrada) {
+		return errors.New("A data de saída não pode ser anterior à data de entrada.")
 	}
 
 	if err := utils.CriarParticipante(db, lojaID, dataEntrada, dataSaida, nomeAnexo, dadosAnexo); err != nil {
@@ -40,8 +37,12 @@ func CriarParticipante(db *sql.DB, lojaID string, dataEntrada time.Time, dataSai
 	return utils.InserirAuditoria(db, lojaID, "eco_participante", "cadastro")
 }
 
-func ListarParticipantes(db *sql.DB) ([]models.Participante, error) {
-	return utils.ListarParticipantes(db)
+func ListarParticipantes(db *sql.DB, limit, offset int) ([]models.Participante, error) {
+	return utils.ListarParticipantes(db, limit, offset)
+}
+
+func ContarParticipantes(db *sql.DB) (int, error) {
+	return utils.ContarParticipantes(db)
 }
 
 func CriarResiduo(db *sql.DB, lojaID, dataColetaStr, pesoKGStr, aproveitadoStr string) error {
@@ -84,8 +85,12 @@ func CriarResiduo(db *sql.DB, lojaID, dataColetaStr, pesoKGStr, aproveitadoStr s
 	return utils.InserirAuditoria(db, lojaID, "residuo", "cadastro")
 }
 
-func ObterResiduos(db *sql.DB, dataInicio, dataFim, lojaID string) ([]models.Residuo, error) {
-	return utils.ListarResiduos(db, dataInicio, dataFim, lojaID)
+func ObterResiduos(db *sql.DB, dataInicio, dataFim, lojaID string, limit, offset int) ([]models.Residuo, error) {
+	return utils.ListarResiduos(db, dataInicio, dataFim, lojaID, limit, offset)
+}
+
+func ContarResiduos(db *sql.DB, dataInicio, dataFim, lojaID string) (int, error) {
+	return utils.ContarResiduos(db, dataInicio, dataFim, lojaID)
 }
 
 func CriarKit(db *sql.DB, lojaID, dataEntregaKitStr, qntKitStr string) error {
@@ -121,8 +126,12 @@ func CriarKit(db *sql.DB, lojaID, dataEntregaKitStr, qntKitStr string) error {
 	return utils.InserirAuditoria(db, lojaID, "kit", "cadastro")
 }
 
-func ObterKits(db *sql.DB) ([]models.Kit, error) {
-	return utils.ListarKits(db)
+func ObterKits(db *sql.DB, limit, offset int) ([]models.Kit, error) {
+	return utils.ListarKits(db, limit, offset)
+}
+
+func ContarKits(db *sql.DB) (int, error) {
+	return utils.ContarKits(db)
 }
 
 func ObterFluxoKits(db *sql.DB) ([]models.PontoKits, error) {
@@ -159,8 +168,12 @@ func AtivarLoja(db *sql.DB, lojaID string) error {
 	return utils.InserirAuditoria(db, lojaID, "eco_participante", "reativacao")
 }
 
-func ListarAuditorias(db *sql.DB) ([]models.RegistroAuditoria, error) {
-	return utils.ListarAuditoriasEventos(db)
+func ListarAuditorias(db *sql.DB, limit, offset int) ([]models.RegistroAuditoria, error) {
+	return utils.ListarAuditoriasEventos(db, limit, offset)
+}
+
+func ContarAuditorias(db *sql.DB) (int, error) {
+	return utils.ContarAuditoriasEventos(db)
 }
 
 func ObterResumoResiduos(db *sql.DB) (totalGeral, totalAdubo, totalDescarte, taxa float64, fluxo []models.PontoResiduos, err error) {

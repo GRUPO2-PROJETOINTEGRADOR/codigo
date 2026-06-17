@@ -719,6 +719,21 @@
                   {{ end }}
                 </tbody>
               </table></div>
+              {{if gt .TotalPaginas 1}}
+              <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100 dark:border-gray-800">
+                <div class="text-xs text-gray-500">Página {{.PaginaAtual}} de {{.TotalPaginas}}</div>
+                <div class="flex gap-2">
+                  {{if gt .PaginaAtual 1}}
+                  <a href="?aba=lojas&pagina={{sub .PaginaAtual 1}}"
+                    class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">&larr; Anterior</a>
+                  {{end}}
+                  {{if lt .PaginaAtual .TotalPaginas}}
+                  <a href="?aba=lojas&pagina={{add .PaginaAtual 1}}"
+                    class="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#8B1A1A] text-white hover:bg-[#a43030]">Próxima &rarr;</a>
+                  {{end}}
+                </div>
+              </div>
+              {{end}}
             </div>
             <div id="tab-residuos-content" class="hidden">
               <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
@@ -768,6 +783,21 @@
                   {{end}}
                 </tbody>
               </table></div>
+              {{if gt .TotalPaginas 1}}
+              <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100 dark:border-gray-800">
+                <div class="text-xs text-gray-500">Página {{.PaginaAtual}} de {{.TotalPaginas}}</div>
+                <div class="flex gap-2">
+                  {{if gt .PaginaAtual 1}}
+                  <a href="?aba=residuos&pagina={{sub .PaginaAtual 1}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}&filtro_loja_id={{.FiltroLojaID}}"
+                    class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">&larr; Anterior</a>
+                  {{end}}
+                  {{if lt .PaginaAtual .TotalPaginas}}
+                  <a href="?aba=residuos&pagina={{add .PaginaAtual 1}}&filtro_data_inicio={{.FiltroDataInicio}}&filtro_data_fim={{.FiltroDataFim}}&filtro_loja_id={{.FiltroLojaID}}"
+                    class="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#8B1A1A] text-white hover:bg-[#a43030]">Próxima &rarr;</a>
+                  {{end}}
+                </div>
+              </div>
+              {{end}}
             </div>
             <div id="tab-kits-content" class="hidden">
               <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
@@ -787,6 +817,21 @@
                   {{end}}
                 </tbody>
               </table></div>
+              {{if gt .TotalPaginas 1}}
+              <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100 dark:border-gray-800">
+                <div class="text-xs text-gray-500">Página {{.PaginaAtual}} de {{.TotalPaginas}}</div>
+                <div class="flex gap-2">
+                  {{if gt .PaginaAtual 1}}
+                  <a href="?aba=kits&pagina={{sub .PaginaAtual 1}}"
+                    class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">&larr; Anterior</a>
+                  {{end}}
+                  {{if lt .PaginaAtual .TotalPaginas}}
+                  <a href="?aba=kits&pagina={{add .PaginaAtual 1}}"
+                    class="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#8B1A1A] text-white hover:bg-[#a43030]">Próxima &rarr;</a>
+                  {{end}}
+                </div>
+              </div>
+              {{end}}
             </div>
             <div id="tab-registros-content" class="hidden">
               <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
@@ -820,6 +865,21 @@
                   {{end}}
                 </tbody>
               </table></div>
+              {{if gt .TotalPaginas 1}}
+              <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100 dark:border-gray-800">
+                <div class="text-xs text-gray-500">Página {{.PaginaAtual}} de {{.TotalPaginas}}</div>
+                <div class="flex gap-2">
+                  {{if gt .PaginaAtual 1}}
+                  <a href="?aba=registros&pagina={{sub .PaginaAtual 1}}"
+                    class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">&larr; Anterior</a>
+                  {{end}}
+                  {{if lt .PaginaAtual .TotalPaginas}}
+                  <a href="?aba=registros&pagina={{add .PaginaAtual 1}}"
+                    class="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#8B1A1A] text-white hover:bg-[#a43030]">Próxima &rarr;</a>
+                  {{end}}
+                </div>
+              </div>
+              {{end}}
             </div>
           </div>
         </div>
@@ -866,7 +926,7 @@
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-1">
             <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Data de Início</label>
-            <input type="date" id="store-start-date" name="data_entrada" max="{{.HojeStr}}" required
+            <input type="date" id="store-start-date" name="data_entrada" required
               class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white">
           </div>
           <div class="space-y-1">
@@ -877,19 +937,58 @@
         </div>
         <div class="space-y-1">
           <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">
-            Termo de Aceite (PDF) *
+            Termo de Aceite *
           </label>
           <input
             type="file"
             id="anexo_eco"
             name="anexo_eco"
-            accept=".pdf"
+            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
             required
             class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[#8B1A1A] file:text-white hover:file:bg-[#a43030]"
           >
-          <small class="text-xs text-gray-400">Somente arquivos .pdf são aceitos</small>
+          <small class="text-xs text-gray-400">Formatos aceitos: PDF, Word, imagens (JPG, PNG)</small>
         </div>
-        {{if .ErroForm}}<div class="form-erro" style="color: #c0392b; background: #fdecea; border: 1px solid #e74c3c; border-radius: 6px; padding: 10px 14px; margin-bottom: 12px; font-size: 14px;">⚠️ {{.ErroForm}}</div>{{end}}
+        {{if .ErroForm}}
+        <div id="toast-erro" style="
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            background: #fff;
+            border-left: 4px solid #e74c3c;
+            border-radius: 8px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+            padding: 16px 24px;
+            z-index: 9999;
+            min-width: 280px;
+            max-width: 400px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            animation: slideInToast 0.3s ease;">
+            <span style="font-size:20px;">⚠️</span>
+            <div>
+                <strong style="color:#c0392b; display:block; margin-bottom:4px;">Ops, algo deu errado</strong>
+                <span style="color:#555; font-size:14px;">{{.ErroForm}}</span>
+            </div>
+            <button onclick="document.getElementById('toast-erro').remove()" style="
+                background:none; border:none; cursor:pointer; color:#aaa;
+                font-size:18px; margin-left:auto; padding:0 0 0 12px;
+            ">×</button>
+        </div>
+        <style>
+        @keyframes slideInToast {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        </style>
+        <script>
+            setTimeout(() => {
+                const t = document.getElementById('toast-erro');
+                if (t) t.remove();
+            }, 6000);
+        </script>
+        {{end}}
         <div class="flex justify-end gap-3 mt-6">
           <button type="button" onclick="closeModal('store-modal')"
             class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">Cancelar</button>
@@ -1423,6 +1522,16 @@
     });
     {{end}}
 
+    document.querySelector('[name="data_saida"]').addEventListener('change', function() {
+      const entrada = document.querySelector('[name="data_entrada"]').value;
+      if (entrada && this.value && this.value < entrada) {
+        this.setCustomValidity('A data de saída não pode ser anterior à data de entrada.');
+        this.reportValidity();
+        this.value = '';
+      } else {
+        this.setCustomValidity('');
+      }
+    });
   </script>
 </body>
 
