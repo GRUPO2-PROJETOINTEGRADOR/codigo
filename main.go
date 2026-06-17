@@ -46,15 +46,6 @@ func main() {
 
 	http.Handle("/", http.FileServer(http.Dir("templates")))
 
-	// =========================================================
-	// PORTA DO SERVIDOR
-	// =========================================================
-	// Tenta ler variável de ambiente:
-	//   SERVER_PORT
-	//
-	// Caso não exista:
-	//   usa porta 8080
-	// =========================================================
 	port := os.Getenv("SERVER_PORT")
 
 	if port == "" {
@@ -99,5 +90,3 @@ func main() {
 		os.Exit(1)
 	}
 }
-
-

@@ -1314,11 +1314,7 @@
         // Data início
         if (filterDataInicio && new Date(i.data_auditoria) < new Date(filterDataInicio)) return false;
         // Data fim
-        if (filterDataFim) {
-          const fim = new Date(filterDataFim);
-          fim.setDate(fim.getDate() + 1);
-          if (new Date(i.data_auditoria) > fim) return false;
-        }
+        if (filterDataFim && new Date(i.data_auditoria) > new Date(filterDataFim)) return false;
         return true;
       }).sort((a, b) => {
         let aVal = a[sortBy];
@@ -1615,8 +1611,28 @@
     document.getElementById('filter-tipo').addEventListener('change', e => { filterTipo = e.target.value; currentPage = 0; updateFilterButtons(); renderTable(); });
     document.getElementById('filter-classificacao').addEventListener('change', e => { filterClassificacao = e.target.value; currentPage = 0; updateFilterButtons(); renderTable(); });
     document.getElementById('filter-desempenho').addEventListener('change', e => { filterDesempenho = e.target.value; currentPage = 0; updateFilterButtons(); renderTable(); });
-    document.getElementById('filter-data-inicio').addEventListener('change', e => { filterDataInicio = e.target.value; currentPage = 0; updateFilterButtons(); renderTable(); });
-    document.getElementById('filter-data-fim').addEventListener('change', e => { filterDataFim = e.target.value; currentPage = 0; updateFilterButtons(); renderTable(); });
+    document.getElementById('filter-data-inicio').addEventListener('change', e => {
+      filterDataInicio = e.target.value;
+      if (filterDataInicio && filterDataFim && filterDataFim < filterDataInicio) {
+        alert('A data de início não pode ser posterior à data final.');
+        e.target.value = '';
+        filterDataInicio = '';
+      }
+      currentPage = 0;
+      updateFilterButtons();
+      renderTable();
+    });
+    document.getElementById('filter-data-fim').addEventListener('change', e => {
+      filterDataFim = e.target.value;
+      if (filterDataInicio && filterDataFim && filterDataFim < filterDataInicio) {
+        alert('A data final não pode ser anterior à data de início.');
+        e.target.value = '';
+        filterDataFim = '';
+      }
+      currentPage = 0;
+      updateFilterButtons();
+      renderTable();
+    });
 
     // Toggle advanced filters
     document.getElementById('toggle-advanced-btn').addEventListener('click', () => {
@@ -1857,10 +1873,6 @@
       if (!loja_id) { showFormError('Selecione a loja correspondente.'); return; }
       if (!tipo) { showFormError('Selecione o tipo de inspeção.'); return; }
       if (!data_auditoria) { showFormError('A data da auditoria é obrigatória.'); return; }
-      if (!editingInspecaoId) {
-        const todayStr = new Date().toISOString().split('T')[0];
-        if (data_auditoria < todayStr) { showFormError('A data da auditoria não pode ser retroativa (anterior a hoje).'); return; }
-      }
       if (!responsavel_loja) { showFormError('Insira o nome do responsável presente pela loja.'); return; }
       if (!cargo_responsavel) { showFormError('Insira o cargo ou função do responsável.'); return; }
       if (isNaN(nota) || nota < 0 || nota > 100) { showFormError('Nota inválida. Insira um número de 0 a 100.'); return; }

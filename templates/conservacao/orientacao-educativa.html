@@ -1104,10 +1104,6 @@
     //document.getElementById('edit-data').setAttribute('max', todayStr);
     //document.getElementById('filter-start-date').setAttribute('max', todayStr);
     //document.getElementById('filter-end-date').setAttribute('max', todayStr);
-    // Date filter validation
-    document.getElementById('filter-start-date').addEventListener('change', function() {
-      document.getElementById('filter-end-date').setAttribute('min', this.value);
-    });
 
     loadStats();
     renderHistorico();
@@ -1417,6 +1413,11 @@
 
     document.getElementById('filter-start-date').addEventListener('change', function() {
       filterStartDate = this.value;
+      if (filterStartDate && filterEndDate && filterStartDate > filterEndDate) {
+        alert('A data de início não pode ser posterior à data final.');
+        this.value = '';
+        filterStartDate = '';
+      }
       currentPage = 1;
       renderHistorico();
       toggleClearBtn();
@@ -1424,6 +1425,11 @@
 
     document.getElementById('filter-end-date').addEventListener('change', function() {
       filterEndDate = this.value;
+      if (filterStartDate && filterEndDate && filterEndDate < filterStartDate) {
+        alert('A data final não pode ser anterior à data de início.');
+        this.value = '';
+        filterEndDate = '';
+      }
       currentPage = 1;
       renderHistorico();
       toggleClearBtn();
