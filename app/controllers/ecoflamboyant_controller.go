@@ -341,6 +341,57 @@ func (c *EcoflamboyantController) CriarKitHandler(w http.ResponseWriter, r *http
 	http.Redirect(w, r, "/conservacao/eco-flamboyant?aba=kits", http.StatusSeeOther)
 }
 
+func (c *EcoflamboyantController) EditarKitHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		return
+	}
+
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Erro ao processar formulário", http.StatusBadRequest)
+		return
+	}
+
+	err := s.AtualizarKit(utils.DB,
+		r.FormValue("entrega_id"),
+		r.FormValue("loja_id"),
+		r.FormValue("data_entrega"),
+		r.FormValue("quantidade_kits"))
+	if err != nil {
+		log.Printf("Erro ao editar kit: %v", err)
+		pageData := c.montarPaginaErro(r, "kits", time.Now().Format("2006-01-02"))
+		pageData.ErroForm = err.Error()
+		tmpl := tmplEcoFlamboyant()
+		tmpl.ExecuteTemplate(w, "eco-flamboyant", pageData)
+		return
+	}
+
+	http.Redirect(w, r, "/conservacao/eco-flamboyant?aba=kits", http.StatusSeeOther)
+}
+
+func (c *EcoflamboyantController) ExcluirKitHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		return
+	}
+
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Erro ao processar formulário", http.StatusBadRequest)
+		return
+	}
+
+	if err := s.ExcluirKit(utils.DB, r.FormValue("entrega_id")); err != nil {
+		log.Printf("Erro ao excluir kit: %v", err)
+		pageData := c.montarPaginaErro(r, "kits", time.Now().Format("2006-01-02"))
+		pageData.ErroForm = err.Error()
+		tmpl := tmplEcoFlamboyant()
+		tmpl.ExecuteTemplate(w, "eco-flamboyant", pageData)
+		return
+	}
+
+	http.Redirect(w, r, "/conservacao/eco-flamboyant?aba=kits", http.StatusSeeOther)
+}
+
 func (c *EcoflamboyantController) AlterarStatusLoja(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)

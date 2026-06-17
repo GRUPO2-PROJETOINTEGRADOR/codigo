@@ -869,16 +869,32 @@
                 <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/></svg>Histórico Detalhado de Cestas</h3>
               </div>
               <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
-                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja Destinatária</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data Entrega</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Quantidade</th></tr></thead>
+                <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja Destinatária</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data Entrega</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Quantidade</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Ações</th></tr></thead>
                 <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
                   {{range .Kits}}
                   <tr class="hover:bg-gray-50 dark:hover:bg-[#1a1a1a]">
                     <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{.LojaNome}}</td>
                     <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{.DataEntregaKit.Format "02/01/2006"}}</td>
                     <td class="px-6 py-4"><span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">{{.QntKit}} Cestas</span></td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-2">
+                        <button type="button" class="btn-editar-kit"
+                          data-id="{{.ID}}" data-loja-id="{{.LojaID}}" data-data="{{.DataEntregaKit.Format "2006-01-02"}}" data-quantidade="{{.QntKit}}"
+                          style="cursor: pointer; border: none; background: transparent; padding: 4px; color: #64748b; display: inline-flex; align-items: center;"
+                          title="Editar">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                        </button>
+                        <button type="button" class="btn-excluir-kit-direto"
+                          data-id="{{.ID}}"
+                          style="cursor: pointer; border: none; background: transparent; padding: 4px; color: #ef4444; display: inline-flex; align-items: center;"
+                          title="Excluir">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                   {{else}}
-                  <tr><td colspan="3" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum kit registrado.</td></tr>
+                  <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-gray-400">Nenhum kit registrado.</td></tr>
                   {{end}}
                 </tbody>
               </table></div>
@@ -922,6 +938,24 @@
                         <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-50 text-red-600 border border-red-100">🔴 Loja inativada</span>
                       {{else if eq .Acao "reativacao"}}
                         <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 text-green-700 border border-green-200">🟢 Loja reativada</span>
+                      {{else if eq .Acao "EDITAR"}}
+                        {{if eq .Entidade "residuos_eco"}}
+                          <span style="color: #1e40af; font-weight: 500;">✏️ Edição de Resíduo</span>
+                        {{else if eq .Entidade "kits_eco"}}
+                          <span style="color: #1e40af; font-weight: 500;">✏️ Edição de Kit</span>
+                        {{else}}
+                          <span style="color: #1e40af; font-weight: 500;">✏️ Edição de Registro</span>
+                        {{end}}
+                      {{else if eq .Acao "EXCLUIR"}}
+                        {{if eq .Entidade "residuos_eco"}}
+                          <span style="color: #dc2626; font-weight: 500;">🗑️ Exclusão de Resíduo</span>
+                        {{else if eq .Entidade "kits_eco"}}
+                          <span style="color: #dc2626; font-weight: 500;">🗑️ Exclusão de Kit</span>
+                        {{else}}
+                          <span style="color: #dc2626; font-weight: 500;">🗑️ Exclusão de Registro</span>
+                        {{end}}
+                      {{else}}
+                        <span style="color: #64748b;">{{.Acao}}</span>
                       {{end}}
                     </td>
                   </tr>
@@ -1269,6 +1303,59 @@
 
   <form id="form-excluir-residuo" method="POST" action="/conservacao/eco-flamboyant/residuo/excluir">
     <input type="hidden" id="excluir-residuo-id" name="residuo_id">
+  </form>
+
+  <!-- Modal Editar Kit -->
+  <div id="modal-editar-kit" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.3); backdrop-filter: blur(2px); z-index: 9999; justify-content: center; align-items: center; font-family: system-ui, -apple-system, sans-serif;">
+    <div style="background: #ffffff; padding: 26px 32px; border-radius: 4px; width: 100%; max-width: 460px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); box-sizing: border-box; border: 1px solid #e2e8f0;">
+      <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #0f172a;">Editar Entrega de Kit</h3>
+      <form id="form-editar-kit" method="POST" action="/conservacao/eco-flamboyant/kit/editar" style="margin: 0;">
+        <input type="hidden" id="edit-kit-id" name="entrega_id">
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 6px; letter-spacing: 0.5px;">LOJA / PARTICIPANTE</label>
+          <select id="edit-kit-loja-id" name="loja_id" required style="width: 100%; height: 38px; padding: 0 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; color: #334155; background: #fff; box-sizing: border-box; outline: none;">
+            <option value="" disabled selected>Selecione a loja participante...</option>
+            {{range .TodasLojas}}
+            <option value="{{.ID}}">{{.Nome}}</option>
+            {{end}}
+          </select>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 6px; letter-spacing: 0.5px;">DATA DA ENTREGA</label>
+          <input type="date" id="edit-kit-data" name="data_entrega" required style="width: 100%; height: 38px; padding: 0 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; color: #334155; box-sizing: border-box; outline: none;">
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 6px; letter-spacing: 0.5px;">QUANTIDADE DE KITS</label>
+          <input type="number" id="edit-kit-quantidade" name="quantidade_kits" required style="width: 100%; height: 38px; padding: 0 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; color: #334155; box-sizing: border-box; outline: none;">
+        </div>
+
+        <div id="kit-rodape-padrao" style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+          <button type="button" id="btn-remover-kit-modal" style="height: 36px; padding: 0 12px; border: 1px solid #fca5a5; border-radius: 4px; background: #fff5f5; color: #dc2626; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+            Remover Registro
+          </button>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button type="button" id="btn-fechar-modal-kit" style="height: 36px; padding: 0 14px; border: 1px solid #cbd5e1; border-radius: 4px; background: #ffffff; color: #64748b; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;">Cancelar</button>
+            <button type="submit" style="height: 36px; padding: 0 16px; border: none; border-radius: 4px; background: #1e40af; color: #ffffff; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;">Salvar Alterações</button>
+          </div>
+        </div>
+
+        <div id="kit-rodape-confirmacao" style="display: none; justify-content: space-between; align-items: center; background: #fff1f2; padding: 12px; border-radius: 4px; border: 1px solid #fecdd3; margin-top: 4px;">
+          <span style="font-size: 13px; font-weight: 600; color: #991b1b;">Deseja apagar permanentemente este registro?</span>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" id="btn-confirmar-kit-nao" style="height: 30px; padding: 0 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: #ffffff; color: #475569; font-size: 12px; font-weight: 500; cursor: pointer;">Não</button>
+            <button type="button" id="btn-confirmar-kit-sim" style="height: 30px; padding: 0 16px; border: none; border-radius: 4px; background: #dc2626; color: #ffffff; font-size: 12px; font-weight: 600; cursor: pointer;">Sim</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <form id="form-excluir-kit" method="POST" action="/conservacao/eco-flamboyant/kit/excluir">
+    <input type="hidden" id="excluir-kit-id" name="entrega_id">
   </form>
 
   <div id="toast-container" class="fixed bottom-4 right-4 z-[99999] flex flex-col gap-2 pointer-events-none"></div>
@@ -1875,6 +1962,70 @@
           document.getElementById("form-remover-loja").submit();
         });
       }
+
+      // Kit: abrir modal edição
+      document.body.addEventListener("click", function(event) {
+        var btnEditar = event.target.closest(".btn-editar-kit");
+        if (btnEditar) {
+          event.preventDefault();
+          document.getElementById("form-editar-kit").reset();
+          document.getElementById("kit-rodape-padrao").style.display = "flex";
+          document.getElementById("kit-rodape-confirmacao").style.display = "none";
+          document.getElementById("edit-kit-id").value = btnEditar.getAttribute("data-id");
+          document.getElementById("edit-kit-loja-id").value = btnEditar.getAttribute("data-loja-id");
+          document.getElementById("edit-kit-data").value = btnEditar.getAttribute("data-data");
+          document.getElementById("edit-kit-quantidade").value = btnEditar.getAttribute("data-quantidade");
+          document.getElementById("modal-editar-kit").style.display = "flex";
+        }
+      });
+
+      // Kit: excluir direto (ícone lixeira) abre modal em modo confirmação
+      document.body.addEventListener("click", function(event) {
+        var btnExcluirDireto = event.target.closest(".btn-excluir-kit-direto");
+        if (btnExcluirDireto) {
+          event.preventDefault();
+          document.getElementById("excluir-kit-id").value = btnExcluirDireto.getAttribute("data-id");
+          document.getElementById("kit-rodape-padrao").style.display = "none";
+          document.getElementById("kit-rodape-confirmacao").style.display = "flex";
+          document.getElementById("modal-editar-kit").style.display = "flex";
+        }
+      });
+
+      // Kit: fechar modal
+      document.body.addEventListener("click", function(event) {
+        var btnFecharKit = event.target.closest("#btn-fechar-modal-kit");
+        if (btnFecharKit) {
+          document.getElementById("modal-editar-kit").style.display = "none";
+        }
+      });
+
+      // Kit: clique em "Remover Registro" → troca para confirmação
+      document.body.addEventListener("click", function(event) {
+        var btnRemoverKit = event.target.closest("#btn-remover-kit-modal");
+        if (btnRemoverKit) {
+          document.getElementById("kit-rodape-padrao").style.display = "none";
+          document.getElementById("kit-rodape-confirmacao").style.display = "flex";
+        }
+      });
+
+      // Kit: confirmação "Não" → volta ao padrão
+      document.body.addEventListener("click", function(event) {
+        var btnConfirmarKitNao = event.target.closest("#btn-confirmar-kit-nao");
+        if (btnConfirmarKitNao) {
+          document.getElementById("kit-rodape-confirmacao").style.display = "none";
+          document.getElementById("kit-rodape-padrao").style.display = "flex";
+        }
+      });
+
+      // Kit: confirmação "Sim" → submete exclusão
+      document.body.addEventListener("click", function(event) {
+        var btnConfirmarKitSim = event.target.closest("#btn-confirmar-kit-sim");
+        if (btnConfirmarKitSim) {
+          var id = document.getElementById("edit-kit-id").value || document.getElementById("excluir-kit-id").value;
+          document.getElementById("excluir-kit-id").value = id;
+          document.getElementById("form-excluir-kit").submit();
+        }
+      });
     });
 
     document.addEventListener("DOMContentLoaded", function() {

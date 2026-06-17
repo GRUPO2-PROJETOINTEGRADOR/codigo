@@ -127,7 +127,7 @@ func ContarResiduos(db *sql.DB, dataInicio, dataFim, lojaID string) (int, error)
 }
 
 func ListarKits(db *sql.DB, dataInicio, dataFim, lojaID string, limit, offset int) ([]models.Kit, error) {
-	rows, err := db.Query(`SELECT k.id, l.nome, k.data_entrega_kit, k.qnt_kit
+	rows, err := db.Query(`SELECT k.id, k.loja_id, l.nome, k.data_entrega_kit, k.qnt_kit
 		FROM kit k
 		JOIN lojas l ON l.id = k.loja_id
 		WHERE ($1 = '' OR k.data_entrega_kit >= $1::date)
@@ -143,12 +143,23 @@ func ListarKits(db *sql.DB, dataInicio, dataFim, lojaID string, limit, offset in
 	var lista []models.Kit
 	for rows.Next() {
 		var k models.Kit
-		if err := rows.Scan(&k.ID, &k.LojaNome, &k.DataEntregaKit, &k.QntKit); err != nil {
+		if err := rows.Scan(&k.ID, &k.LojaID, &k.LojaNome, &k.DataEntregaKit, &k.QntKit); err != nil {
 			return nil, err
 		}
 		lista = append(lista, k)
 	}
 	return lista, nil
+}
+
+func AtualizarKit(db *sql.DB, id int, lojaID string, dataEntrega time.Time, qntKit int) error {
+	_, err := db.Exec(`UPDATE kit SET loja_id = $1, data_entrega_kit = $2, qnt_kit = $3 WHERE id = $4`,
+		lojaID, dataEntrega, qntKit, id)
+	return err
+}
+
+func ExcluirKit(db *sql.DB, id int) error {
+	_, err := db.Exec(`DELETE FROM kit WHERE id = $1`, id)
+	return err
 }
 
 func ContarParticipantes(db *sql.DB, dataInicio, dataFim string) (int, error) {

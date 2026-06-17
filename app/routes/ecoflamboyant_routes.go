@@ -18,4 +18,6 @@ func RotasEcoflamboyant() {
 	http.HandleFunc("/conservacao/eco-flamboyant/loja/remover", ctrl.RemoverParticipanteHandler)
 	http.HandleFunc("/conservacao/eco-flamboyant/residuo/editar", ctrl.EditarResiduoHandler)
 	http.HandleFunc("/conservacao/eco-flamboyant/residuo/excluir", ctrl.ExcluirResiduoHandler)
+	http.HandleFunc("/conservacao/eco-flamboyant/kit/editar", ctrl.EditarKitHandler)
+	http.HandleFunc("/conservacao/eco-flamboyant/kit/excluir", ctrl.ExcluirKitHandler)
 }

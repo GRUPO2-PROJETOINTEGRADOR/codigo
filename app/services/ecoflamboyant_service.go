@@ -149,6 +149,55 @@ func ExcluirResiduo(db *sql.DB, idStr string) error {
 	return utils.InserirAuditoria(db, "", "residuos_eco", "EXCLUIR")
 }
 
+func AtualizarKit(db *sql.DB, idStr, lojaIDStr, dataEntregaStr, qntKitStr string) error {
+	if lojaIDStr == "" {
+		return errors.New("loja obrigatória")
+	}
+	if dataEntregaStr == "" {
+		return errors.New("data de entrega obrigatória")
+	}
+	if qntKitStr == "" {
+		return errors.New("quantidade obrigatória")
+	}
+
+	dataEntrega, err := time.Parse("2006-01-02", dataEntregaStr)
+	if err != nil {
+		return errors.New("data de entrega inválida")
+	}
+	if dataEntrega.After(time.Now()) {
+		return errors.New("data de entrega não pode ser futura")
+	}
+
+	qntKit, err := strconv.Atoi(qntKitStr)
+	if err != nil {
+		return errors.New("quantidade inválida")
+	}
+	if qntKit <= 0 {
+		return errors.New("quantidade deve ser maior que zero")
+	}
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return errors.New("id inválido")
+	}
+
+	if err := utils.AtualizarKit(db, id, lojaIDStr, dataEntrega, qntKit); err != nil {
+		return err
+	}
+	return utils.InserirAuditoria(db, lojaIDStr, "kits_eco", "EDITAR")
+}
+
+func ExcluirKit(db *sql.DB, idStr string) error {
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return errors.New("id inválido")
+	}
+	if err := utils.ExcluirKit(db, id); err != nil {
+		return err
+	}
+	return utils.InserirAuditoria(db, "", "kits_eco", "EXCLUIR")
+}
+
 func CriarKit(db *sql.DB, lojaID, dataEntregaKitStr, qntKitStr string) error {
 	if lojaID == "" {
 		return errors.New("loja obrigatória")

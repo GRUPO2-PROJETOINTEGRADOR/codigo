@@ -30,6 +30,7 @@ type Residuo struct {
 
 type Kit struct {
 	ID             int
+	LojaID         string
 	LojaNome       string
 	DataEntregaKit time.Time
 	QntKit         int
