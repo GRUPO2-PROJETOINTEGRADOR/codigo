@@ -454,28 +454,28 @@
         <form id="form-filtro-global" method="GET" action="/conservacao/eco-flamboyant">
           <input type="hidden" name="aba" value="{{.AbaAtiva}}">
           <input type="hidden" id="filtro_loja_id" name="filtro_loja_id" value="{{.FiltroLojaID}}">
-          <div class="search-bar-container" style="display:flex;gap:12px;align-items:center;background:#fff;padding:16px;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+          <div class="search-bar-container bg-card" style="display:flex;gap:12px;align-items:center;padding:16px;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.05);">
             <div style="position:relative;flex:1;">
-              <input type="text" id="input-autocomplete-loja" value="{{.NomeLojaFiltrada}}" placeholder="Buscar restaurante por nome ou LUC..." style="width:100%;padding:10px 40px;border:1px solid #e2e8f0;border-radius:6px;outline:none;" autocomplete="off">
-              <div id="dropdown-autocomplete-resultados" style="position:absolute;width:100%;background:#fff;border:1px solid #e2e8f0;border-top:none;max-height:200px;overflow-y:auto;z-index:999;display:none;box-shadow:0 4px 6px rgba(0,0,0,0.05);"></div>
+              <input type="text" id="input-autocomplete-loja" value="{{.NomeLojaFiltrada}}" placeholder="Buscar restaurante por nome ou LUC..." style="width:100%;padding:10px 40px;border:1px solid var(--border);border-radius:6px;outline:none;background:var(--input-background);color:var(--foreground);" autocomplete="off">
+              <div id="dropdown-autocomplete-resultados" class="bg-card border border-border" style="position:absolute;width:100%;border-top:none;max-height:200px;overflow-y:auto;z-index:999;display:none;box-shadow:0 4px 6px rgba(0,0,0,0.05);"></div>
             </div>
             <button type="button" id="btn-toggle-filtros" class="btn-secondary-outline" style="padding:10px 20px;border:1px solid #8B1A1A;background:transparent;color:#8B1A1A;border-radius:6px;font-weight:600;cursor:pointer;white-space:nowrap;">Filtros</button>
             <button type="button" id="btn-emitir-relatorio" class="btn-primary-bordo" style="padding:10px 20px;background:#8B1A1A;color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer;white-space:nowrap;">Emitir Relatório</button>
           </div>
-          <div id="painel-datas-retratil" style="{{if or .FiltroDataInicio .FiltroDataFim}}display:flex;{{else}}display:none;{{end}}gap:16px;padding:16px;background:#fafafa;border-top:1px solid #edf2f7;align-items:flex-end;">
+          <div id="painel-datas-retratil" class="bg-muted" style="{{if or .FiltroDataInicio .FiltroDataFim}}display:flex;{{else}}display:none;{{end}}gap:16px;padding:16px;border-top:1px solid var(--border);align-items:flex-end;">
             <div>
-              <label style="display:block;font-size:10px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">DE</label>
-              <input type="date" name="filtro_data_inicio" value="{{.FiltroDataInicio}}" style="padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;">
+              <label style="display:block;font-size:10px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">DE</label>
+              <input type="date" name="filtro_data_inicio" value="{{.FiltroDataInicio}}" style="padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;background:var(--input-background);color:var(--foreground);">
             </div>
             <div>
-              <label style="display:block;font-size:10px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">ATÉ</label>
-              <input type="date" name="filtro_data_fim" value="{{.FiltroDataFim}}" style="padding:8px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;">
+              <label style="display:block;font-size:10px;font-weight:700;color:var(--muted-foreground);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">ATÉ</label>
+              <input type="date" name="filtro_data_fim" value="{{.FiltroDataFim}}" style="padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;background:var(--input-background);color:var(--foreground);">
             </div>
-            <button type="button" class="btn-rapido" data-dias="15" style="padding:8px 16px;border:1px solid #d1d5db;background:#fff;color:#666;border-radius:6px;font-size:13px;cursor:pointer;">15 dias</button>
-            <button type="button" class="btn-rapido" data-dias="30" style="padding:8px 16px;border:1px solid #d1d5db;background:#fff;color:#666;border-radius:6px;font-size:13px;cursor:pointer;">30 dias</button>
-            <button type="button" class="btn-rapido" data-dias="60" style="padding:8px 16px;border:1px solid #d1d5db;background:#fff;color:#666;border-radius:6px;font-size:13px;cursor:pointer;">60 dias</button>
+            <button type="button" class="btn-rapido" data-dias="15" style="padding:8px 16px;border:1px solid var(--border);background:var(--card);color:var(--muted-foreground);border-radius:6px;font-size:13px;cursor:pointer;">15 dias</button>
+            <button type="button" class="btn-rapido" data-dias="30" style="padding:8px 16px;border:1px solid var(--border);background:var(--card);color:var(--muted-foreground);border-radius:6px;font-size:13px;cursor:pointer;">30 dias</button>
+            <button type="button" class="btn-rapido" data-dias="60" style="padding:8px 16px;border:1px solid var(--border);background:var(--card);color:var(--muted-foreground);border-radius:6px;font-size:13px;cursor:pointer;">60 dias</button>
             <button type="submit" class="btn-filtrar-submit" style="padding:8px 20px;background:#8B1A1A;color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer;">Filtrar</button>
-            <a href="/conservacao/eco-flamboyant?aba={{.AbaAtiva}}" style="padding:8px 16px;color:#666;text-decoration:none;font-size:14px;">Limpar</a>
+            <a href="/conservacao/eco-flamboyant?aba={{.AbaAtiva}}" style="padding:8px 16px;color:var(--muted-foreground);text-decoration:none;font-size:14px;">Limpar</a>
           </div>
         </form>
 
@@ -738,10 +738,39 @@
           class="bg-white dark:bg-[#252525] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
           <div id="tab-content">
             <div id="tab-lojas-content">
-              <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
-                <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>Lojas Parceiras</h3>
-              </div>
-              <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+              <div class="bg-card" style="border-radius:12px; box-shadow:0 1px 6px rgba(0,0,0,0.06); overflow:hidden;">
+                <div class="bg-card" style="display:flex; justify-content:space-between; align-items:center; padding:20px 24px 16px 24px; border-bottom:1.5px solid var(--border); margin-bottom:0; border-radius:12px 12px 0 0;">
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <svg viewBox="0 0 24 24" style="width:20px; height:20px; color:#8B1A1A; flex-shrink:0;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect width="16" height="20" x="4" y="2" rx="2" ry="2" />
+                      <path d="M9 22v-4h6v4" />
+                      <path d="M8 6h.01" />
+                      <path d="M16 6h.01" />
+                      <path d="M12 6h.01" />
+                      <path d="M12 10h.01" />
+                      <path d="M12 14h.01" />
+                      <path d="M16 10h.01" />
+                      <path d="M16 14h.01" />
+                      <path d="M8 10h.01" />
+                      <path d="M8 14h.01" />
+                    </svg>
+                    <h3 style="margin:0; font-size:15px; font-weight:700; color:var(--card-foreground); letter-spacing:0.3px;">Lojas Parceiras</h3>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="position:relative;">
+                      <svg class="text-muted-foreground" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); width:15px; height:15px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+                      </svg>
+                      <input type="text" id="busca-lojas" placeholder="Buscar por nome ou LUC..."
+                             oninput="filtrarTabela(this, 'tabela-lojas')"
+                             style="padding:9px 14px 9px 34px; border:1.5px solid var(--border); border-radius:10px; font-size:13px; width:240px; outline:none; color:var(--foreground); background:var(--input-background); transition:border-color 0.2s;"
+                             onfocus="this.style.borderColor='var(--primary)'"
+                             onblur="this.style.borderColor=''">
+                    </div>
+                    <span id="contador-lojas" class="bg-muted text-muted-foreground" style="font-size:12px; border-radius:20px; padding:4px 12px; white-space:nowrap; font-weight:500;">{{len .Participantes}} de {{len .Participantes}}</span>
+                  </div>
+                </div>
+              <div class="overflow-x-auto"><table id="tabela-lojas" class="w-full text-left border-collapse">
                 <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja / LUC</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Início</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Fim</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase text-right">Status</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Termo</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase text-right">Ações</th></tr></thead>
                 <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
                   {{ range .Participantes }}
@@ -814,12 +843,36 @@
                 </div>
               </div>
               {{end}}
+              </div>
             </div>
             <div id="tab-residuos-content" class="hidden">
-              <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
-                <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>Histórico de Recebimento de Resíduos</h3>
-              </div>
-              <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+              <div class="bg-card" style="border-radius:12px; box-shadow:0 1px 6px rgba(0,0,0,0.06); overflow:hidden;">
+                <div class="bg-card" style="display:flex; justify-content:space-between; align-items:center; padding:20px 24px 16px 24px; border-bottom:1.5px solid var(--border); margin-bottom:0; border-radius:12px 12px 0 0;">
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <svg viewBox="0 0 24 24" style="width:20px; height:20px; color:#8B1A1A; flex-shrink:0;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+                      <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+                      <path d="M7 21h10" />
+                      <path d="M12 3v18" />
+                      <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
+                    </svg>
+                    <h3 style="margin:0; font-size:15px; font-weight:700; color:var(--card-foreground); letter-spacing:0.3px;">Histórico de Recebimento de Resíduos</h3>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="position:relative;">
+                      <svg class="text-muted-foreground" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); width:15px; height:15px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+                      </svg>
+                      <input type="text" id="busca-residuos" placeholder="Buscar por nome ou LUC..."
+                             oninput="filtrarTabela(this, 'tabela-residuos')"
+                             style="padding:9px 14px 9px 34px; border:1.5px solid var(--border); border-radius:10px; font-size:13px; width:240px; outline:none; color:var(--foreground); background:var(--input-background); transition:border-color 0.2s;"
+                             onfocus="this.style.borderColor='var(--primary)'"
+                             onblur="this.style.borderColor=''">
+                    </div>
+                    <span id="contador-residuos" class="bg-muted text-muted-foreground" style="font-size:12px; border-radius:20px; padding:4px 12px; white-space:nowrap; font-weight:500;">{{len .Residuos}} de {{len .Residuos}}</span>
+                  </div>
+                </div>
+              <div class="overflow-x-auto"><table id="tabela-residuos" class="w-full text-left border-collapse">
                 <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Peso (kg)</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Aproveitado</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Ações</th></tr></thead>
                 <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
                   {{range .Residuos}}
@@ -863,12 +916,38 @@
                 </div>
               </div>
               {{end}}
+              </div>
             </div>
             <div id="tab-kits-content" class="hidden">
-              <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
-                <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/></svg>Histórico Detalhado de Cestas</h3>
-              </div>
-              <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
+              <div class="bg-card" style="border-radius:12px; box-shadow:0 1px 6px rgba(0,0,0,0.06); overflow:hidden;">
+                <div class="bg-card" style="display:flex; justify-content:space-between; align-items:center; padding:20px 24px 16px 24px; border-bottom:1.5px solid var(--border); margin-bottom:0; border-radius:12px 12px 0 0;">
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <svg viewBox="0 0 24 24" style="width:20px; height:20px; color:#8B1A1A; flex-shrink:0;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m15 11-1 9" />
+                      <path d="m19 11-4-7" />
+                      <path d="M2 11h20" />
+                      <path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4" />
+                      <path d="M4.5 15.5h15" />
+                      <path d="m5 11 4-7" />
+                      <path d="m9 11 1 9" />
+                    </svg>
+                    <h3 style="margin:0; font-size:15px; font-weight:700; color:var(--card-foreground); letter-spacing:0.3px;">Histórico Detalhado de Cestas</h3>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="position:relative;">
+                      <svg class="text-muted-foreground" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); width:15px; height:15px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+                      </svg>
+                      <input type="text" id="busca-kits" placeholder="Buscar por nome ou LUC..."
+                             oninput="filtrarTabela(this, 'tabela-kits')"
+                             style="padding:9px 14px 9px 34px; border:1.5px solid var(--border); border-radius:10px; font-size:13px; width:240px; outline:none; color:var(--foreground); background:var(--input-background); transition:border-color 0.2s;"
+                             onfocus="this.style.borderColor='var(--primary)'"
+                             onblur="this.style.borderColor=''">
+                    </div>
+                    <span id="contador-kits" class="bg-muted text-muted-foreground" style="font-size:12px; border-radius:20px; padding:4px 12px; white-space:nowrap; font-weight:500;">{{len .Kits}} de {{len .Kits}}</span>
+                  </div>
+                </div>
+              <div class="overflow-x-auto"><table id="tabela-kits" class="w-full text-left border-collapse">
                 <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Loja Destinatária</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Data Entrega</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Quantidade</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">Ações</th></tr></thead>
                 <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
                   {{range .Kits}}
@@ -913,11 +992,18 @@
                 </div>
               </div>
               {{end}}
+              </div>
             </div>
             <div id="tab-registros-content" class="hidden">
-              <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1f1f1f]">
-                <h3 class="text-sm font-bold text-gray-900 dark:text-gray-100 uppercase tracking-wider flex items-center gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A]" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>🕐 REGISTROS DE ATIVIDADE</h3>
-              </div>
+              <div class="bg-card" style="border-radius:12px; box-shadow:0 1px 6px rgba(0,0,0,0.06); overflow:hidden;">
+                <div class="bg-card" style="display:flex; justify-content:space-between; align-items:center; padding:20px 24px 16px 24px; border-bottom:1.5px solid var(--border); margin-bottom:0; border-radius:12px 12px 0 0;">
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <svg viewBox="0 0 24 24" style="width:20px; height:20px; color:#8B1A1A; flex-shrink:0;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <h3 style="margin:0; font-size:15px; font-weight:700; color:var(--card-foreground); letter-spacing:0.3px;">REGISTROS DE ATIVIDADE</h3>
+                  </div>
+                </div>
               <div class="overflow-x-auto"><table class="w-full text-left border-collapse">
                 <thead><tr class="border-b border-gray-100 dark:border-gray-800"><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">DATA / HORA</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">LOJA</th><th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase">EVENTO</th></tr></thead>
                 <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
@@ -979,6 +1065,7 @@
                 </div>
               </div>
               {{end}}
+              </div>
             </div>
           </div>
         </div>
@@ -1012,13 +1099,20 @@
         enctype="multipart/form-data"
         class="p-6 space-y-4"
       >
-        <div class="space-y-1">
+        <div class="space-y-1" style="position:relative">
           <label class="block text-sm font-medium text-[#1F2937] dark:text-gray-300">Buscar Loja</label>
-          <input id="store-search" list="lojas-disponiveis" autocomplete="off" placeholder="Digite nome ou código da loja..."
+          <input id="store-search" type="text" autocomplete="off" placeholder="Digite nome ou código da loja..."
             class="w-full bg-[#F9FAFB] dark:bg-[#1f1f1f] border border-[#E5E7EB] dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#8B1A1A] outline-none text-gray-900 dark:text-white"
-            onchange="selecionarLoja(this)">
+            oninput="mostrarDropdown(this)" onblur="setTimeout(fecharDropdown,200)" onfocus="mostrarDropdown(this)">
           <input type="hidden" id="store-id" name="loja_id">
-          <datalist id="lojas-disponiveis"></datalist>
+          <div id="lojas-dropdown" class="bg-card border border-border" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:1000;border-radius:8px;max-height:240px;overflow-y:auto;box-shadow:0 4px 16px rgba(0,0,0,0.1);margin-top:2px">
+            {{range .TodasLojas}}
+            <div class="loja-option hover:bg-accent cursor-pointer" data-id="{{.ID}}" style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:14px;color:var(--foreground);display:flex;justify-content:space-between;align-items:center" onmousedown="selecionarLoja(this,'{{.Nome}}','{{.ID}}')">
+              <span>{{.Nome}}</span>
+              <span class="text-muted-foreground" style="font-size:12px">LUC {{.ID}}</span>
+            </div>
+            {{end}}
+          </div>
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-1">
@@ -1771,35 +1865,33 @@
       panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
     });
 
-    // Autocomplete: lojas disponiveis via API (modal cadastro)
-    (function initStoreAutocomplete() {
-      var input = document.getElementById('store-search');
-      var hiddenId = document.getElementById('store-id');
-      var list = document.getElementById('lojas-disponiveis');
-      if (!input || !list) return;
-      var timer;
-      input.addEventListener('input', function() {
-        clearTimeout(timer);
-        var q = this.value.trim();
-        if (q.length < 2) { list.innerHTML = ''; return; }
-        timer = setTimeout(async function() {
-          try {
-            var r = await fetch('/api/conservacao/eco-flamboyant/buscar-lojas?q=' + encodeURIComponent(q));
-            var data = await r.json();
-            list.innerHTML = data.map(function(loja) {
-              return '<option value="' + loja.nome + '" data-id="' + loja.id + '">LUC ' + loja.id + '</option>';
-            }).join('');
-            if (data.length > 0) { hiddenId.value = data[0].id; }
-          } catch(e) { console.error(e); }
-        }, 300);
+    // Autocomplete: lojas disponiveis via server-side render (modal cadastro)
+    function mostrarDropdown(input) {
+      var dropdown = document.getElementById('lojas-dropdown');
+      if (!dropdown) return;
+      var q = input.value.trim().toLowerCase();
+      var options = dropdown.querySelectorAll('.loja-option');
+      var count = 0;
+      options.forEach(function(opt) {
+        var text = opt.textContent.toLowerCase();
+        if (text.indexOf(q) !== -1) { opt.style.display = 'flex'; count++; }
+        else { opt.style.display = 'none'; }
       });
-    })();
-
-    function selecionarLoja(input) {
-      var opt = input.list.querySelector('option[value="' + input.value + '"]');
-      if (opt) {
-        document.getElementById('store-id').value = opt.getAttribute('data-id');
+      if (q === '' || count === 0) {
+        options.forEach(function(o) { o.style.display = 'flex'; });
+        if (q === '') count = options.length;
       }
+      dropdown.style.display = count > 0 ? 'block' : 'none';
+      document.getElementById('store-id').value = '';
+    }
+    function fecharDropdown() {
+      var dropdown = document.getElementById('lojas-dropdown');
+      if (dropdown) dropdown.style.display = 'none';
+    }
+    function selecionarLoja(el, nome, id) {
+      document.getElementById('store-search').value = nome + ' — LUC ' + id;
+      document.getElementById('store-id').value = id;
+      fecharDropdown();
     }
 
     // Autocomplete: busca global com dropdown customizado
@@ -1818,8 +1910,8 @@
             var r = await fetch('/api/conservacao/eco-flamboyant/buscar-lojas?q=' + encodeURIComponent(q));
             var data = await r.json();
             dropdown.innerHTML = data.map(function(loja) {
-              return '<div class="autocomplete-item" data-id="' + loja.id + '" style="padding:8px 12px;cursor:pointer;border-bottom:1px solid #f0f0f0;">' +
-                '<strong>' + loja.nome + '</strong> <small style="color:#999;">LUC ' + loja.luc + '</small></div>';
+              return '<div class="autocomplete-item" data-id="' + loja.id + '" style="padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--border);">' +
+                '<strong>' + loja.nome + '</strong> <small style="color:var(--muted-foreground);">LUC ' + loja.luc + '</small></div>';
             }).join('');
             dropdown.style.display = data.length > 0 ? 'block' : 'none';
             dropdown.querySelectorAll('.autocomplete-item').forEach(function(item) {
@@ -2081,6 +2173,37 @@
         btnFechar.addEventListener("click", function() { modal.style.display = "none"; });
       }
       modal.addEventListener("click", function(e) { if (e.target === modal) modal.style.display = "none"; });
+    });
+
+    function filtrarTabela(input, tabelaId) {
+      const termo = input.value.toLowerCase();
+      const tabela = document.getElementById(tabelaId);
+      if (!tabela) return;
+      const linhas = tabela.querySelectorAll('tbody tr');
+      let visiveis = 0;
+      linhas.forEach(linha => {
+        const texto = linha.textContent.toLowerCase();
+        if (texto.includes(termo)) {
+          linha.style.display = '';
+          visiveis++;
+        } else {
+          linha.style.display = 'none';
+        }
+      });
+      const abaId = tabelaId.replace('tabela-', '');
+      const contador = document.getElementById('contador-' + abaId);
+      if (contador) contador.textContent = visiveis + ' de ' + linhas.length;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('[id^="tabela-"]').forEach(t => {
+        const id = t.id.replace('tabela-', '');
+        const c = document.getElementById('contador-' + id);
+        if (c) {
+          const total = t.querySelectorAll('tbody tr').length;
+          c.textContent = total + ' de ' + total;
+        }
+      });
     });
   </script>
 </body>

@@ -33,13 +33,6 @@ func (c *EcoflamboyantController) ListarEcoFlamboyantHandler(w http.ResponseWrit
 		return
 	}
 
-	lojasParticipantes, err := s.ObterLojasParticipantes(utils.DB)
-	if err != nil {
-		log.Printf("Erro ao listar lojas participantes: %v", err)
-		http.Error(w, "Erro ao carregar lojas participantes", http.StatusInternalServerError)
-		return
-	}
-
 	filtroDataInicio := r.URL.Query().Get("filtro_data_inicio")
 	filtroDataFim := r.URL.Query().Get("filtro_data_fim")
 	filtroLojaID := r.URL.Query().Get("filtro_loja_id")
@@ -140,7 +133,7 @@ func (c *EcoflamboyantController) ListarEcoFlamboyantHandler(w http.ResponseWrit
 		FluxoResiduos:           fluxoResiduos,
 		Registros:               registros,
 		AbaAtiva:                aba,
-		TodasLojas:              lojasParticipantes,
+		TodasLojas:              lojas,
 		FiltroDataInicio:        filtroDataInicio,
 		FiltroDataFim:           filtroDataFim,
 		FiltroLojaID:            filtroLojaID,
@@ -505,11 +498,6 @@ func (c *EcoflamboyantController) montarPaginaErro(r *http.Request, abaAtiva, ho
 	if err != nil {
 		log.Printf("Erro ao listar lojas: %v", err)
 	}
-	lojasParticipantes, err := s.ObterLojasParticipantes(utils.DB)
-	if err != nil {
-		log.Printf("Erro ao listar lojas participantes: %v", err)
-	}
-
 	filtroDataInicio := r.URL.Query().Get("filtro_data_inicio")
 	filtroDataFim := r.URL.Query().Get("filtro_data_fim")
 	filtroLojaID := r.URL.Query().Get("filtro_loja_id")
@@ -564,7 +552,7 @@ func (c *EcoflamboyantController) montarPaginaErro(r *http.Request, abaAtiva, ho
 		FluxoResiduos:           fluxoResiduos,
 		Registros:               registros,
 		AbaAtiva:                abaAtiva,
-		TodasLojas:              lojasParticipantes,
+		TodasLojas:              lojas,
 		FiltroDataInicio:        filtroDataInicio,
 		FiltroDataFim:           filtroDataFim,
 		FiltroLojaID:            filtroLojaID,
