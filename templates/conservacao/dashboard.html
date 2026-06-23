@@ -176,15 +176,7 @@
               </svg>
               <span class="truncate">Orientação Educativa</span>
             </a>
-            <a href="/conservacao/relatorios"
-              class="group flex items-center px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 text-white/60 hover:bg-white/5 hover:text-white">
-              <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg"
-                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 3v18h18" />
-                <path d="m19 9-5 5-4-4-3 3" />
-              </svg>
-              <span class="truncate">Relatórios</span>
-            </a>
+
           </div>
         </div>
 
@@ -332,15 +324,7 @@
         </svg>
         <span class="truncate">Orientação Educativa</span>
       </a>
-      <a href="/conservacao/relatorios"
-        class="flex items-center px-3 py-2 rounded-lg text-xs font-medium text-white/60 hover:bg-white/5 hover:text-white">
-        <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 mr-2.5 text-white/40" xmlns="http://www.w3.org/2000/svg" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 3v18h18" />
-          <path d="m19 9-5 5-4-4-3 3" />
-        </svg>
-        Relatórios
-      </a>
+
     </nav>
     <div class="p-3 border-t border-[#a43030] dark:border-[#4a1515]">
       <a href="/"
@@ -459,27 +443,6 @@
       <div class="max-w-7xl mx-auto p-6">
 
         <main class="space-y-6 lg:space-y-8">
-          <!-- =========================================================================
-               INTEGRATION(codigo/app/controllers/dashboard_controller.go):
-               
-               TABELAS SQL envolvidas:
-                 - lojas (id, nome, categoria)                    → Total de lojas ativas
-                 - auditorias_seguranca (nota, classificacao)     → KPIs de Seg. Alimentar
-                 - eco_participantes (status_participacao)        → Total de participantes Eco
-                 - residuos_eco (peso_kg, aproveitado)            → Resíduos gerados/aproveitados
-                 - auditoria_eventos (entidade, acao, data_evento)→ Log consolidado
-               
-               COMO POPULAR OS DADOS:
-                 OPÇÃO A — Go Templates:
-                   O controller renderiza este HTML com dados injetados via {{.KPIs}}
-                 OPÇÃO B — fetch() no JS:
-                   fetch('/api/dashboard/kpis').then(r => r.json()).then(renderKPIs);
-               
-               ROTAS SUGERIDAS:
-                 GET /api/dashboard/kpis          → Retorna JSON com todos os KPIs
-                 GET /api/dashboard/ultimas-auditorias → Últimas 5 auditorias
-                 GET /api/dashboard/residuos-chart → Dados para o gráfico de barras
-               ========================================================================= -->
           <!-- 1. Header -->
           <header class="dashboard-header">
             <h1 class="text-2xl md:text-3xl font-black tracking-tight text-gray-900 dark:text-gray-100 uppercase">
@@ -488,495 +451,151 @@
               Segurança Alimentar e Gestão de Resíduos Ecológicos.</p>
           </header>
 
-          <!-- 2. Main Grid -->
-          <div class="space-y-6 lg:space-y-8">
+          <!-- 2. Tab Navigation -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="tab-navigation">
+            <button type="button" data-tab="monitoramento"
+              class="tab-btn relative flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-black transition-all duration-200 cursor-pointer"
+              style="background:linear-gradient(135deg,#8B1A1A,#8B1A1Add);color:#fff;box-shadow:0 8px 20px -4px #8B1A1A60">
+              <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect width="7" height="9" x="3" y="3" rx="1" />
+                <rect width="7" height="5" x="14" y="3" rx="1" />
+                <rect width="7" height="9" x="14" y="12" rx="1" />
+                <rect width="7" height="5" x="3" y="16" rx="1" />
+              </svg>
+              <span class="truncate text-[10px] sm:text-xs">Monitoramento</span>
+            </button>
+            <button type="button" data-tab="seguranca" onclick="activateTab('seguranca')"
+              class="tab-btn relative flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-black transition-all duration-200 cursor-pointer"
+              style="border:1px solid rgb(229 231 235)">
+              <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0 text-gray-500" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+              <span class="truncate text-[10px] sm:text-xs text-gray-500">Segurança Alimentar</span>
+            </button>
+            <button type="button" data-tab="eco"
+              class="tab-btn relative flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-black transition-all duration-200 cursor-pointer"
+              style="border:1px solid rgb(229 231 235)">
+              <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0 text-gray-500" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" />
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+              </svg>
+              <span class="truncate text-[10px] sm:text-xs text-gray-500">Eco Flamboyant</span>
+            </button>
+            <button type="button" data-tab="orientacao"
+              class="tab-btn relative flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-black transition-all duration-200 cursor-pointer"
+              style="border:1px solid rgb(229 231 235)">
+              <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0 text-gray-500" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
+                <path d="M22 10v6" />
+                <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
+              </svg>
+              <span class="truncate text-[10px] sm:text-xs text-gray-500">Orientação Educativa</span>
+            </button>
+          </div>
 
-            <!-- Top 2-col grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 items-stretch">
-
-              <!-- LEFT: Segurança Alimentar -->
-              <section
-                class="h-full border border-gray-200 dark:border-gray-800 rounded-2xl p-4 lg:p-6 bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md transition-all duration-300">
-                <header class="mb-5">
-                  <span
-                    class="text-[10px] font-black text-[#8B1A1A] dark:text-[#D93030] uppercase tracking-[0.2em]">Controle
-                    de Qualidade</span>
-                  <h2
-                    class="text-lg md:text-xl font-black text-gray-900 dark:text-gray-100 uppercase tracking-tight mt-0.5">
-                    Segurança Alimentar</h2>
-                  <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mt-1">Métricas de faixas de
-                    conformidade sanitária</p>
-                </header>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <!-- Total Auditados (neutral) - full width -->
-                  <div
-                    class="sm:col-span-2 border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1e1e1e] rounded-2xl p-4 lg:p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] flex flex-col justify-between h-full hover:border-gray-300 dark:hover:border-gray-700">
-                    <div class="space-y-3">
-                      <div class="flex items-center justify-between gap-2">
-                        <span
-                          class="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Total
-                          Auditados</span>
-                        <div class="p-1.5 rounded-lg opacity-70">
-                          <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
-                            <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" />
-                            <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" />
-                            <path d="M10 6h4" />
-                            <path d="M10 10h4" />
-                            <path d="M10 14h4" />
-                            <path d="M10 18h4" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="flex items-baseline gap-1">
-                        <strong id="dash-total-auditados"
-                          class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-gray-900 dark:text-gray-100">—</strong>
-                        <span
-                          class="text-[10px] font-medium text-gray-400 dark:text-gray-500 lowercase ml-1">restaurantes
-                          no shopping</span>
-                      </div>
-                    </div>
-                    <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/50 dark:border-gray-800/50 flex">
-                      <span
-                        class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-gray-100 text-gray-600 border border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700">Total
-                        Geral</span>
-                    </div>
-                  </div>
-
-                  <!-- Inaceitável (unacceptable) -->
-                  <div
-                    class="border border-red-200 dark:border-red-900/40 bg-red-50/30 dark:bg-red-950/10 rounded-2xl p-4 lg:p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] flex flex-col justify-between h-full hover:border-red-300 dark:hover:border-red-800">
-                    <div class="space-y-3">
-                      <div class="flex items-center justify-between gap-2">
-                        <span
-                          class="text-[10px] font-black uppercase tracking-widest text-red-800 dark:text-red-400">Inaceitável</span>
-                        <div class="p-1.5 rounded-lg opacity-70">
-                          <svg viewBox="0 0 24 24" class="w-4 h-4 text-red-500" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-                            <path d="M12 9v4" />
-                            <path d="M12 17h.01" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="flex items-baseline gap-1">
-                        <strong id="dash-inaceitavel"
-                          class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-red-700 dark:text-red-300">—</strong>
-                        <span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 lowercase ml-1">lojas
-                          (0-29)</span>
-                      </div>
-                    </div>
-                    <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/50 dark:border-gray-800/50 flex">
-                      <span
-                        class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-red-100 text-red-700 border border-red-200 dark:bg-red-950/40 dark:text-red-400 dark:border-red-900/50">Inaceitável
-                        (0-29)</span>
-                    </div>
-                  </div>
-
-                  <!-- Ruim (bad) -->
-                  <div
-                    class="border border-orange-200 dark:border-orange-900/40 bg-orange-50/30 dark:bg-orange-950/10 rounded-2xl p-4 lg:p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] flex flex-col justify-between h-full hover:border-orange-300 dark:hover:border-orange-800">
-                    <div class="space-y-3">
-                      <div class="flex items-center justify-between gap-2">
-                        <span
-                          class="text-[10px] font-black uppercase tracking-widest text-orange-800 dark:text-orange-400">Ruim</span>
-                        <div class="p-1.5 rounded-lg opacity-70">
-                          <svg viewBox="0 0 24 24" class="w-4 h-4 text-orange-500" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-                            <path d="M12 9v4" />
-                            <path d="M12 17h.01" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="flex items-baseline gap-1">
-                        <strong id="dash-ruim"
-                          class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-orange-700 dark:text-orange-300">—</strong>
-                        <span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 lowercase ml-1">lojas
-                          (30-59)</span>
-                      </div>
-                    </div>
-                    <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/50 dark:border-gray-800/50 flex">
-                      <span
-                        class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-orange-100 text-orange-700 border border-orange-200 dark:bg-orange-950/40 dark:text-orange-400 dark:border-orange-900/50">Ruim
-                        (30-59)</span>
-                    </div>
-                  </div>
-
-                  <!-- Regular (regular) -->
-                  <div
-                    class="border border-yellow-200 dark:border-yellow-900/40 bg-yellow-50/30 dark:bg-yellow-950/10 rounded-2xl p-4 lg:p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] flex flex-col justify-between h-full hover:border-yellow-300 dark:hover:border-yellow-800">
-                    <div class="space-y-3">
-                      <div class="flex items-center justify-between gap-2">
-                        <span
-                          class="text-[10px] font-black uppercase tracking-widest text-yellow-800 dark:text-yellow-400">Regular</span>
-                        <div class="p-1.5 rounded-lg opacity-70">
-                          <svg viewBox="0 0 24 24" class="w-4 h-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-                            <path d="M12 9v4" />
-                            <path d="M12 17h.01" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="flex items-baseline gap-1">
-                        <strong id="dash-regular"
-                          class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-yellow-700 dark:text-yellow-300">—</strong>
-                        <span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 lowercase ml-1">lojas
-                          (60-79)</span>
-                      </div>
-                    </div>
-                    <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/50 dark:border-gray-800/50 flex">
-                      <span
-                        class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-yellow-100 text-yellow-700 border border-yellow-200 dark:bg-yellow-950/40 dark:text-yellow-400 dark:border-yellow-900/50">Regular
-                        (60-79)</span>
-                    </div>
-                  </div>
-
-                  <!-- Bom (good) -->
-                  <div
-                    class="border border-green-200 dark:border-green-900/40 bg-green-50/30 dark:bg-green-950/10 rounded-2xl p-4 lg:p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] flex flex-col justify-between h-full hover:border-green-300 dark:hover:border-green-800">
-                    <div class="space-y-3">
-                      <div class="flex items-center justify-between gap-2">
-                        <span
-                          class="text-[10px] font-black uppercase tracking-widest text-green-800 dark:text-green-400">Bom</span>
-                        <div class="p-1.5 rounded-lg opacity-70">
-                          <svg viewBox="0 0 24 24" class="w-4 h-4 text-green-500" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                            <polyline points="22 4 12 14.01 9 11.01" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="flex items-baseline gap-1">
-                        <strong id="dash-bom"
-                          class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-green-700 dark:text-green-300">—</strong>
-                        <span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 lowercase ml-1">lojas
-                          (80-100)</span>
-                      </div>
-                    </div>
-                    <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/50 dark:border-gray-800/50 flex">
-                      <span
-                        class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-green-100 text-green-700 border border-green-200 dark:bg-green-950/40 dark:text-green-400 dark:border-green-900/50">Bom
-                        (80-100)</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mt-4 lg:mt-6 border-t border-gray-100 dark:border-gray-800 pt-4 lg:pt-5">
-                  <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Últimas Auditorias
-                    Cadastradas</h3>
-                  <div id="dash-ultimas-auditorias"
-                    class="flex flex-col items-center justify-center border border-dashed border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-400 dark:text-gray-500 bg-gray-50/30 dark:bg-gray-900/10 p-4">
-                    <p class="font-bold">Área Reservada</p>
-                    <p class="text-[10px] text-gray-400/80 mt-0.5">Listagem detalhada de relatórios de risco</p>
-                  </div>
-                </div>
-              </section>
-
-              <!-- RIGHT: Eco Flamboyant -->
-              <section
-                class="h-full border border-gray-200 dark:border-gray-800 rounded-2xl p-4 lg:p-6 bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md transition-all duration-300">
-                <header class="mb-5">
-                  <span
-                    class="text-[10px] font-black text-[#8B1A1A] dark:text-[#D93030] uppercase tracking-[0.2em]">Sustentabilidade</span>
-                  <h2
-                    class="text-lg md:text-xl font-black text-gray-900 dark:text-gray-100 uppercase tracking-tight mt-0.5">
-                    Eco Flamboyant</h2>
-                  <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mt-1">Indicadores ambientais e
-                    reaproveitamento de resíduos</p>
-                </header>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <!-- Restaurantes Inscritos (blue) - full width -->
-                  <div
-                    class="sm:col-span-2 border border-blue-200 dark:border-blue-900/40 bg-blue-50/30 dark:bg-blue-950/10 rounded-2xl p-4 lg:p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] flex flex-col justify-between h-full hover:border-blue-300 dark:hover:border-blue-800">
-                    <div class="space-y-3">
-                      <div class="flex items-center justify-between gap-2">
-                        <span
-                          class="text-[10px] font-black uppercase tracking-widest text-blue-800 dark:text-blue-400">Restaurantes
-                          Inscritos</span>
-                        <div class="p-1.5 rounded-lg opacity-70">
-                          <svg viewBox="0 0 24 24" class="w-4 h-4 text-blue-500" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path
-                              d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" />
-                            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="flex items-baseline gap-1">
-                        <strong id="dash-restaurantes"
-                          class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-blue-700 dark:text-blue-300">—</strong>
-                        <span
-                          class="text-[10px] font-medium text-gray-400 dark:text-gray-500 lowercase ml-1">participantes
-                          ativos</span>
-                      </div>
-                    </div>
-                    <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/50 dark:border-gray-800/50 flex">
-                      <span
-                        class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 text-blue-700 border border-blue-200 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-900/50">Programa
-                        Eco Flamboyant</span>
-                    </div>
-                  </div>
-
-                  <!-- Resíduos Gerados (teal) -->
-                  <div
-                    class="border border-teal-200 dark:border-teal-900/40 bg-teal-50/30 dark:bg-teal-950/10 rounded-2xl p-4 lg:p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] flex flex-col justify-between h-full hover:border-teal-300 dark:hover:border-teal-800">
-                    <div class="space-y-3">
-                      <div class="flex items-center justify-between gap-2">
-                        <span
-                          class="text-[10px] font-black uppercase tracking-widest text-teal-800 dark:text-teal-400">Resíduos
-                          Gerados</span>
-                        <div class="p-1.5 rounded-lg opacity-70">
-                          <svg viewBox="0 0 24 24" class="w-4 h-4 text-teal-500" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <polyline points="3 6 5 6 21 6" />
-                            <path d="m19 6-.867 12.142A2 2 0 0 1 16.138 20H7.862a2 2 0 0 1-1.995-1.858L5 6" />
-                            <path d="M10 11v6" />
-                            <path d="M14 11v6" />
-                            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="flex items-baseline gap-1">
-                        <strong id="dash-residuos-gerados"
-                          class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-teal-700 dark:text-teal-300">—</strong>
-                        <span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 lowercase ml-1">kg de
-                          resíduos cadastrados</span>
-                      </div>
-                    </div>
-                    <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/50 dark:border-gray-800/50 flex">
-                      <span
-                        class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-teal-100 text-teal-700 border border-teal-200 dark:bg-teal-950/40 dark:text-teal-400 dark:border-teal-900/50">Total
-                        Acumulado</span>
-                    </div>
-                  </div>
-
-                  <!-- Resíduos Aproveitados (emerald) -->
-                  <div
-                    class="border border-emerald-200 dark:border-emerald-900/40 bg-emerald-50/30 dark:bg-emerald-950/10 rounded-2xl p-4 lg:p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] flex flex-col justify-between h-full hover:border-emerald-300 dark:hover:border-emerald-800">
-                    <div class="space-y-3">
-                      <div class="flex items-center justify-between gap-2">
-                        <span
-                          class="text-[10px] font-black uppercase tracking-widest text-emerald-800 dark:text-emerald-400">Resíduos
-                          Aproveitados</span>
-                        <div class="p-1.5 rounded-lg opacity-70">
-                          <svg viewBox="0 0 24 24" class="w-4 h-4 text-emerald-500" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5" />
-                            <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12" />
-                            <path d="m14 16-3 3 3 3" />
-                            <path d="M8.293 13.596 7.196 9.5 3.1 10.598" />
-                            <path
-                              d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843" />
-                            <path d="m13.378 9.633 4.096 1.098 1.097-4.096" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="flex items-baseline gap-1">
-                        <strong id="dash-residuos-aproveitados"
-                          class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-emerald-700 dark:text-emerald-300">—</strong>
-                        <span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 lowercase ml-1">kg
-                          reaproveitados</span>
-                      </div>
-                    </div>
-                    <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/50 dark:border-gray-800/50 flex">
-                      <span id="dash-taxa-reuso"
-                        class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900/50">—%
-                        taxa de reuso</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mt-4 lg:mt-6 border-t border-gray-100 dark:border-gray-800 pt-4 lg:pt-5">
-                  <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Últimas Coletas
-                    Registradas</h3>
-                  <div id="dash-ultimas-coletas"
-                    class="flex flex-col items-center justify-center border border-dashed border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-400 dark:text-gray-500 bg-gray-50/30 dark:bg-gray-900/10 p-4">
-                    <p class="font-bold">Área Reservada</p>
-                    <p class="text-[10px] text-gray-400/80 mt-0.5">Listagem detalhada de registros ambientais</p>
-                  </div>
-                </div>
-              </section>
-
-              <!-- FULL WIDTH: Waste Chart -->
-              <section
-                class="border border-gray-200 dark:border-gray-800 rounded-2xl p-4 lg:p-6 bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md transition-all duration-300 col-span-1 lg:col-span-2">
-                <header class="mb-5">
-                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div>
-                      <span
-                        class="text-[10px] font-black text-[#8B1A1A] dark:text-[#D93030] uppercase tracking-[0.2em]">Análise
-                        Quantitativa</span>
-                      <h2
-                        class="text-base md:text-xl font-black text-gray-900 dark:text-gray-100 uppercase tracking-tight mt-0.5">
-                        Geração de Resíduos por Estabelecimento</h2>
-                    </div>
-                    <div class="flex items-center gap-2 shrink-0">
-                      <label
-                        class="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-wider">Mostrar</label>
-                      <select id="top-stores-select"
-                        class="text-xs font-bold bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-2.5 py-1.5 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8B1A1A] cursor-pointer transition-all">
-                        <option value="5">Top 5</option>
-                        <option value="10" selected>Top 10</option>
-                        <option value="15">Top 15</option>
-                        <option value="20">Top 20</option>
-                        <option value="50">Top 50</option>
-                        <option value="-1">Todas</option>
-                      </select>
-                    </div>
-                  </div>
-                  <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mt-1">Comparativo em quilos gerados por
-                    cada um dos restaurantes participantes</p>
-                </header>
-                <!-- Chart Container -->
-                <div id="dash-chart" class="h-72 md:h-80 w-full relative">
-                  <canvas id="dash-chart-canvas"></canvas>
-                  <div id="dash-chart-empty"
-                    class="absolute inset-0 flex items-center justify-center hidden bg-white dark:bg-[#1e1e1e] z-10">
-                    <div
-                      class="border border-dashed border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50/20 dark:bg-gray-900/5 px-8 py-6">
-                      <p class="text-sm text-gray-400 dark:text-gray-500 font-medium">Nenhum dado de resíduos disponível
-                        para exibição.</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="flex items-center gap-4 mt-3 flex-wrap">
-                  <span class="flex items-center gap-1.5 text-[10px] font-bold text-gray-500 dark:text-gray-400">
-                    <span class="w-3 h-3 rounded-sm"
-                      style="background:linear-gradient(180deg,#14B8A6,#0D9488)"></span>kg Gerado
-                  </span>
-                </div>
-              </section>
+          <!-- 3. Loading State -->
+          <div id="dashboard-loading"
+            class="hidden p-12 border border-dashed border-gray-300 dark:border-gray-700 rounded-2xl text-center bg-gray-50/50 dark:bg-gray-800/10">
+            <div class="flex flex-col items-center justify-center space-y-3">
+              <div class="w-8 h-8 border-4 border-[#8B1A1A] border-t-transparent rounded-full animate-spin"></div>
+              <p class="text-sm font-bold text-gray-500 dark:text-gray-400 animate-pulse">Carregando dados estruturados
+                do dashboard...</p>
             </div>
+          </div>
 
-            <!-- Food Monitoring Section -->
-            <section class="space-y-4 lg:space-y-6 border-t border-gray-200 dark:border-gray-800 pt-6 lg:pt-8">
-              <header>
-                <span
-                  class="text-[10px] font-black text-[#8B1A1A] dark:text-[#D93030] uppercase tracking-[0.2em]">Painel
-                  Analítico</span>
-                <h2
-                  class="text-lg md:text-2xl font-black text-gray-900 dark:text-gray-100 uppercase tracking-tight mt-0.5">
-                  Monitoramento Individualizado de Lojas</h2>
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mt-1">Aplique filtros para analisar a
-                  conformidade sanitária e índices ecológicos específicos de cada restaurante.</p>
-              </header>
+          <!-- 4. Error State -->
+          <div id="dashboard-error"
+            class="hidden p-5 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 rounded-2xl shadow-sm">
+            <p class="text-sm font-black">Falha na integração dos dados</p>
+            <p id="dashboard-error-msg" class="text-xs mt-1.5 opacity-90"></p>
+          </div>
 
-              <!-- DashboardFilters -->
-              <div
-                class="bg-white dark:bg-[#1e1e1e] rounded-2xl border border-gray-200 dark:border-gray-800 p-4 shadow-sm space-y-4">
-                <div class="flex items-center gap-2 pb-2 border-b border-gray-50 dark:border-gray-800/80">
-                  <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#8B1A1A] dark:text-[#D93030]"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-                  </svg>
-                  <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Barra de Filtros
-                    Multicritério</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 lg:gap-4">
-                  <div class="relative">
-                    <label
-                      class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-1">Buscar
-                      Estabelecimento</label>
-                    <div class="relative group">
-                      <svg viewBox="0 0 24 24"
-                        class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 group-hover:text-[#8B1A1A] dark:group-hover:text-[#D93030] transition-colors"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8" />
-                        <path d="m21 21-4.3-4.3" />
-                      </svg>
-                      <input type="text" id="store-search" placeholder="Nome ou código LUC..."
-                        class="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-xl transition-all focus:border-[#8B1A1A]/30 dark:focus:border-[#D93030]/30 focus:bg-white dark:focus:bg-[#252525] outline-none">
+          <!-- 5. Tab Content -->
+          <div id="tab-content">
+            <!-- ======================== MONITORAMENTO ======================== -->
+            <div class="tab-panel space-y-4 lg:space-y-6" data-tab-panel="monitoramento">
+              <section class="food-safety-section border border-gray-200 dark:border-gray-800 rounded-2xl p-4 lg:p-6 bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md transition-all duration-300">
+                <header class="monitoring-header">
+                  <div>
+                    <span class="text-xs font-black text-[#8B1A1A] dark:text-[#D93030] uppercase tracking-[0.2em]">Painel Analítico</span>
+                    <h2 class="text-xl md:text-2xl font-black text-gray-900 dark:text-gray-100 uppercase tracking-tight mt-0.5">Monitoramento Individualizado</h2>
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mt-1">Acompanhe a Conformidade Sanitária e a participação no projeto Eco Flamboyant por restaurante</p>
+                  </div>
+                </header>
+                <div class="mt-4 lg:mt-6">
+                  <div class="flex items-center gap-3 flex-wrap">
+                    <div class="relative flex-1 min-w-[200px]">
+                      <svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                      <input type="text" id="store-search" placeholder="Buscar por nome ou LUC..."
+                        class="w-full pl-9 pr-4 py-2 text-sm bg-gray-100 dark:bg-[#2a2a2a] border-2 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-xl transition-all focus:border-[#8B1A1A]/30 dark:focus:border-[#D93030]/30 focus:bg-white dark:focus:bg-[#252525] outline-none">
+                    </div>
+                    <div class="flex gap-2 self-end">
+                      <button type="button" id="toggle-filters-btn"
+                        class="h-10 px-3 rounded-lg border text-sm font-bold flex items-center gap-1.5 transition-all cursor-pointer bg-white hover:bg-gray-50 border-gray-200 text-gray-700 dark:bg-[#1a1a1a] dark:hover:bg-[#222] dark:border-gray-700 dark:text-gray-300">
+                        <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="2" x2="6" y1="14" y2="14"/><line x1="10" x2="14" y1="12" y2="12"/><line x1="18" x2="22" y1="16" y2="16"/></svg>
+                        <span>Filtros</span>
+                      </button>
+                      <button id="print-monitoramento-btn"
+                        class="h-10 px-3 text-xs font-black rounded-lg border border-[#8B1A1A] bg-[#8B1A1A] text-white hover:bg-[#a43030] hover:border-[#a43030] flex items-center gap-1.5 transition-all shadow-sm"
+                        title="Exportar PDF">
+                        <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                        PDF
+                      </button>
+                      <button id="clear-filters-btn"
+                        class="hidden h-10 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-750 dark:text-gray-300 rounded-lg text-sm font-bold flex items-center gap-2 transition-all cursor-pointer"
+                        title="Limpar todos os filtros ativos">
+                        <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                        <span>Limpar</span>
+                      </button>
                     </div>
                   </div>
-                  <div>
-                    <label
-                      class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-1">Setor
-                      / Categoria</label>
-                    <div class="relative">
-                      <select id="sector-filter"
-                        class="w-full pl-4 pr-10 py-2 text-sm bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-xl appearance-none outline-none focus:border-[#8B1A1A]/30 dark:focus:border-[#D93030]/30 transition-all cursor-pointer">
-                        <option value="Todos">Todos os Setores</option>
-                        <option value="Gastronomia">Gastronomia</option>
-                        <option value="Moda">Moda</option>
-                        <option value="Serviços">Serviços</option>
-                      </select>
-                      <svg viewBox="0 0 24 24"
-                        class="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m6 9 6 6 6-6" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div>
-                    <label
-                      class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-1">Classificação
-                      Sanitária</label>
-                    <div class="relative">
-                      <select id="classification-filter"
-                        class="w-full pl-4 pr-10 py-2 text-sm bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-xl appearance-none outline-none focus:border-[#8B1A1A]/30 dark:focus:border-[#D93030]/30 transition-all cursor-pointer">
-                        <option value="Todos">Todas as Classificações</option>
-                        <option value="GOOD">Classificação Bom</option>
-                        <option value="REGULAR">Classificação Regular</option>
-                        <option value="BAD">Classificação Ruim</option>
-                        <option value="UNACCEPTABLE">Classificação Inaceitável</option>
-                      </select>
-                      <svg viewBox="0 0 24 24"
-                        class="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m6 9 6 6 6-6" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div>
-                    <label
-                      class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-1">Status
-                      Sanitário</label>
-                    <div class="relative">
-                      <select id="status-filter"
-                        class="w-full pl-4 pr-10 py-2 text-sm bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-xl appearance-none outline-none focus:border-[#8B1A1A]/30 dark:focus:border-[#D93030]/30 transition-all cursor-pointer">
+                  <!-- Advanced filters (collapsible) -->
+                  <div id="advanced-filters" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 transition-all duration-300 overflow-hidden" style="max-height:0;opacity:0">
+                    <div class="mt-4">
+                      <label class="text-[9px] font-black text-gray-500 dark:text-gray-400 block mb-1">Status Sanitário</label>
+                      <select id="status-filter" class="w-full h-10 bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-xl text-sm px-4 py-2 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#8B1A1A]/20">
                         <option value="Todos">Todos os Status</option>
                         <option value="Conforme">Conforme</option>
                         <option value="Pendente">Pendente</option>
                         <option value="Em Auditoria">Em Auditoria</option>
                       </select>
-                      <svg viewBox="0 0 24 24"
-                        class="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m6 9 6 6 6-6" />
-                      </svg>
+                    </div>
+                    <div class="mt-4">
+                      <label class="text-[9px] font-black text-gray-500 dark:text-gray-400 block mb-1">Conformidade Sanitária</label>
+                      <select id="classification-filter" class="w-full h-10 bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-xl text-sm px-4 py-2 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#8B1A1A]/20">
+                        <option value="Todos">Todas as Classificações</option>
+                        <option value="GOOD">Bom</option>
+                        <option value="REGULAR">Regular</option>
+                        <option value="BAD">Ruim</option>
+                        <option value="UNACCEPTABLE">Inaceitável</option>
+                      </select>
+                    </div>
+                    <div class="mt-4">
+                      <label class="text-[9px] font-black text-gray-500 dark:text-gray-400 block mb-1">Projeto Eco Flamboyant</label>
+                      <select id="sector-filter" class="w-full h-10 bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-xl text-sm px-4 py-2 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#8B1A1A]/20">
+                        <option value="todas">Todas as Lojas</option>
+                        <option value="nao-participantes">Não Participantes</option>
+                        <option value="participantes">Participantes</option>
+                      </select>
                     </div>
                   </div>
                 </div>
+              </section>
+
+              <div class="px-4 lg:px-6 pb-3">
+                <p id="monitoring-count" class="text-sm font-black text-gray-500 dark:text-gray-400">Carregando estabelecimentos...</p>
               </div>
 
               <!-- Stores Grid -->
               <div id="store-cards-container">
-                <div
-                  class="text-center py-10 lg:py-16 border border-dashed border-gray-200 dark:border-gray-800 rounded-2xl bg-white dark:bg-[#1e1e1e] p-6">
-                  <svg viewBox="0 0 24 24" class="w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-3"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="16" height="11" x="0" y="5" rx="2" />
-                    <path d="M16 5V3a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v2" />
-                  </svg>
+                <div class="text-center py-10 lg:py-16 border border-dashed border-gray-200 dark:border-gray-800 rounded-2xl bg-white dark:bg-[#1e1e1e] p-6">
                   <p class="text-sm font-bold text-gray-400 dark:text-gray-500">Carregando lojas...</p>
                 </div>
               </div>
@@ -984,22 +603,388 @@
               <!-- Non-metric stores section -->
               <div id="non-metric-stores-container" class="hidden">
                 <section class="mt-6 border-t border-gray-100 dark:border-gray-800 pt-4">
-                  <h3 class="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">Métricas Indisponíveis —
-                    Aplicável apenas para o segmento Gastronômico</h3>
-                  <div id="non-metric-grid"
-                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 lg:gap-6">
-                  </div>
+                  <h3 class="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">Métricas Indisponíveis — Aplicável apenas para o segmento Gastronômico</h3>
+                  <div id="non-metric-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 lg:gap-6"></div>
                   <div id="non-metric-pagination" class="flex items-center justify-center gap-3 pt-4"></div>
                 </section>
               </div>
+            </div>
 
-            </section>
+            <!-- ======================== SEGURANÇA ALIMENTAR ======================== -->
+            <div class="tab-panel hidden space-y-6" data-tab-panel="seguranca">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 items-stretch">
+                <section class="food-safety-section border border-gray-200 dark:border-gray-800 rounded-2xl p-4 lg:p-6 bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md transition-all duration-300">
+                  <header class="section-header mb-5">
+                    <span class="text-xs font-black text-[#D97706] dark:text-[#F59E0B] uppercase tracking-[0.2em]">Controle de Qualidade</span>
+                    <h2 class="text-xl md:text-2xl font-black text-gray-900 dark:text-gray-100 uppercase tracking-tight mt-0.5">Segurança Alimentar</h2>
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mt-1">Métricas de faixas de Conformidade Sanitária</p>
+                  </header>
+                  <div class="metrics-group grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="sm:col-span-2 cursor-pointer" onclick="openClassificationModal('neutral')">
+                      <div class="rounded-2xl border-[2.5px] border-gray-300 dark:border-gray-600 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
+                        <div class="bg-white dark:bg-[#1e1e1e] rounded-2xl p-4 lg:p-5 flex flex-col justify-between h-full">
+                          <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                              <span class="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Total Auditados</span>
+                              <div class="p-2 rounded-lg bg-black/[0.03] dark:bg-white/[0.06]"><svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg></div>
+                            </div>
+                            <div class="flex items-baseline gap-1.5">
+                              <strong id="dash-total-auditados" class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-gray-900 dark:text-gray-100">—</strong>
+                              <span class="text-xs font-medium text-gray-500 dark:text-gray-400 lowercase ml-1">restaurantes no shopping</span>
+                            </div>
+                          </div>
+                          <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/40 dark:border-gray-800/40 flex"><span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-gray-50 text-gray-600 border border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700">Total Geral</span></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="cursor-pointer" onclick="openClassificationModal('unacceptable')">
+                      <div class="rounded-2xl p-[2.5px] bg-gradient-to-br from-red-500 to-red-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
+                        <div class="bg-white dark:bg-[#1e1e1e] rounded-2xl p-4 lg:p-5 flex flex-col justify-between h-full">
+                          <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                              <span class="text-xs font-black uppercase tracking-widest text-red-800 dark:text-red-400">Inaceitável</span>
+                              <div class="p-2 rounded-lg bg-black/[0.03] dark:bg-white/[0.06]"><svg viewBox="0 0 24 24" class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
+                            </div>
+                            <div class="flex items-baseline gap-1.5">
+                              <strong id="dash-inaceitavel" class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-red-700 dark:text-red-300">—</strong>
+                              <span class="text-xs font-medium text-gray-500 dark:text-gray-400 lowercase ml-1">lojas (0-29)</span>
+                            </div>
+                          </div>
+                          <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/40 dark:border-gray-800/40 flex"><span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-red-50 text-red-700 border border-red-200 dark:bg-red-950/30 dark:text-red-400 dark:border-red-900/50">Inaceitável (0-29)</span></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="cursor-pointer" onclick="openClassificationModal('bad')">
+                      <div class="rounded-2xl p-[2.5px] bg-gradient-to-br from-orange-500 to-orange-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
+                        <div class="bg-white dark:bg-[#1e1e1e] rounded-2xl p-4 lg:p-5 flex flex-col justify-between h-full">
+                          <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                              <span class="text-xs font-black uppercase tracking-widest text-orange-800 dark:text-orange-400">Ruim</span>
+                              <div class="p-2 rounded-lg bg-black/[0.03] dark:bg-white/[0.06]"><svg viewBox="0 0 24 24" class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
+                            </div>
+                            <div class="flex items-baseline gap-1.5">
+                              <strong id="dash-ruim" class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-orange-700 dark:text-orange-300">—</strong>
+                              <span class="text-xs font-medium text-gray-500 dark:text-gray-400 lowercase ml-1">lojas (30-59)</span>
+                            </div>
+                          </div>
+                          <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/40 dark:border-gray-800/40 flex"><span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-orange-50 text-orange-700 border border-orange-200 dark:bg-orange-950/30 dark:text-orange-400 dark:border-orange-900/50">Ruim (30-59)</span></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="cursor-pointer" onclick="openClassificationModal('regular')">
+                      <div class="rounded-2xl p-[2.5px] bg-gradient-to-br from-amber-500 to-yellow-600 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
+                        <div class="bg-white dark:bg-[#1e1e1e] rounded-2xl p-4 lg:p-5 flex flex-col justify-between h-full">
+                          <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                              <span class="text-xs font-black uppercase tracking-widest text-yellow-800 dark:text-yellow-400">Regular</span>
+                              <div class="p-2 rounded-lg bg-black/[0.03] dark:bg-white/[0.06]"><svg viewBox="0 0 24 24" class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
+                            </div>
+                            <div class="flex items-baseline gap-1.5">
+                              <strong id="dash-regular" class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-yellow-700 dark:text-yellow-300">—</strong>
+                              <span class="text-xs font-medium text-gray-500 dark:text-gray-400 lowercase ml-1">lojas (60-79)</span>
+                            </div>
+                          </div>
+                          <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/40 dark:border-gray-800/40 flex"><span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-yellow-50 text-yellow-700 border border-yellow-200 dark:bg-yellow-950/30 dark:text-yellow-400 dark:border-yellow-900/50">Regular (60-79)</span></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="cursor-pointer" onclick="openClassificationModal('good')">
+                      <div class="rounded-2xl p-[2.5px] bg-gradient-to-br from-emerald-500 to-green-600 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
+                        <div class="bg-white dark:bg-[#1e1e1e] rounded-2xl p-4 lg:p-5 flex flex-col justify-between h-full">
+                          <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                              <span class="text-xs font-black uppercase tracking-widest text-green-800 dark:text-green-400">Bom</span>
+                              <div class="p-2 rounded-lg bg-black/[0.03] dark:bg-white/[0.06]"><svg viewBox="0 0 24 24" class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                            </div>
+                            <div class="flex items-baseline gap-1.5">
+                              <strong id="dash-bom" class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-green-700 dark:text-green-300">—</strong>
+                              <span class="text-xs font-medium text-gray-500 dark:text-gray-400 lowercase ml-1">lojas (80-100)</span>
+                            </div>
+                          </div>
+                          <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/40 dark:border-gray-800/40 flex"><span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-green-50 text-green-700 border border-green-200 dark:bg-green-950/30 dark:text-green-400 dark:border-green-900/50">Bom (80-100)</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section class="food-safety-section border border-gray-200 dark:border-gray-800 rounded-2xl p-4 lg:p-6 bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col overflow-hidden">
+                  <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Últimas Auditorias Cadastradas</h3>
+                    <a href="/conservacao/seguranca-alimentar" class="text-[11px] font-black text-white bg-[#D97706] hover:bg-[#B45309] dark:bg-[#D97706] dark:hover:bg-[#B45309] rounded-lg py-1.5 px-3 shadow-sm hover:shadow-md transition-all duration-200 shrink-0">Ver histórico completo</a>
+                  </div>
+                  <div id="dash-ultimas-auditorias" class="flex flex-col gap-2.5 flex-1 min-h-0 overflow-y-auto">
+                    <div class="flex flex-col items-center justify-center border border-dashed border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-400 dark:text-gray-500 bg-gray-50/30 dark:bg-gray-900/10 p-4">
+                      <p class="font-bold">Nenhuma auditoria registrada.</p>
+                    </div>
+                  </div>
+                </section>
+              </div>
 
+              <!-- Segurança Alimentar Chart -->
+              <section class="chart-section border border-gray-200 dark:border-gray-800 rounded-2xl p-4 lg:p-6 bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md transition-all duration-300">
+                <header class="section-header mb-5">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <span class="text-xs font-black text-[#D97706] dark:text-[#F59E0B] uppercase tracking-[0.2em]">Análise Quantitativa</span>
+                      <h2 class="text-xl md:text-2xl font-black text-gray-900 dark:text-gray-100 uppercase tracking-tight mt-0.5">Classificação por Auditoria</h2>
+                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mt-1">Distribuição das classificações sanitárias por período</p>
+                    </div>
+                    <button id="seg-pdf-btn" class="h-10 px-3 text-xs font-black rounded-lg border border-[#D97706] bg-[#D97706] text-white hover:bg-[#B45309] hover:border-[#B45309] dark:bg-[#D97706] dark:hover:bg-[#B45309] dark:border-[#D97706] flex items-center gap-1.5 transition-all shadow-sm cursor-pointer shrink-0" title="Exportar PDF">
+                      <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                      PDF
+                    </button>
+                  </div>
+                </header>
+                <div class="flex flex-wrap items-center gap-2 mb-4">
+                  <button data-seg-period="semana" class="seg-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all cursor-pointer bg-[#D97706] text-white border-[#D97706]">Semana</button>
+                  <button data-seg-period="mes" class="seg-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all cursor-pointer bg-white dark:bg-[#1e1e1e] text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">Mês</button>
+                  <button data-seg-period="ano" class="seg-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all cursor-pointer bg-white dark:bg-[#1e1e1e] text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">Ano</button>
+                  <div class="flex flex-row items-center gap-1 sm:gap-2">
+                    <input type="date" id="seg-date-start" class="w-[130px] px-2 py-1.5 text-[10px] font-bold bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-[#D97706]/20 focus:border-[#D97706] outline-hidden cursor-pointer" />
+                    <span class="text-[10px] font-bold text-gray-400">—</span>
+                    <input type="date" id="seg-date-end" class="w-[130px] px-2 py-1.5 text-[10px] font-bold bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-[#D97706]/20 focus:border-[#D97706] outline-hidden cursor-pointer" />
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-4 sm:gap-6 mb-4">
+                  <div class="flex items-center gap-2"><span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total</span><span id="seg-chart-total" class="text-lg font-black text-gray-900 dark:text-white">0</span></div>
+                  <div class="flex items-center gap-2"><span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Bom</span><span id="seg-chart-bom" class="text-lg font-black text-green-600">0</span></div>
+                  <div class="flex items-center gap-2"><span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Regular</span><span id="seg-chart-regular" class="text-lg font-black text-yellow-500">0</span></div>
+                  <div class="flex items-center gap-2"><span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Ruim</span><span id="seg-chart-ruim" class="text-lg font-black text-orange-500">0</span></div>
+                  <div class="flex items-center gap-2"><span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Inaceitável</span><span id="seg-chart-inaceitavel" class="text-lg font-black text-red-600">0</span></div>
+                </div>
+                <div class="h-72"><canvas id="seg-chart-canvas"></canvas></div>
+              </section>
+            </div>
+
+            <!-- ======================== ECO FLAMBOYANT ======================== -->
+            <div class="tab-panel hidden space-y-6" data-tab-panel="eco">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 items-stretch">
+                <section class="eco-flamboyant-section border border-gray-200 dark:border-gray-800 rounded-2xl p-4 lg:p-6 bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md transition-all duration-300">
+                  <header class="section-header mb-5">
+                    <span class="text-xs font-black text-[#059669] dark:text-[#34D399] uppercase tracking-[0.2em]">Sustentabilidade</span>
+                    <h2 class="text-xl md:text-2xl font-black text-gray-900 dark:text-gray-100 uppercase tracking-tight mt-0.5">Eco Flamboyant</h2>
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mt-1">Indicadores de reaproveitamento de resíduos</p>
+                  </header>
+                  <div class="metrics-group grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="sm:col-span-2 cursor-pointer" onclick="openEcoModal('blue')">
+                      <div class="border border-blue-200 dark:border-blue-900/40 bg-blue-50/30 dark:bg-blue-950/10 rounded-2xl p-4 lg:p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] flex flex-col justify-between h-full hover:border-blue-300 dark:hover:border-blue-800">
+                        <div class="space-y-3">
+                          <div class="flex items-center justify-between gap-2">
+                            <span class="text-[10px] font-black uppercase tracking-widest text-blue-800 dark:text-blue-400">Restaurantes Parceiros</span>
+                            <div class="p-1.5 rounded-lg opacity-70"><svg viewBox="0 0 24 24" class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div>
+                          </div>
+                          <div class="flex items-baseline gap-1">
+                            <strong id="dash-restaurantes" class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-blue-700 dark:text-blue-300">—</strong>
+                            <span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 lowercase ml-1">parceiros ativos</span>
+                          </div>
+                        </div>
+                        <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/50 dark:border-gray-800/50 flex"><span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 text-blue-700 border border-blue-200 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-900/50">Programa Eco Flamboyant</span></div>
+                      </div>
+                    </div>
+                    <div class="cursor-pointer" onclick="openEcoModal('teal')">
+                      <div class="border border-teal-200 dark:border-teal-900/40 bg-teal-50/30 dark:bg-teal-950/10 rounded-2xl p-4 lg:p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] flex flex-col justify-between h-full hover:border-teal-300 dark:hover:border-teal-800">
+                        <div class="space-y-3">
+                          <div class="flex items-center justify-between gap-2">
+                            <span class="text-[10px] font-black uppercase tracking-widest text-teal-800 dark:text-teal-400">Resíduos Recebidos</span>
+                            <div class="p-1.5 rounded-lg opacity-70"><svg viewBox="0 0 24 24" class="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="m19 6-.867 12.142A2 2 0 0 1 16.138 20H7.862a2 2 0 0 1-1.995-1.858L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></div>
+                          </div>
+                          <div class="flex items-baseline gap-1">
+                            <strong id="dash-residuos-gerados" class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-teal-700 dark:text-teal-300">—</strong>
+                            <span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 lowercase ml-1">totais de resíduos</span>
+                          </div>
+                        </div>
+                        <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/50 dark:border-gray-800/50 flex"><span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-teal-100 text-teal-700 border border-teal-200 dark:bg-teal-950/40 dark:text-teal-400 dark:border-teal-900/50">Total de Resíduos (kg)</span></div>
+                      </div>
+                    </div>
+                    <div class="cursor-pointer" onclick="openEcoModal('emerald')">
+                      <div class="border border-emerald-200 dark:border-emerald-900/40 bg-emerald-50/30 dark:bg-emerald-950/10 rounded-2xl p-4 lg:p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] flex flex-col justify-between h-full hover:border-emerald-300 dark:hover:border-emerald-800">
+                        <div class="space-y-3">
+                          <div class="flex items-center justify-between gap-2">
+                            <span class="text-[10px] font-black uppercase tracking-widest text-emerald-800 dark:text-emerald-400">Resíduos Tratados</span>
+                            <div class="p-1.5 rounded-lg opacity-70"><svg viewBox="0 0 24 24" class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg></div>
+                          </div>
+                          <div class="flex items-baseline gap-1">
+                            <strong id="dash-residuos-aproveitados" class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-emerald-700 dark:text-emerald-300">—</strong>
+                            <span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 lowercase ml-1">totais de resíduos</span>
+                          </div>
+                        </div>
+                        <div class="mt-3 lg:mt-4 pt-2 lg:pt-3 border-t border-gray-100/50 dark:border-gray-800/50 flex"><span id="dash-taxa-reuso" class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900/50">—% taxa de reuso</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section class="eco-flamboyant-section border border-gray-200 dark:border-gray-800 rounded-2xl p-4 lg:p-6 bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full min-h-0 overflow-hidden">
+                  <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Últimas Coletas Registradas</h3>
+                    <a href="/conservacao/eco-flamboyant" class="text-[11px] font-black text-white bg-[#059669] hover:bg-[#047857] dark:bg-[#059669] dark:hover:bg-[#047857] rounded-lg py-1.5 px-3 shadow-sm hover:shadow-md transition-all duration-200 shrink-0">Ver histórico completo</a>
+                  </div>
+                  <div id="dash-ultimas-coletas" class="flex-1 min-h-0 flex flex-col gap-2.5 overflow-y-auto custom-scrollbar">
+                    <div class="flex flex-col items-center justify-center border border-dashed border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-400 dark:text-gray-500 bg-gray-50/30 dark:bg-gray-900/10 p-4">
+                      <p class="font-bold">Nenhuma coleta registrada.</p>
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              <!-- Waste Chart -->
+              <section class="chart-section border border-gray-200 dark:border-gray-800 rounded-2xl px-2 lg:px-3 py-4 lg:py-6 bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md transition-all duration-300">
+                <header class="section-header mb-5">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <span class="text-xs font-black text-[#059669] dark:text-[#34D399] uppercase tracking-[0.2em]">Análise Quantitativa</span>
+                      <h2 class="text-xl md:text-2xl font-black text-gray-900 dark:text-gray-100 uppercase tracking-tight mt-0.5">Resíduos por Estabelecimento</h2>
+                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mt-1">Resíduos recebidos por cada restaurante parceiro</p>
+                    </div>
+                    <div class="flex items-center gap-3 shrink-0 flex-wrap">
+                      <span class="text-xs font-black text-gray-400 dark:text-gray-500">Mostrar</span>
+                      <div class="flex items-center gap-1.5">
+                        <button data-top-n="5" class="top-n-btn px-4 py-2 text-sm font-bold rounded-lg border transition-all bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-[#059669]/40 hover:text-[#059669] dark:hover:text-[#34D399]">5</button>
+                        <button data-top-n="10" class="top-n-btn px-4 py-2 text-sm font-bold rounded-lg border transition-all bg-[#059669] text-white border-[#059669] shadow-sm">10</button>
+                        <button data-top-n="15" class="top-n-btn px-4 py-2 text-sm font-bold rounded-lg border transition-all bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-[#059669]/40 hover:text-[#059669] dark:hover:text-[#34D399]">15</button>
+                      </div>
+                      <input type="number" id="top-n-custom" value="10" min="1" max="100"
+                        class="w-16 text-center text-sm font-bold bg-white dark:bg-gray-700 border-2 border-[#059669]/40 dark:border-[#34D399]/40 rounded-lg py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#059669] focus:border-[#059669] transition-all" />
+                      <button id="eco-pdf-btn" class="shrink-0 px-2.5 py-1.5 sm:px-3 sm:py-2 text-[10px] sm:text-xs font-black rounded-lg border border-[#059669] bg-[#059669] text-white hover:bg-[#047857] hover:border-[#047857] flex items-center gap-1.5 transition-all shadow-sm" title="Exportar PDF">
+                        <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                        PDF
+                      </button>
+                    </div>
+                  </div>
+                </header>
+                <!-- Eco period filter -->
+                <div class="flex flex-wrap items-center gap-2 mb-4">
+                  <button data-eco-period="semana" class="eco-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all bg-[#059669] text-white border-[#059669]">Semana</button>
+                  <button data-eco-period="mes" class="eco-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all bg-white dark:bg-[#1e1e1e] text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-[#059669]/40 hover:text-[#059669] dark:hover:text-[#34D399]">Mês</button>
+                  <button data-eco-period="ano" class="eco-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all bg-white dark:bg-[#1e1e1e] text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-[#059669]/40 hover:text-[#059669] dark:hover:text-[#34D399]">Ano</button>
+                  <div class="flex flex-row items-center gap-1 sm:gap-2">
+                    <input type="date" id="eco-date-start" class="w-28 sm:w-32 px-2 py-1.5 text-[10px] sm:text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e1e] text-gray-700 dark:text-gray-300" />
+                    <span class="text-[10px] font-bold text-gray-400">—</span>
+                    <input type="date" id="eco-date-end" class="w-28 sm:w-32 px-2 py-1.5 text-[10px] sm:text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e1e] text-gray-700 dark:text-gray-300" />
+                  </div>
+                </div>
+                <div id="dash-chart" class="h-72 md:h-80 w-full relative">
+                  <canvas id="dash-chart-canvas"></canvas>
+                  <div id="dash-chart-empty" class="absolute inset-0 flex items-center justify-center hidden bg-white dark:bg-[#1e1e1e] z-10">
+                    <div class="border border-dashed border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50/20 dark:bg-gray-900/5 px-8 py-6">
+                      <p class="text-sm text-gray-400 dark:text-gray-500 font-medium">Nenhum dado de resíduos disponível para exibição.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-4 mt-3 flex-wrap">
+                  <span class="flex items-center gap-1.5 text-[10px] font-bold text-gray-500 dark:text-gray-400">
+                    <span class="w-3 h-3 rounded-sm" style="background:linear-gradient(180deg,#14B8A6,#0D9488)"></span>kg Gerado
+                  </span>
+                </div>
+              </section>
+            </div>
+
+            <!-- ======================== ORIENTAÇÃO EDUCATIVA ======================== -->
+            <div class="tab-panel hidden space-y-6" data-tab-panel="orientacao">
+              <section class="border border-gray-200 dark:border-gray-800 rounded-2xl p-4 lg:p-6 bg-white dark:bg-[#1e1e1e] shadow-sm hover:shadow-md transition-all duration-300">
+                <header class="section-header mb-5">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <span class="text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em]">Capacitação</span>
+                      <h2 class="text-xl md:text-2xl font-black text-gray-900 dark:text-gray-100 uppercase tracking-tight mt-0.5">Orientação Educativa</h2>
+                      <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mt-1">Histórico de orientações por período</p>
+                    </div>
+                    <button id="educ-pdf-btn" class="h-10 px-3 text-xs font-black rounded-lg border border-blue-600 bg-blue-600 text-white hover:bg-blue-700 hover:border-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 dark:border-blue-500 flex items-center gap-1.5 transition-all shadow-sm cursor-pointer shrink-0" title="Exportar PDF">
+                      <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                      PDF
+                    </button>
+                  </div>
+                </header>
+                <div class="flex flex-wrap items-center gap-2 mb-4">
+                  <button data-educ-period="semana" class="educ-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all cursor-pointer bg-blue-600 text-white border-blue-600">Semana</button>
+                  <button data-educ-period="mes" class="educ-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all cursor-pointer bg-white dark:bg-[#1e1e1e] text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">Mês</button>
+                  <button data-educ-period="ano" class="educ-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all cursor-pointer bg-white dark:bg-[#1e1e1e] text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">Ano</button>
+                  <button data-educ-period="personalizado" class="educ-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all cursor-pointer bg-white dark:bg-[#1e1e1e] text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">Personalizado</button>
+                  <div class="flex flex-row items-center gap-1 sm:gap-2">
+                    <input type="date" id="educ-date-start" class="w-28 sm:w-32 px-2 py-1.5 text-[10px] sm:text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e1e] text-gray-700 dark:text-gray-300" />
+                    <span class="text-[10px] font-bold text-gray-400">—</span>
+                    <input type="date" id="educ-date-end" class="w-28 sm:w-32 px-2 py-1.5 text-[10px] sm:text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e1e] text-gray-700 dark:text-gray-300" />
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-4 sm:gap-6 mb-4">
+                  <div class="flex items-center gap-2"><span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total</span><span id="educ-chart-total" class="text-lg font-black text-gray-900 dark:text-white">0</span></div>
+                  <div id="educ-period-label" class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"></div>
+                </div>
+                <div class="h-72"><canvas id="educ-chart-canvas"></canvas></div>
+              </section>
+            </div>
           </div>
         </main>
 
       </div>
     </main>
+  </div>
+
+  <!-- CLASSIFICATION MODAL (Segurança Alimentar / Eco Flamboyant) -->
+  <div id="classification-modal"
+    class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity">
+    <div class="w-full max-w-5xl h-[85vh] bg-white dark:bg-[#1e1e1e] rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 flex flex-col overflow-hidden" onclick="event.stopPropagation()">
+      <!-- Header -->
+      <div class="p-4 border-b border-gray-200 dark:border-gray-800 shrink-0">
+        <div class="flex items-start justify-between">
+          <div>
+            <span id="class-modal-badge" class="text-xs font-black uppercase tracking-[0.2em]">Controle de Qualidade</span>
+            <h2 id="class-modal-title" class="text-xl md:text-2xl font-black text-gray-900 dark:text-gray-100 uppercase tracking-tight mt-0.5"></h2>
+            <p id="class-modal-count" class="text-sm font-medium text-gray-500 dark:text-gray-400 mt-1"></p>
+          </div>
+          <button onclick="closeClassificationModal()" class="p-1.5 text-gray-400 hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all">
+            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </div>
+        <!-- Filters -->
+        <div class="flex flex-wrap items-end gap-2 mt-3">
+          <div class="flex-1 min-w-[140px]">
+            <label class="block text-[9px] font-black text-gray-400 dark:text-gray-500 mb-1">Loja</label>
+            <input type="text" id="class-modal-search" placeholder="Buscar por nome ou LUC..."
+              class="w-full px-2.5 py-1.5 text-xs font-bold rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-[#2a2a2a] text-gray-700 dark:text-gray-300 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D97706]/30" />
+          </div>
+          <div id="class-modal-classification-filter" class="hidden">
+            <label class="block text-[9px] font-black text-gray-400 dark:text-gray-500 mb-1">Classificação</label>
+            <select id="class-modal-classif-select" class="w-full sm:w-[160px] h-10 bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-xl text-sm px-4 py-2 appearance-none cursor-pointer">
+              <option value="Todos">Todas</option>
+              <option value="Bom">Bom</option>
+              <option value="Regular">Regular</option>
+              <option value="Ruim">Ruim</option>
+              <option value="Inaceitável">Inaceitável</option>
+            </select>
+          </div>
+          <div class="flex items-start gap-2 shrink-0">
+            <div>
+              <label class="block text-[9px] font-black text-gray-400 dark:text-gray-500 mb-1">De</label>
+              <input type="date" id="class-modal-date-start" class="px-2.5 py-1.5 text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e1e] text-gray-700 dark:text-gray-300" />
+            </div>
+            <div>
+              <label class="block text-[9px] font-black text-gray-400 dark:text-gray-500 mb-1">Até</label>
+              <input type="date" id="class-modal-date-end" class="px-2.5 py-1.5 text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e1e] text-gray-700 dark:text-gray-300" />
+            </div>
+          </div>
+          <div id="class-modal-eco-sort" class="hidden">
+            <label class="block text-[9px] font-black text-gray-400 dark:text-gray-500 mb-1">Ordenar</label>
+            <select id="class-modal-sort-select" class="w-full sm:w-[170px] h-10 bg-gray-50 dark:bg-[#1a1a1a]/50 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-xl text-sm px-4 py-2 appearance-none cursor-pointer">
+              <option value="recent">Mais Recentes</option>
+              <option value="generated">Mais Resíduos Recebidos</option>
+              <option value="reused">Mais Resíduos Tratados</option>
+            </select>
+          </div>
+          <button id="class-modal-pdf-btn" class="self-end px-2.5 py-1.5 text-xs font-black rounded-lg border border-[#D97706] bg-[#D97706] text-white hover:bg-[#B45309] hover:border-[#B45309] flex items-center gap-1.5 transition-all shadow-sm">
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+            PDF
+          </button>
+        </div>
+      </div>
+      <!-- Store list -->
+      <div id="class-modal-list" class="flex-1 overflow-y-auto p-4 custom-scrollbar">
+        <div class="text-center py-10">
+          <p class="text-sm font-bold text-gray-500 dark:text-gray-400">Nenhuma loja encontrada.</p>
+        </div>
+      </div>
+      <!-- Pagination -->
+      <div id="class-modal-pagination" class="hidden flex items-center justify-center gap-3 pt-4 mt-4 border-t border-gray-100 dark:border-gray-800 shrink-0"></div>
+    </div>
   </div>
 
   <!-- SHOPKEEPER HISTORY MODAL -->
@@ -1107,6 +1092,8 @@
           das Notas</button>
         <button data-modal-tab="auditoria"
           class="pb-3 text-[10px] font-black uppercase tracking-wider transition-all border-b-2 border-transparent text-gray-400 hover:text-gray-600">Auditoria</button>
+        <button data-modal-tab="residuos"
+          class="pb-3 text-[10px] font-black uppercase tracking-wider transition-all border-b-2 border-transparent text-gray-400 hover:text-gray-600">Resíduos</button>
       </div>
       <!-- Tab content -->
       <div id="modal-tab-content" class="flex-1 overflow-y-auto bg-gray-50/30 dark:bg-[#1a1a1a] p-4"></div>
@@ -1118,7 +1105,7 @@
 
     // === MONITORAMENTO INDIVIDUALIZADO STATE ===
     let _searchTerm = '';
-    let _sectorFilter = 'Gastronomia';
+    let _sectorFilter = 'todas';
     let _classificationFilter = 'Todos';
     let _statusFilter = 'Todos';
     let _currentPage = 0;
@@ -1142,7 +1129,51 @@
     };
     function _cs(cls) { return _classStyles[cls] || _classStyles.UNACCEPTABLE; }
     function _ss(sts) { return _statusStyles[sts] || _statusStyles.Conforme; }
-    function _pr(seed) { const x = Math.sin(seed++) * 10000; return x - Math.floor(x); }
+
+    // printTable — styled HTML table for PDF export (matches PROTOTIPO printUtils)
+    function _printTable(title, data, columns, description, period) {
+      const alignMap = { left: 'left', right: 'right', center: 'center' };
+      const headerCells = columns.map(col =>
+        `<th style="padding:10px 14px;font-size:10px;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:0.08em;text-align:${alignMap[col.align||'left']};border-bottom:2px solid #8B1A1A;background:#ffffff;white-space:nowrap">${col.header}</th>`
+      ).join('');
+      const tableRows = data.map((item, i) => {
+        const cells = columns.map(col =>
+          `<td style="padding:8px 14px;font-size:11px;color:#374151;text-align:${alignMap[col.align||'left']};white-space:nowrap">${col.accessor(item)}</td>`
+        ).join('');
+        return `<tr style="background:${i%2===0?'#ffffff':'#f8fafc'}">${cells}</tr>`;
+      }).join('');
+      const now = new Date().toLocaleString('pt-BR');
+      const totalRow = `<tr><td colspan="${columns.length}" style="padding:10px 14px;font-size:10px;color:#64748b;text-align:center;border-top:1px solid #e2e8f0;background:#f1f5f9;font-weight:600">Total de registros: ${data.length}</td></tr>`;
+      const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${title}</title><style>
+        @page { margin:20mm 15mm; size:portrait; }
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:24px;color:#1e293b;}
+        .top-header{display:flex;align-items:center;gap:16px;margin-bottom:16px;padding-bottom:16px;border-bottom:2px solid #e2e8f0;}
+        .top-header .logo{width:48px;height:48px;flex-shrink:0;}
+        .top-header .logo img{width:100%;height:100%;object-fit:contain;}
+        .top-header .brand-text .system-name{font-size:18px;font-weight:800;color:#8B1A1A;text-transform:uppercase;letter-spacing:0.04em;}
+        .top-header .brand-text .system-subtitle{font-size:10px;color:#64748b;}
+        .brand-bar{height:4px;background:linear-gradient(90deg,#8B1A1A 0%,#10b981 100%);margin-bottom:24px;border-radius:2px;}
+        .header{margin-bottom:20px;}
+        .header h1{font-size:20px;font-weight:800;color:#8B1A1A;}
+        .header .description{font-size:12px;color:#64748b;margin-top:4px;}
+        .header .meta{font-size:10px;color:#94a3b8;margin-top:2px;}
+        .header .period{font-size:11px;color:#8B1A1A;font-weight:700;margin-top:6px;}
+        table{width:100%;border-collapse:collapse;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
+        thead{position:sticky;top:0;}
+        tbody tr:hover{background:#e2e8f0!important;}
+        .footer{margin-top:20px;padding-top:12px;border-top:1px solid #e2e8f0;font-size:9px;color:#94a3b8;text-align:center;}
+      </style></head><body>
+        <div class="top-header"><div class="logo"><img src="/media/flambo.png" alt="Flamboyant"/></div><div class="brand-text"><div class="system-name">JP Mall</div><div class="system-subtitle">M\u00f3dulo Conserva\u00e7\u00e3o</div></div></div>
+        <div class="brand-bar"></div>
+        <div class="header"><h1>${title}</h1>${description?`<p class="description">${description}</p>`:''}${period?`<p class="period">${period}</p>`:''}<p class="meta">Relat\u00f3rio gerado em ${now} &middot; Total de estabelecimentos: ${data.length}</p></div>
+        <table><thead><tr>${headerCells}</tr></thead><tbody>${tableRows}${totalRow}</tbody></table>
+        <div class="footer">JP Mall &middot; M\u00f3dulo Conserva\u00e7\u00e3o</div>
+        <script>window.onload=function(){window.print();};<\/script>
+      </body></html>`;
+      const win = window.open('', '_blank');
+      if (win) { win.document.write(html); win.document.close(); }
+    }
 
     // Theme
     const themeToggle = document.getElementById('theme-toggle');
@@ -1271,7 +1302,8 @@
         document.getElementById('dash-bom').textContent = bom;
 
         // Últimas Auditorias
-        const ultimasAud = inspecoes.sort((a, b) => new Date(b.data_auditoria) - new Date(a.data_auditoria)).slice(0, 3);
+        const _lojaNome = (id) => { const l = _lojasData.find(x => String(x.id) === String(id)); return l ? l.nome : 'LUC-' + id; };
+        const ultimasAud = [...inspecoes].sort((a, b) => new Date(b.data_auditoria) - new Date(a.data_auditoria)).slice(0, 8);
         const audEl = document.getElementById('dash-ultimas-auditorias');
         if (ultimasAud.length > 0) {
           audEl.className = 'space-y-2';
@@ -1283,7 +1315,7 @@
               <div class="w-1 h-full min-h-[2.5rem] rounded-full flex-shrink-0" style="background:${scoreColor}"></div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center justify-between gap-2">
-                  <span class="text-sm font-bold text-gray-900 dark:text-gray-100">LUC-${a.loja_id}</span>
+                  <span class="text-sm font-bold text-gray-900 dark:text-gray-100">${_lojaNome(a.loja_id)}</span>
                   <span class="text-[10px] font-black px-2 py-0.5 rounded ${scoreBg}">${a.nota}</span>
                 </div>
                 <div class="flex items-center gap-2 mt-1">
@@ -1341,87 +1373,6 @@
           colEl.innerHTML = '<p class="font-bold">Nenhuma coleta registrada.</p>';
         }
 
-        // Chart: Resíduos por estabelecimento (Chart.js)
-        const emptyState = document.getElementById('dash-chart-empty');
-        const topN = parseInt(document.getElementById('top-stores-select')?.value || '10');
-        const sorted = [...residuos].sort((a, b) => (b.kg_total || 0) - (a.kg_total || 0));
-        const top = topN === -1 ? sorted : sorted.slice(0, topN);
-
-        if (top.length === 0) {
-          emptyState.classList.remove('hidden');
-          if (wasteChart) { wasteChart.destroy(); wasteChart = null; }
-        } else {
-          emptyState.classList.add('hidden');
-          if (wasteChart) { wasteChart.destroy(); }
-
-          const ctx = document.getElementById('dash-chart-canvas').getContext('2d');
-          const isDark = document.documentElement.classList.contains('dark');
-          const gridColor = isDark ? '#374151' : '#E5E7EB';
-          const tickColor = isDark ? '#6B7280' : '#6B7280';
-
-          const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-          gradient.addColorStop(0, '#14B8A6');
-          gradient.addColorStop(1, '#0D9488');
-
-          wasteChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-              labels: top.map(r => r.lojaNome || 'LUC-' + r.loja_id),
-              datasets: [{
-                label: 'kg Gerado',
-                data: top.map(r => r.kg_total || 0),
-                backgroundColor: gradient,
-                borderRadius: 4,
-                borderSkipped: false,
-                maxBarThickness: 56,
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: { display: false },
-                tooltip: {
-                  backgroundColor: isDark ? '#252525' : '#fff',
-                  titleColor: isDark ? '#f3f4f6' : '#111827',
-                  bodyColor: isDark ? '#d1d5db' : '#4b5563',
-                  borderColor: isDark ? '#374151' : '#E5E7EB',
-                  borderWidth: 1,
-                  cornerRadius: 8,
-                  padding: 8,
-                  callbacks: {
-                    title: (items) => items[0].label,
-                    label: (ctx) => `${ctx.parsed.y.toFixed(1)} kg`,
-                  }
-                }
-              },
-              scales: {
-                x: {
-                  grid: { display: false },
-                  ticks: {
-                    maxRotation: 45,
-                    minRotation: 45,
-                    font: { size: 10, weight: '500' },
-                    color: tickColor,
-                  }
-                },
-                y: {
-                  beginAtZero: true,
-                  grid: {
-                    color: gridColor,
-                    drawBorder: true,
-                  },
-                  ticks: {
-                    callback: (v) => `${v} kg`,
-                    font: { size: 10, weight: '500' },
-                    color: tickColor,
-                  }
-                }
-              }
-            }
-          });
-        }
-
         // Build store card data for Monitoramento Individualizado
         const _buildStoreMetrics = (loja) => {
           const isGastro = loja.categoria === 'Gastronomia';
@@ -1438,12 +1389,7 @@
             const reusedWasteKg = sWaste.reduce((acc, r) => acc + (r.aproveitou ? (r.kg_total || 0) : 0), 0);
             return { hasMetrics: true, score, classification, status, auditsCount: sInsp.length, generatedWasteKg, reusedWasteKg, auditedAt: latest.data_auditoria };
           }
-          const seed = parseInt(loja.id.replace(/\D/g, '') || '0', 10) + loja.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
-          const r1 = _pr(seed), r2 = _pr(seed + 1), r3 = _pr(seed + 2), r4 = _pr(seed + 3), r5 = _pr(seed + 4), r6 = _pr(seed + 5);
-          const score = Math.floor(r1 * 80) + 20;
-          let classification = 'UNACCEPTABLE'; if (score >= 80) classification = 'GOOD'; else if (score >= 60) classification = 'REGULAR'; else if (score >= 30) classification = 'BAD';
-          let status = 'Conforme'; if (r2 > 0.8) status = 'Pendente'; else if (r2 > 0.6) status = 'Em Auditoria'; else if (score < 50) status = 'Pendente';
-          return { hasMetrics: true, score, classification, status, auditsCount: Math.floor(r5 * 4) + 1, generatedWasteKg: Math.floor(r3 * 800) + 50, reusedWasteKg: Math.floor((Math.floor(r3 * 800) + 50) * (r4 * 0.8 + 0.05)), auditedAt: `2026-05-${String(Math.floor(r6 * 28) + 1).padStart(2, '0')}` };
+          return { hasMetrics: false, score: 0, classification: 'GOOD', status: 'Conforme', auditsCount: 0, generatedWasteKg: 0, reusedWasteKg: 0, auditedAt: '' };
         };
         _allStores = _lojasData.map(loja => {
           const m = _buildStoreMetrics(loja);
@@ -1451,18 +1397,99 @@
         });
         renderStores();
 
-        // Update sector filter options to match prototype
-        const secSel = document.getElementById('sector-filter');
-        if (secSel) secSel.innerHTML = '<option value="Todos">Todos os Setores</option><option value="Moda">Moda</option><option value="Gastronomia">Gastronomia</option><option value="Beleza">Beleza</option><option value="Tecnologia">Tecnologia</option><option value="Servi\u00e7os">Servi\u00e7os</option><option value="Cultura">Cultura</option>';
+        // Update monitoring count
+        const mCount = document.getElementById('monitoring-count');
+        if (mCount) mCount.textContent = _allStores.length + ' estabelecimentos encontrados';
+
+        // Chart: Resíduos por estabelecimento (Chart.js)
+        if (typeof Chart !== 'undefined') {
+          const emptyState = document.getElementById('dash-chart-empty');
+          const topN = parseInt(document.getElementById('top-stores-select')?.value || '10');
+          const sorted = [...residuos].sort((a, b) => (b.kg_total || 0) - (a.kg_total || 0));
+          const top = topN === -1 ? sorted : sorted.slice(0, topN);
+
+          if (top.length === 0) {
+            emptyState.classList.remove('hidden');
+            if (wasteChart) { wasteChart.destroy(); wasteChart = null; }
+          } else {
+            emptyState.classList.add('hidden');
+            if (wasteChart) { wasteChart.destroy(); }
+
+            const ctx = document.getElementById('dash-chart-canvas').getContext('2d');
+            const isDark = document.documentElement.classList.contains('dark');
+            const gridColor = isDark ? '#374151' : '#E5E7EB';
+            const tickColor = isDark ? '#6B7280' : '#6B7280';
+
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, '#14B8A6');
+            gradient.addColorStop(1, '#0D9488');
+
+            wasteChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: top.map(r => r.lojaNome || 'LUC-' + r.loja_id),
+                datasets: [{
+                  label: 'kg Gerado',
+                  data: top.map(r => r.kg_total || 0),
+                  backgroundColor: gradient,
+                  borderRadius: 4,
+                  borderSkipped: false,
+                  maxBarThickness: 56,
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: { display: false },
+                  tooltip: {
+                    backgroundColor: isDark ? '#252525' : '#fff',
+                    titleColor: isDark ? '#f3f4f6' : '#111827',
+                    bodyColor: isDark ? '#d1d5db' : '#4b5563',
+                    borderColor: isDark ? '#374151' : '#E5E7EB',
+                    borderWidth: 1,
+                    cornerRadius: 8,
+                    padding: 8,
+                    callbacks: {
+                      title: (items) => items[0].label,
+                      label: (ctx) => `${ctx.parsed.y.toFixed(1)} kg`,
+                    }
+                  }
+                },
+                scales: {
+                  x: {
+                    grid: { display: false },
+                    ticks: {
+                      maxRotation: 45,
+                      minRotation: 45,
+                      font: { size: 10, weight: '500' },
+                      color: tickColor,
+                    }
+                  },
+                  y: {
+                    beginAtZero: true,
+                    grid: {
+                      color: gridColor,
+                      drawBorder: true,
+                    },
+                    ticks: {
+                      callback: (v) => `${v} kg`,
+                      font: { size: 10, weight: '500' },
+                      color: tickColor,
+                    }
+                  }
+                }
+              }
+            });
+          }
+        }
 
       } catch {
         // Backend não disponível — placeholders já exibem "—"
       }
     }
 
-    document.getElementById('top-stores-select')?.addEventListener('change', loadDashboard);
-
-    loadDashboard();
+    // Initial loadDashboard call is now handled at the bottom with init
 
     // ============================================================
     // FUNÇÕES DE RENDERIZAÇÃO DO MONITORAMENTO INDIVIDUALIZADO
@@ -1574,10 +1601,13 @@
 
     function renderStores() {
       const filtered = _allStores.filter(s => {
-        return (s.restaurantName.toLowerCase().includes(_searchTerm.toLowerCase()) || s.lucId.includes(_searchTerm))
-          && (_sectorFilter === 'Todos' || s.sector === _sectorFilter)
-          && (_classificationFilter === 'Todos' || s.classification === _classificationFilter)
-          && (_statusFilter === 'Todos' || s.status === _statusFilter);
+        const matchesSearch = s.restaurantName.toLowerCase().includes(_searchTerm.toLowerCase()) || s.lucId.includes(_searchTerm);
+        let matchesSector = true;
+        if (_sectorFilter === 'participantes') matchesSector = s.generatedWasteKg > 0 || s.reusedWasteKg > 0;
+        else if (_sectorFilter === 'nao-participantes') matchesSector = s.generatedWasteKg === 0 && s.reusedWasteKg === 0;
+        const matchesClassification = _classificationFilter === 'Todos' || s.classification === _classificationFilter;
+        const matchesStatus = _statusFilter === 'Todos' || s.status === _statusFilter;
+        return matchesSearch && matchesSector && matchesClassification && matchesStatus;
       });
       const orderMap = { UNACCEPTABLE: 0, BAD: 1, REGULAR: 2, GOOD: 3 };
       const sorted = [...filtered].sort((a, b) => {
@@ -1705,16 +1735,81 @@
         container.innerHTML = '<div class="space-y-4"><div class="relative pl-6 space-y-6 before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-0.5 before:bg-gray-200 dark:before:bg-gray-800">' + auditLog.map(item => {
           const ac = item.acao === 'CRIADO' ? 'bg-green-500' : item.acao === 'ALTERADO' ? 'bg-blue-500' : 'bg-red-500';
           const mc = item.modulo === 'VISTORIA' ? 'bg-purple-50 text-purple-600 border-purple-200' : item.modulo === 'NOTIFICACAO' ? 'bg-orange-50 text-orange-600 border-orange-200' : 'bg-blue-50 text-blue-600 border-blue-200';
-          return '<div class="relative"><div class="absolute -left-[29px] top-1 w-3 h-3 rounded-full border-2 border-white shadow-sm ' + ac + '"></div><div class="bg-white dark:bg-[#252525] border border-gray-100 dark:border-gray-800 p-4 rounded-xl shadow-sm"><div class="flex items-center justify-between mb-3"><div class="flex items-center gap-2"><span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md border ' + mc + '">' + item.modulo + '</span><span class="text-[9px] font-bold uppercase tracking-wider text-gray-400">' + item.acao + '</span></div><span class="text-[10px] font-bold text-gray-400">' + item.data + '</span></div><h4 class="text-xs font-bold text-gray-900 dark:text-gray-100 mb-1">' + item.titulo + '</h4>' + (item.desc ? '<p class="mt-1 text-[10px] text-gray-500 italic">"' + item.desc + '"</p>' : '') + (item.alt ? '<div class="mt-3 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-100 dark:border-gray-800 rounded-lg p-3 space-y-2"><p class="text-[9px] font-black uppercase text-gray-400 mb-1 tracking-widest">Altera\u00e7\u00f5es Registradas:</p>' + item.alt.map(a => '<div class="text-[10px] flex items-center flex-wrap gap-1.5"><span class="font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#252525] px-1.5 rounded border border-gray-200 dark:border-gray-700 shadow-sm">' + a.campo + '</span><span class="text-gray-400">alterado de</span><span class="text-red-500 line-through decoration-red-300 font-medium">' + a.de + '</span><span class="text-gray-400">para</span><span class="text-green-600 font-bold bg-green-50 px-1 rounded">' + a.para + '</span></div>').join('') + '</div>' : '') + '<div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center"><span class="inline-flex items-center text-[9px] font-bold text-gray-400 uppercase"><svg viewBox="0 0 24 24" class="w-3 h-3 mr-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Registrado por: ' + item.user + '</span></div></div></div>';
+          return '<div class="relative"><div class="absolute -left-[29px] top-1 w-3 h-3 rounded-full border-2 border-white shadow-sm ' + ac + '"></div><div class="bg-white dark:bg-[#252525] border border-gray-100 dark:border-gray-800 p-4 rounded-xl shadow-sm"><div class="flex items-center justify-between mb-3"><div class="flex items-center gap-2"><span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md border ' + mc + '">' + item.modulo + '</span><span class="text-[9px] font-bold uppercase tracking-wider text-gray-400">' + item.acao + '</span></div><span class="text-[10px] font-bold text-gray-400">' + item.data + '</span></div><h4 class="text-xs font-bold text-gray-900 dark:text-gray-100 mb-1">' + item.titulo + '</h4>' + (item.desc ? '<p class="mt-1 text-[10px] text-gray-500 italic">"' + item.desc + '"</p>' : '') + (item.alt ? '<div class="mt-3 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-100 dark:border-gray-800 rounded-lg p-3 space-y-2"><p class="text-[9px] font-black uppercase text-gray-400 mb-1 tracking-widest">Altera\u00e7\u00f5es Registradas:</p>' + item.alt.map(a => '<div class="text-[10px] flex items-center flex-wrap gap-1.5"><span class="font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#252525] px-1.5 rounded border border-gray-200 dark:border-gray-700 shadow-sm">' + a.campo + '</span><span class="text-gray-400">alterado de</span><span class="text-red-500 line-through decoration-red-300 font-medium">' + a.de + '</span><span class="text-gray-400">para</span><span class="text-green-600 font-bold bg-green-50 px-1 rounded">' + a.para + '</span></div>').join('') + '</div>' : '') + '<div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center"><span class="inline-flex items-center text-[9px] font-bold text-gray-400 uppercase"><svg viewBox="0 0 24 24" class="w-3 h-3 mr-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"... (line truncated to 2000 chars)
         }).join('') + '</div></div>';
+      } else if (tab === 'residuos') {
+        const sWaste = _cachedResiduos.filter(r => r.loja_id === storeId);
+        if (sWaste.length > 0) {
+          container.innerHTML = '<div class="space-y-3">' + sWaste.sort((a, b) => new Date(b.data) - new Date(a.data)).map(r => {
+            const kg = r.kg_total || 0;
+            const aproveitou = r.aproveitou;
+            return '<div class="bg-white dark:bg-[#252525] p-4 rounded-xl border border-gray-100 dark:border-gray-800 flex items-center justify-between shadow-sm"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg ' + (aproveitou ? 'bg-emerald-50 dark:bg-emerald-950/30' : 'bg-gray-50 dark:bg-gray-800') + ' flex items-center justify-center shrink-0">' + (aproveitou ? '<svg viewBox="0 0 24 24" class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>' : '<svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="m19 6-.867 12.142A2 2 0 0 1 16.138 20H7.862a2 2 0 0 1-1.995-1.858L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>') + '</div><div class="flex-1"><p class="text-xs font-bold text-gray-900 dark:text-gray-100">' + new Date(r.data).toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' }).toUpperCase() + '</p><p class="text-[10px] text-gray-500 mt-0.5">' + kg.toFixed(1) + ' kg ' + (aproveitou ? '- Reaproveitado' : '- Descartado') + '</p></div></div></div>';
+          }).join('') + '</div>';
+        } else {
+          container.innerHTML = '<div class="text-center py-10 opacity-50"><svg viewBox="0 0 24 24" class="w-10 h-10 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="m19 6-.867 12.142A2 2 0 0 1 16.138 20H7.862a2 2 0 0 1-1.995-1.858L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg><p class="text-xs font-bold uppercase tracking-widest mt-4">Nenhum registro de resíduos</p><p class="text-[10px] text-gray-500 mt-1">Esta loja não possui registros de coleta de resíduos.</p></div>';
+        }
       }
     }
 
     // Wire filter events
-    document.getElementById('store-search').addEventListener('input', e => { _searchTerm = e.target.value; _currentPage = 0; _currentPageNonMetric = 0; renderStores(); });
-    document.getElementById('sector-filter').addEventListener('change', e => { _sectorFilter = e.target.value; _currentPage = 0; _currentPageNonMetric = 0; renderStores(); });
-    document.getElementById('classification-filter').addEventListener('change', e => { _classificationFilter = e.target.value; _currentPage = 0; _currentPageNonMetric = 0; renderStores(); });
-    document.getElementById('status-filter').addEventListener('change', e => { _statusFilter = e.target.value; _currentPage = 0; _currentPageNonMetric = 0; renderStores(); });
+    document.getElementById('store-search').addEventListener('input', e => { _searchTerm = e.target.value; _currentPage = 0; _currentPageNonMetric = 0; _updateFilterUI(); renderStores(); });
+    document.getElementById('sector-filter').addEventListener('change', e => { _sectorFilter = e.target.value; _currentPage = 0; _currentPageNonMetric = 0; _updateFilterUI(); renderStores(); });
+    document.getElementById('classification-filter').addEventListener('change', e => { _classificationFilter = e.target.value; _currentPage = 0; _currentPageNonMetric = 0; _updateFilterUI(); renderStores(); });
+    document.getElementById('status-filter').addEventListener('change', e => { _statusFilter = e.target.value; _currentPage = 0; _currentPageNonMetric = 0; _updateFilterUI(); renderStores(); });
+
+    // print-monitoramento-btn — was missing!
+    document.getElementById('print-monitoramento-btn')?.addEventListener('click', () => {
+      const metricStores = _allStores.filter(s => s.hasMetrics);
+      const data = metricStores.map(s => ({
+        estabelecimento: s.restaurantName,
+        luc: s.lucId,
+        setor: s.sector,
+        classificacao: _cs(s.classification).label,
+        conformidade: s.score + '%',
+        status: s.status,
+        auditorias: String(s.auditsCount || 0),
+        auditadoEm: s.auditedAt || '—'
+      }));
+      _printTable('Monitoramento Individualizado', data, [
+        { header: 'Estabelecimento', accessor: r => r.estabelecimento },
+        { header: 'LUC', accessor: r => r.luc },
+        { header: 'Setor', accessor: r => r.setor },
+        { header: 'Classifica\u00e7\u00e3o', accessor: r => r.classificacao },
+        { header: 'Conformidade', accessor: r => r.conformidade, align: 'right' },
+        { header: 'Status', accessor: r => r.status },
+        { header: 'Auditorias', accessor: r => r.auditorias, align: 'right' },
+        { header: 'Auditado em', accessor: r => r.auditadoEm },
+      ], 'Vis\u00e3o geral de todos os estabelecimentos auditados por Seguran\u00e7a Alimentar', 'Per\u00edodo: Geral');
+    });
+
+    // Clear filters
+    document.getElementById('clear-filters-btn')?.addEventListener('click', () => {
+      _searchTerm = '';
+      _sectorFilter = 'todas';
+      _classificationFilter = 'Todos';
+      _statusFilter = 'Todos';
+      document.getElementById('store-search').value = '';
+      document.getElementById('sector-filter').value = 'todas';
+      document.getElementById('classification-filter').value = 'Todos';
+      document.getElementById('status-filter').value = 'Todos';
+      _currentPage = 0;
+      _currentPageNonMetric = 0;
+      _updateFilterUI();
+      renderStores();
+    });
+
+    function _updateFilterUI() {
+      const hasActive = _sectorFilter !== 'todas' || _classificationFilter !== 'Todos' || _statusFilter !== 'Todos' || _searchTerm !== '';
+      const btn = document.getElementById('toggle-filters-btn');
+      const clearBtn = document.getElementById('clear-filters-btn');
+      if (hasActive) {
+        btn.className = 'h-10 px-3 rounded-lg border text-sm font-bold flex items-center gap-1.5 transition-all cursor-pointer bg-[#8B1A1A]/8 border-[#8B1A1A] text-[#8B1A1A] dark:text-[#D93030] dark:border-[#D93030] dark:bg-[#D93030]/8';
+        clearBtn?.classList.remove('hidden');
+      } else {
+        btn.className = 'h-10 px-3 rounded-lg border text-sm font-bold flex items-center gap-1.5 transition-all cursor-pointer bg-white hover:bg-gray-50 border-gray-200 text-gray-700 dark:bg-[#1a1a1a] dark:hover:bg-[#222] dark:border-gray-700 dark:text-gray-300';
+        clearBtn?.classList.add('hidden');
+      }
+    }
 
     // Modal close
     document.getElementById('modal-close-btn').addEventListener('click', () => document.getElementById('history-modal').classList.add('hidden'));
@@ -1731,6 +1826,627 @@
       const sid = document.getElementById('modal-store-id').textContent.replace('LUC-', '');
       loadModalTabContent(sid, tab);
     }));
+
+    // ============================================================
+    // TAB NAVIGATION
+    // ============================================================
+    const TAB_COLORS = {
+      monitoramento: '#8B1A1A',
+      seguranca: '#D97706',
+      eco: '#059669',
+      orientacao: '#2563EB',
+    };
+    function activateTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.style.cssText = 'border:1px solid rgb(229 231 235)';
+        btn.style.background = 'transparent';
+        btn.style.boxShadow = 'none';
+        const svg = btn.querySelector('svg');
+        if (svg) { svg.classList.add('text-gray-500'); svg.classList.remove('text-white'); }
+        const span = btn.querySelector('span');
+        if (span) { span.style.color = ''; span.classList.add('text-gray-500'); span.classList.remove('text-white'); }
+      });
+      const activeBtn = document.querySelector(`[data-tab="${tabId}"]`);
+      if (activeBtn) {
+        const color = TAB_COLORS[tabId] || '#8B1A1A';
+        activeBtn.style.cssText = '';
+        activeBtn.style.background = `linear-gradient(135deg,${color},${color}dd)`;
+        activeBtn.style.color = '#fff';
+        activeBtn.style.boxShadow = `0 8px 20px -4px ${color}60`;
+        const svg = activeBtn.querySelector('svg');
+        if (svg) { svg.classList.remove('text-gray-500'); svg.classList.add('text-white'); }
+        const span = activeBtn.querySelector('span');
+        if (span) { span.style.color = '#fff'; span.classList.remove('text-gray-500'); span.classList.add('text-white'); }
+      }
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+      const panel = document.querySelector(`[data-tab-panel="${tabId}"]`);
+      if (panel) panel.classList.remove('hidden');
+    }
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => activateTab(btn.dataset.tab));
+    });
+
+    // ============================================================
+    // ADVANCED FILTERS TOGGLE
+    // ============================================================
+    let _showFilters = false;
+    document.getElementById('toggle-filters-btn')?.addEventListener('click', () => {
+      _showFilters = !_showFilters;
+      const el = document.getElementById('advanced-filters');
+      if (_showFilters) {
+        el.style.maxHeight = el.scrollHeight + 'px';
+        el.style.opacity = '1';
+      } else {
+        el.style.maxHeight = '0';
+        el.style.opacity = '0';
+      }
+      _updateFilterUI();
+    });
+
+    // ============================================================
+    // LOADING / ERROR STATES
+    // ============================================================
+    function showLoading() { document.getElementById('dashboard-loading')?.classList.remove('hidden'); }
+    function hideLoading() { document.getElementById('dashboard-loading')?.classList.add('hidden'); }
+    function showError(msg) {
+      const errEl = document.getElementById('dashboard-error');
+      const msgEl = document.getElementById('dashboard-error-msg');
+      if (errEl) errEl.classList.remove('hidden');
+      if (msgEl) msgEl.textContent = msg || 'Erro desconhecido ao carregar dados.';
+    }
+    function hideError() { document.getElementById('dashboard-error')?.classList.add('hidden'); }
+
+    // ============================================================
+    // CLASSIFICATION MODAL (Segurança Alimentar)
+    // ============================================================
+    let _classModalStores = [];
+    let _classPage = 0;
+    const _CLASS_PP = 9;
+    let _classIsEco = false;
+
+    function openClassificationModal(variant) {
+      const gastro = _allStores.filter(s => s.hasMetrics && s.sector === 'Gastronomia');
+      let filtered = [], title = '';
+      _classIsEco = false;
+      if (variant === 'neutral') {
+        filtered = gastro; title = 'Total Auditados';
+      } else if (variant === 'unacceptable') {
+        filtered = gastro.filter(s => s.classification === 'UNACCEPTABLE'); title = 'Inaceitável (0-29)';
+      } else if (variant === 'bad') {
+        filtered = gastro.filter(s => s.classification === 'BAD'); title = 'Ruim (30-59)';
+      } else if (variant === 'regular') {
+        filtered = gastro.filter(s => s.classification === 'REGULAR'); title = 'Regular (60-79)';
+      } else if (variant === 'good') {
+        filtered = gastro.filter(s => s.classification === 'GOOD'); title = 'Bom (80-100)';
+      }
+      _openClassModal(filtered, title, false, variant === 'neutral' ? 'Todos' : (
+        variant === 'unacceptable' ? 'Inaceitável' : variant === 'bad' ? 'Ruim' : variant === 'regular' ? 'Regular' : 'Bom'
+      ));
+    }
+
+    function openEcoModal(variant) {
+      const ecoStores = _allStores.filter(s => s.generatedWasteKg > 0);
+      let filtered = [], title = '';
+      _classIsEco = true;
+      if (variant === 'blue') {
+        filtered = ecoStores; title = 'Restaurantes Parceiros';
+      } else if (variant === 'teal') {
+        filtered = ecoStores; title = 'Resíduos Recebidos';
+      } else if (variant === 'emerald') {
+        filtered = ecoStores; title = 'Resíduos Tratados';
+      }
+      _openClassModal(filtered, title, true, 'Todos');
+    }
+
+    function _openClassModal(stores, title, isEco, initialClassif) {
+      _classModalStores = stores;
+      _classPage = 0;
+      const modal = document.getElementById('classification-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.getElementById('class-modal-title').textContent = title;
+
+      const badge = document.getElementById('class-modal-badge');
+      badge.textContent = isEco ? 'Sustentabilidade' : 'Controle de Qualidade';
+      badge.style.color = isEco ? '#059669' : '#D97706';
+
+      document.getElementById('class-modal-count').textContent = stores.length + ' ' + (stores.length === 1 ? 'loja encontrada' : 'lojas encontradas');
+
+      document.getElementById('class-modal-search').value = '';
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('class-modal-date-start').value = '';
+      document.getElementById('class-modal-date-end').value = today;
+
+      document.getElementById('class-modal-classification-filter').classList.toggle('hidden', isEco || title === 'Total Auditados');
+      if (!isEco && title !== 'Total Auditados') {
+        const sel = document.getElementById('class-modal-classif-select');
+        sel.value = initialClassif;
+      }
+      document.getElementById('class-modal-eco-sort').classList.toggle('hidden', !isEco);
+
+      const pdfBtn = document.getElementById('class-modal-pdf-btn');
+      pdfBtn.className = 'self-end px-2.5 py-1.5 text-xs font-black rounded-lg border flex items-center gap-1.5 transition-all shadow-sm ' + (isEco ? 'border-[#059669] bg-[#059669] text-white hover:bg-[#047857] hover:border-[#047857]' : 'border-[#D97706] bg-[#D97706] text-white hover:bg-[#B45309] hover:border-[#B45309]');
+
+      _renderClassModal();
+    }
+
+    function closeClassificationModal() {
+      document.getElementById('classification-modal').classList.add('hidden');
+      document.getElementById('classification-modal').classList.remove('flex');
+    }
+    document.getElementById('classification-modal')?.addEventListener('click', closeClassificationModal);
+
+    function _filterClassStores() {
+      const term = document.getElementById('class-modal-search').value.toLowerCase();
+      const classif = document.getElementById('class-modal-classif-select')?.value || 'Todos';
+      const dateStart = document.getElementById('class-modal-date-start').value;
+      const dateEnd = document.getElementById('class-modal-date-end').value;
+      const sortOrder = document.getElementById('class-modal-sort-select')?.value || 'recent';
+
+      let result = [..._classModalStores];
+      if (term) result = result.filter(s => s.restaurantName.toLowerCase().includes(term) || s.lucId.toLowerCase().includes(term));
+
+      if (!_classIsEco && classif !== 'Todos') {
+        const clsMap = { 'Bom': 'GOOD', 'Regular': 'REGULAR', 'Ruim': 'BAD', 'Inaceitável': 'UNACCEPTABLE' };
+        result = result.filter(s => s.classification === (clsMap[classif] || ''));
+      }
+
+      if (dateStart) result = result.filter(s => new Date(s.auditedAt) >= new Date(dateStart));
+      if (dateEnd) {
+        const end = new Date(dateEnd);
+        end.setDate(end.getDate() + 1);
+        result = result.filter(s => new Date(s.auditedAt) <= end);
+      }
+
+      if (_classIsEco) {
+        if (sortOrder === 'generated') result.sort((a, b) => b.generatedWasteKg - a.generatedWasteKg);
+        else if (sortOrder === 'reused') result.sort((a, b) => b.reusedWasteKg - a.reusedWasteKg);
+        else result.sort((a, b) => new Date(b.auditedAt) - new Date(a.auditedAt));
+      } else {
+        result.sort((a, b) => new Date(b.auditedAt) - new Date(a.auditedAt));
+      }
+      return result;
+    }
+
+    function _renderClassModal() {
+      const filtered = _filterClassStores();
+      const totalPages = Math.max(1, Math.ceil(filtered.length / _CLASS_PP));
+      if (_classPage >= totalPages) _classPage = 0;
+      const start = _classPage * _CLASS_PP;
+      const pageItems = filtered.slice(start, start + _CLASS_PP);
+      const list = document.getElementById('class-modal-list');
+      const pag = document.getElementById('class-modal-pagination');
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="text-center py-10"><p class="text-sm font-bold text-gray-500 dark:text-gray-400">Nenhuma loja encontrada.</p></div>';
+        pag.classList.add('hidden');
+        return;
+      }
+      pag.classList.remove('hidden');
+      list.innerHTML = '<div class="flex flex-col gap-2">' + pageItems.map(s => {
+        const st = _cs(s.classification);
+        if (_classIsEco) {
+          return '<div onclick="openStoreModal(\'' + s.id + '\')" class="w-full text-left bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200 dark:border-gray-700 p-3 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"><div class="flex items-center gap-3 flex-wrap"><div class="w-9 h-9 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center shrink-0"><svg viewBox="0 0 24 24" class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div><span class="text-sm font-bold text-gray-900 dark:text-white truncate min-w-[140px] flex-1">' + s.restaurantName + '</span><span class="text-[11px] font-bold text-gray-400">LUC-' + s.lucId + '</span><span class="whitespace-nowrap shrink-0 flex flex-col items-start leading-tight text-teal-600 dark:text-teal-400"><span class="text-[10px] font-medium">Recebidos</span><span class="text-sm font-bold">' + s.generatedWasteKg + ' kg</span></span><span class="whitespace-nowrap shrink-0 flex flex-col items-start leading-tight text-emerald-600 dark:text-emerald-400"><span class="text-[10px] font-medium">Tratados</span><span class="text-sm font-bold">' + s.reusedWasteKg + ' kg</span></span><svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-300 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div></div>';
+        } else {
+          return '<div onclick="openStoreModal(\'' + s.id + '\')" class="w-full text-left bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200 dark:border-gray-700 p-3 hover:border-[#D97706]/30 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"><div class="flex items-center gap-3 flex-wrap"><div class="w-9 h-9 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center shrink-0"><svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg></div><span class="text-sm font-bold text-gray-900 dark:text-white truncate min-w-[140px] flex-1">' + s.restaurantName + '</span><span class="text-[11px] font-bold text-gray-400">LUC-' + s.lucId + '</span><div class="flex items-center gap-3 shrink-0"><span class="text-[11px] font-bold uppercase px-2 py-0.5 rounded border shrink-0 ' + st.bg + ' ' + st.text + ' ' + st.border + '">' + st.label + '</span><span class="text-xs font-bold px-2.5 py-1 rounded-lg border shrink-0 ' + st.bg + ' ' + st.text + ' ' + st.border + '">' + s.score + '</span><span class="whitespace-nowrap shrink-0 text-gray-400 flex flex-col items-start leading-tight"><span class="text-[10px] font-medium">Última auditoria</span><span class="text-sm font-bold">' + new Date(s.auditedAt).toLocaleDateString('pt-BR') + '</span></span></div><svg viewBox="0 0 24 24" class="w-4 h-4 text-gray-300 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div></div>';
+        }
+      }).join('') + '</div>' + (filtered.length > 0 && _classPage === totalPages - 1 ? '<div class="text-center py-3"><span class="text-xs font-bold text-gray-400 select-none tracking-wider uppercase">— Fim da Lista —</span></div>' : '');
+
+      pag.innerHTML = totalPages <= 1 ? '' : '<button onclick="_classPage=Math.max(0,_classPage-1);_renderClassModal()" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e1e] text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-[#8B1A1A] disabled:opacity-30 disabled:pointer-events-none transition-all" ' + (_classPage === 0 ? 'disabled' : '') + '>← Anterior</button><span class="text-xs font-bold text-gray-500 select-none">' + (_classPage + 1) + ' / ' + totalPages + '</span><button onclick="_classPage=Math.min(' + (totalPages - 1) + ',_classPage+1);_renderClassModal()" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e1e] text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-[#8B1A1A] disabled:opacity-30 disabled:pointer-events-none transition-all" ' + (_classPage >= totalPages - 1 ? 'disabled' : '') + '>Próxima →</button>';
+    }
+
+    // Wire classification modal filter events
+    document.getElementById('class-modal-search')?.addEventListener('input', () => { _classPage = 0; _renderClassModal(); });
+    document.getElementById('class-modal-classif-select')?.addEventListener('change', () => { _classPage = 0; _renderClassModal(); });
+    document.getElementById('class-modal-date-start')?.addEventListener('change', () => { _classPage = 0; _renderClassModal(); });
+    document.getElementById('class-modal-date-end')?.addEventListener('change', () => { _classPage = 0; _renderClassModal(); });
+    document.getElementById('class-modal-sort-select')?.addEventListener('change', () => { _classPage = 0; _renderClassModal(); });
+    document.getElementById('class-modal-pdf-btn')?.addEventListener('click', () => {
+      const filtered = _filterClassStores();
+      const title = document.getElementById('class-modal-title').textContent;
+      if (_classIsEco) {
+        _printTable(title, filtered, [
+          { header: 'Estabelecimento', accessor: s => s.restaurantName },
+          { header: 'LUC', accessor: s => s.lucId },
+          { header: 'Gerado (kg)', accessor: s => String(s.generatedWasteKg), align: 'right' },
+          { header: 'Tratado (kg)', accessor: s => String(s.reusedWasteKg), align: 'right' },
+        ], 'Detalhamento de res\u00edduos por estabelecimento');
+      } else {
+        _printTable(title, filtered, [
+          { header: 'Estabelecimento', accessor: s => s.restaurantName },
+          { header: 'LUC', accessor: s => s.lucId },
+          { header: 'Classifica\u00e7\u00e3o', accessor: s => _cs(s.classification).label },
+          { header: 'Nota', accessor: s => String(s.score), align: 'right' },
+        ], 'Detalhamento de classifica\u00e7\u00e3o sanit\u00e1ria');
+      }
+    });
+
+    // ============================================================
+    // SEGURANÇA ALIMENTAR CHART (Stacked Bar)
+    // ============================================================
+    let segChart = null;
+    let _segPeriod = 'semana';
+    let _segDateStart = '';
+    let _segDateEnd = '';
+
+    function _getWeekRange() {
+      const t = new Date(); const d = t.getDay(); const diff = d === 0 ? -6 : 1 - d;
+      const s = new Date(t); s.setDate(s.getDate() + diff);
+      const e = new Date(s); e.setDate(e.getDate() + 6);
+      return { start: _fmtDate(s), end: _fmtDate(e) };
+    }
+    function _getMonthRange() {
+      const t = new Date(); return { start: _fmtDate(new Date(t.getFullYear(), t.getMonth(), 1)), end: _fmtDate(new Date(t.getFullYear(), t.getMonth() + 1, 0)) };
+    }
+    function _getYearRange() {
+      const t = new Date(); return { start: _fmtDate(new Date(t.getFullYear(), 0, 1)), end: _fmtDate(new Date(t.getFullYear(), 11, 31)) };
+    }
+    function _fmtDate(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+
+    function _setSegPeriod(p) {
+      _segPeriod = p;
+      if (p === 'semana') { const r = _getWeekRange(); _segDateStart = r.start; _segDateEnd = r.end; }
+      else if (p === 'mes') { const r = _getMonthRange(); _segDateStart = r.start; _segDateEnd = r.end; }
+      else { const r = _getYearRange(); _segDateStart = r.start; _segDateEnd = r.end; }
+      document.getElementById('seg-date-start').value = _segDateStart;
+      document.getElementById('seg-date-end').value = _segDateEnd;
+      document.querySelectorAll('.seg-period-btn').forEach(b => {
+        b.className = 'seg-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all cursor-pointer bg-white dark:bg-[#1e1e1e] text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800';
+        if (b.dataset.segPeriod === p) {
+          b.className = 'seg-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all cursor-pointer bg-[#D97706] text-white border-[#D97706]';
+        }
+      });
+      _renderSegChart();
+    }
+
+    function _renderSegChart() {
+      if (typeof Chart === 'undefined') return;
+      const canvas = document.getElementById('seg-chart-canvas');
+      if (!canvas) return;
+      const filtered = _cachedInspecoes.filter(i => {
+        if (!i.data_auditoria) return false;
+        if (_segDateStart && i.data_auditoria < _segDateStart) return false;
+        if (_segDateEnd && i.data_auditoria > _segDateEnd) return false;
+        return true;
+      });
+      const isYear = _segPeriod === 'ano';
+      const grouped = {};
+      filtered.forEach(i => {
+        const d = new Date(i.data_auditoria + 'T12:00:00');
+        const key = isYear ? (d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')) : i.data_auditoria;
+        if (!grouped[key]) grouped[key] = { total: 0, inaceitavel: 0, ruim: 0, regular: 0, bom: 0 };
+        grouped[key].total++;
+        if (i.nota >= 80) grouped[key].bom++;
+        else if (i.nota >= 60) grouped[key].regular++;
+        else if (i.nota >= 30) grouped[key].ruim++;
+        else grouped[key].inaceitavel++;
+      });
+      const monthNames = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+      const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+      const labels = Object.keys(grouped).sort();
+      const data = {
+        labels: labels.map(k => {
+          const d = new Date((isYear ? k + '-01' : k) + 'T12:00:00');
+          if (isYear) return monthNames[d.getMonth()] + '/' + String(d.getFullYear()).slice(-2);
+          if (_segPeriod === 'semana') return dayNames[d.getDay()] + ' ' + String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0');
+          return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+        }),
+        inaceitavel: labels.map(k => grouped[k].inaceitavel),
+        ruim: labels.map(k => grouped[k].ruim),
+        regular: labels.map(k => grouped[k].regular),
+        bom: labels.map(k => grouped[k].bom),
+      };
+      const totalSum = data.bom.reduce((a, b) => a + b, 0) + data.regular.reduce((a, b) => a + b, 0) + data.ruim.reduce((a, b) => a + b, 0) + data.inaceitavel.reduce((a, b) => a + b, 0);
+      document.getElementById('seg-chart-total').textContent = totalSum;
+      document.getElementById('seg-chart-bom').textContent = data.bom.reduce((a, b) => a + b, 0);
+      document.getElementById('seg-chart-regular').textContent = data.regular.reduce((a, b) => a + b, 0);
+      document.getElementById('seg-chart-ruim').textContent = data.ruim.reduce((a, b) => a + b, 0);
+      document.getElementById('seg-chart-inaceitavel').textContent = data.inaceitavel.reduce((a, b) => a + b, 0);
+
+      if (segChart) segChart.destroy();
+      const ctx = canvas.getContext('2d');
+      const isDark = document.documentElement.classList.contains('dark');
+      segChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.labels,
+          datasets: [
+            { label: 'Bom', data: data.bom, backgroundColor: '#22c55e', borderRadius: 2 },
+            { label: 'Regular', data: data.regular, backgroundColor: '#eab308', borderRadius: 2 },
+            { label: 'Ruim', data: data.ruim, backgroundColor: '#f97316', borderRadius: 2 },
+            { label: 'Inaceitável', data: data.inaceitavel, backgroundColor: '#ef4444', borderRadius: 2 },
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 10, padding: 12, font: { size: 10, weight: 'bold' } } } },
+          scales: {
+            x: { stacked: true, grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 45 } },
+            y: { stacked: true, beginAtZero: true, grid: { color: isDark ? '#374151' : '#E5E7EB' }, ticks: { font: { size: 9 }, stepSize: 1 } },
+          }
+        }
+      });
+    }
+    document.querySelectorAll('.seg-period-btn').forEach(b => b.addEventListener('click', () => _setSegPeriod(b.dataset.segPeriod)));
+    document.getElementById('seg-date-start')?.addEventListener('change', e => { _segDateStart = e.target.value; _renderSegChart(); });
+    document.getElementById('seg-date-end')?.addEventListener('change', e => { _segDateEnd = e.target.value; _renderSegChart(); });
+    document.getElementById('seg-pdf-btn')?.addEventListener('click', () => {
+      const chartData = [];
+      const canvas = document.getElementById('seg-chart-canvas');
+      if (!canvas) return;
+      const filtered = _cachedInspecoes.filter(i => {
+        if (!i.data_auditoria) return false;
+        if (_segDateStart && i.data_auditoria < _segDateStart) return false;
+        if (_segDateEnd && i.data_auditoria > _segDateEnd) return false;
+        return true;
+      });
+      const isYear = _segPeriod === 'ano';
+      const grouped = {};
+      filtered.forEach(i => {
+        const d = new Date(i.data_auditoria + 'T12:00:00');
+        const key = isYear ? (d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')) : i.data_auditoria;
+        if (!grouped[key]) grouped[key] = { total: 0, inaceitavel: 0, ruim: 0, regular: 0, bom: 0 };
+        grouped[key].total++;
+        if (i.nota >= 80) grouped[key].bom++;
+        else if (i.nota >= 60) grouped[key].regular++;
+        else if (i.nota >= 30) grouped[key].ruim++;
+        else grouped[key].inaceitavel++;
+      });
+      const labels = Object.keys(grouped).sort();
+      labels.forEach(k => {
+        chartData.push({ periodo: k, total: grouped[k].total, bom: grouped[k].bom, regular: grouped[k].regular, ruim: grouped[k].ruim, inaceitavel: grouped[k].inaceitavel });
+      });
+      _printTable('Classificação por Auditoria', chartData, [
+        { header: 'Per\u00edodo', accessor: r => r.periodo },
+        { header: 'Total', accessor: r => String(r.total), align: 'right' },
+        { header: 'Bom', accessor: r => String(r.bom), align: 'right' },
+        { header: 'Regular', accessor: r => String(r.regular), align: 'right' },
+        { header: 'Ruim', accessor: r => String(r.ruim), align: 'right' },
+        { header: 'Inaceit\u00e1vel', accessor: r => String(r.inaceitavel), align: 'right' },
+      ], 'Distribui\u00e7\u00e3o das classifica\u00e7\u00f5es sanit\u00e1rias por per\u00edodo', 'Per\u00edodo: ' + _segDateStart + ' a ' + _segDateEnd);
+    });
+
+    // ============================================================
+    // ECO CHART - PERIOD FILTERS
+    // ============================================================
+    let _ecoPeriod = 'semana';
+    let _ecoDateStart = '';
+    let _ecoDateEnd = '';
+
+    function _setEcoPeriod(p) {
+      _ecoPeriod = p;
+      if (p === 'semana') { const r = _getWeekRange(); _ecoDateStart = r.start; _ecoDateEnd = r.end; }
+      else if (p === 'mes') { const r = _getMonthRange(); _ecoDateStart = r.start; _ecoDateEnd = r.end; }
+      else { const r = _getYearRange(); _ecoDateStart = r.start; _ecoDateEnd = r.end; }
+      document.getElementById('eco-date-start').value = _ecoDateStart;
+      document.getElementById('eco-date-end').value = _ecoDateEnd;
+      document.querySelectorAll('.eco-period-btn').forEach(b => {
+        b.className = 'eco-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all bg-white dark:bg-[#1e1e1e] text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-[#059669]/40 hover:text-[#059669] dark:hover:text-[#34D399]';
+        if (b.dataset.ecoPeriod === p) {
+          b.className = 'eco-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all bg-[#059669] text-white border-[#059669]';
+        }
+      });
+      _refreshEcoChart();
+    }
+    document.querySelectorAll('.eco-period-btn').forEach(b => b.addEventListener('click', () => _setEcoPeriod(b.dataset.ecoPeriod)));
+    document.getElementById('eco-date-start')?.addEventListener('change', e => { _ecoDateStart = e.target.value; _refreshEcoChart(); });
+    document.getElementById('eco-date-end')?.addEventListener('change', e => { _ecoDateEnd = e.target.value; _refreshEcoChart(); });
+
+    function _refreshEcoChart() {
+      if (typeof Chart === 'undefined') return;
+      const topN = parseInt(document.getElementById('top-n-custom')?.value || '10');
+      let sorted = [..._cachedResiduos];
+      if (_ecoDateStart) sorted = sorted.filter(r => r.data >= _ecoDateStart);
+      if (_ecoDateEnd) sorted = sorted.filter(r => r.data <= _ecoDateEnd);
+      sorted.sort((a, b) => (b.kg_total || 0) - (a.kg_total || 0));
+      const top = topN > 0 ? sorted.slice(0, topN) : sorted;
+
+      const emptyState = document.getElementById('dash-chart-empty');
+      if (top.length === 0) {
+        emptyState?.classList.remove('hidden');
+        if (wasteChart) { wasteChart.destroy(); wasteChart = null; }
+        return;
+      }
+      emptyState?.classList.add('hidden');
+      if (wasteChart) wasteChart.destroy();
+      const ctx = document.getElementById('dash-chart-canvas').getContext('2d');
+      const isDark = document.documentElement.classList.contains('dark');
+      const gridColor = isDark ? '#374151' : '#E5E7EB';
+      const tickColor = isDark ? '#6B7280' : '#6B7280';
+      const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+      gradient.addColorStop(0, '#14B8A6');
+      gradient.addColorStop(1, '#0D9488');
+      wasteChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: top.map(r => r.lojaNome || 'LUC-' + r.loja_id),
+          datasets: [{ label: 'kg Gerado', data: top.map(r => r.kg_total || 0), backgroundColor: gradient, borderRadius: 4, borderSkipped: false, maxBarThickness: 56 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: isDark ? '#252525' : '#fff', titleColor: isDark ? '#f3f4f6' : '#111827', bodyColor: isDark ? '#d1d5db' : '#4b5563', borderColor: isDark ? '#374151' : '#E5E7EB', borderWidth: 1, cornerRadius: 8, padding: 8, callbacks: { title: (items) => items[0].label, label: (ctx) => ctx.parsed.y.toFixed(1) + ' kg' } } },
+          scales: {
+            x: { grid: { display: false }, ticks: { maxRotation: 45, minRotation: 45, font: { size: 10, weight: '500' }, color: tickColor } },
+            y: { beginAtZero: true, grid: { color: gridColor }, ticks: { callback: (v) => v + ' kg', font: { size: 10, weight: '500' }, color: tickColor } }
+          }
+        }
+      });
+    }
+
+    // Top N buttons
+    document.querySelectorAll('.top-n-btn').forEach(b => b.addEventListener('click', () => {
+      const n = parseInt(b.dataset.topN);
+      document.getElementById('top-n-custom').value = n;
+      document.querySelectorAll('.top-n-btn').forEach(btn => {
+        btn.className = 'top-n-btn px-4 py-2 text-sm font-bold rounded-lg border transition-all bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-[#059669]/40 hover:text-[#059669] dark:hover:text-[#34D399]';
+      });
+      b.className = 'top-n-btn px-4 py-2 text-sm font-bold rounded-lg border transition-all bg-[#059669] text-white border-[#059669] shadow-sm';
+      _refreshEcoChart();
+    }));
+    document.getElementById('top-n-custom')?.addEventListener('change', () => {
+      const v = Math.max(1, Math.min(100, parseInt(document.getElementById('top-n-custom').value) || 10));
+      document.getElementById('top-n-custom').value = v;
+      document.querySelectorAll('.top-n-btn').forEach(b => { if (parseInt(b.dataset.topN) === v) b.click(); });
+      _refreshEcoChart();
+    });
+
+    // Eco PDF
+    document.getElementById('eco-pdf-btn')?.addEventListener('click', () => {
+      const topN = parseInt(document.getElementById('top-n-custom')?.value || '10');
+      let sorted = [..._cachedResiduos];
+      if (_ecoDateStart) sorted = sorted.filter(r => r.data >= _ecoDateStart);
+      if (_ecoDateEnd) sorted = sorted.filter(r => r.data <= _ecoDateEnd);
+      sorted.sort((a, b) => (b.kg_total || 0) - (a.kg_total || 0));
+      const top = topN > 0 ? sorted.slice(0, topN) : sorted;
+      _printTable('Resíduos por Estabelecimento', top, [
+        { header: 'Estabelecimento', accessor: r => r.lojaNome || 'LUC-' + r.loja_id },
+        { header: 'Total (kg)', accessor: r => String(r.kg_total || 0), align: 'right' },
+      ], 'Ranking de geração de resíduos', 'Período: ' + (_ecoDateStart || 'Início') + ' a ' + (_ecoDateEnd || 'Hoje'));
+    });
+
+    // ============================================================
+    // ORIENTAÇÃO EDUCATIVA CHART
+    // ============================================================
+    let educChart = null;
+    let _educPeriod = 'semana';
+    let _educDateStart = '';
+    let _educDateEnd = '';
+    let _cachedOrientacoes = [];
+
+    // Fetch orientações data
+    async function _loadOrientacoes() {
+      try {
+        const r = await fetch('/api/orientacoes');
+        _cachedOrientacoes = await r.json();
+        if (!Array.isArray(_cachedOrientacoes)) _cachedOrientacoes = [];
+      } catch { _cachedOrientacoes = []; }
+      _setEducPeriod('semana');
+    }
+
+    function _setEducPeriod(p) {
+      _educPeriod = p;
+      const today = new Date();
+      if (p === 'personalizado') { /* keep user values */ }
+      else if (p === 'semana') { const r = _getWeekRange(); _educDateStart = r.start; _educDateEnd = r.end; }
+      else if (p === 'mes') {
+        const s = new Date(today); s.setMonth(s.getMonth() - 1);
+        _educDateStart = _fmtDate(s); _educDateEnd = _fmtDate(today);
+      } else {
+        const s = new Date(today); s.setFullYear(s.getFullYear() - 1);
+        _educDateStart = _fmtDate(s); _educDateEnd = _fmtDate(today);
+      }
+      document.getElementById('educ-date-start').value = _educDateStart;
+      document.getElementById('educ-date-end').value = _educDateEnd;
+      document.querySelectorAll('.educ-period-btn').forEach(b => {
+        b.className = 'educ-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all cursor-pointer bg-white dark:bg-[#1e1e1e] text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-blue-600';
+        if (b.dataset.educPeriod === p) {
+          b.className = 'educ-period-btn px-3 py-1.5 text-[10px] font-black rounded-lg border transition-all cursor-pointer bg-blue-600 text-white border-blue-600';
+        }
+      });
+      _renderEducChart();
+    }
+
+    function _renderEducChart() {
+      if (typeof Chart === 'undefined') return;
+      const canvas = document.getElementById('educ-chart-canvas');
+      if (!canvas) return;
+      const filtered = _cachedOrientacoes.filter(o => {
+        if (!o.data_orientacao) return false;
+        return o.data_orientacao >= _educDateStart && o.data_orientacao <= _educDateEnd;
+      });
+      document.getElementById('educ-chart-total').textContent = filtered.length;
+
+      const grouped = {};
+      filtered.forEach(o => {
+        const d = new Date(o.data_orientacao + 'T00:00:00');
+        let key;
+        if (_educPeriod === 'ano') key = _fmtDate(new Date(d.getFullYear(), 0, 1));
+        else if (_educPeriod === 'mes') key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+        else key = o.data_orientacao;
+        if (!grouped[key]) grouped[key] = 0;
+        grouped[key]++;
+      });
+      const sortedKeys = Object.keys(grouped).sort();
+      const isDark = document.documentElement.classList.contains('dark');
+      const monthNames = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+      const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+      const labels = sortedKeys.map(k => {
+        const d = new Date((_educPeriod === 'ano' ? k : k.length === 7 ? k + '-01' : k) + 'T12:00:00');
+        if (_educPeriod === 'ano') return d.getFullYear().toString();
+        if (_educPeriod === 'mes') return monthNames[d.getMonth()] + '/' + String(d.getFullYear()).slice(-2);
+        if (_educPeriod === 'semana') return dayNames[d.getDay()] + ' ' + String(d.getDate()).padStart(2, '0');
+        return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+      });
+      if (educChart) educChart.destroy();
+      const ctx = canvas.getContext('2d');
+      const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+      gradient.addColorStop(0, '#3B82F6');
+      gradient.addColorStop(1, '#2563EB');
+      educChart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels, datasets: [{ label: 'Orientações', data: sortedKeys.map(k => grouped[k]), backgroundColor: gradient, borderRadius: 4 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: isDark ? '#252525' : '#fff', borderColor: isDark ? '#374151' : '#E5E7EB', borderWidth: 1, cornerRadius: 8, padding: 8 } },
+          scales: {
+            x: { grid: { display: false }, ticks: { maxRotation: 45, font: { size: 9 } } },
+            y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 9 } }, grid: { color: isDark ? '#374151' : '#E5E7EB' } }
+          }
+        }
+      });
+      const labelEl = document.getElementById('educ-period-label');
+      if (labelEl) labelEl.textContent = _educDateStart + ' — ' + _educDateEnd;
+    }
+    document.querySelectorAll('.educ-period-btn').forEach(b => b.addEventListener('click', () => _setEducPeriod(b.dataset.educPeriod)));
+    document.getElementById('educ-date-start')?.addEventListener('change', e => { _educDateStart = e.target.value; _educPeriod = 'personalizado'; _setEducPeriod('personalizado'); });
+    document.getElementById('educ-date-end')?.addEventListener('change', e => { _educDateEnd = e.target.value; _educPeriod = 'personalizado'; _setEducPeriod('personalizado'); });
+    document.getElementById('educ-pdf-btn')?.addEventListener('click', () => {
+      const filtered = _cachedOrientacoes.filter(o => o.data_orientacao >= _educDateStart && o.data_orientacao <= _educDateEnd);
+      const labels = { semana: 'Semana', mes: 'M\u00eas', ano: 'Ano' };
+      _printTable('Orienta\u00e7\u00e3o Educativa', filtered.map(o => ({
+        loja: o.loja_id,
+        responsavel: o.responsavel_presente || '---',
+        data: o.data_orientacao,
+      })), [
+        { header: 'Loja', accessor: r => r.loja },
+        { header: 'Respons\u00e1vel', accessor: r => r.responsavel },
+        { header: 'Data', accessor: r => r.data },
+      ], 'Hist\u00f3rico de orienta\u00e7\u00f5es educativas', 'Per\u00edodo: ' + _educDateStart + ' a ' + _educDateEnd);
+    });
+
+    // ============================================================
+    // INIT - Call after loadDashboard
+    // ============================================================
+    // Initialize period filters after data loads
+    const _origLoadDashboard = loadDashboard;
+    loadDashboard = async function() {
+      showLoading(); hideError();
+      try {
+        await _origLoadDashboard();
+        // Init seg period
+        const segInit = _getWeekRange();
+        _segDateStart = segInit.start; _segDateEnd = segInit.end;
+        document.getElementById('seg-date-start').value = _segDateStart;
+        document.getElementById('seg-date-end').value = _segDateEnd;
+        // Init eco period
+        const ecoInit = _getWeekRange();
+        _ecoDateStart = ecoInit.start; _ecoDateEnd = ecoInit.end;
+        document.getElementById('eco-date-start').value = _ecoDateStart;
+        document.getElementById('eco-date-end').value = _ecoDateEnd;
+        // Load educ data
+        await _loadOrientacoes();
+        // Render charts
+        _setSegPeriod('semana');
+        _setEcoPeriod('semana');
+      } catch (e) {
+        showError(e.message);
+      } finally {
+        hideLoading();
+      }
+    };
+    loadDashboard();
+    // Activate initial tab
+    activateTab('monitoramento');
   </script>
 </body>
 

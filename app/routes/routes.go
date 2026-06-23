@@ -17,23 +17,8 @@ func Rotas() {
 	var dashCtrl controllers.DashboardController
 	http.HandleFunc("/conservacao/dashboard", dashCtrl.ListarPaginaHandler)
 
-	var relCtrl controllers.RelatoriosController
-	http.HandleFunc("/conservacao/relatorios", relCtrl.ListarPaginaHandler)
-
-	http.HandleFunc("/conservacao/relatorio-seguranca-alimentar", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/conservacao/seguranca-alimentar", http.StatusMovedPermanently)
-	})
-
-	http.HandleFunc("/conservacao/relatorio-seguranca-alimentar.html", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/conservacao/seguranca-alimentar", http.StatusMovedPermanently)
-	})
-
 	http.HandleFunc("/conservacao/seguranca-alimentar.html", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/conservacao/seguranca-alimentar", http.StatusMovedPermanently)
-	})
-
-	http.HandleFunc("/conservacao/relatorios.html", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/conservacao/relatorios", http.StatusMovedPermanently)
 	})
 
 	http.HandleFunc("/conservacao/dashboard.html", func(w http.ResponseWriter, r *http.Request) {

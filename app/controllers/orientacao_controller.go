@@ -212,7 +212,7 @@ func (c *OrientacaoController) DeleteHandler(w http.ResponseWriter, r *http.Requ
 	w.WriteHeader(http.StatusOK)
 }
 
-/*func (c *OrientacaoController) ListarJSONHandler(w http.ResponseWriter, r *http.Request) { //Função para realizar a pesquisa na tabela
+func (c *OrientacaoController) ListarJSONHandler(w http.ResponseWriter, r *http.Request) { //Função para realizar a pesquisa na tabela
 	orientacoes, err := c.Service.ListarTodas()
 	if err != nil {
 		http.Error(w, "Erro ao buscar orientações", http.StatusInternalServerError)
@@ -220,4 +220,4 @@ func (c *OrientacaoController) DeleteHandler(w http.ResponseWriter, r *http.Requ
 	}
 	w.Header().Set("Content-type", "aplication/json")
 	json.NewEncoder(w).Encode(orientacoes)
-}*/
+}
